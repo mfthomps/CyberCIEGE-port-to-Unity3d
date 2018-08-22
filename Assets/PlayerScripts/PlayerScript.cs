@@ -209,7 +209,8 @@ public class PlayerScript : MonoBehaviour {
 		string user_name = System.Environment.UserName;
 		string user_dir = Path.Combine(campaign_dir, user_name);
 		ddo.Add(new Dropdown.OptionData(NEW_GAME));
-		foreach (string file in Directory.GetFiles(user_dir, "*.sdf"))
+		//foreach (string file in Directory.GetFiles(user_dir, "*.sdf"))
+        foreach (string file in Directory.GetFiles(campaign_dir, "*.sdf"))
 		{
 		//	string full = Path.Combine(user_dir, file);
 			string saved_scene = GetScenario(file);
