@@ -34,10 +34,16 @@ public class ComputerBehavior : ComponentBehavior {
         //asset_dir = System.IO.Path.Combine(asset_dir, "objects");
         //asset_dir = System.IO.Path.Combine(asset_dir, "dell");
         //string mesh_path = System.IO.Path.Combine(asset_dir, "dell.asset")
-        Mesh dell_mesh = Resources.Load<Mesh>("dell.asset");
-        Material dell_mat = Resources.Load<Material>("dell_mat.mat");
-        SkinnedMeshRenderer comp_render = new_c.GetComponent<SkinnedMeshRenderer>();
+        //Mesh dell_mesh;
+        var dell_mesh = Resources.Load<Mesh>("dell");
+        Debug.Log("Loaded " + dell_mesh.name);
+        var comp_render = new_c.GetComponent<SkinnedMeshRenderer>();
         comp_render.sharedMesh = dell_mesh;
+        //Material dell_mat; 
+        var dell_mat= Resources.Load<Material>("dell_mat");
+        Debug.Log("Loaded " + dell_mat.name);
+        Debug.Log("Main Texture is " + dell_mat.mainTexture);
+        
         comp_render.material = dell_mat;
 		ComputerBehavior script = (ComputerBehavior)new_c.GetComponent(typeof(ComputerBehavior));
 		script.SetFilePath(cfile);
