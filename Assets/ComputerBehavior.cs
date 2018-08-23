@@ -30,6 +30,15 @@ public class ComputerBehavior : ComponentBehavior {
 		string cfile = System.IO.Path.Combine(cdir, computer_file);
 		//Debug.Log("computer " + cdir);
 		GameObject new_c = Instantiate(computer, new Vector3(1.0F, 0, 0), Quaternion.identity);
+        //string asset_dir = System.IO.Path.Combine(GameLoadBehavior.user_app_path, "MayaArt");
+        //asset_dir = System.IO.Path.Combine(asset_dir, "objects");
+        //asset_dir = System.IO.Path.Combine(asset_dir, "dell");
+        //string mesh_path = System.IO.Path.Combine(asset_dir, "dell.asset")
+        Mesh dell_mesh = Resources.Load<Mesh>("dell.asset");
+        Material dell_mat = Resources.Load<Material>("dell_mat.mat");
+        SkinnedMeshRenderer comp_render = new_c.GetComponent<SkinnedMeshRenderer>();
+        comp_render.sharedMesh = dell_mesh;
+        comp_render.material = dell_mat;
 		ComputerBehavior script = (ComputerBehavior)new_c.GetComponent(typeof(ComputerBehavior));
 		script.SetFilePath(cfile);
 		new_c.SetActive(true);

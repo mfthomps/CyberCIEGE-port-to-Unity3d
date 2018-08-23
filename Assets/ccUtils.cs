@@ -8,6 +8,37 @@ using System;
 public class ccUtils : MonoBehaviour {
 	//static float GRID_SIZE = 3.0f;
 	static float GRID_SIZE = 1.0f;
+
+    public static void LoadHardwareInfoFromFile(string fname, List<string> hw_list, Dictionary<string, Mesh> mesh_dict, Dictionary<string, Material> material_dict)
+    {
+        List<string> raw_list = new List<string>();
+        string[] hw_info;
+        string assets_path;
+        string asset_name;
+        //Load raw_list as normal from the file
+        LoadListFromFile(fname, raw_list);
+        foreach(string s in raw_list){
+            if(!s.Contains(",")){ //No model info given
+                hw_list.Add(s);
+            } else {
+                hw_info = s.Split(',');
+                hw_list.Add(hw_info[0]);
+                asset_name = hw_info[1] + ".fbx";
+                assets_path = Path.Combine(GameLoadBehavior.user_app_path, "MayaArt");
+                assets_path = Path.Combine(assets_path, "objects");
+                assets_path = Path.Combine(assets_path, hw_info[1]); //Folder name
+                assets_path = Path.Combine(assets_path, asset_name);
+                //TODO: Re-export maya files as .fbx and place directly under their directories in Assets
+                //Get GameObject from FBX file //Easier said than done!
+                //map to dictionaries
+                //done
+            }
+        }
+
+    }
+
+    //public static 
+
 	public static void LoadListFromFile(string fname, List<string> hw_list)
 	{
 		//Debug.Log("LoadListFromFile " + fname);
