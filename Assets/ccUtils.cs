@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using System.IO;
 using System.Text;
@@ -9,35 +10,31 @@ public class ccUtils : MonoBehaviour {
 	//static float GRID_SIZE = 3.0f;
 	static float GRID_SIZE = 1.0f;
 
-    public static void LoadHardwareInfoFromFile(string fname, List<string> hw_list, Dictionary<string, Mesh> mesh_dict, Dictionary<string, Material> material_dict)
-    {
-        List<string> raw_list = new List<string>();
-        string[] hw_info;
-        string assets_path;
+    public static void LoadHWInfoFromFile(string fname, List<string> hw_list, Dictionary<string, Mesh> mesh_dict, Dictionary<string, Material> mat_dict){
+        string bundle_path = Path.Combine(GameLoadBehavior.user_app_path, "AssetBundles");
+        string device_name;
         string asset_name;
-        //Load raw_list as normal from the file
-        LoadListFromFile(fname, raw_list);
-        foreach(string s in raw_list){
-            if(!s.Contains(",")){ //No model info given
-                hw_list.Add(s);
+        Mesh this_mesh;
+        Material this_mat;
+        AssetBundle objBundle = AssetBundle.LoadFromFile(Path.Combine(bundle_path, "objects"));
+        List<string> this_list = new List<string>();
+        LoadListFromFile(fname, this_list);
+        foreach(string s in this_list){
+            if (s.Contains(",")) {
+                string[] s_array = s.Split(',');
+                device_name = s_array[0];
+                asset_name = s_array[1];
+                hw_list.Add(device_name);
+                this_mesh = objBundle.LoadAsset<Mesh>(asset_name);
+                mesh_dict.Add(device_name, this_mesh);
+                this_mat = objBundle.LoadAsset<Material>(asset_name);
+                mat_dict.Add(device_name, this_mat);
             } else {
-                hw_info = s.Split(',');
-                hw_list.Add(hw_info[0]);
-                asset_name = hw_info[1] + ".fbx";
-                assets_path = Path.Combine(GameLoadBehavior.user_app_path, "MayaArt");
-                assets_path = Path.Combine(assets_path, "objects");
-                assets_path = Path.Combine(assets_path, hw_info[1]); //Folder name
-                assets_path = Path.Combine(assets_path, asset_name);
-                //TODO: Re-export maya files as .fbx and place directly under their directories in Assets
-                //Get GameObject from FBX file //Easier said than done!
-                //map to dictionaries
-                //done
+                hw_list.Add(s);
             }
+
         }
-
     }
-
-    //public static 
 
 	public static void LoadListFromFile(string fname, List<string> hw_list)
 	{

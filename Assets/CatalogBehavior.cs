@@ -17,6 +17,8 @@ public class CatalogBehavior : MonoBehaviour {
 	private static Rect WindowRect = new Rect(10, 10, 250, 300);
 	public static Texture2D background, LOGO;
 	static Dictionary<string, int> catalog_ids = new Dictionary<string, int>();
+    public static Dictionary<string, Mesh> object_mesh_dict = new Dictionary<string, Mesh>();
+    public static Dictionary<string, Material> object_mat_dict = new Dictionary<string, Material>();
 	private static GameObject buying_object = null;
 	private static string buying_item = null;
 	private static bool do_buy = false;
@@ -27,9 +29,12 @@ public class CatalogBehavior : MonoBehaviour {
 		device_list = new List<string>();
 
 		string hw_types_dir = Path.Combine(GameLoadBehavior.user_app_path, "HardwareTypes");
-		ccUtils.LoadListFromFile(Path.Combine(hw_types_dir, "servers.txt"), server_hw_list);
-		ccUtils.LoadListFromFile(Path.Combine(hw_types_dir, "workstations.txt"), ws_hw_list);
+		//ccUtils.LoadListFromFile(Path.Combine(hw_types_dir, "servers.txt"), server_hw_list);
+		//ccUtils.LoadListFromFile(Path.Combine(hw_types_dir, "workstations.txt"), ws_hw_list);
 		ccUtils.LoadListFromFile(Path.Combine(hw_types_dir, "devices.txt"), device_hw_list);
+        ccUtils.LoadHWInfoFromFile(Path.Combine(hw_types_dir, "servers.txt"), server_hw_list, object_mesh_dict, object_mat_dict);
+        ccUtils.LoadHWInfoFromFile(Path.Combine(hw_types_dir, "workstations.txt"), ws_hw_list, object_mesh_dict, object_mat_dict);
+
 
 	}
 	private static bool StringIn(List<string> list, string s)

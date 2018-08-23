@@ -30,26 +30,15 @@ public class ComputerBehavior : ComponentBehavior {
 		string cfile = System.IO.Path.Combine(cdir, computer_file);
 		//Debug.Log("computer " + cdir);
 		GameObject new_c = Instantiate(computer, new Vector3(1.0F, 0, 0), Quaternion.identity);
-        //string asset_dir = System.IO.Path.Combine(GameLoadBehavior.user_app_path, "MayaArt");
-        //asset_dir = System.IO.Path.Combine(asset_dir, "objects");
-        //asset_dir = System.IO.Path.Combine(asset_dir, "dell");
-        //string mesh_path = System.IO.Path.Combine(asset_dir, "dell.asset")
-        //Mesh dell_mesh;
-        var dell_mesh = Resources.Load<Mesh>("dell");
-        Debug.Log("Loaded " + dell_mesh.name);
-        var comp_render = new_c.GetComponent<SkinnedMeshRenderer>();
-        comp_render.sharedMesh = dell_mesh;
-        //Material dell_mat; 
-        var dell_mat= Resources.Load<Material>("dell_mat");
-        Debug.Log("Loaded " + dell_mat.name);
-        Debug.Log("Main Texture is " + dell_mat.mainTexture);
-        
-        comp_render.material = dell_mat;
 		ComputerBehavior script = (ComputerBehavior)new_c.GetComponent(typeof(ComputerBehavior));
 		script.SetFilePath(cfile);
 		new_c.SetActive(true);
 		script.LoadComponent();
 		script.LoadComputer();
+        //This is the part that will hopefully load the correct assets from dict
+        SkinnedMeshRenderer this_render = new_c.GetComponent<SkinnedMeshRenderer>();
+        this_render.sharedMesh = CatalogBehavior.object_mesh_dict[script.hw];
+        this_render.material = CatalogBehavior.object_mat_dict[script.hw];
 		int pos = script.position;
 		//Debug.Log("LoadComputers " + script.computer_name + " pos is " + pos);
 		if (pos < 0)
