@@ -22,22 +22,52 @@ public class CatalogBehavior : MonoBehaviour {
 	private static GameObject buying_object = null;
 	private static string buying_item = null;
 	private static bool do_buy = false;
-	public static void LoadHardwareTypes()
+    public static AssetBundle objBundle;
+    public static bool objBundleLoaded = false;
+    private static string bundle_path = Path.Combine(GameLoadBehavior.user_app_path, "AssetBundles");
+
+
+
+    public static void LoadHardwareTypes()
 	{
 		server_list = new List<string>();
 		ws_list = new List<string>();
 		device_list = new List<string>();
-
-		string hw_types_dir = Path.Combine(GameLoadBehavior.user_app_path, "HardwareTypes");
-		//ccUtils.LoadListFromFile(Path.Combine(hw_types_dir, "servers.txt"), server_hw_list);
-		//ccUtils.LoadListFromFile(Path.Combine(hw_types_dir, "workstations.txt"), ws_hw_list);
-		ccUtils.LoadListFromFile(Path.Combine(hw_types_dir, "devices.txt"), device_hw_list);
+        if (!objBundleLoaded)
+        {
+            LoadObjBundle();
+        }
+        string hw_types_dir = Path.Combine(GameLoadBehavior.user_app_path, "HardwareTypes");
+       
+    //ccUtils.LoadListFromFile(Path.Combine(hw_types_dir, "servers.txt"), server_hw_list);
+    //ccUtils.LoadListFromFile(Path.Combine(hw_types_dir, "workstations.txt"), ws_hw_list);
+        ccUtils.LoadListFromFile(Path.Combine(hw_types_dir, "devices.txt"), device_hw_list);
+        //Debug.Log("Calling LoadHWInfoFromFile for servers");
         ccUtils.LoadHWInfoFromFile(Path.Combine(hw_types_dir, "servers.txt"), server_hw_list, object_mesh_dict, object_mat_dict);
+        //Debug.Log("Calling LoadHWInfoFromFile for workstations");
         ccUtils.LoadHWInfoFromFile(Path.Combine(hw_types_dir, "workstations.txt"), ws_hw_list, object_mesh_dict, object_mat_dict);
+        foreach(string s in ws_hw_list)
+        {
+            Debug.Log(s);
+        }
 
+        UnloadObjBundle();
 
 	}
-	private static bool StringIn(List<string> list, string s)
+
+    public static void LoadObjBundle()
+    {
+        objBundle = AssetBundle.LoadFromFile(Path.Combine(bundle_path, "objects"));
+        objBundleLoaded = true;
+    }
+
+    public static void UnloadObjBundle()
+    {
+        objBundle.Unload(false); //Don't want to unload any objects from the bundle we've already loaded.
+        objBundleLoaded = false;
+    }
+
+    private static bool StringIn(List<string> list, string s)
 	{
 		//Debug.Log("StringIn, len is "+list.Count);
 		foreach (string lvalue in list)
@@ -77,12 +107,12 @@ public class CatalogBehavior : MonoBehaviour {
 		}
 		else if (ws_hw_list.Any(opt => opt.Equals(hw, StringComparison.InvariantCultureIgnoreCase)))
 		{
-			Debug.Log("is ws");
+			//Debug.Log("is ws");
 			return ws_list;
 		}
 		else if (device_hw_list.Any(opt => opt.Equals(hw, StringComparison.InvariantCultureIgnoreCase)))
 		{
-			Debug.Log("is dev");
+			//Debug.Log("is dev");
 			return device_list;
 		}
 		Debug.Log("ERROR: no hw list for " + hw);

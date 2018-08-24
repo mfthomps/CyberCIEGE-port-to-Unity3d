@@ -58,6 +58,7 @@ public class GameLoadBehavior : MonoBehaviour {
 		NetworkBehavior.LoadNetworks(user_app_path);
 		procedural_settings = new ProceduralScript("procedural.txt");
 		physical_settings = new ProceduralScript("physical.txt");
+        Debug.Log("Calling LoadHardwareTypes");
 		CatalogBehavior.LoadHardwareTypes();
 		CatalogBehavior.LoadCatalog(user_app_path);
 		OrganizationScript.LoadOrganization();

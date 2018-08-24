@@ -20,6 +20,7 @@ public class ComputerBehavior : ComponentBehavior {
 	List<string> asset_list = new List<string>();
 	List<string> user_list = new List<string>(); // currently users & groups, TBD separate
 	string assigned_user;
+    private static string hw_name;
 
 	public static void LoadOneComputer(string computer_file)
 	{
@@ -35,10 +36,23 @@ public class ComputerBehavior : ComponentBehavior {
 		new_c.SetActive(true);
 		script.LoadComponent();
 		script.LoadComputer();
+        script.hw = hw_name; 
         //This is the part that will hopefully load the correct assets from dict
         SkinnedMeshRenderer this_render = new_c.GetComponent<SkinnedMeshRenderer>();
-        this_render.sharedMesh = CatalogBehavior.object_mesh_dict[script.hw];
-        this_render.material = CatalogBehavior.object_mat_dict[script.hw];
+        try
+        {
+            this_render.sharedMesh = CatalogBehavior.object_mesh_dict[script.hw];
+        } catch (KeyNotFoundException)
+        {
+            Debug.Log("Key Exception in object_mesh_dict caused by " + script.hw);
+        }
+        try
+        {
+            this_render.material = CatalogBehavior.object_mat_dict[script.hw];
+        } catch (KeyNotFoundException)
+        {
+            Debug.Log("Key Exception in object_mat_dict caused by  " + script.hw);
+        }
 		int pos = script.position;
 		//Debug.Log("LoadComputers " + script.computer_name + " pos is " + pos);
 		if (pos < 0)
@@ -99,6 +113,9 @@ public class ComputerBehavior : ComponentBehavior {
 							case "User":
 								assigned_user = value;
 								break;
+                            case "HW":
+                                hw_name = value;
+                                break;
 						}
 					}
 				}
