@@ -208,6 +208,15 @@ public class PlayerScript : MonoBehaviour {
 
 		string user_name = System.Environment.UserName;
 		string user_dir = Path.Combine(campaign_dir, user_name);
+        if (!Directory.Exists(user_dir))
+        {
+            try
+            {
+                Directory.CreateDirectory(user_dir);
+            } catch(Exception e) {
+                Debug.Log("Could not create directory" + user_dir);
+            }
+        }
 		ddo.Add(new Dropdown.OptionData(NEW_GAME));
 		foreach (string file in Directory.GetFiles(user_dir, "*.sdf"))
 		{
