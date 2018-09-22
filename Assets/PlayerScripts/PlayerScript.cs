@@ -211,6 +211,17 @@ public class PlayerScript : MonoBehaviour {
 		ddo.Add(new Dropdown.OptionData(NEW_GAME));
 		//foreach (string file in Directory.GetFiles(user_dir, "*.sdf"))
         foreach (string file in Directory.GetFiles(campaign_dir, "*.sdf"))
+        if (!Directory.Exists(user_dir))
+        {
+            try
+            {
+                Directory.CreateDirectory(user_dir);
+            } catch(Exception e) {
+                Debug.Log("Could not create directory" + user_dir);
+            }
+        }
+		ddo.Add(new Dropdown.OptionData(NEW_GAME));
+		foreach (string file in Directory.GetFiles(user_dir, "*.sdf"))
 		{
 		//	string full = Path.Combine(user_dir, file);
 			string saved_scene = GetScenario(file);
