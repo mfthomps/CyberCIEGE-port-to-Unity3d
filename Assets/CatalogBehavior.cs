@@ -29,7 +29,7 @@ public class CatalogBehavior : MonoBehaviour {
 
 
 
-    public static void LoadHardwareTypes()
+    public static void LoadHardwareTypes() //Note: catalog.sdf is dynamically created by the headless process and contains only HW that will be used in the scenario, so we need to load meshes and materials for *all* objects in the catalog.
 	{
 		server_list = new List<string>();
 		ws_list = new List<string>();
