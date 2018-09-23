@@ -37,14 +37,14 @@ public class ccUtils : MonoBehaviour {
                     mat_dict.Add(device_name, this_mat);
                 }
                 //Debug.Log("Loaded " + s_array);
-                foreach(string st in mesh_dict.Keys)
-                {
-                    Debug.Log(st);
-                }
-                foreach(string st in mat_dict.Keys)
-                {
-                    Debug.Log(st);
-                }
+                //foreach(string st in mesh_dict.Keys)
+                //{
+                 //   Debug.Log(st);
+                //}
+                //foreach(string st in mat_dict.Keys)
+                //{
+                //    Debug.Log(st);
+                //}
             } else {
                 hw_list.Add(s);
             }
@@ -64,10 +64,10 @@ public class ccUtils : MonoBehaviour {
 				do
 				{
 					line = reader.ReadLine();
-                    Debug.Log(line);
+                    //Debug.Log(line);
 					if(line != null)
 						hw_list.Add(line.Trim());
-					Debug.Log("added " + line.Trim());
+					//Debug.Log("added " + line.Trim());
 				}
 				while (line != null);
 				// Use this for initialization

@@ -46,11 +46,6 @@ public class CatalogBehavior : MonoBehaviour {
         ccUtils.LoadHWInfoFromFile(Path.Combine(hw_types_path, "servers.txt"), server_hw_list, object_mesh_dict, object_mat_dict);
         //Debug.Log("Calling LoadHWInfoFromFile for workstations");
         ccUtils.LoadHWInfoFromFile(Path.Combine(hw_types_path, "workstations.txt"), ws_hw_list, object_mesh_dict, object_mat_dict);
-        foreach(string s in ws_hw_list)
-        {
-            Debug.Log(s);
-        }
-
         UnloadObjBundle();
 
 	}
