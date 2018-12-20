@@ -29,7 +29,7 @@ public class CatalogBehavior : MonoBehaviour {
 
 
 
-    public static void LoadHardwareTypes()
+    public static void LoadHardwareTypes() //Note: catalog.sdf is dynamically created by the headless process and contains only HW that will be used in the scenario, so we need to load meshes and materials for *all* objects in the catalog.
 	{
 		server_list = new List<string>();
 		ws_list = new List<string>();
@@ -46,6 +46,7 @@ public class CatalogBehavior : MonoBehaviour {
         ccUtils.LoadHWInfoFromFile(Path.Combine(hw_types_path, "servers.txt"), server_hw_list, object_mesh_dict, object_mat_dict);
         //Debug.Log("Calling LoadHWInfoFromFile for workstations");
         ccUtils.LoadHWInfoFromFile(Path.Combine(hw_types_path, "workstations.txt"), ws_hw_list, object_mesh_dict, object_mat_dict);
+
         Debug.Log("Calling LoadHWInfoFromFile for devices");
         ccUtils.LoadHWInfoFromFile(Path.Combine(hw_types_path, "devices.txt"), device_hw_list, object_mesh_dict, object_mat_dict);
         

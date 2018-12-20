@@ -50,6 +50,7 @@ public class GameLoadBehavior : MonoBehaviour {
 		main_floor = Instantiate(floor, new Vector3(left*1.0f, 0, top*1.0f), Quaternion.identity);
 		FloorScript floor_script = (FloorScript)main_floor.GetComponent(typeof(FloorScript));
 		floor_script.DoPosition(top, left, bottom, right);
+        Debug.Log("main_floor instantiated, name is " + main_floor.name);
 	}
 
 	static void LoadItems()

@@ -36,15 +36,16 @@ public class ccUtils : MonoBehaviour {
                     this_mat = CatalogBehavior.objBundle.LoadAsset<Material>(asset_name);
                     mat_dict.Add(device_name, this_mat);
                 }
-                /*Debug.Log("Loaded " + s_array);
-                foreach(string st in mesh_dict.Keys)
-                {
-                    Debug.Log(st);
-                }
-                foreach(string st in mat_dict.Keys)
-                {
-                    Debug.Log(st);
-                }*/
+                 //Debug.Log("Loaded " + s_array);
+                //foreach(string st in mesh_dict.Keys)
+                //{
+                 //   Debug.Log(st);
+                //}
+                //foreach(string st in mat_dict.Keys)
+                //{
+                //    Debug.Log(st);
+                //}
+
             } else {
                 hw_list.Add(s);
             }
