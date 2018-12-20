@@ -41,16 +41,14 @@ public class CatalogBehavior : MonoBehaviour {
        
     //ccUtils.LoadListFromFile(Path.Combine(hw_types_path, "servers.txt"), server_hw_list);
     //ccUtils.LoadListFromFile(Path.Combine(hw_types_path, "workstations.txt"), ws_hw_list);
-        ccUtils.LoadListFromFile(Path.Combine(hw_types_path, "devices.txt"), device_hw_list);
+        //ccUtils.LoadListFromFile(Path.Combine(hw_types_path, "devices.txt"), device_hw_list);
         //Debug.Log("Calling LoadHWInfoFromFile for servers");
         ccUtils.LoadHWInfoFromFile(Path.Combine(hw_types_path, "servers.txt"), server_hw_list, object_mesh_dict, object_mat_dict);
         //Debug.Log("Calling LoadHWInfoFromFile for workstations");
         ccUtils.LoadHWInfoFromFile(Path.Combine(hw_types_path, "workstations.txt"), ws_hw_list, object_mesh_dict, object_mat_dict);
-        foreach(string s in ws_hw_list)
-        {
-            Debug.Log(s);
-        }
-
+        Debug.Log("Calling LoadHWInfoFromFile for devices");
+        ccUtils.LoadHWInfoFromFile(Path.Combine(hw_types_path, "devices.txt"), device_hw_list, object_mesh_dict, object_mat_dict);
+        
         UnloadObjBundle();
 
 	}

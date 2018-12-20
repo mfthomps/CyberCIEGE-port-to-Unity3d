@@ -1,10 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
+using System.IO;
+using System.Text;
 using UnityEngine;
 
 public class DeviceBehavior : ComponentBehavior {
 	static string DEVICES = "devices";
 	static string user_app_path;
+    private static string hw_name;
+
 	public static void LoadOneDevice(string device_file)
 	{
 		GameObject device;
@@ -18,6 +23,23 @@ public class DeviceBehavior : ComponentBehavior {
 		script.SetFilePath(cfile);
 		new_d.SetActive(true);
 		script.LoadComponent();
+        script.LoadDevice();
+        script.hw = hw_name;
+        SkinnedMeshRenderer this_render = new_d.GetComponent<SkinnedMeshRenderer>();
+        try
+        {
+            this_render.sharedMesh = CatalogBehavior.object_mesh_dict[script.hw];
+        } catch (KeyNotFoundException)
+        {
+            Debug.Log("Key exception in object_mesh_dict caused by " + script.hw);
+        }
+        try
+        {
+            this_render.material = CatalogBehavior.object_mat_dict[script.hw];
+        } catch (KeyNotFoundException)
+        {
+            Debug.Log("Key exception in object_mat_dict caused by " + script.hw);
+        }
 		int pos = script.position;
 		//Debug.Log("LoadComputers " + script.computer_name + " pos is " + pos);
 		if (pos < 0)
@@ -44,8 +66,46 @@ public class DeviceBehavior : ComponentBehavior {
 			LoadOneDevice(device_file);
 			i++;
 		}
-	}
+    }
 	// Use this for initialization
+
+    public void LoadDevice()
+    {
+        try
+		{
+			StreamReader reader = new StreamReader(filePath, Encoding.Default);
+			using (reader)
+			{
+				string tag;
+                //Debug.("LoadDevice read from " + filePath);
+                ccUtils.PositionAfter(reader, "Component");
+				string value = null;
+				do
+				{
+					value = ccUtils.SDTNext(reader, out tag).Trim();
+                    if (value == null)
+                    {
+                        continue;
+                    } else {
+                        //Debug.Log("LoadComputer got " + value + " for tag " + tag);
+
+                        switch (tag)
+                        {
+                            case "HW":  //Right now I think we're only using one of the params here, could change though
+                                hw_name = value;
+                                break;
+                        }
+                    }           
+                }
+				while (value != null);
+			}
+		}
+		catch (Exception e)
+		{
+			Console.WriteLine(e.Message + "\n");
+		}
+	}
+
 	void Start () {
 		
 	}

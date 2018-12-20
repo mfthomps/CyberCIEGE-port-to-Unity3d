@@ -29,13 +29,13 @@ public class ComputerBehavior : ComponentBehavior {
 		//Debug.Log("user_app_path" + user_app_path + " file [" + computer_file+"]");
 		string cdir = System.IO.Path.Combine(GameLoadBehavior.user_app_path, COMPUTERS);
 		string cfile = System.IO.Path.Combine(cdir, computer_file);
-		//Debug.Log("computer " + cdir);
+		Debug.Log("computer " + cdir);
 		GameObject new_c = Instantiate(computer, new Vector3(1.0F, 0, 0), Quaternion.identity);
 		ComputerBehavior script = (ComputerBehavior)new_c.GetComponent(typeof(ComputerBehavior));
 		script.SetFilePath(cfile);
 		new_c.SetActive(true);
 		script.LoadComponent();
-		script.LoadComputer();
+		script.LoadComputerInfoFromFile();
         script.hw = hw_name; 
         //This is the part that will hopefully load the correct assets from dict
         SkinnedMeshRenderer this_render = new_c.GetComponent<SkinnedMeshRenderer>();
@@ -79,7 +79,7 @@ public class ComputerBehavior : ComponentBehavior {
 			i++;
 		}
 	}
-	public void LoadComputer()
+	public void LoadComputerInfoFromFile()
 	{
 		this.config_settings = new ConfigurationSettings(true, this.component_name);
 

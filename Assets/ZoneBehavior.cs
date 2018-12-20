@@ -10,6 +10,7 @@ public class ZoneBehavior : MonoBehaviour {
 	private static Rect WindowRect = new Rect(10, 10, 250, 300);
 	public static Texture2D background, LOGO;
 
+    public static string root_zone_name = null; //May use to scale computer procedurally if I can't do it manually.
 
 	string file_path;
 	public string zone_name;
@@ -112,6 +113,10 @@ public class ZoneBehavior : MonoBehaviour {
 									//Debug.Log("LoadComponent adding to dict: " + this.user_name);
 									zone_dict.Add(this.zone_name, this);
 									this.config_settings.SetName(value);
+                                    string lowerName = value.ToLower();
+                                    if (lowerName.Contains("entire") && root_zone_name == null){
+                                        root_zone_name = this.zone_name;
+                                    }
 									break;
 								case "ULC":
 									string[] parts = value.Split(new char[0], StringSplitOptions.RemoveEmptyEntries);

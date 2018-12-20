@@ -1463,8 +1463,8 @@ GameObject:
   - component: {fileID: 302032469}
   - component: {fileID: 302032468}
   - component: {fileID: 302032467}
-  - component: {fileID: 302032466}
   - component: {fileID: 302032465}
+  - component: {fileID: 302032466}
   m_Layer: 0
   m_Name: Device
   m_TagString: Untagged
@@ -1490,8 +1490,8 @@ MonoBehaviour:
   position: -1
   network_list: []
   guiSkin: {fileID: 0}
---- !u!23 &302032466
-MeshRenderer:
+--- !u!137 &302032466
+SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
@@ -1513,7 +1513,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
-  m_PreserveUVs: 1
+  m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
   m_StitchLightmapSeams: 0
@@ -1525,6 +1525,18 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  serializedVersion: 2
+  m_Quality: 0
+  m_UpdateWhenOffscreen: 0
+  m_SkinnedMotionVectors: 1
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Bones: []
+  m_BlendShapeWeights: []
+  m_RootBone: {fileID: 0}
+  m_AABB:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0.5, y: 0.5, z: 0.5}
+  m_DirtyAABB: 0
 --- !u!65 &302032467
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1552,7 +1564,7 @@ Transform:
   m_GameObject: {fileID: 302032464}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 251.40431, y: 179.6727, z: 92.83957}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 13
@@ -3516,7 +3528,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 3, y: -0.0000076293945}
+  m_AnchoredPosition: {x: 3, y: 0}
   m_SizeDelta: {x: 0, y: -0.21268}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &564162125
@@ -5946,7 +5958,7 @@ Transform:
   m_GameObject: {fileID: 878536645}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
@@ -7773,7 +7785,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 3, y: -0.0000051525926}
+  m_AnchoredPosition: {x: 3, y: -0.0000076293945}
   m_SizeDelta: {x: 0, y: -0.21268}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1136496336
@@ -8457,7 +8469,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 3, y: -0.0000051525926}
+  m_AnchoredPosition: {x: 3, y: -0.0000076293945}
   m_SizeDelta: {x: 0, y: -0.21268}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1233980905
