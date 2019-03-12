@@ -179,6 +179,14 @@ public class ScrollingTextScript : MonoBehaviour
 			m_textMesh.text = "";
 		}
 	}
+	public void AddTickerXXX(string xml)
+	{
+		//Debug.Log("UserBehavior UpdateStatus xml is " + message);
+		StringReader xmlreader = new StringReader(xml);
+		XmlDocument xml_doc = new XmlDocument();
+		xml_doc.Load(xmlreader);
+		XmlNode ticker_node = xml_doc.SelectSingleNode("//ticker");	
+	}
 	public void AddTicker(string xml)
 	{
 		//Debug.Log("UserBehavior UpdateStatus xml is " + message);
@@ -190,6 +198,16 @@ public class ScrollingTextScript : MonoBehaviour
 		string handle = ticker_node["handle"].InnerText;
 		//Debug.Log("AddTicker got text " + text);
 		int handle_int = -1;
+		if (!int.TryParse(handle, out handle_int))
+		{
+			Debug.Log("Error: AddTicker parsing handle from " + handle);
+		}
+		AddMessage(text, handle_int);
+	
+		//string text = ticker_node["text"].InnerText;
+		//string handle = ticker_node["handle"].InnerText;
+		//Debug.Log("AddTicker got text " + text);
+		//int handle_int = -1;
 		if (!int.TryParse(handle, out handle_int))
 		{
 			Debug.Log("Error: AddTicker parsing handle from " + handle);
