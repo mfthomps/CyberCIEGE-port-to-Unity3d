@@ -19,7 +19,7 @@ public class UIManagerScript : MonoBehaviour {
 		if (ppButtonText == null)
 		{
 			Debug.Log("button text is null");
-			UnityEditor.EditorApplication.isPlaying = false;
+			//UnityEditor.EditorApplication.isPlaying = false;
 			Application.Quit();
 		}
 

@@ -55,7 +55,7 @@ public class UserBehavior : MonoBehaviour {
 			return true;
 		return false;
 	}
-	public static void LoadOneUser(string user_file)
+	/*public static void LoadOneUser(string user_file)
 	{
 		GameObject user = GameObject.Find("User");
 		//Debug.Log("user_app_path" + user_app_path + " file [" + User_file+"]");
@@ -96,7 +96,77 @@ public class UserBehavior : MonoBehaviour {
 		{
 			Debug.Log("no postion for " + script.user_name);
 		}
-	}
+	}*/
+
+    public static void LoadOneUser(string user_file)
+    {
+        string cfile = System.IO.Path.Combine(GameLoadBehavior.user_app_path, user_file);
+        Dictionary<String, String> this_user_info = new Dictionary<string, string>();
+        GameObject user;
+
+        this_user_info = LoadUser(cfile, this_user_info);
+        string this_user_gender = this_user_info["Gender"];
+        string this_user_dept = this_user_info["Dept"];
+
+        if (this_user_dept == "Tech")
+        {
+            user = GameObject.Find("itstaff-obj");
+        } else if (this_user_gender == "female")
+        {
+            user = GameObject.Find("femworker-obj");
+        } else
+        {
+            user = GameObject.Find("maleworker-obj");
+        }
+        
+        GameObject new_c = Instantiate(user, new Vector3(1.0F, 0, 0), Quaternion.identity);
+        UserBehavior script = new_c.GetComponent<UserBehavior>();
+        script.SetFilePath(cfile);
+        new_c.SetActive(true);
+        //Now we can load the stuff that used to be done in LoadUser
+        script.user_name = this_user_info["Name"];
+        user_dict.Add(this_user_info["Name"], script);
+        script.department = this_user_info["Dept"];
+        if (!int.TryParse(this_user_info["PosIndex"], out script.position))
+        {
+            Debug.Log("Error: LoadUser parsing position" + this_user_info["PosIndex"]);
+        }
+        if (!int.TryParse(this_user_info["InitialTraining"], out script.training))
+        {
+            Debug.Log("Error: LoadUser parsing training" + this_user_info["InitialTraining"]);
+        }
+        int pos = script.position;
+        //Debug.Log("LoadUsers " + script.user_name + " pos is " + pos);
+        if (pos < 0)
+        {
+            Debug.Log("LoadOneUser got invalid pos for " + script.user_name);
+            return;
+        }
+        if (pos >= 0)
+        {
+            WorkSpaceScript.WorkSpace ws = WorkSpaceScript.GetWorkSpace(pos);
+            if (ws == null)
+            {
+                Debug.Log("UserBehavior got null workspace for pos" + pos);
+                return;
+            }
+            if (!ws.AddUser(script.user_name))
+            {
+                Debug.Log("UserBehavior AddUser, could not user, already populated " + script.user_name);
+                return;
+            }
+            float xf, zf;
+            ccUtils.GridTo3dPos(ws.x, ws.y, out xf, out zf);
+            //Debug.Log(ws.x + " " + ws.y + " " + xf + " " + zf);
+            Vector3 v = new Vector3(xf - 1.0f, 0.5f, zf);
+            new_c.transform.position = v;
+        }
+        else
+        {
+            Debug.Log("no postion for " + script.user_name);
+        }
+    }
+
 	public static void LoadUsers()
 	{
 		string user_dir = System.IO.Path.Combine(GameLoadBehavior.user_app_path, USERS);
@@ -155,11 +225,12 @@ public class UserBehavior : MonoBehaviour {
 			Debug.Log("Error: UserBehavior could not parse training " + tmp);
 		}
 	}
-	public void LoadUser()
+	//public void LoadUser()
+    public static Dictionary<String, String> LoadUser(string thisFilePath, Dictionary<String, String> this_user_info)
 	{
 		try
 		{
-			StreamReader reader = new StreamReader(filePath, Encoding.Default);
+			StreamReader reader = new StreamReader(thisFilePath, Encoding.Default);
 			using (reader)
 			{
 				string tag;
@@ -171,8 +242,10 @@ public class UserBehavior : MonoBehaviour {
 					value = ccUtils.SDTNext(reader, out tag);
 					if (value == null)
 						continue;
+                    this_user_info[tag] = value;
 					//Debug.Log("LoadUser got " + value + " for tag " + tag);
-					switch (tag)
+
+					/*switch (tag)
 					{
 						case "Name":
 							this.user_name = value;
@@ -194,7 +267,7 @@ public class UserBehavior : MonoBehaviour {
 								Debug.Log("Error: LoadUser parsing training" + value);
 							}
 							break;
-					}
+					}*/
 				}
 				while (value != null);
 
@@ -206,6 +279,7 @@ public class UserBehavior : MonoBehaviour {
 		{
 			Console.WriteLine(e.Message + "\n");
 		}
+        return this_user_info;
 	}
 	public void SetFilePath(string path)
 	{

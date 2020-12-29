@@ -16,6 +16,7 @@ public class WorkSpaceScript : MonoBehaviour {
 		public string[] device_slots;
 		public string[] computer_slots;
 		public string user=null;
+
 		public WorkSpace(int x, int y, char direction, char usage)
 		{
 			this.x = x;
@@ -130,7 +131,7 @@ public class WorkSpaceScript : MonoBehaviour {
 		string fname = OrganizationScript.GetValue("WorkSpaceFile");
 		string line;
 		string full_path = Path.Combine(GameLoadBehavior.user_app_path, fname);
-		//Debug.Log("LoadWorkSpace fname is " + full_path);
+		Debug.Log("LoadWorkSpace fname is " + full_path);
 		try
 		{
 			StreamReader reader = new StreamReader(full_path, Encoding.Default);
@@ -141,7 +142,7 @@ public class WorkSpaceScript : MonoBehaviour {
 					line = reader.ReadLine().Trim();
 					if (line == "WORKSPACELIST" || line == "end")
 						continue;
-					//Debug.Log("LoadWorkSpace got " + line);
+					Debug.Log("LoadWorkSpace got " + line);
 					string[] parts = line.Split(new char[0], StringSplitOptions.RemoveEmptyEntries);
 					int x = 0;
 					int y = 0;
@@ -162,13 +163,13 @@ public class WorkSpaceScript : MonoBehaviour {
 				// Use this for initialization
 
 			}
-			//Debug.Log("LoadWorkSpace got " + ws_list.Count);
+		    Debug.Log("LoadWorkSpace got " + ws_list.Count);
 		}
 		catch (Exception e)
 		{
 			Console.WriteLine(e.Message + "\n");
 		}
-		//Debug.Log("LoadWorkSpace got " + ws_list.Count);
+		Debug.Log("LoadWorkSpace got " + ws_list.Count);
 
 	}
 	public static bool FindClosestWorkspaceCenter(float xin, float yin, out int xout, out int yout, out int index)

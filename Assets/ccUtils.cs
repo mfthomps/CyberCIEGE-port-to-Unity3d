@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using System.IO;
 using System.Text;
@@ -8,9 +9,53 @@ using System;
 public class ccUtils : MonoBehaviour {
 	//static float GRID_SIZE = 3.0f;
 	static float GRID_SIZE = 1.0f;
+
+    public static void LoadHWInfoFromFile(string fname, List<string> hw_list, Dictionary<string, Mesh> mesh_dict, Dictionary<string, Material> mat_dict){
+        
+        string device_name;
+        string asset_name;
+        Mesh this_mesh;
+        Material this_mat;
+        List<string> this_list = new List<string>();
+        LoadListFromFile(fname, this_list);
+
+        foreach(string s in this_list){
+            //Debug.Log("Now processing " + s);
+            if (s.Contains(",")) {
+                string[] s_array = s.Split(',');
+                device_name = s_array[0];
+                asset_name = s_array[1];
+                hw_list.Add(device_name);
+                if (!mesh_dict.ContainsKey(device_name))
+                {
+                    this_mesh = CatalogBehavior.objBundle.LoadAsset<Mesh>(asset_name);
+                    mesh_dict.Add(device_name, this_mesh);
+                }
+                if (!mat_dict.ContainsKey(device_name))
+                {
+                    this_mat = CatalogBehavior.objBundle.LoadAsset<Material>(asset_name);
+                    mat_dict.Add(device_name, this_mat);
+                }
+                 //Debug.Log("Loaded " + s_array);
+                //foreach(string st in mesh_dict.Keys)
+                //{
+                 //   Debug.Log(st);
+                //}
+                //foreach(string st in mat_dict.Keys)
+                //{
+                //    Debug.Log(st);
+                //}
+
+            } else {
+                hw_list.Add(s);
+            }
+
+        }
+    }
+
 	public static void LoadListFromFile(string fname, List<string> hw_list)
 	{
-		//Debug.Log("LoadListFromFile " + fname);
+		Debug.Log("LoadListFromFile " + fname);
 		string line;
 		try
 		{
@@ -20,6 +65,7 @@ public class ccUtils : MonoBehaviour {
 				do
 				{
 					line = reader.ReadLine();
+                    //Debug.Log(line);
 					if(line != null)
 						hw_list.Add(line.Trim());
 					//Debug.Log("added " + line.Trim());

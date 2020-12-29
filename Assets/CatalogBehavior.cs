@@ -17,22 +17,56 @@ public class CatalogBehavior : MonoBehaviour {
 	private static Rect WindowRect = new Rect(10, 10, 250, 300);
 	public static Texture2D background, LOGO;
 	static Dictionary<string, int> catalog_ids = new Dictionary<string, int>();
+    public static Dictionary<string, Mesh> object_mesh_dict = new Dictionary<string, Mesh>();
+    public static Dictionary<string, Material> object_mat_dict = new Dictionary<string, Material>();
 	private static GameObject buying_object = null;
 	private static string buying_item = null;
 	private static bool do_buy = false;
-	public static void LoadHardwareTypes()
+    public static AssetBundle objBundle;
+    public static bool objBundleLoaded = false;
+    private static string bundle_path;
+    private static string hw_types_path;
+
+
+
+    public static void LoadHardwareTypes() //Note: catalog.sdf is dynamically created by the headless process and contains only HW that will be used in the scenario, so we need to load meshes and materials for *all* objects in the catalog.
 	{
 		server_list = new List<string>();
 		ws_list = new List<string>();
 		device_list = new List<string>();
+        if (!objBundleLoaded)
+        {
+            LoadObjBundle();
+        }
+       
+    //ccUtils.LoadListFromFile(Path.Combine(hw_types_path, "servers.txt"), server_hw_list);
+    //ccUtils.LoadListFromFile(Path.Combine(hw_types_path, "workstations.txt"), ws_hw_list);
+        //ccUtils.LoadListFromFile(Path.Combine(hw_types_path, "devices.txt"), device_hw_list);
+        //Debug.Log("Calling LoadHWInfoFromFile for servers");
+        ccUtils.LoadHWInfoFromFile(Path.Combine(hw_types_path, "servers.txt"), server_hw_list, object_mesh_dict, object_mat_dict);
+        //Debug.Log("Calling LoadHWInfoFromFile for workstations");
+        ccUtils.LoadHWInfoFromFile(Path.Combine(hw_types_path, "workstations.txt"), ws_hw_list, object_mesh_dict, object_mat_dict);
 
-		string hw_types_dir = Path.Combine(GameLoadBehavior.user_app_path, "HardwareTypes");
-		ccUtils.LoadListFromFile(Path.Combine(hw_types_dir, "servers.txt"), server_hw_list);
-		ccUtils.LoadListFromFile(Path.Combine(hw_types_dir, "workstations.txt"), ws_hw_list);
-		ccUtils.LoadListFromFile(Path.Combine(hw_types_dir, "devices.txt"), device_hw_list);
+        Debug.Log("Calling LoadHWInfoFromFile for devices");
+        ccUtils.LoadHWInfoFromFile(Path.Combine(hw_types_path, "devices.txt"), device_hw_list, object_mesh_dict, object_mat_dict);
+        
+        UnloadObjBundle();
 
 	}
-	private static bool StringIn(List<string> list, string s)
+
+    public static void LoadObjBundle()
+    {
+        objBundle = AssetBundle.LoadFromFile(Path.Combine(bundle_path, "objects"));
+        objBundleLoaded = true;
+    }
+
+    public static void UnloadObjBundle()
+    {
+        objBundle.Unload(false); //Don't want to unload any objects from the bundle we've already loaded.
+        objBundleLoaded = false;
+    }
+
+    private static bool StringIn(List<string> list, string s)
 	{
 		//Debug.Log("StringIn, len is "+list.Count);
 		foreach (string lvalue in list)
@@ -72,12 +106,12 @@ public class CatalogBehavior : MonoBehaviour {
 		}
 		else if (ws_hw_list.Any(opt => opt.Equals(hw, StringComparison.InvariantCultureIgnoreCase)))
 		{
-			Debug.Log("is ws");
+			//Debug.Log("is ws");
 			return ws_list;
 		}
 		else if (device_hw_list.Any(opt => opt.Equals(hw, StringComparison.InvariantCultureIgnoreCase)))
 		{
-			Debug.Log("is dev");
+			//Debug.Log("is dev");
 			return device_list;
 		}
 		Debug.Log("ERROR: no hw list for " + hw);
@@ -268,8 +302,10 @@ public class CatalogBehavior : MonoBehaviour {
 		}
 	}
 		// Use this for initialization
-		void Start () {
+	void Start () {
+        bundle_path = Path.Combine(Application.dataPath, "AssetBundles");
+        hw_types_path = Path.Combine(Application.dataPath, "HardwareTypes");
 
-	}
+    }
 
 }
