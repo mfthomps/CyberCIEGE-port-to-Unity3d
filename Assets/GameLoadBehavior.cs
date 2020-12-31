@@ -96,6 +96,7 @@ public class GameLoadBehavior : MonoBehaviour {
 
 		//mainCamera.transform.position = pos;
 		mainCamera.transform.rotation = home_rot;
+		Camera.main.depth = 1;
 		MaxCamera cameraScript = (MaxCamera)Camera.main.GetComponent(typeof(MaxCamera));
 		cameraScript.setPosition(home_pos);
 

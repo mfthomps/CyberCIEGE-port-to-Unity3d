@@ -91,7 +91,7 @@ public class ccUtils : MonoBehaviour {
 		}
 		if (!line.EndsWith(":end"))
 		{
-			Debug.Log("SDTField, did not find end");
+			Debug.Log("SDTField, did not find end in "+line);
 			return null;
 		}
 		int len = line.Length - token.Length - 6;
@@ -103,6 +103,7 @@ public class ccUtils : MonoBehaviour {
 
 		string line = "";
 		string retval = null;
+		string full_line = "";
 		while (retval == null && line != null)
 		{
 			line = reader.ReadLine();
@@ -112,8 +113,15 @@ public class ccUtils : MonoBehaviour {
 			//Debug.Log("SDTField line is " + line);
 			if (line.StartsWith(token + ":"))
 			{
-				retval = SDTField(line, token);
+				full_line = line;
+			}else if (full_line.Length > 0)
+            {
+				full_line = full_line + line;
+            }
+			if(full_line.Trim().EndsWith(":end")){
+				retval = SDTField(full_line, token);
 			}
+
 		}
 		return retval;
 	}
@@ -284,14 +292,28 @@ public class ccUtils : MonoBehaviour {
 								//Debug.Log("dec level to " + level + " for line " + line);
 								/* eat the end */
 								line = "";
+							}else if(colon_count == 0)
+                            {
+								retval = retval + " " + line;
+                            }
+                            else 
+                            {
+								if (!line.Trim().EndsWith(":end"))
+                                {
+									level++;
+
+								}
+								retval = retval + "\n" + line;
 							}
-							retval = retval + "\n" + line;
 						}
 					}
 					//Debug.Log("end loop level is " + level + " line " + line);
 				}
 
+
 			}
+
+
 
 		} while (retval == null && line != null && line != ":end");
 		return retval.Trim();

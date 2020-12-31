@@ -105,6 +105,7 @@ public class UserBehavior : MonoBehaviour {
         GameObject user;
 
         this_user_info = LoadUser(cfile, this_user_info);
+		Debug.Log("LoadOneUser " + user_file);
         string this_user_gender = this_user_info["Gender"];
         string this_user_dept = this_user_info["Dept"];
 
@@ -118,9 +119,14 @@ public class UserBehavior : MonoBehaviour {
         {
             user = GameObject.Find("maleworker-obj");
         }
-        
         GameObject new_c = Instantiate(user, new Vector3(1.0F, 0, 0), Quaternion.identity);
-        UserBehavior script = new_c.GetComponent<UserBehavior>();
+       // UserBehavior script = new_c.GetComponent<UserBehavior>();
+		UserBehavior script = (UserBehavior)new_c.GetComponent(typeof(UserBehavior));
+		if(script == null)
+        {
+			Debug.Log("Error: LoadUser failed to get script for " + user_file);
+			return;
+        }
         script.SetFilePath(cfile);
         new_c.SetActive(true);
         //Now we can load the stuff that used to be done in LoadUser

@@ -173,6 +173,11 @@ public class ObjectivesBehavior : MonoBehaviour {
 				if (value == null || value == "end")
 					continue;
 				Objective obj = new Objective(value);
+				if(obj == null)
+                {
+					Debug.Log("Error: LoadObjectives null object for value " + value);
+					continue;
+                }
 				objective_dict[obj.objective_name] = obj;
 				//Debug.Log("block for " + tag + " is " + value);
 			} while (value != null && value != "end");

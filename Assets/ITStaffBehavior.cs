@@ -59,9 +59,14 @@ public class ITStaffBehavior : MonoBehaviour {
 	public static void LoadOneStaff(string user_file)
 	{
 		GameObject user = GameObject.Find("ITStaff");
+		if(user == null)
+        {
+			Debug.Log("Error: LoadOneStaff got null when finding ITStaff game object.");
+			return;
+        }
 		//Debug.Log("user_app_path" + user_app_path + " file [" + User_file+"]");
 		string cfile = System.IO.Path.Combine(GameLoadBehavior.user_app_path, user_file);
-		//Debug.Log("user " + cdir);
+		Debug.Log("user " + cfile);
 		GameObject new_c = Instantiate(user, new Vector3(1.0F, 0, 0), Quaternion.identity);
 		ITStaffBehavior script = (ITStaffBehavior)new_c.GetComponent(typeof(ITStaffBehavior));
 		script.SetFilePath(cfile);
