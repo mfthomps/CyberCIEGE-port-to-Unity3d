@@ -6,4 +6,5 @@ The existing CyberCIEGE game is found here: <http://my.nps.edu/web/c3o/cybercieg
 Install it and put this executable (SimSecNoUI.exe) into your CyberCIEGE/game/exe directory: <https://nps.box.com/s/xn88owrsvj0fhskmf10coqz83vccn6dd>
 
 In Unity, open and play the player2 scene.  Use the browse button to select the CyberCIEGE directory,
-i.e., where you installed CyberCIEGE.  Then "play".
+i.e., where you installed CyberCIEGE.  A good example scenario for UI development is the "Starting Scenarios"
+campaign's "Introduction" scenario.  Select that and play.
