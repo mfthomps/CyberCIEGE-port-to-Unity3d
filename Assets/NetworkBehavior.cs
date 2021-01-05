@@ -27,7 +27,6 @@ public class NetworkBehavior : MonoBehaviour {
   public static void LoadNetworks(string user_app_path) {
     string filePath = Path.Combine(user_app_path, "networks.sdf");
     GameObject network = GameObject.Find("Network");
-    string line = "";
     try {
       StreamReader reader = new StreamReader(filePath, Encoding.ASCII);
 

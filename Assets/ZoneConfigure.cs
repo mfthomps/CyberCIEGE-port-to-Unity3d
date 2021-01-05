@@ -21,8 +21,6 @@ public class ZoneConfigure : MonoBehaviour {
   public GameObject passwordPrefab;
 
   public Button close_button;
-  private ZoneBehavior current_zone = null;
-  private int myNumber = 0;
   private GameObject newText;
   private GameObject newTog;
   private float nextMessage;

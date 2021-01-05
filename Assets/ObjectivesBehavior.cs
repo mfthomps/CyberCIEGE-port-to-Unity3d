@@ -82,8 +82,6 @@ public class ObjectivesBehavior : MonoBehaviour {
   public static void LoadObjectives() {
     string obj_file = Path.Combine(GameLoadBehavior.user_app_path, "objectives.sdf");
     //Debug.Log("LoadObjectives " + obj_file);
-    string line;
-    string in_line;
     string value = null;
     string tag;
     int phase_index = 0;

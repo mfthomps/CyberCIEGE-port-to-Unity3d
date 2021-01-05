@@ -25,7 +25,6 @@ public class ComputerConfigure : MonoBehaviour {
 
   public Button close_button;
   private ComputerBehavior current_computer;
-  private int myNumber = 0;
   private GameObject newText;
   private GameObject newTog;
   private float nextMessage;

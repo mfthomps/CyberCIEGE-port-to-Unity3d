@@ -21,7 +21,6 @@ public class ComponentBehavior : MonoBehaviour {
   public int position = -1;
   public List<string> network_list = new List<string>();
   public GUISkin guiSkin;
-  private bool checklist_up = false;
   protected string filePath;
 
   private void Start() {

@@ -6,7 +6,6 @@ public class UIManagerScript : MonoBehaviour {
 
   // Use this for initialization
   private void Start() {
-    GameObject ipc;
     GameObject ppButton = GameObject.Find("PausePlayButton");
     //Debug.Log("name is " + ppButton.name);
     Text[] mylist = ppButton.GetComponentsInChildren<Text>();

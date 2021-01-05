@@ -5,7 +5,6 @@ using UnityEngine;
 public class menus : MonoBehaviour {
   private static readonly GUIStyle labelStyle = new GUIStyle();
   public static string clockLabelString = "001000";
-  private static int guiX = 40;
   public static string clicked = "";
   private static MaxCamera cameraScript;
   private static GameObject mainCamera;
@@ -58,7 +57,6 @@ public class menus : MonoBehaviour {
   public RectTransform myPanel;
   public GameObject myTextPrefab;
   private Texture2D black;
-  private GameObject canvas = null;
   private GUIStyle helpStyle;
   private Color savedColor;
   private Rect WindowRect = new Rect(10, 10, 250, 300);

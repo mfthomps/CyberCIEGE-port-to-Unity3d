@@ -42,7 +42,7 @@ public class PlayerScript : MonoBehaviour {
 		try{
 			Directory.CreateDirectory (GameLoadBehavior.user_app_path);
 		}catch(Exception e){
-			Debug.Log ("could not create directory " + prefs_path);
+			Debug.LogError(e.ToString() + " Could not create directory " + prefs_path);
 		}
 		RestorePrefs();
 		updating_prefs = false;
@@ -217,7 +217,7 @@ public class PlayerScript : MonoBehaviour {
             {
                 Directory.CreateDirectory(user_dir);
             } catch(Exception e) {
-                Debug.Log("Could not create directory" + user_dir);
+                Debug.LogError(e.ToString() + " Could not create directory" + user_dir);
             }
         }
 		ddo.Add(new Dropdown.OptionData(NEW_GAME));
