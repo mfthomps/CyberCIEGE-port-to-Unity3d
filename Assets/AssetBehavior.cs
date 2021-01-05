@@ -1,26 +1,29 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 using System.IO;
-using System;
 using System.Text;
+using UnityEngine;
 
 public class AssetBehavior : MonoBehaviour {
   public static Dictionary<string, AssetBehavior> asset_dict = new Dictionary<string, AssetBehavior>();
-  static string ASSETS = "assets";
+  private static readonly string ASSETS = "assets";
   private static Rect WindowRect = new Rect(10, 10, 250, 300);
   public static Texture2D background, LOGO;
-
-  string filePath;
   public string asset_name;
   public int position = -1;
-  DACAccess dac_access = null;
-  public ComputerBehavior computer = null;
+  public ComputerBehavior computer;
+  private DACAccess dac_access;
+
+  private string filePath;
+
+  // Use this for initialization
+  private void Start() {
+  }
 
   public static void LoadOneAsset(string asset_file) {
     GameObject asset = GameObject.Find("Asset");
     //Debug.Log("user_app_path" + user_app_path + " file [" + User_file+"]");
-    string cfile = System.IO.Path.Combine(GameLoadBehavior.user_app_path, asset_file);
+    string cfile = Path.Combine(GameLoadBehavior.user_app_path, asset_file);
 
     GameObject new_c = Instantiate(asset, new Vector3(1.0F, 0, 0), Quaternion.identity);
     AssetBehavior script = (AssetBehavior) new_c.GetComponent(typeof(AssetBehavior));
@@ -38,13 +41,11 @@ public class AssetBehavior : MonoBehaviour {
   }
 
   public static void LoadAssets() {
-    string asset_dir = System.IO.Path.Combine(GameLoadBehavior.user_app_path, ASSETS);
-    string[] clist = System.IO.Directory.GetFiles(asset_dir);
-    foreach (string asset_file in clist) {
-      if (asset_file.EndsWith(".sdf")) {
+    string asset_dir = Path.Combine(GameLoadBehavior.user_app_path, ASSETS);
+    string[] clist = Directory.GetFiles(asset_dir);
+    foreach (string asset_file in clist)
+      if (asset_file.EndsWith(".sdf"))
         LoadOneAsset(asset_file);
-      }
-    }
   }
 
   public void LoadAsset() {
@@ -62,13 +63,13 @@ public class AssetBehavior : MonoBehaviour {
           //Debug.Log("LoadAsset got " + value + " for tag " + tag);
           switch (tag) {
             case "Name":
-              this.asset_name = value;
+              asset_name = value;
               //Debug.Log("LoadAsset adding to dict: " + this.asset_name);
-              asset_dict.Add(this.asset_name, this);
+              asset_dict.Add(asset_name, this);
               break;
             case "ActualAccessList":
               //Debug.Log("AssetBehavior, LoadAsset ActualAccessList is " + value);
-              this.dac_access = new DACAccess(value, this);
+              dac_access = new DACAccess(value, this);
               //Debug.Log("dac string is "+GetDACString());
               break;
           }
@@ -81,14 +82,10 @@ public class AssetBehavior : MonoBehaviour {
   }
 
   public string GetDACString() {
-    return this.dac_access.ToString();
+    return dac_access.ToString();
   }
 
   public DACAccess GetDACAccess() {
-    return this.dac_access;
-  }
-
-  // Use this for initialization
-  void Start() {
+    return dac_access;
   }
 }

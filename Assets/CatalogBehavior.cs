@@ -1,31 +1,43 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 using System.IO;
-using System;
-using System.Text;
 using System.Linq;
+using System.Text;
 using System.Xml.Linq;
+using UnityEngine;
 
 public class CatalogBehavior : MonoBehaviour {
-  static List<string> server_hw_list = new List<string>();
-  static List<string> ws_hw_list = new List<string>();
-  static List<string> device_hw_list = new List<string>();
-  static List<string> server_list = new List<string>();
-  static List<string> ws_list = new List<string>();
-  static List<string> device_list = new List<string>();
+  private static readonly List<string> server_hw_list = new List<string>();
+  private static readonly List<string> ws_hw_list = new List<string>();
+  private static readonly List<string> device_hw_list = new List<string>();
+  private static List<string> server_list = new List<string>();
+  private static List<string> ws_list = new List<string>();
+  private static List<string> device_list = new List<string>();
   private static Rect WindowRect = new Rect(10, 10, 250, 300);
   public static Texture2D background, LOGO;
-  static Dictionary<string, int> catalog_ids = new Dictionary<string, int>();
+  private static readonly Dictionary<string, int> catalog_ids = new Dictionary<string, int>();
   public static Dictionary<string, Mesh> object_mesh_dict = new Dictionary<string, Mesh>();
   public static Dictionary<string, Material> object_mat_dict = new Dictionary<string, Material>();
-  private static GameObject buying_object = null;
-  private static string buying_item = null;
-  private static bool do_buy = false;
+  private static GameObject buying_object;
+  private static string buying_item;
+  private static bool do_buy;
   public static AssetBundle objBundle;
-  public static bool objBundleLoaded = false;
+  public static bool objBundleLoaded;
   private static string bundle_path;
   private static string hw_types_path;
+
+  // Use this for initialization
+  private void Start() {
+    bundle_path = Path.Combine(Application.dataPath, "AssetBundles");
+    hw_types_path = Path.Combine(Application.dataPath, "HardwareTypes");
+  }
+
+  private void Update() {
+    if (do_buy) {
+      BuyItHere();
+      do_buy = false;
+    }
+  }
 
 
   public static void
@@ -34,9 +46,7 @@ public class CatalogBehavior : MonoBehaviour {
     server_list = new List<string>();
     ws_list = new List<string>();
     device_list = new List<string>();
-    if (!objBundleLoaded) {
-      LoadObjBundle();
-    }
+    if (!objBundleLoaded) LoadObjBundle();
 
     //ccUtils.LoadListFromFile(Path.Combine(hw_types_path, "servers.txt"), server_hw_list);
     //ccUtils.LoadListFromFile(Path.Combine(hw_types_path, "workstations.txt"), ws_hw_list);
@@ -67,12 +77,9 @@ public class CatalogBehavior : MonoBehaviour {
 
   private static bool StringIn(List<string> list, string s) {
     //Debug.Log("StringIn, len is "+list.Count);
-    foreach (string lvalue in list) {
-      //Debug.Log("StringIn test " + lvalue);
-      if (lvalue == s) {
+    foreach (string lvalue in list) //Debug.Log("StringIn test " + lvalue);
+      if (lvalue == s)
         return true;
-      }
-    }
 
     return false;
   }
@@ -80,32 +87,21 @@ public class CatalogBehavior : MonoBehaviour {
   public static List<string> GetHWList(string hw) {
     //Debug.Log("in GetHWList for "+hw);
     //Debug.Log("GetHWList server_hw_list len is " + server_hw_list.Count);
-    if (StringIn(server_hw_list, hw)) {
-      //Debug.Log("is server");
+    if (StringIn(server_hw_list, hw)) //Debug.Log("is server");
       return server_list;
-    }
-    else if (StringIn(ws_hw_list, hw)) {
-      //Debug.Log("is ws");
+    if (StringIn(ws_hw_list, hw)) //Debug.Log("is ws");
       return ws_list;
-    }
-    else if (StringIn(device_hw_list, hw)) {
-      //Debug.Log("is dev");
+    if (StringIn(device_hw_list, hw)) //Debug.Log("is dev");
       return device_list;
-    }
 
     //Debug.Log("SOL");
-    if (server_hw_list.Any(opt => opt.Equals(hw, StringComparison.InvariantCultureIgnoreCase))) {
-      //Debug.Log("is server");
+    if (server_hw_list.Any(opt => opt.Equals(hw, StringComparison.InvariantCultureIgnoreCase))
+    ) //Debug.Log("is server");
       return server_list;
-    }
-    else if (ws_hw_list.Any(opt => opt.Equals(hw, StringComparison.InvariantCultureIgnoreCase))) {
-      //Debug.Log("is ws");
+    if (ws_hw_list.Any(opt => opt.Equals(hw, StringComparison.InvariantCultureIgnoreCase))) //Debug.Log("is ws");
       return ws_list;
-    }
-    else if (device_hw_list.Any(opt => opt.Equals(hw, StringComparison.InvariantCultureIgnoreCase))) {
-      //Debug.Log("is dev");
+    if (device_hw_list.Any(opt => opt.Equals(hw, StringComparison.InvariantCultureIgnoreCase))) //Debug.Log("is dev");
       return device_list;
-    }
 
     Debug.Log("ERROR: no hw list for " + hw);
     return null;
@@ -154,9 +150,7 @@ public class CatalogBehavior : MonoBehaviour {
 
 
   public static void doMenu() {
-    if (LOGO != null && menus.clicked != "about") {
-      GUI.DrawTexture(new Rect((Screen.width / 6) - 100, 30, 200, 200), LOGO);
-    }
+    if (LOGO != null && menus.clicked != "about") GUI.DrawTexture(new Rect(Screen.width / 6 - 100, 30, 200, 200), LOGO);
 
     WindowRect = GUI.Window(1, WindowRect, menuBuy, "Buy");
   }
@@ -173,14 +167,10 @@ public class CatalogBehavior : MonoBehaviour {
         bool room = true;
         Debug.Log("buying object name " + buying_object.name);
         if (buying_object.name.StartsWith("Computer")) {
-          if (!ws.ComputerRoom()) {
-            room = false;
-          }
+          if (!ws.ComputerRoom()) room = false;
         }
         else {
-          if (!ws.DeviceRoom()) {
-            room = false;
-          }
+          if (!ws.DeviceRoom()) room = false;
         }
 
         Debug.Log("ws " + index + " usage " + ws.usage + " room? " + room);
@@ -219,7 +209,7 @@ public class CatalogBehavior : MonoBehaviour {
   }
 
   private static void MenuItems(int id) {
-    List<string> menu_list = new List<string>();
+    var menu_list = new List<string>();
     //Debug.Log("MenuItems for " + menus.clicked);
     switch (menus.clicked) {
       case "Catalog:Servers":
@@ -234,8 +224,7 @@ public class CatalogBehavior : MonoBehaviour {
     }
 
     //Debug.Log("len is " + menu_list.Count);
-    foreach (string item in menu_list) {
-      //Debug.Log("try " + item);
+    foreach (string item in menu_list) //Debug.Log("try " + item);
       if (GUILayout.Button(item)) {
         Debug.Log("bought " + item);
         buying_item = item;
@@ -244,35 +233,16 @@ public class CatalogBehavior : MonoBehaviour {
         menus.clicked = "Catalog:Buying";
         break;
       }
-    }
   }
 
   private static void menuBuy(int id) {
     //Debug.Log("in menuBuy");
-    if (GUILayout.Button("Servers")) {
+    if (GUILayout.Button("Servers"))
       menus.clicked = "Catalog:Servers";
-    }
-    else if (GUILayout.Button("Workstations")) {
+    else if (GUILayout.Button("Workstations"))
       menus.clicked = "Catalog:Workstations";
-    }
-    else if (GUILayout.Button("Devices")) {
+    else if (GUILayout.Button("Devices"))
       menus.clicked = "Catalog:Devices";
-    }
-    else if (GUILayout.Button("Close menu")) {
-      menus.clicked = "";
-    }
-  }
-
-  void Update() {
-    if (do_buy) {
-      BuyItHere();
-      do_buy = false;
-    }
-  }
-
-  // Use this for initialization
-  void Start() {
-    bundle_path = Path.Combine(Application.dataPath, "AssetBundles");
-    hw_types_path = Path.Combine(Application.dataPath, "HardwareTypes");
+    else if (GUILayout.Button("Close menu")) menus.clicked = "";
   }
 }

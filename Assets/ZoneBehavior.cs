@@ -1,32 +1,41 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
 using System.IO;
 using System.Text;
-using System;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class ZoneBehavior : MonoBehaviour {
   private static Rect WindowRect = new Rect(10, 10, 250, 300);
   public static Texture2D background, LOGO;
 
-  public static string root_zone_name = null; //May use to scale computer procedurally if I can't do it manually.
-
-  string file_path;
-  public string zone_name;
+  public static string root_zone_name; //May use to scale computer procedurally if I can't do it manually.
   public static Dictionary<string, ZoneBehavior> zone_dict = new Dictionary<string, ZoneBehavior>();
-  ConfigurationSettings config_settings = null;
-  PhysicalSettings phys_settings = null;
-  ZoneConfigure zone_config_script; /* menu of current configuration values shared between instances TBC static?*/
-  int ulc_x;
-  int ulc_y;
-  int lrc_x;
-  int lrc_y;
+  public string zone_name;
+  private ConfigurationSettings config_settings;
+
+  private string file_path;
+  private int lrc_x;
+  private int lrc_y;
+  private PhysicalSettings phys_settings;
+  private int ulc_x;
+  private int ulc_y;
+
+  private ZoneConfigure
+    zone_config_script; /* menu of current configuration values shared between instances TBC static?*/
+
+  // Use this for initialization
+  private void Start() {
+  }
+
+  // Update is called once per frame
+  private void Update() {
+  }
 
   public static void LoadOneZone(string zone_file, Color color) {
     GameObject zone = GameObject.Find("Zone");
     //Debug.Log("user_app_path" + user_app_path + " file [" + User_file+"]");
-    string cfile = System.IO.Path.Combine(GameLoadBehavior.user_app_path, zone_file);
+    string cfile = Path.Combine(GameLoadBehavior.user_app_path, zone_file);
     //Debug.Log("user " + cdir);
     GameObject new_c = Instantiate(zone, new Vector3(1.0F, 0, 0), Quaternion.identity);
     new_c.GetComponent<Renderer>().material.color = color;
@@ -42,13 +51,12 @@ public class ZoneBehavior : MonoBehaviour {
   }
 
   private static void ZoneMenu(int id) {
-    foreach (string key in zone_dict.Keys) {
+    foreach (string key in zone_dict.Keys)
       if (GUILayout.Button(key)) {
         ZoneBehavior script = zone_dict[key];
         menus.clicked = "";
         script.ConfigureCanvas();
       }
-    }
   }
 
   public void SetFilePath(string path) {
@@ -56,25 +64,24 @@ public class ZoneBehavior : MonoBehaviour {
   }
 
   public static void LoadZones() {
-    Color[] colors = new Color[6];
+    var colors = new Color[6];
     colors[0] = Color.cyan;
     colors[1] = Color.red;
     colors[2] = Color.green;
     colors[3] = Color.blue;
-    string zone_dir = System.IO.Path.Combine(GameLoadBehavior.user_app_path, "zones");
-    string[] clist = System.IO.Directory.GetFiles(zone_dir);
+    string zone_dir = Path.Combine(GameLoadBehavior.user_app_path, "zones");
+    string[] clist = Directory.GetFiles(zone_dir);
     int i = 0;
-    foreach (string zone_file in clist) {
+    foreach (string zone_file in clist)
       if (zone_file.EndsWith(".sdf")) {
         LoadOneZone(zone_file, colors[i]);
         i++;
       }
-    }
   }
 
   public void LoadZone() {
-    this.config_settings = new ConfigurationSettings(false, "");
-    this.phys_settings = new PhysicalSettings();
+    config_settings = new ConfigurationSettings(false, "");
+    phys_settings = new PhysicalSettings();
     try {
       StreamReader reader = new StreamReader(file_path, Encoding.Default);
       using (reader) {
@@ -91,29 +98,27 @@ public class ZoneBehavior : MonoBehaviour {
             continue;
           }
 
-          if (!this.config_settings.HandleConfigurationSetting(tag, value)) {
-            if (!this.phys_settings.HandleConfigurationSetting(tag, value)) {
-              //Debug.Log("LoadUser got " + value + " for tag " + tag);
+          if (!config_settings.HandleConfigurationSetting(tag, value))
+            if (!phys_settings.HandleConfigurationSetting(tag, value)
+            ) //Debug.Log("LoadUser got " + value + " for tag " + tag);
               switch (tag) {
                 case "Name":
-                  this.zone_name = value;
+                  zone_name = value;
                   //Debug.Log("LoadComponent adding to dict: " + this.user_name);
-                  zone_dict.Add(this.zone_name, this);
-                  this.config_settings.SetName(value);
+                  zone_dict.Add(zone_name, this);
+                  config_settings.SetName(value);
                   string lowerName = value.ToLower();
-                  if (lowerName.Contains("entire") && root_zone_name == null) {
-                    root_zone_name = this.zone_name;
-                  }
+                  if (lowerName.Contains("entire") && root_zone_name == null) root_zone_name = zone_name;
 
                   break;
                 case "ULC":
                   string[] parts = value.Split(new char[0], StringSplitOptions.RemoveEmptyEntries);
-                  if (!int.TryParse(parts[0], out this.ulc_x)) {
+                  if (!int.TryParse(parts[0], out ulc_x)) {
                     Debug.Log("Error: ZoneBehavior parsing " + value);
                     return;
                   }
 
-                  if (!int.TryParse(parts[1], out this.ulc_y)) {
+                  if (!int.TryParse(parts[1], out ulc_y)) {
                     Debug.Log("Error: ZoneBehavior parsing " + value);
                     return;
                   }
@@ -121,20 +126,18 @@ public class ZoneBehavior : MonoBehaviour {
                   break;
                 case "LRC":
                   parts = value.Split(new char[0], StringSplitOptions.RemoveEmptyEntries);
-                  if (!int.TryParse(parts[0], out this.lrc_x)) {
+                  if (!int.TryParse(parts[0], out lrc_x)) {
                     Debug.Log("Error: ZoneBehavior parsing " + value);
                     return;
                   }
 
-                  if (!int.TryParse(parts[1], out this.lrc_y)) {
+                  if (!int.TryParse(parts[1], out lrc_y)) {
                     Debug.Log("Error: ZoneBehavior parsing " + value);
                     return;
                   }
 
                   break;
               }
-            }
-          }
         } while (value != null);
       }
     }
@@ -154,8 +157,8 @@ public class ZoneBehavior : MonoBehaviour {
     pos.x = left + (right - left) / 2;
     pos.z = bottom + (top - bottom) / 2;
     transform.position = pos;
-    scale.x = (float) (right - left) / 10.0f;
-    scale.z = (float) (top - bottom) / 10.0f;
+    scale.x = (right - left) / 10.0f;
+    scale.z = (top - bottom) / 10.0f;
 
     scale.y = 1;
     transform.localScale = scale;
@@ -168,32 +171,24 @@ public class ZoneBehavior : MonoBehaviour {
     menus.ActiveScreen(zone_panel.name);
 
     zone_config_script = (ZoneConfigure) zone_panel.GetComponent(typeof(ZoneConfigure));
-    this.config_settings.ConfigureCanvas(this, zone_config_script);
-    this.phys_settings.ConfigureCanvas(this, zone_config_script);
+    config_settings.ConfigureCanvas(this, zone_config_script);
+    phys_settings.ConfigureCanvas(this, zone_config_script);
     zone_panel.SetActive(true);
   }
 
   public void ProcChanged(Toggle toggle) {
-    this.config_settings.ProcChanged(toggle);
+    config_settings.ProcChanged(toggle);
   }
 
   public void PhysChanged(Toggle toggle) {
-    this.phys_settings.PhysChanged(toggle);
+    phys_settings.PhysChanged(toggle);
   }
 
   public void PasswordChanged(string group_name, Toggle toggle) {
-    this.config_settings.PasswordChanged(group_name, toggle);
+    config_settings.PasswordChanged(group_name, toggle);
   }
 
   public void AccessChanged(Toggle toggle) {
-    this.phys_settings.AccessChanged(toggle);
-  }
-
-  // Use this for initialization
-  void Start() {
-  }
-
-  // Update is called once per frame
-  void Update() {
+    phys_settings.AccessChanged(toggle);
   }
 }

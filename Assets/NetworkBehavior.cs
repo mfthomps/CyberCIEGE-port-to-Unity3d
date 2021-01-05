@@ -1,28 +1,31 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 using System.IO;
 using System.Text;
-using System;
+using UnityEngine;
 
 public class NetworkBehavior : MonoBehaviour {
   public static List<string> network_list = new List<string>();
-  public string network_name = null;
-  public bool is_static = false;
-  public bool is_leased = false;
+  public string network_name;
+  public bool is_static;
+  public bool is_leased;
+
+  // Use this for initialization
+  private void Start() {
+  }
 
   public void LoadOneNetwork(string sdf) {
     //Debug.Log("LoadOneNetwork");
     MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(sdf ?? ""));
-    this.network_name = ccUtils.SDTField(stream, "Name");
-    network_list.Add(this.network_name);
+    network_name = ccUtils.SDTField(stream, "Name");
+    network_list.Add(network_name);
     //Debug.Log("got name " + this.network_name);
-    this.is_static = ccUtils.SDTFieldDefault(stream, "Static", false);
-    this.is_leased = ccUtils.SDTFieldDefault(stream, "Leased", false);
+    is_static = ccUtils.SDTFieldDefault(stream, "Static", false);
+    is_leased = ccUtils.SDTFieldDefault(stream, "Leased", false);
   }
 
   public static void LoadNetworks(string user_app_path) {
-    string filePath = System.IO.Path.Combine(user_app_path, "networks.sdf");
+    string filePath = Path.Combine(user_app_path, "networks.sdf");
     GameObject network = GameObject.Find("Network");
     string line = "";
     try {
@@ -55,9 +58,5 @@ public class NetworkBehavior : MonoBehaviour {
     catch (Exception e) {
       Console.WriteLine(e.Message + "\n");
     }
-  }
-
-  // Use this for initialization
-  void Start() {
   }
 }

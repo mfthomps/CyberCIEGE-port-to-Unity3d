@@ -6,12 +6,11 @@
 // --01-18-2010 - create temporary target, if none supplied at start
 
 using UnityEngine;
-using System.Collections;
 
 
 //[AddComponentMenu("Camera-Control/3dsMax Camera Style")]
 public class MaxCamera : MonoBehaviour {
-  public Transform target = null;
+  public Transform target;
   public Vector3 targetOffset = Vector3.zero;
   public float distance = 35.0f;
   public float maxDistance = 35;
@@ -24,33 +23,115 @@ public class MaxCamera : MonoBehaviour {
   public float panSpeed = 0.3f;
   public float zoomDampening = 0.05f;
 
-  private float xDeg = 0.0f;
-  private float yDeg = 0.0f;
-  private float currentDistance;
-  private float desiredDistance;
-  private Quaternion currentRotation;
-  private Quaternion desiredRotation;
-  private Quaternion rotation;
-  private Vector3 position;
-  private Transform originalTransform;
-
   public float perspectiveZoomSpeed = 0.5f; // The rate of change of the field of view in perspective mode.
   public float orthoZoomSpeed = 0.5f; // The rate of change of the orthographic size in orthographic mode.
+  private float currentDistance;
+  private Quaternion currentRotation;
+  private float desiredDistance;
+  private Quaternion desiredRotation;
+  private bool flyCamera;
 
   private Vector3 flyFrom;
+  private readonly float flySpeed = 5.0f;
+  private float flyStartTime;
   private Vector3 flyTo;
   private float journeyLength;
-  private bool flyCamera = false;
-  private float flyStartTime;
-  private float flySpeed = 5.0f;
 
   private bool noObject = true;
+  private Transform originalTransform;
+  private Vector3 position;
+  private Quaternion rotation;
 
-  void Start() {
+  private float xDeg;
+  private float yDeg;
+
+  private void Start() {
     Init();
   }
 
-  void OnEnable() {
+  /*
+     * Camera logic on LateUpdate to only update after all character movement logic has been handled. 
+     */
+  private void LateUpdate() {
+    return;
+    //checkMulti ();
+    //if(Input.GetMouseButton(1)){
+    //	Debug.Log ("mouse 2");
+    //}
+
+    //if(Input.GetKey(KeyCode.LeftAlt)){
+    //	Debug.Log ("leftAlt");
+    //}
+    if (checkFly()) return;
+
+    //Debug.Log("LiveUpdate desired distance is " + desiredDistance);
+    // If Control and Alt and Middle button? ZOOM!
+    if (Input.GetMouseButton(2) && Input.GetKey(KeyCode.LeftAlt) && Input.GetKey(KeyCode.LeftControl)) {
+      desiredDistance -= Input.GetAxis("Mouse Y") * Time.deltaTime * zoomRate * 0.125f * Mathf.Abs(desiredDistance);
+    }
+    // If middle mouse and left alt are selected? ORBIT
+    //else if (Input.GetKey(KeyCode.LeftAlt))
+    else if (Input.GetMouseButton(0) && Input.GetKey(KeyCode.LeftAlt)) {
+      xDeg += Input.GetAxis("Mouse X") * xSpeed * 0.02f;
+      yDeg -= Input.GetAxis("Mouse Y") * ySpeed * 0.02f;
+      //Debug.Log("xDeg " + xDeg + " yDeg " + yDeg);
+      ////////OrbitAngle
+
+      //Clamp the vertical axis for the orbit
+      yDeg = ClampAngle(yDeg, yMinLimit, yMaxLimit);
+      //Debug.Log("after clamp yDeg " + yDeg);
+      // set camera rotation 
+      desiredRotation = Quaternion.Euler(yDeg, xDeg, 0);
+      currentRotation = transform.rotation;
+
+      rotation = Quaternion.Lerp(currentRotation, desiredRotation, Time.deltaTime * zoomDampening);
+      transform.rotation = rotation;
+      //return;
+    }
+    // otherwise if middle mouse is selected, we pan by way of transforming the target in screenspace
+    else if (Input.GetMouseButton(2) || Input.GetKey(KeyCode.LeftAlt)) {
+      //grab the rotation of the camera so we can move in a psuedo local XY space
+      target.rotation = transform.rotation;
+      target.Translate(Vector3.right * -Input.GetAxis("Mouse X") * panSpeed);
+      target.Translate(transform.up * -Input.GetAxis("Mouse Y") * panSpeed, Space.World);
+    }
+
+    ////////Orbit Position
+
+    // affect the desired Zoom distance if we roll the scrollwheel
+    //if(!hackcheck)
+    desiredDistance -= Input.GetAxis("Mouse ScrollWheel") * Time.deltaTime * zoomRate * Mathf.Abs(desiredDistance);
+    //Debug.Log ("desired distance " + desiredDistance);
+    //clamp the zoom min/max
+    if (!noObject) //Debug.Log ("clamping distance");
+      desiredDistance = Mathf.Clamp(desiredDistance, minDistance, maxDistance);
+
+    // For smoothing of the zoom, lerp distance
+    float damp = Time.deltaTime * zoomDampening;
+    //Debug.Log ("currrent distance: "+currentDistance+" desired "+desiredDistance+" damp is " + damp);
+    //if(!hackcheck)
+    currentDistance = Mathf.Lerp(currentDistance, desiredDistance, damp);
+
+    // calculate position based on the new currentDistance 
+    if (targetOffset != Vector3.zero) {
+      //Debug.Log("target offset "+targetOffset);
+    }
+
+    //if(!hackcheck){
+    position = target.position - (rotation * Vector3.forward * currentDistance + targetOffset);
+    //}else{
+    //	position = target.position;
+    //	hackcheck = false;
+    //}
+    //position = target.position - (rotation * Vector3.forward * currentDistance);
+    if (transform.position != position)
+      Debug.Log("moving from " + transform.position + " to " + position + " currentDistance " + currentDistance +
+                " desired " + desiredDistance);
+
+    transform.position = position;
+  }
+
+  private void OnEnable() {
     Init();
   }
 
@@ -114,7 +195,7 @@ public class MaxCamera : MonoBehaviour {
     if (!target) {
       Debug.Log("MaxCamera create temp cam target, distance of " + distance + "forward is" + transform.forward);
       GameObject go = new GameObject("Cam Target");
-      go.transform.position = transform.position + (transform.forward * distance);
+      go.transform.position = transform.position + transform.forward * distance;
       target = go.transform;
       originalTransform = target;
     }
@@ -138,7 +219,7 @@ public class MaxCamera : MonoBehaviour {
     //xDeg = 0;
   }
 
-  void checkMulti() {
+  private void checkMulti() {
     Debug.Log("touchcount is " + Input.touchCount);
     if (Input.touchCount == 2) {
       Debug.Log("touchcount is 2");
@@ -175,96 +256,6 @@ public class MaxCamera : MonoBehaviour {
     }
   }
 
-  /*
-     * Camera logic on LateUpdate to only update after all character movement logic has been handled. 
-     */
-  void LateUpdate() {
-    return;
-    //checkMulti ();
-    //if(Input.GetMouseButton(1)){
-    //	Debug.Log ("mouse 2");
-    //}
-
-    //if(Input.GetKey(KeyCode.LeftAlt)){
-    //	Debug.Log ("leftAlt");
-    //}
-    if (checkFly()) {
-      return;
-    }
-
-    //Debug.Log("LiveUpdate desired distance is " + desiredDistance);
-    // If Control and Alt and Middle button? ZOOM!
-    if (Input.GetMouseButton(2) && Input.GetKey(KeyCode.LeftAlt) && Input.GetKey(KeyCode.LeftControl)) {
-      desiredDistance -= Input.GetAxis("Mouse Y") * Time.deltaTime * zoomRate * 0.125f * Mathf.Abs(desiredDistance);
-    }
-    // If middle mouse and left alt are selected? ORBIT
-    //else if (Input.GetKey(KeyCode.LeftAlt))
-    else if (Input.GetMouseButton(0) && Input.GetKey(KeyCode.LeftAlt)) {
-      xDeg += Input.GetAxis("Mouse X") * xSpeed * 0.02f;
-      yDeg -= Input.GetAxis("Mouse Y") * ySpeed * 0.02f;
-      //Debug.Log("xDeg " + xDeg + " yDeg " + yDeg);
-      ////////OrbitAngle
-
-      //Clamp the vertical axis for the orbit
-      yDeg = ClampAngle(yDeg, yMinLimit, yMaxLimit);
-      //Debug.Log("after clamp yDeg " + yDeg);
-      // set camera rotation 
-      desiredRotation = Quaternion.Euler(yDeg, xDeg, 0);
-      currentRotation = transform.rotation;
-
-      rotation = Quaternion.Lerp(currentRotation, desiredRotation, Time.deltaTime * zoomDampening);
-      transform.rotation = rotation;
-      //return;
-    }
-    // otherwise if middle mouse is selected, we pan by way of transforming the target in screenspace
-    else if (Input.GetMouseButton(2) || (Input.GetKey(KeyCode.LeftAlt))) {
-      //grab the rotation of the camera so we can move in a psuedo local XY space
-      target.rotation = transform.rotation;
-      target.Translate(Vector3.right * -Input.GetAxis("Mouse X") * panSpeed);
-      target.Translate(transform.up * -Input.GetAxis("Mouse Y") * panSpeed, Space.World);
-    }
-
-    ////////Orbit Position
-
-    // affect the desired Zoom distance if we roll the scrollwheel
-    //if(!hackcheck)
-    desiredDistance -= Input.GetAxis("Mouse ScrollWheel") * Time.deltaTime * zoomRate * Mathf.Abs(desiredDistance);
-    //Debug.Log ("desired distance " + desiredDistance);
-    //clamp the zoom min/max
-    if (!noObject) {
-      //Debug.Log ("clamping distance");
-      desiredDistance = Mathf.Clamp(desiredDistance, minDistance, maxDistance);
-    }
-    else {
-      //Debug.Log ("no object");
-    }
-
-    // For smoothing of the zoom, lerp distance
-    float damp = Time.deltaTime * zoomDampening;
-    //Debug.Log ("currrent distance: "+currentDistance+" desired "+desiredDistance+" damp is " + damp);
-    //if(!hackcheck)
-    currentDistance = Mathf.Lerp(currentDistance, desiredDistance, damp);
-
-    // calculate position based on the new currentDistance 
-    if (targetOffset != Vector3.zero) {
-      //Debug.Log("target offset "+targetOffset);
-    }
-
-    //if(!hackcheck){
-    position = target.position - (rotation * Vector3.forward * currentDistance + targetOffset);
-    //}else{
-    //	position = target.position;
-    //	hackcheck = false;
-    //}
-    //position = target.position - (rotation * Vector3.forward * currentDistance);
-    if (transform.position != position) {
-      Debug.Log("moving from " + transform.position + " to " + position + " currentDistance " + currentDistance +
-                " desired " + desiredDistance);
-    }
-
-    transform.position = position;
-  }
-
   private static float ClampAngle(float angle, float min, float max) {
     if (angle < -360)
       angle += 360;
@@ -288,17 +279,17 @@ public class MaxCamera : MonoBehaviour {
   private bool checkFly() {
     bool retval = false;
     //Debug.Log("checkFly");
-    if (this.flyCamera) {
+    if (flyCamera) {
       float now = Time.time;
-      float distCovered = (now - this.flyStartTime) * this.flySpeed;
+      float distCovered = (now - flyStartTime) * flySpeed;
       float fracJourney = distCovered / journeyLength;
       //Debug.Log("speed " + this.flySpeed + " dist covered is " + distCovered + " len is " + journeyLength + " now is " + Time.time + " frac is " + fracJourney);
       if (fracJourney < 1.0) {
-        transform.position = Vector3.Lerp(this.flyFrom, this.flyTo, fracJourney);
+        transform.position = Vector3.Lerp(flyFrom, flyTo, fracJourney);
         retval = true;
       }
       else {
-        this.flyCamera = false;
+        flyCamera = false;
       }
     }
 
@@ -306,16 +297,14 @@ public class MaxCamera : MonoBehaviour {
   }
 
   public void flyCameraTo(Vector3 from, Vector3 to, bool reverse = false) {
-    this.flyStartTime = Time.time;
-    this.flyFrom = from;
-    this.flyTo = to;
-    this.journeyLength = Vector3.Distance(from, to);
-    this.flyCamera = true;
+    flyStartTime = Time.time;
+    flyFrom = from;
+    flyTo = to;
+    journeyLength = Vector3.Distance(from, to);
+    flyCamera = true;
     transform.position = from;
     Vector3 lookAt = to;
-    if (reverse) {
-      lookAt = Vector3.Lerp(to, from, 1.5f);
-    }
+    if (reverse) lookAt = Vector3.Lerp(to, from, 1.5f);
 
     transform.LookAt(lookAt);
   }

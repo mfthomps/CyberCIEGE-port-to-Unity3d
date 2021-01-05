@@ -1,29 +1,41 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 using System.IO;
-using System.Text;
-using System;
-using System.Xml.Linq;
 using System.Linq;
+using System.Text;
+using System.Xml.Linq;
+using UnityEngine;
 
 public class ComponentBehavior : MonoBehaviour {
   /* static data */
   public static Dictionary<string, ComponentBehavior> computer_dict = new Dictionary<string, ComponentBehavior>();
   protected static GUIStyle label_style = new GUIStyle();
+  private static Rect WindowRect = new Rect(10, 10, 250, 300);
+  public static Texture2D background;
+  public static ComponentBehavior current_component;
 
   public string component_name;
   public string description;
   public string hw;
   public int cost;
-  protected string filePath;
   public int position = -1;
   public List<string> network_list = new List<string>();
-  private static Rect WindowRect = new Rect(10, 10, 250, 300);
-  public static Texture2D background;
   public GUISkin guiSkin;
-  bool checklist_up = false;
-  public static ComponentBehavior current_component = null;
+  private bool checklist_up = false;
+  protected string filePath;
+
+  private void Start() {
+    label_style.normal.textColor = Color.black;
+  }
+
+  private void OnMouseDown() {
+    Debug.Log("down for " + filePath + " component_name " + component_name);
+    if (component_name == null || component_name.Length == 0) {
+      Debug.Log("Component name is empty");
+    }
+
+    //menus.clicked = "Component:" + this.component_name;
+  }
 
   public static ComponentBehavior GetNextComponent() {
     ComponentBehavior first_component = null;
@@ -76,14 +88,12 @@ public class ComponentBehavior : MonoBehaviour {
           //Debug.Log("LoadComputer got " + value + " for tag " + tag);
           switch (tag) {
             case "Name":
-              this.component_name = value;
+              component_name = value;
               //Debug.Log("LoadComponent adding to dict: " + this.component_name);
-              computer_dict.Add(this.component_name, this);
+              computer_dict.Add(component_name, this);
               break;
             case "PosIndex":
-              if (!int.TryParse(value, out this.position)) {
-                Debug.Log("Error: LoadComponent position " + value);
-              }
+              if (!int.TryParse(value, out position)) Debug.Log("Error: LoadComponent position " + value);
 
               break;
             case "Network":
@@ -91,7 +101,7 @@ public class ComponentBehavior : MonoBehaviour {
               MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(value ?? ""));
 
               string network_name = ccUtils.SDTField(stream, "Name");
-              this.network_list.Add(network_name);
+              network_list.Add(network_name);
               //Debug.Log("component " + this.component_name + " added network " + network_name);
               break;
           }
@@ -126,12 +136,10 @@ public class ComponentBehavior : MonoBehaviour {
           if (level == 3) {
             string operation = menus.MenuLevel(3);
             Debug.Log("level 3, operation " + operation);
-            if (operation == "Connect") {
+            if (operation == "Connect")
               WindowRect = GUI.Window(2, WindowRect, script.ConnectList, operation);
-            }
-            else if (operation == "Disconnect") {
+            else if (operation == "Disconnect")
               WindowRect = GUI.Window(2, WindowRect, script.DisconnectList, operation);
-            }
           }
           else {
             WindowRect = GUI.Window(3, WindowRect, script.NetworkItems, "Item");
@@ -147,95 +155,72 @@ public class ComponentBehavior : MonoBehaviour {
   }
 
   private void MenuItems(int id) {
-    if (GUILayout.Button("Help")) {
+    if (GUILayout.Button("Help"))
       menus.clicked = "help";
-    }
-    else if (GUILayout.Button("Networks")) {
+    else if (GUILayout.Button("Networks"))
       menus.clicked += ":Networks";
-    }
-    else if (GUILayout.Button("Configure")) {
+    else if (GUILayout.Button("Configure"))
       menus.clicked += ":Configure";
-    }
-    else if (GUILayout.Button("Close menu")) {
-      menus.clicked = "";
-    }
+    else if (GUILayout.Button("Close menu")) menus.clicked = "";
   }
 
   private void ConnectList(int id) {
     List<string> copy_list = NetworkBehavior.network_list.ToList();
     bool is_internet = false;
-    if (!bool.TryParse(OrganizationScript.GetValue("Internet"), out is_internet)) {
+    if (!bool.TryParse(OrganizationScript.GetValue("Internet"), out is_internet))
       Debug.Log("Error: ConnectList parsing internet " + OrganizationScript.GetValue("Internet"));
-    }
 
-    if (this.gameObject.name.StartsWith("Device") && is_internet) {
-      copy_list.Add(OrganizationScript.GetValue("InternetName"));
-    }
+    if (gameObject.name.StartsWith("Device") && is_internet) copy_list.Add(OrganizationScript.GetValue("InternetName"));
 
     //Debug.Log("NetworkList len of list is " + network_list.Count);
-    foreach (string network in copy_list) {
-      if (!network_list.Contains(network)) {
+    foreach (string network in copy_list)
+      if (!network_list.Contains(network))
         if (GUILayout.Button(network)) {
           Debug.Log("selected " + network);
           menus.clicked = "";
           XElement xml = new XElement("componentEvent",
-            new XElement("name", this.component_name),
+            new XElement("name", component_name),
             new XElement("networkConnect", network));
 
           Debug.Log(xml.ToString());
           network_list.Add(network);
           IPCManagerScript.SendRequest(xml.ToString());
         }
-      }
-    }
 
-    if (menus.clicked.Length > 0) {
-      if (GUILayout.Button("Close menu")) {
+    if (menus.clicked.Length > 0)
+      if (GUILayout.Button("Close menu"))
         menus.clicked = "";
-      }
-    }
   }
 
   private void DisconnectList(int id) {
     Debug.Log("NetworkList len of list is " + network_list.Count);
     List<string> copy_list = network_list.ToList();
-    foreach (string network in copy_list) {
+    foreach (string network in copy_list)
       if (GUILayout.Button(network)) {
         Debug.Log("selected " + network);
         menus.clicked = "";
         XElement xml = new XElement("componentEvent",
-          new XElement("name", this.component_name),
+          new XElement("name", component_name),
           new XElement("networkDisconnect", network));
 
         Debug.Log(xml);
         network_list.Remove(network);
         IPCManagerScript.SendRequest(xml.ToString());
       }
-    }
 
-    if (menus.clicked.Length > 0) {
-      if (GUILayout.Button("Close menu")) {
+    if (menus.clicked.Length > 0)
+      if (GUILayout.Button("Close menu"))
         menus.clicked = "";
-      }
-    }
   }
 
   private void NetworkItems(int id) {
-    if (GUILayout.Button("Connect")) {
+    if (GUILayout.Button("Connect"))
       menus.clicked += ":Connect";
-    }
-    else if (GUILayout.Button("Disconnect")) {
+    else if (GUILayout.Button("Disconnect"))
       menus.clicked += ":Disconnect";
-    }
-    else if (GUILayout.Button("Close menu")) {
-      menus.clicked = "";
-    }
+    else if (GUILayout.Button("Close menu")) menus.clicked = "";
 
     Debug.Log("NetworkItems clicked now " + menus.clicked);
-  }
-
-  void Start() {
-    label_style.normal.textColor = Color.black;
   }
 
   public void SetFilePath(string path) {
@@ -244,7 +229,7 @@ public class ComponentBehavior : MonoBehaviour {
 
   public void Configure() {
     Debug.Log("ComponentBehavior Configure");
-    if (this.gameObject.name.StartsWith("Computer")) {
+    if (gameObject.name.StartsWith("Computer")) {
       ComputerBehavior computer_script = (ComputerBehavior) this;
       //menus.clicked = "";
       //computer_script.ComputerConfigure();
@@ -254,15 +239,5 @@ public class ComponentBehavior : MonoBehaviour {
       Debug.Log("do support for devices yet");
       menus.clicked = "";
     }
-  }
-
-  void OnMouseDown() {
-    Debug.Log("down for " + filePath + " component_name " + this.component_name);
-    if (this.component_name == null || this.component_name.Length == 0) {
-      Debug.Log("Component name is empty");
-      return;
-    }
-
-    //menus.clicked = "Component:" + this.component_name;
   }
 }

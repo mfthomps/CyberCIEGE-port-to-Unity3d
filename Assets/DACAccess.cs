@@ -1,22 +1,19 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 using System.IO;
-using System.Text.RegularExpressions;
-using System;
-using System.Linq;
 using System.Xml.Linq;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class DACAccess {
-  Dictionary<string, char> option_map = new Dictionary<string, char>();
-  public Dictionary<string, DACEntry> dac_dict = new Dictionary<string, DACEntry>();
-  public AssetBehavior asset = null;
-  bool supress_value_change_hack = false;
   public static int READ_MASK = 1;
   public static int WRITE_MASK = 2;
   public static int CONTROL_MASK = 4;
   public static int EXECUTE_MASK = 8;
+  public AssetBehavior asset;
+  public Dictionary<string, DACEntry> dac_dict = new Dictionary<string, DACEntry>();
+  private readonly Dictionary<string, char> option_map = new Dictionary<string, char>();
+  private bool supress_value_change_hack;
 
   public DACAccess(string user_mode_list, AssetBehavior asset) {
     //Debug.Log("DACAccess for " + user_mode_list);
@@ -28,52 +25,9 @@ public class DACAccess {
     option_map["Don't care"] = 'X';
   }
 
-  public class DACEntry {
-    public string name = null;
-    public char read = '-';
-    public char write = '-';
-    public char execute = '-';
-    public char control = '-';
-    public bool is_group = false; // not used, we don't know yet
-
-    public DACEntry(string name, string modes, bool group = false) {
-      //Debug.Log("DACEntry for " + name + " " + modes);
-      this.name = name;
-      read = modes[0];
-      write = modes[1];
-      execute = modes[2];
-      control = modes[3];
-      is_group = group;
-    }
-
-    public void Clear() {
-      read = '-';
-      write = '-';
-      execute = '-';
-      control = '-';
-    }
-
-    public string DACToString() {
-      return this.name + " " + read + write + execute + control;
-    }
-
-    public int GetMode() {
-      int retval = 0;
-      if (read == 'Y')
-        retval = retval | READ_MASK;
-      if (write == 'Y')
-        retval = retval | WRITE_MASK;
-      if (control == 'Y')
-        retval = retval | CONTROL_MASK;
-      if (execute == 'Y')
-        retval = retval | EXECUTE_MASK;
-      return retval;
-    }
-  }
-
   public string DACEntryToString() {
     string retval = "";
-    foreach (KeyValuePair<string, DACEntry> entry in this.dac_dict) {
+    foreach (KeyValuePair<string, DACEntry> entry in dac_dict) {
       DACEntry de = entry.Value;
       retval += de.DACToString() + "\n";
     }
@@ -102,9 +56,9 @@ public class DACAccess {
   }
 
   public void ACLChanged(string user_group_name, Dropdown dd, ACLConfigure config) {
-    if (this.supress_value_change_hack)
+    if (supress_value_change_hack)
       return;
-    this.supress_value_change_hack = true;
+    supress_value_change_hack = true;
     Debug.Log("ACL Changed for " + dd.name + " new mode select " + dd.captionText.text);
     char option = option_map[dd.captionText.text];
     DACEntry entry = dac_dict[user_group_name];
@@ -139,7 +93,7 @@ public class DACAccess {
     entry.control = option_map[config.control_dropdown.captionText.text];
     entry.execute = option_map[config.execute_dropdown.captionText.text];
     int mode = entry.GetMode();
-    string component_name = this.asset.computer.component_name;
+    string component_name = asset.computer.component_name;
     string command = "changeGroupMask";
     string name_string = "groupName";
     if (UserBehavior.user_dict.ContainsKey(user_group_name)) {
@@ -150,30 +104,71 @@ public class DACAccess {
     XElement xml = new XElement("componentEvent",
       new XElement("name", component_name),
       new XElement("assetACL",
-        new XElement("assetName", this.asset.asset_name),
+        new XElement("assetName", asset.asset_name),
         new XElement(command,
           new XElement(name_string, user_group_name),
           new XElement("mode", mode))));
 
     IPCManagerScript.SendRequest(xml.ToString());
-    this.supress_value_change_hack = false;
+    supress_value_change_hack = false;
   }
 
   public void ClearEntry(string user_group_name) {
     DACEntry entry = dac_dict[user_group_name];
     entry.Clear();
-    string component_name = this.asset.computer.component_name;
+    string component_name = asset.computer.component_name;
     string command = "removeGroup";
-    if (UserBehavior.user_dict.ContainsKey(user_group_name)) {
-      command = "removeUser";
-    }
+    if (UserBehavior.user_dict.ContainsKey(user_group_name)) command = "removeUser";
 
     XElement xml = new XElement("componentEvent",
       new XElement("name", component_name),
       new XElement("assetACL",
-        new XElement("assetName", this.asset.asset_name),
+        new XElement("assetName", asset.asset_name),
         new XElement(command, user_group_name)));
 
     IPCManagerScript.SendRequest(xml.ToString());
+  }
+
+  public class DACEntry {
+    public char control = '-';
+    public char execute = '-';
+    public bool is_group; // not used, we don't know yet
+    public string name;
+    public char read = '-';
+    public char write = '-';
+
+    public DACEntry(string name, string modes, bool group = false) {
+      //Debug.Log("DACEntry for " + name + " " + modes);
+      this.name = name;
+      read = modes[0];
+      write = modes[1];
+      execute = modes[2];
+      control = modes[3];
+      is_group = group;
+    }
+
+    public void Clear() {
+      read = '-';
+      write = '-';
+      execute = '-';
+      control = '-';
+    }
+
+    public string DACToString() {
+      return name + " " + read + write + execute + control;
+    }
+
+    public int GetMode() {
+      int retval = 0;
+      if (read == 'Y')
+        retval = retval | READ_MASK;
+      if (write == 'Y')
+        retval = retval | WRITE_MASK;
+      if (control == 'Y')
+        retval = retval | CONTROL_MASK;
+      if (execute == 'Y')
+        retval = retval | EXECUTE_MASK;
+      return retval;
+    }
   }
 }

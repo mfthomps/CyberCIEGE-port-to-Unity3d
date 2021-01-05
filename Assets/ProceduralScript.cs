@@ -1,8 +1,6 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System;
-using UnityEngine;
 using System.Text;
 
 public class ProceduralScript {
@@ -23,7 +21,7 @@ public class ProceduralScript {
             continue;
           //Debug.Log("ProceduralScript read " + in_line);
           string[] parts = in_line.Split(':');
-          this.proc_dict[parts[0]] = parts[1].Trim();
+          proc_dict[parts[0]] = parts[1].Trim();
         } while (in_line != null);
       }
     }

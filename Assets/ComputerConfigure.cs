@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +7,8 @@ using UnityEngine.UI;
  * Associated with the computer panel.
  */
 public class ComputerConfigure : MonoBehaviour {
+  protected static GUIStyle label_style = new GUIStyle();
+
   //public RectTransform myTextPanel;
   public GameObject myTextPrefab;
   public RectTransform procPanel;
@@ -23,17 +24,16 @@ public class ComputerConfigure : MonoBehaviour {
   public GameObject passwordPrefab;
 
   public Button close_button;
-  private float nextMessage;
+  private ComputerBehavior current_computer;
   private int myNumber = 0;
   private GameObject newText;
   private GameObject newTog;
-  List<string> stringlist;
-  protected static GUIStyle label_style = new GUIStyle();
-  ComputerBehavior current_computer = null;
+  private float nextMessage;
+  private List<string> stringlist;
 
 
   // Use this for initialization
-  void Start() {
+  private void Start() {
     stringlist = new List<string>();
     stringlist.Add("hi");
     stringlist.Add("there");
@@ -52,14 +52,14 @@ public class ComputerConfigure : MonoBehaviour {
     stringlist.Add("what?");
     nextMessage = Time.time + 1f;
     label_style.normal.textColor = Color.black;
-    this.close_button.onClick.AddListener(CloseClicked);
-    this.asset_acl_button.onClick.AddListener(ACLClicked);
+    close_button.onClick.AddListener(CloseClicked);
+    asset_acl_button.onClick.AddListener(ACLClicked);
     /* register screen panel with menus system */
-    menus.screen_dict[this.gameObject.name] = menus.UI_SCREEN_COMPONENT;
+    menus.screen_dict[gameObject.name] = menus.UI_SCREEN_COMPONENT;
   }
 
   public void ACLClicked() {
-    string asset_name = this.asset_dropdown.captionText.text;
+    string asset_name = asset_dropdown.captionText.text;
     Debug.Log("ACL clicked, current asset is <" + asset_name + ">");
     AssetBehavior asset_script = AssetBehavior.asset_dict[asset_name];
     string dac_string = asset_script.GetDACString();
@@ -72,29 +72,25 @@ public class ComputerConfigure : MonoBehaviour {
   }
 
   public void CloseClicked() {
-    foreach (Transform child in procPanel) {
-      GameObject.Destroy(child.gameObject);
-    }
+    foreach (Transform child in procPanel) Destroy(child.gameObject);
 
-    foreach (Transform child in passwordPanel) {
-      GameObject.Destroy(child.gameObject);
-    }
+    foreach (Transform child in passwordPanel) Destroy(child.gameObject);
 
     Debug.Log("Component menu closed");
-    this.gameObject.SetActive(false);
-    menus.ClosedScreen(this.gameObject.name);
+    gameObject.SetActive(false);
+    menus.ClosedScreen(gameObject.name);
   }
 
   public void SetPassword(string group_name, Dictionary<string, bool> dict, ComputerBehavior computer) {
-    GameObject newText = (GameObject) Instantiate(myTextPrefab);
+    GameObject newText = Instantiate(myTextPrefab);
     newText.transform.SetParent(passwordPanel);
     newText.GetComponent<Text>().text = group_name;
 
     foreach (KeyValuePair<string, bool> entry in dict) {
       //Debug.Log("SetPassword for " + entry.Key);
-      GameObject newTog = (GameObject) Instantiate(procPrefab);
+      GameObject newTog = Instantiate(procPrefab);
       newTog.transform.SetParent(passwordPanel);
-      Toggle t = (Toggle) newTog.GetComponent<Toggle>();
+      Toggle t = newTog.GetComponent<Toggle>();
       if (t == null) {
         Debug.Log("Toggle is null");
         return;
@@ -108,10 +104,10 @@ public class ComputerConfigure : MonoBehaviour {
 
   public void SetProc(Dictionary<string, bool> dict, ComputerBehavior computer) {
     foreach (KeyValuePair<string, bool> entry in dict) {
-      GameObject newTog = (GameObject) Instantiate(procPrefab);
+      GameObject newTog = Instantiate(procPrefab);
       newTog.transform.SetParent(procPanel);
 
-      Toggle t = (Toggle) newTog.GetComponent<Toggle>();
+      Toggle t = newTog.GetComponent<Toggle>();
       if (t == null) {
         Debug.Log("Toggle is null");
         return;
@@ -128,7 +124,7 @@ public class ComputerConfigure : MonoBehaviour {
   public void SetAssets(List<string> asset_list, ComputerBehavior computer) {
     current_computer = computer;
     asset_dropdown.ClearOptions();
-    List<Dropdown.OptionData> ddo = new List<Dropdown.OptionData>();
+    var ddo = new List<Dropdown.OptionData>();
     foreach (string asset in asset_list) {
       Dropdown.OptionData new_data = new Dropdown.OptionData(asset);
       ddo.Add(new_data);

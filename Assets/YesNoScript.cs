@@ -1,11 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.IO;
+using System.Xml;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Xml.Linq;
-using System.Xml;
-using System.IO;
-using System.Linq;
 
 public class YesNoScript : MonoBehaviour {
   public Text text;
@@ -14,18 +10,18 @@ public class YesNoScript : MonoBehaviour {
   public Button no_button;
 
   // Use this for initialization
-  void Start() {
-    this.yes_button.onClick.AddListener(YesClicked);
-    this.no_button.onClick.AddListener(NoClicked);
+  private void Start() {
+    yes_button.onClick.AddListener(YesClicked);
+    no_button.onClick.AddListener(NoClicked);
   }
 
   public void YesClicked() {
-    this.gameObject.SetActive(false);
+    gameObject.SetActive(false);
     IPCManagerScript.DialogClosed("yes");
   }
 
   public void NoClicked() {
-    this.gameObject.SetActive(false);
+    gameObject.SetActive(false);
     IPCManagerScript.DialogClosed("no");
   }
 
@@ -39,6 +35,6 @@ public class YesNoScript : MonoBehaviour {
     yes_button.GetComponentInChildren<Text>().text = yes_text;
     string no_text = the_node["no"].InnerText;
     no_button.GetComponentInChildren<Text>().text = no_text;
-    this.gameObject.SetActive(true);
+    gameObject.SetActive(true);
   }
 }

@@ -1,18 +1,18 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.IO;
+using System.Xml;
 using UnityEngine;
 using UnityEngine.UI;
-using System.IO;
-using System.Text;
-using System;
-using System.Xml;
 
 public class ToolTipScript : MonoBehaviour {
   public Text tool_tip;
 
   // Use this for initialization
-  void Start() {
+  private void Start() {
     tool_tip.text = "now is the time";
+  }
+
+  // Update is called once per frame
+  private void Update() {
   }
 
   public static void AddTip(string message) {
@@ -32,9 +32,5 @@ public class ToolTipScript : MonoBehaviour {
   public static void HideTip() {
     GameObject help_tip_panel = menus.menu_panels["HelpTipPanel"];
     help_tip_panel.SetActive(false);
-  }
-
-  // Update is called once per frame
-  void Update() {
   }
 }

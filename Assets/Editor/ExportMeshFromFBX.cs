@@ -1,12 +1,12 @@
-﻿using UnityEngine;
-using UnityEditor;
+﻿using UnityEditor;
+using UnityEngine;
 
 //Extracts a mesh from an FBX exported file, making it accessible by Unity.
 
 public class FBXMeshExtractor {
-  private static string _progressTitle = "Extracting Meshes";
-  private static string _sourceExtension = ".fbx";
-  private static string _targetExtension = ".asset";
+  private static readonly string _progressTitle = "Extracting Meshes";
+  private static readonly string _sourceExtension = ".fbx";
+  private static readonly string _targetExtension = ".asset";
 
 
   [MenuItem("Assets/Extract Meshes", validate = true)]

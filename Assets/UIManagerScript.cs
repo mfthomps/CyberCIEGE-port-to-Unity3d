@@ -1,18 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
-
 public class UIManagerScript : MonoBehaviour {
-  Text ppButtonText = null;
+  private Text ppButtonText;
 
   // Use this for initialization
-  void Start() {
+  private void Start() {
     GameObject ipc;
     GameObject ppButton = GameObject.Find("PausePlayButton");
     //Debug.Log("name is " + ppButton.name);
-    UnityEngine.UI.Text[] mylist = ppButton.GetComponentsInChildren<Text>();
+    Text[] mylist = ppButton.GetComponentsInChildren<Text>();
     //Debug.Log("size of list is " + mylist.Length);
     //Debug.Log("text is " + mylist[0].text);
     ppButtonText = mylist[0];
@@ -25,7 +22,7 @@ public class UIManagerScript : MonoBehaviour {
   }
 
   // Update is called once per frame
-  void Update() {
+  private void Update() {
   }
 
   public void WasPushed() {

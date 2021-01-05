@@ -1,12 +1,15 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 using System.IO;
 using System.Text;
-using System;
+using UnityEngine;
 
 public class OrganizationScript : MonoBehaviour {
-  static Dictionary<string, string> organization = new Dictionary<string, string>();
+  private static readonly Dictionary<string, string> organization = new Dictionary<string, string>();
+
+  // Use this for initialization
+  private void Start() {
+  }
 
   public static string GetValue(string tag) {
     //Debug.Log("Organization GetValue for " + tag);
@@ -37,9 +40,5 @@ public class OrganizationScript : MonoBehaviour {
     catch (Exception e) {
       Console.WriteLine(e.Message + "\n");
     }
-  }
-
-  // Use this for initialization
-  void Start() {
   }
 }

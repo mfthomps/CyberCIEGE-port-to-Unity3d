@@ -1,20 +1,19 @@
 using UnityEngine;
-using System.Collections;
 
 public class testFileBrowser : MonoBehaviour {
   //skins and textures
   public GUISkin[] skins;
   public Texture2D file, folder, back, drive;
 
-  string[] layoutTypes = {"Type 0", "Type 1"};
-
   //initialize file browser
-  FileBrowser fb = new FileBrowser();
+  private readonly FileBrowser fb = new FileBrowser();
 
-  string output = "no file";
+  private readonly string[] layoutTypes = {"Type 0", "Type 1"};
+
+  private string output = "no file";
 
   // Use this for initialization
-  void Start() {
+  private void Start() {
     //setup file browser style
     fb.guiSkin = skins[0]; //set the starting skin
     //set the various textures
@@ -28,7 +27,7 @@ public class testFileBrowser : MonoBehaviour {
     fb.searchRecursively = true;
   }
 
-  void OnGUI() {
+  private void OnGUI() {
     GUILayout.BeginHorizontal();
     GUILayout.BeginVertical();
     GUILayout.Label("Layout Type");
@@ -36,11 +35,9 @@ public class testFileBrowser : MonoBehaviour {
     GUILayout.Space(10);
     //select from available gui skins
     GUILayout.Label("GUISkin");
-    foreach (GUISkin s in skins) {
-      if (GUILayout.Button(s.name)) {
+    foreach (GUISkin s in skins)
+      if (GUILayout.Button(s.name))
         fb.guiSkin = s;
-      }
-    }
 
     GUILayout.Space(10);
     fb.showSearch = GUILayout.Toggle(fb.showSearch, "Show Search Bar");
@@ -50,10 +47,8 @@ public class testFileBrowser : MonoBehaviour {
     GUILayout.Label("Selected File: " + output);
     GUILayout.EndHorizontal();
     //draw and display output
-    if (fb.draw()) {
-      //true is returned when a file has been selected
+    if (fb.draw()) //true is returned when a file has been selected
       //the output file is a member if the FileInfo class, if cancel was selected the value is null
-      output = (fb.outputFile == null) ? "cancel hit" : fb.outputFile.ToString();
-    }
+      output = fb.outputFile == null ? "cancel hit" : fb.outputFile.ToString();
   }
 }

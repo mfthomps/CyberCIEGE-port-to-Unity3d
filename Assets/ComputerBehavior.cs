@@ -1,36 +1,38 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 using System.IO;
-using System;
 using System.Text;
-using System.Xml.Linq;
+using UnityEngine;
 using UnityEngine.UI;
 
 /*
  * Represents computer attributes, inheriting from ComponentBehavior.
  */
 public class ComputerBehavior : ComponentBehavior {
-  static string COMPUTERS = "computers";
+  private static readonly string COMPUTERS = "computers";
 
 
   private static Rect ConfigureRect = new Rect(10, 10, 900, 800);
+  private static string hw_name;
+  private readonly List<string> asset_list = new List<string>();
+  private string assigned_user;
 
-  ComputerConfigure
+  private ComputerConfigure
     computer_config_script; /* menu of current configuration values shared between instances TBC static?*/
 
-  ConfigurationSettings config_settings = null;
-  List<string> asset_list = new List<string>();
-  List<string> user_list = new List<string>(); // currently users & groups, TBD separate
-  string assigned_user;
-  private static string hw_name;
+  private ConfigurationSettings config_settings;
+  private readonly List<string> user_list = new List<string>(); // currently users & groups, TBD separate
+
+  // Use this for initialization
+  private void Start() {
+  }
 
   public static void LoadOneComputer(string computer_file) {
     GameObject computer;
     computer = GameObject.Find("Computer");
     //Debug.Log("user_app_path" + user_app_path + " file [" + computer_file+"]");
-    string cdir = System.IO.Path.Combine(GameLoadBehavior.user_app_path, COMPUTERS);
-    string cfile = System.IO.Path.Combine(cdir, computer_file);
+    string cdir = Path.Combine(GameLoadBehavior.user_app_path, COMPUTERS);
+    string cfile = Path.Combine(cdir, computer_file);
     Debug.Log("computer " + cdir);
     GameObject new_c = Instantiate(computer, new Vector3(1.0F, 0, 0), Quaternion.identity);
     ComputerBehavior script = (ComputerBehavior) new_c.GetComponent(typeof(ComputerBehavior));
@@ -72,8 +74,8 @@ public class ComputerBehavior : ComponentBehavior {
   }
 
   public static void LoadAllComputers() {
-    string cdir = System.IO.Path.Combine(GameLoadBehavior.user_app_path, COMPUTERS);
-    string[] clist = System.IO.Directory.GetFiles(cdir);
+    string cdir = Path.Combine(GameLoadBehavior.user_app_path, COMPUTERS);
+    string[] clist = Directory.GetFiles(cdir);
     int i = 1;
     foreach (string computer_file in clist) {
       LoadOneComputer(computer_file);
@@ -82,7 +84,7 @@ public class ComputerBehavior : ComponentBehavior {
   }
 
   public void LoadComputerInfoFromFile() {
-    this.config_settings = new ConfigurationSettings(true, this.component_name);
+    config_settings = new ConfigurationSettings(true, component_name);
 
     try {
       StreamReader reader = new StreamReader(filePath, Encoding.Default);
@@ -96,7 +98,7 @@ public class ComputerBehavior : ComponentBehavior {
           if (value == null)
             continue;
           //Debug.Log("LoadComputer got " + value + " for tag " + tag);
-          if (!this.config_settings.HandleConfigurationSetting(tag, value)) {
+          if (!config_settings.HandleConfigurationSetting(tag, value))
             switch (tag) {
               case "Assets":
                 asset_list.Add(value);
@@ -113,7 +115,6 @@ public class ComputerBehavior : ComponentBehavior {
                 hw_name = value;
                 break;
             }
-          }
         } while (value != null);
       }
     }
@@ -123,7 +124,7 @@ public class ComputerBehavior : ComponentBehavior {
   }
 
   public void ACLConfigure(string asset_name) {
-    ConfigureRect = GUILayout.Window(2, ConfigureRect, this.DoACL, "ACL for " + asset_name);
+    ConfigureRect = GUILayout.Window(2, ConfigureRect, DoACL, "ACL for " + asset_name);
   }
 
 
@@ -138,7 +139,7 @@ public class ComputerBehavior : ComponentBehavior {
     config_settings.ConfigureCanvas(this, computer_config_script);
 
 
-    computer_config_script.SetAssets(this.asset_list, this);
+    computer_config_script.SetAssets(asset_list, this);
 
     //computer_config_script.SetTest();
     //Debug.Log("return from ConfigureCanvas");
@@ -237,11 +238,11 @@ public class ComputerBehavior : ComponentBehavior {
 
   */
   public void ProcChanged(Toggle toggle) {
-    this.config_settings.ProcChanged(toggle);
+    config_settings.ProcChanged(toggle);
   }
 
   public void PasswordChanged(string group_name, Toggle toggle) {
-    this.config_settings.PasswordChanged(group_name, toggle);
+    config_settings.PasswordChanged(group_name, toggle);
   }
 
   public void AssetClicked(GameObject go) {
@@ -258,10 +259,6 @@ public class ComputerBehavior : ComponentBehavior {
     }
 
     ComponentBehavior bh = computer_dict[computer_name];
-    GameObject.Destroy(bh.gameObject);
-  }
-
-  // Use this for initialization
-  void Start() {
+    Destroy(bh.gameObject);
   }
 }

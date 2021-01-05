@@ -1,27 +1,41 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 using System.IO;
 using System.Text;
-using System;
-using System.Xml.Linq;
 using System.Xml;
-using System.Linq;
+using System.Xml.Linq;
+using UnityEngine;
 
 public class UserBehavior : MonoBehaviour {
   public static Dictionary<string, UserBehavior> user_dict = new Dictionary<string, UserBehavior>();
-  static string USERS = "users";
+  private static readonly string USERS = "users";
   private static Rect WindowRect = new Rect(10, 10, 250, 300);
   public static Texture2D background, LOGO;
-
-  string filePath;
+  public static UserBehavior current_user;
   public string user_name;
   public int position = -1;
-  public string department = null;
+  public string department;
   public string current_thought = "";
-  public int training = 0;
+  public int training;
   public List<string> failed_goals = new List<string>();
-  public static UserBehavior current_user = null;
+
+  private string filePath;
+
+  // Use this for initialization
+  private void Start() {
+  }
+
+  private void OnMouseDown() {
+    Debug.Log("down for " + filePath + " user_name " + user_name);
+    Debug.Log("thought: " + current_thought);
+    foreach (string failed in failed_goals) Debug.Log("failed goal: " + failed);
+
+    if (user_name == null || user_name.Length == 0) {
+      Debug.Log("User name is empty");
+    }
+
+    //menus.clicked = "Component:" + this.component_name;
+  }
 
   public static UserBehavior GetNextUser() {
     UserBehavior first_user = null;
@@ -51,7 +65,7 @@ public class UserBehavior : MonoBehaviour {
   }
 
   public bool IsActiveUser() {
-    if (this.department != "Security" && this.department != "Tech")
+    if (department != "Security" && department != "Tech")
       return true;
     return false;
   }
@@ -99,8 +113,8 @@ public class UserBehavior : MonoBehaviour {
   }*/
 
   public static void LoadOneUser(string user_file) {
-    string cfile = System.IO.Path.Combine(GameLoadBehavior.user_app_path, user_file);
-    Dictionary<String, String> this_user_info = new Dictionary<string, string>();
+    string cfile = Path.Combine(GameLoadBehavior.user_app_path, user_file);
+    var this_user_info = new Dictionary<string, string>();
     GameObject user;
 
     this_user_info = LoadUser(cfile, this_user_info);
@@ -108,15 +122,12 @@ public class UserBehavior : MonoBehaviour {
     string this_user_gender = this_user_info["Gender"];
     string this_user_dept = this_user_info["Dept"];
 
-    if (this_user_dept == "Tech") {
+    if (this_user_dept == "Tech")
       user = GameObject.Find("itstaff-obj");
-    }
-    else if (this_user_gender == "female") {
+    else if (this_user_gender == "female")
       user = GameObject.Find("femworker-obj");
-    }
-    else {
+    else
       user = GameObject.Find("maleworker-obj");
-    }
 
     GameObject new_c = Instantiate(user, new Vector3(1.0F, 0, 0), Quaternion.identity);
     // UserBehavior script = new_c.GetComponent<UserBehavior>();
@@ -132,13 +143,11 @@ public class UserBehavior : MonoBehaviour {
     script.user_name = this_user_info["Name"];
     user_dict.Add(this_user_info["Name"], script);
     script.department = this_user_info["Dept"];
-    if (!int.TryParse(this_user_info["PosIndex"], out script.position)) {
+    if (!int.TryParse(this_user_info["PosIndex"], out script.position))
       Debug.Log("Error: LoadUser parsing position" + this_user_info["PosIndex"]);
-    }
 
-    if (!int.TryParse(this_user_info["InitialTraining"], out script.training)) {
+    if (!int.TryParse(this_user_info["InitialTraining"], out script.training))
       Debug.Log("Error: LoadUser parsing training" + this_user_info["InitialTraining"]);
-    }
 
     int pos = script.position;
     //Debug.Log("LoadUsers " + script.user_name + " pos is " + pos);
@@ -171,13 +180,11 @@ public class UserBehavior : MonoBehaviour {
   }
 
   public static void LoadUsers() {
-    string user_dir = System.IO.Path.Combine(GameLoadBehavior.user_app_path, USERS);
-    string[] clist = System.IO.Directory.GetFiles(user_dir);
-    foreach (string user_file in clist) {
-      if (user_file.EndsWith(".sdf")) {
+    string user_dir = Path.Combine(GameLoadBehavior.user_app_path, USERS);
+    string[] clist = Directory.GetFiles(user_dir);
+    foreach (string user_file in clist)
+      if (user_file.EndsWith(".sdf"))
         LoadOneUser(user_file);
-      }
-    }
   }
 
   public static void UpdateStatus(string message) {
@@ -192,10 +199,8 @@ public class UserBehavior : MonoBehaviour {
     foreach (XmlNode user in user_nodes) {
       string user_name = user["name"].InnerText;
       //Debug.Log("the name is " + user_name);
-      if (!user_dict.ContainsKey(user_name)) {
-        //Debug.Log("UserBehavior name not in dictionary " + user_name);
+      if (!user_dict.ContainsKey(user_name)) //Debug.Log("UserBehavior name not in dictionary " + user_name);
         continue;
-      }
 
       UserBehavior user_script = user_dict[user_name];
       user_script.UpdateUserStatus(user);
@@ -203,25 +208,21 @@ public class UserBehavior : MonoBehaviour {
   }
 
   public void UpdateUserStatus(XmlNode user) {
-    this.failed_goals.Clear();
-    this.current_thought = user["thought"].InnerText;
+    failed_goals.Clear();
+    current_thought = user["thought"].InnerText;
     //Debug.Log("thought for user " + this.user_name + " is " + this.current_thought);
     XmlNodeList goal_nodes = user.SelectNodes("//goal");
     foreach (XmlNode goal in goal_nodes) {
       string status = goal["status"].InnerText;
-      if (status == "fail") {
-        this.failed_goals.Add(goal["name"].InnerText);
-      }
+      if (status == "fail") failed_goals.Add(goal["name"].InnerText);
     }
 
     string tmp = user["training"].InnerText;
-    if (!int.TryParse(tmp, out this.training)) {
-      Debug.Log("Error: UserBehavior could not parse training " + tmp);
-    }
+    if (!int.TryParse(tmp, out training)) Debug.Log("Error: UserBehavior could not parse training " + tmp);
   }
 
   //public void LoadUser()
-  public static Dictionary<String, String> LoadUser(string thisFilePath, Dictionary<String, String> this_user_info) {
+  public static Dictionary<string, string> LoadUser(string thisFilePath, Dictionary<string, string> this_user_info) {
     try {
       StreamReader reader = new StreamReader(thisFilePath, Encoding.Default);
       using (reader) {
@@ -273,21 +274,6 @@ public class UserBehavior : MonoBehaviour {
     filePath = path;
   }
 
-  void OnMouseDown() {
-    Debug.Log("down for " + filePath + " user_name " + this.user_name);
-    Debug.Log("thought: " + this.current_thought);
-    foreach (string failed in this.failed_goals) {
-      Debug.Log("failed goal: " + failed);
-    }
-
-    if (this.user_name == null || this.user_name.Length == 0) {
-      Debug.Log("User name is empty");
-      return;
-    }
-
-    //menus.clicked = "Component:" + this.component_name;
-  }
-
   public void Configure() {
     Debug.Log("Configure");
     if (menus.clicked.EndsWith("Configure")) {
@@ -328,16 +314,12 @@ public class UserBehavior : MonoBehaviour {
   }
 
   private void MenuItems(int id) {
-    if (GUILayout.Button("Help")) {
+    if (GUILayout.Button("Help"))
       menus.clicked = "help";
-    }
 
-    else if (GUILayout.Button("Configure")) {
+    else if (GUILayout.Button("Configure"))
       menus.clicked += ":Configure";
-    }
-    else if (GUILayout.Button("Close menu")) {
-      menus.clicked = "";
-    }
+    else if (GUILayout.Button("Close menu")) menus.clicked = "";
   }
 
   public void AddTraining(int add_amount) {
@@ -356,9 +338,5 @@ public class UserBehavior : MonoBehaviour {
 
       IPCManagerScript.SendRequest(xml.ToString());
     }
-  }
-
-  // Use this for initialization
-  void Start() {
   }
 }

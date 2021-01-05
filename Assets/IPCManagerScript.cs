@@ -1,61 +1,36 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.IO;
+﻿using System;
 using System.Net.Sockets;
-using System.Net;
-using System;
 using System.Text;
+using UnityEditor;
 using UnityEngine;
 
 public class IPCManagerScript : MonoBehaviour {
-  static NetworkStream serverStream;
+  private static NetworkStream serverStream;
 
   // Use this for initialization
-  static string read_string = null;
+  private static string read_string;
 
-  static ScrollingTextScript scrolling_text = null;
+  private static ScrollingTextScript scrolling_text;
 
   //static ToolTipScript tool_tip_script = null;
-  public static bool server_ready = false; /* ignore server messages until we receive the ready message */
-  static float elapsed_since_receive = 0.0f;
+  public static bool server_ready; /* ignore server messages until we receive the ready message */
+  private static float elapsed_since_receive;
 
-  void Start() {
+  private void Start() {
     GameObject go = GameObject.Find("ScrollText");
     scrolling_text = (ScrollingTextScript) go.GetComponent(typeof(ScrollingTextScript));
     //go = GameObject.Find("ToolTip");
     //tool_tip_script = (ToolTipScript)go.GetComponent(typeof(ToolTipScript));
   }
 
-  public static int ReceiveMsg(bool block = false) {
-    if (serverStream == null)
-      return 0;
-    if (!block & !serverStream.DataAvailable) {
-      return 0;
-    }
-
-    byte[] lenArray = new byte[4];
-    int num_read = serverStream.Read(lenArray, 0, 4);
-    //Debug.Log("len of len is " + num_read);
-    int len = BitConverter.ToInt32(lenArray, 0);
-    //Debug.Log("bitconvert len is " + len);
-    byte[] read_buf = new byte[len];
-    num_read = serverStream.Read(read_buf, 0, len);
-    read_string = System.Text.Encoding.ASCII.GetString(read_buf);
-    //Debug.Log("ReceiveMsg num_read " + num_read + "["+read_string+"]");
-    //buf[len] = 0;
-    return num_read;
-  }
-
   // Update is called once per frame
-  void Update() {
+  private void Update() {
     float delta = Time.deltaTime;
     elapsed_since_receive += delta;
-    if (elapsed_since_receive > 0.1f) {
+    if (elapsed_since_receive > 0.1f)
       elapsed_since_receive = 0.0f;
-    }
-    else {
+    else
       return;
-    }
 
     //Debug.Log("call receive");
     int len = ReceiveMsg();
@@ -75,9 +50,7 @@ public class IPCManagerScript : MonoBehaviour {
       string command = read_string;
       string message = null;
       //Debug.Log("buf [" + read_string + "]");
-      if (read_string.IndexOf(':') > 0) {
-        message = ccUtils.GetCommand(read_string, out command);
-      }
+      if (read_string.IndexOf(':') > 0) message = ccUtils.GetCommand(read_string, out command);
 
       //Debug.Log("IPC update got command " + command + " message [" + message+"]");
       switch (command) {
@@ -138,12 +111,30 @@ public class IPCManagerScript : MonoBehaviour {
     }
   }
 
+  public static int ReceiveMsg(bool block = false) {
+    if (serverStream == null)
+      return 0;
+    if (!block & !serverStream.DataAvailable) return 0;
+
+    var lenArray = new byte[4];
+    int num_read = serverStream.Read(lenArray, 0, 4);
+    //Debug.Log("len of len is " + num_read);
+    int len = BitConverter.ToInt32(lenArray, 0);
+    //Debug.Log("bitconvert len is " + len);
+    var read_buf = new byte[len];
+    num_read = serverStream.Read(read_buf, 0, len);
+    read_string = Encoding.ASCII.GetString(read_buf);
+    //Debug.Log("ReceiveMsg num_read " + num_read + "["+read_string+"]");
+    //buf[len] = 0;
+    return num_read;
+  }
+
   public void QuitGame() {
     // save any game data here
 #if UNITY_EDITOR
     // Application.Quit() does not work in the editor so
     // UnityEditor.EditorApplication.isPlaying need to be set to false to end the game
-    UnityEditor.EditorApplication.isPlaying = false;
+    EditorApplication.isPlaying = false;
 #else
 		Application.Quit();
 #endif
@@ -184,18 +175,16 @@ public class IPCManagerScript : MonoBehaviour {
   }
 
   public static void DialogClosed(string message = null) {
-    if (message == null) {
+    if (message == null)
       SendRequest("dialog_closed");
-    }
-    else {
+    else
       SendRequest("dialog_closed:" + message);
-    }
   }
 
   public static void ConnectServer() {
     Debug.Log("IPCManager connect to server");
     /* Connect to the server.  The waiting happens in Update, which handles all receives */
-    System.Net.Sockets.TcpClient clientSocket = new System.Net.Sockets.TcpClient();
+    TcpClient clientSocket = new TcpClient();
     bool done = false;
     // as soon as you figure out how to sleep, fix this!
     while (!done) {

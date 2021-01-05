@@ -1,9 +1,7 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System;
-
 
 public class ACLConfigure : MonoBehaviour {
   public Dropdown user_group_dropdown;
@@ -13,19 +11,19 @@ public class ACLConfigure : MonoBehaviour {
   public Dropdown execute_dropdown;
   public Button close_button;
   public Button clear_button;
-  Dropdown[] mode_drops;
 
-  DACAccess current_dac = null;
+  private DACAccess current_dac;
+  private Dropdown[] mode_drops;
 
   // Use this for initialization
-  void Start() {
-    this.close_button.onClick.AddListener(CloseClicked);
-    this.clear_button.onClick.AddListener(ClearClicked);
-    mode_drops = new Dropdown[] {read_dropdown, write_dropdown, control_dropdown, execute_dropdown};
+  private void Start() {
+    close_button.onClick.AddListener(CloseClicked);
+    clear_button.onClick.AddListener(ClearClicked);
+    mode_drops = new[] {read_dropdown, write_dropdown, control_dropdown, execute_dropdown};
   }
 
   public void CloseClicked() {
-    this.gameObject.SetActive(false);
+    gameObject.SetActive(false);
   }
 
   public void ClearClicked() {
@@ -33,18 +31,18 @@ public class ACLConfigure : MonoBehaviour {
     ModeOptions(write_dropdown, '-', true);
     ModeOptions(control_dropdown, '-', true);
     ModeOptions(execute_dropdown, '-', true);
-    this.current_dac.ClearEntry(user_group_dropdown.captionText.text);
+    current_dac.ClearEntry(user_group_dropdown.captionText.text);
   }
 
-  void ModeOptions(Dropdown dd, char select_option, bool clear = false) {
+  private void ModeOptions(Dropdown dd, char select_option, bool clear = false) {
     /*
      *   Set the options in a mode dropdown and select the given option.
      *   If clear, the options will include the "-", which is selected.
      */
     dd.ClearOptions();
     dd.onValueChanged.RemoveAllListeners();
-    string[] values = new string[] {"Yes", "No", "Don't care"};
-    List<Dropdown.OptionData> ddo = new List<Dropdown.OptionData>();
+    string[] values = {"Yes", "No", "Don't care"};
+    var ddo = new List<Dropdown.OptionData>();
     if (clear) {
       Dropdown.OptionData new_data = new Dropdown.OptionData("-");
       ddo.Add(new_data);
@@ -76,9 +74,9 @@ public class ACLConfigure : MonoBehaviour {
 
   public void SetDAC(DACAccess dac) {
     /* associate a DACAccess with this gui panel */
-    this.current_dac = dac;
+    current_dac = dac;
     user_group_dropdown.ClearOptions();
-    List<Dropdown.OptionData> ddo = new List<Dropdown.OptionData>();
+    var ddo = new List<Dropdown.OptionData>();
     foreach (KeyValuePair<string, DACAccess.DACEntry> entry in dac.dac_dict) {
       Dropdown.OptionData new_data = new Dropdown.OptionData(entry.Key);
       ddo.Add(new_data);
@@ -96,13 +94,10 @@ public class ACLConfigure : MonoBehaviour {
   public void CheckDefault(Dropdown dd, char option) {
     Debug.Log("CheckDefault for " + dd.name);
     /* Some mode now has a value, set all other modes to N */
-    foreach (Dropdown drop in mode_drops) {
-      if (drop != dd) {
+    foreach (Dropdown drop in mode_drops)
+      if (drop != dd)
         ModeOptions(drop, 'N');
-      }
-      else {
+      else
         ModeOptions(dd, option);
-      }
-    }
   }
 }

@@ -1,14 +1,20 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
 using System.IO;
 using System.Text;
-using System;
+using UnityEngine;
 
 public class ccUtils : MonoBehaviour {
   //static float GRID_SIZE = 3.0f;
-  static float GRID_SIZE = 1.0f;
+  private static readonly float GRID_SIZE = 1.0f;
+
+  // Use this for initialization
+  private void Start() {
+  }
+
+  // Update is called once per frame
+  private void Update() {
+  }
 
   public static void LoadHWInfoFromFile(string fname, List<string> hw_list, Dictionary<string, Mesh> mesh_dict,
     Dictionary<string, Material> mat_dict) {
@@ -16,11 +22,10 @@ public class ccUtils : MonoBehaviour {
     string asset_name;
     Mesh this_mesh;
     Material this_mat;
-    List<string> this_list = new List<string>();
+    var this_list = new List<string>();
     LoadListFromFile(fname, this_list);
 
-    foreach (string s in this_list) {
-      //Debug.Log("Now processing " + s);
+    foreach (string s in this_list) //Debug.Log("Now processing " + s);
       if (s.Contains(",")) {
         string[] s_array = s.Split(',');
         device_name = s_array[0];
@@ -49,7 +54,6 @@ public class ccUtils : MonoBehaviour {
       else {
         hw_list.Add(s);
       }
-    }
   }
 
   public static void LoadListFromFile(string fname, List<string> hw_list) {
@@ -101,16 +105,11 @@ public class ccUtils : MonoBehaviour {
         break;
       line = line.Trim();
       //Debug.Log("SDTField line is " + line);
-      if (line.StartsWith(token + ":")) {
+      if (line.StartsWith(token + ":"))
         full_line = line;
-      }
-      else if (full_line.Length > 0) {
-        full_line = full_line + line;
-      }
+      else if (full_line.Length > 0) full_line = full_line + line;
 
-      if (full_line.Trim().EndsWith(":end")) {
-        retval = SDTField(full_line, token);
-      }
+      if (full_line.Trim().EndsWith(":end")) retval = SDTField(full_line, token);
     }
 
     return retval;
@@ -135,39 +134,33 @@ public class ccUtils : MonoBehaviour {
     if (value == null) {
       return default_value;
     }
-    else {
-      bool retval = false;
-      if (!bool.TryParse(value, out retval)) {
-        Debug.Log("Error SDTFieldDefault parse " + value);
-      }
 
-      return retval;
-    }
+    bool retval = false;
+    if (!bool.TryParse(value, out retval)) Debug.Log("Error SDTFieldDefault parse " + value);
+
+    return retval;
   }
 
   public static void PositionAfter(StreamReader reader, string tag) {
     //Debug.Log("PositionAfter " + tag);
     string line = "";
-    while (line != tag + ":" && line != null) {
-      line = reader.ReadLine();
-      //Debug.Log("PositionAfter got " + line);
-    }
+    while (line != tag + ":" && line != null) line = reader.ReadLine();
+    //Debug.Log("PositionAfter got " + line);
   }
 
   public static int SubstringCount(string source, string substring) {
     int count = 0, n = 0;
 
-    if (substring != "") {
+    if (substring != "")
       while ((n = source.IndexOf(substring, n, StringComparison.InvariantCulture)) != -1) {
         n += substring.Length;
         ++count;
       }
-    }
 
     return count;
   }
 
-  static string ReaderCutComment(StreamReader reader) {
+  private static string ReaderCutComment(StreamReader reader) {
     string line = "";
     do {
       line = reader.ReadLine();
@@ -177,9 +170,7 @@ public class ccUtils : MonoBehaviour {
       //Debug.Log("line in cutComment <" + line + ">");
       if (line.Length > 0) {
         int index = line.IndexOf("//");
-        if (index >= 0) {
-          line = line.Substring(0, index).Trim();
-        }
+        if (index >= 0) line = line.Substring(0, index).Trim();
       }
     } while (line != null && line.Length == 0);
 
@@ -194,21 +185,15 @@ public class ccUtils : MonoBehaviour {
     //Debug.Log("SDTNext");
     do {
       line = ReaderCutComment(reader);
-      if (line == null) {
-        //Debug.Log("line is null");
+      if (line == null) //Debug.Log("line is null");
         return null;
-      }
-      else if (retval == null && line == ":end") {
-        return "end";
-      }
+      if (retval == null && line == ":end") return "end";
       //Debug.Log("SDTNext first line is <" + line + ">");
 
       int coffset = line.IndexOf(':');
       retval = line.Substring(coffset + 1).Trim('\n', '\r', ' ');
       //Debug.Log("retval is <" + retval + ">");
-      if (retval == ":end") {
-        return "";
-      }
+      if (retval == ":end") return "";
 
       tag = line.Substring(0, coffset).Trim();
       //Debug.Log("SDTNext retval <" + retval + "> tag " + tag);
@@ -240,9 +225,7 @@ public class ccUtils : MonoBehaviour {
         //while ((level != 0 || !(colon_count == 0 && line.EndsWith(":end"))) && line != null)
         while (line != null && (level > 0 || !(colon_count == 0 && line.EndsWith(":end")))) {
           line = ReaderCutComment(reader);
-          if (line == null) {
-            continue;
-          }
+          if (line == null) continue;
 
           if (line.EndsWith(":")) {
             /* assume new subblock */
@@ -267,9 +250,7 @@ public class ccUtils : MonoBehaviour {
                 retval = retval + " " + line;
               }
               else {
-                if (!line.Trim().EndsWith(":end")) {
-                  level++;
-                }
+                if (!line.Trim().EndsWith(":end")) level++;
 
                 retval = retval + "\n" + line;
               }
@@ -287,8 +268,8 @@ public class ccUtils : MonoBehaviour {
   public static void GridTo3dPos(int xcoord, int ycoord, out float xout, out float yout) {
     //	*xout = (0.5f+ (float)xcoord) * GRID_SIZE; 
     //	*yout = (0.5f+ (float)ycoord) * GRID_SIZE;
-    xout = (0.48f + (float) xcoord) * GRID_SIZE;
-    yout = (0.48f + (float) ycoord) * GRID_SIZE;
+    xout = (0.48f + xcoord) * GRID_SIZE;
+    yout = (0.48f + ycoord) * GRID_SIZE;
   }
 
   public static void PosToGrid(out int xcoord, out int ycoord, float xin, float yin) {
@@ -317,13 +298,5 @@ public class ccUtils : MonoBehaviour {
     command = s.Substring(0, first_colon);
     string retval = s.Substring(first_colon + 1);
     return retval;
-  }
-
-  // Use this for initialization
-  void Start() {
-  }
-
-  // Update is called once per frame
-  void Update() {
   }
 }

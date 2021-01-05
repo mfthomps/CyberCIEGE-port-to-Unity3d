@@ -1,10 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System;
+using System.Collections;
 using System.IO;
-using System.Net.Sockets;
-using System.Text;
-using System;
+using UnityEngine;
 
 public class GameLoadBehavior : MonoBehaviour {
   //public static string user_app_path = "C:\\Documents and Settings\\mfthomps\\Application Data\\CyberCIEGE";
@@ -12,40 +9,43 @@ public class GameLoadBehavior : MonoBehaviour {
     Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "CyberCIEGE");
 
   public static GameObject main_floor;
-  public static ProceduralScript procedural_settings = null;
-  public static ProceduralScript physical_settings = null;
+  public static ProceduralScript procedural_settings;
+  public static ProceduralScript physical_settings;
 
-  public static DACGroups dac_groups = null;
+  public static DACGroups dac_groups;
 
   /* TBD FIX CAMERA management */
   public static Vector3 home_pos = new Vector3(58.0f, 11.0f, 27.0f);
   public static Quaternion home_rot = Quaternion.Euler(10.6f, -26.8f, 0.3f);
 
+  private void Start() {
+    Debug.Log("HI THERE");
+    /* connect to server*/
+    IPCManagerScript.ConnectServer();
+    //AfterServerReady();
+    Debug.Log("back from wait init server");
+    //GameObject ticker = GameObject.Find("ScrollText");
+    //ScrollingTextScript st = (ScrollingTextScript)ticker.GetComponent(typeof(ScrollingTextScript));
+    //st.AddMessage("the time has come for all brown dogs to come to the aid of their quick brown foxes");
+  }
 
-  void LoadMainOffice() {
-    string path = System.IO.Path.Combine(user_app_path, "mainoffice.txt");
+
+  private void LoadMainOffice() {
+    string path = Path.Combine(user_app_path, "mainoffice.txt");
     StreamReader f = new StreamReader(path);
     string line = f.ReadLine();
     string[] parts = line.Split(new char[0], StringSplitOptions.RemoveEmptyEntries);
     int top = -1;
-    if (!int.TryParse(parts[1], out top)) {
-      Debug.Log("Error LoadMainOffice parse " + parts[1]);
-    }
+    if (!int.TryParse(parts[1], out top)) Debug.Log("Error LoadMainOffice parse " + parts[1]);
 
     int left = -1;
-    if (!int.TryParse(parts[2], out left)) {
-      Debug.Log("Error LoadMainOffice parse " + parts[1]);
-    }
+    if (!int.TryParse(parts[2], out left)) Debug.Log("Error LoadMainOffice parse " + parts[1]);
 
     int bottom = -1;
-    if (!int.TryParse(parts[3], out bottom)) {
-      Debug.Log("Error LoadMainOffice parse " + parts[1]);
-    }
+    if (!int.TryParse(parts[3], out bottom)) Debug.Log("Error LoadMainOffice parse " + parts[1]);
 
     int right = -1;
-    if (!int.TryParse(parts[4], out right)) {
-      Debug.Log("Error LoadMainOffice parse " + parts[1]);
-    }
+    if (!int.TryParse(parts[4], out right)) Debug.Log("Error LoadMainOffice parse " + parts[1]);
 
     GameObject floor = GameObject.Find("Floor");
     main_floor = Instantiate(floor, new Vector3(left * 1.0f, 0, top * 1.0f), Quaternion.identity);
@@ -54,7 +54,7 @@ public class GameLoadBehavior : MonoBehaviour {
     Debug.Log("main_floor instantiated, name is " + main_floor.name);
   }
 
-  static void LoadItems() {
+  private static void LoadItems() {
     NetworkBehavior.LoadNetworks(user_app_path);
     procedural_settings = new ProceduralScript("procedural.txt");
     physical_settings = new ProceduralScript("physical.txt");
@@ -78,7 +78,7 @@ public class GameLoadBehavior : MonoBehaviour {
     //LoadMainOffice();
   }
 
-  IEnumerator Example() {
+  private IEnumerator Example() {
     print(Time.time);
     yield return new WaitForSeconds(1);
     print(Time.time);
@@ -97,16 +97,5 @@ public class GameLoadBehavior : MonoBehaviour {
     Camera.main.depth = 1;
     MaxCamera cameraScript = (MaxCamera) Camera.main.GetComponent(typeof(MaxCamera));
     cameraScript.setPosition(home_pos);
-  }
-
-  void Start() {
-    Debug.Log("HI THERE");
-    /* connect to server*/
-    IPCManagerScript.ConnectServer();
-    //AfterServerReady();
-    Debug.Log("back from wait init server");
-    //GameObject ticker = GameObject.Find("ScrollText");
-    //ScrollingTextScript st = (ScrollingTextScript)ticker.GetComponent(typeof(ScrollingTextScript));
-    //st.AddMessage("the time has come for all brown dogs to come to the aid of their quick brown foxes");
   }
 }

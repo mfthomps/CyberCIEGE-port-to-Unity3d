@@ -1,33 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 using System.IO;
-using System;
-using UnityEngine.UI;
+using UnityEngine;
 
 public class menus : MonoBehaviour {
-  public GUISkin guiSkin;
-  public Texture2D background, LOGO;
-  static GUIStyle labelStyle = new GUIStyle();
+  private static readonly GUIStyle labelStyle = new GUIStyle();
   public static string clockLabelString = "001000";
-  static int guiX = 40;
-  public bool DragWindow = true;
-  public string levelToLoadWhenClickedPlay = "";
-  public string[] AboutTextLines = new string[0];
-  public string editableText;
-  public int gridSelect = -1;
-  public Vector2 scrollPosition;
+  private static int guiX = 40;
   public static string clicked = "";
-  private Rect WindowRect = new Rect(10, 10, 250, 300);
-  public bool inHelp = false;
-  private Color savedColor;
-  private Color workingColor;
-  GUIStyle helpStyle;
-  Texture2D black;
-  static MaxCamera cameraScript;
-  static GameObject mainCamera;
-  static private GameObject backdrop;
-  static private string clicked_was = "";
+  private static MaxCamera cameraScript;
+  private static GameObject mainCamera;
+  private static GameObject backdrop;
+  private static string clicked_was = "";
 
   public static Dictionary<string, GameObject> menu_panels = new Dictionary<string, GameObject>();
 
@@ -37,10 +20,6 @@ public class menus : MonoBehaviour {
 
   /* only updated for panel screens, not for guilayout's */
   public static string active_screen = "office";
-
-  public RectTransform myPanel;
-  public GameObject myTextPrefab;
-  GameObject canvas = null;
   public static int UI_SCREEN_DEBRIEF = 1;
   public static int UI_SCREEN_OFFICE = 2;
   public static int UI_SCREEN_NETWORK = 3;
@@ -66,13 +45,31 @@ public class menus : MonoBehaviour {
   public static int UI_SCREEN_ATTACKLOG = 23;
 
   public static int UI_SCREEN_CYBER_CHARK = 24;
+  public GUISkin guiSkin;
+  public Texture2D background, LOGO;
+  public bool DragWindow = true;
+  public string levelToLoadWhenClickedPlay = "";
+  public string[] AboutTextLines = new string[0];
+  public string editableText;
+  public int gridSelect = -1;
+  public Vector2 scrollPosition;
+  public bool inHelp;
+
+  public RectTransform myPanel;
+  public GameObject myTextPrefab;
+  private Texture2D black;
+  private GameObject canvas = null;
+  private GUIStyle helpStyle;
+  private Color savedColor;
+  private Rect WindowRect = new Rect(10, 10, 250, 300);
+  private Color workingColor;
 
   // Use this for initialization
-  void Start() {
+  private void Start() {
     Debug.Log("menus start");
 
     helpStyle = new GUIStyle();
-    black = (Texture2D) Resources.Load("Materials/black") as Texture2D;
+    black = (Texture2D) Resources.Load("Materials/black");
 
     helpStyle.normal.background = black;
     helpStyle.normal.textColor = Color.white;
@@ -115,152 +112,8 @@ public class menus : MonoBehaviour {
     screen_dict["Objectives"] = UI_SCREEN_OBJECTIVE;
   }
 
-  private void OnGUI() {
-    GUI.skin = guiSkin;
-    checkSelect();
-    //Debug.Log("time is " + GameStatusScript.time_label);
-    GUI.Label(new Rect(200, 5, 475, 20), GameStatusScript.time_label, labelStyle);
-    GUI.Label(new Rect(200, 35, 475, 50), GameStatusScript.cash_label, labelStyle);
-    //Debug.Log("bonus label " + GameStatusScript.bonus_label);
-    GUI.Label(new Rect(700, 65, 875, 80), GameStatusScript.bonus_label, labelStyle);
-    //GUI.Label(new Rect(20, 55, 275, 60), "the goose drank", labelStyle);
-  }
-
-
-  private void checkSelect() {
-    if (clicked_was == "" && clicked != "") {
-      // new click, advise engine
-      IPCManagerScript.DialogUp();
-    }
-    else if (clicked_was != "" && clicked == "" && active_screen == "office") {
-      IPCManagerScript.DialogClosed();
-    }
-
-    if (clicked_was == "menu" && clicked != "" && clicked != "menu") {
-      // new click, advise engine
-      Debug.Log("clicked is " + clicked);
-      if (screen_dict.ContainsKey(clicked)) {
-        IPCManagerScript.SendRequest("on_screen:" + screen_dict[clicked]);
-      }
-    }
-    else if (clicked_was != "menu" && clicked_was != "" && clicked == "" && active_screen == "office") {
-      if (screen_dict.ContainsKey(clicked_was)) {
-        IPCManagerScript.SendRequest("on_screen:" + UI_SCREEN_OFFICE);
-      }
-    }
-
-    clicked_was = clicked;
-    //Debug.Log("checkSelect");
-
-    //if (clicked == "" && !inHelp && Event.current.type != EventType.MouseDown)
-    if (clicked == "" && !inHelp) {
-      string pplabel = "Pause";
-      if (GameStatusScript.isPaused()) {
-        pplabel = "Play";
-      }
-
-      //Debug.Log( && Event.current.type == EventType.Layout
-      GUILayout.BeginArea(new Rect(5, 5, 150, 100));
-
-      GUILayout.BeginHorizontal();
-      if (GUILayout.Button(pplabel)) {
-        //Debug.Log("got button, send " + pplabel);
-        IPCManagerScript.SendRequest(pplabel);
-        //startup.doUserPause();
-      }
-
-      GUILayout.EndHorizontal();
-      GUILayout.EndArea();
-    }
-    else if (clicked == "menu") {
-      WindowRect = GUI.Window(1, WindowRect, MenuItemsFunc, "Menu");
-    }
-    else if (clicked == "help") {
-      Debug.Log("asked help");
-      //Application.OpenURL("file://" + startup.helpHome + "/README.html");
-      clicked = "";
-    }
-    else if (clicked == "Buy") {
-      Debug.Log("clicked Buy");
-      CatalogBehavior.doMenu();
-    }
-    else if (clicked == "Hire") {
-      Debug.Log("clicked Hire");
-      ITStaffBehavior.doItems();
-    }
-    else if (clicked == "Objectives") {
-      Debug.Log("clicked Objectives");
-      ObjectivesBehavior.doItems();
-    }
-    else if (clicked == "Zones") {
-      Debug.Log("clicked Zones");
-      ZoneBehavior.doItems();
-    }
-    else if (clicked == "Save") {
-      Debug.Log("clicked Save");
-      string fname = System.IO.Path.Combine(GameLoadBehavior.user_app_path, "debug_save.sdf");
-      IPCManagerScript.SendRequest("save:" + fname);
-    }
-    //else if (clicked == "Servers" || clicked == "Workstations" || clicked == "Devices" ||clicked == "Buying")
-    else if (clicked.StartsWith("Catalog:")) {
-      CatalogBehavior.doItems();
-    }
-    else if (clicked.StartsWith("Component:")) {
-      ComponentBehavior.doItems();
-    }
-    else if (clicked.StartsWith("User:")) {
-      UserBehavior.doItems();
-    }
-  }
-
-  private void MenuItemsFunc(int id) {
-    if (GUILayout.Button("Help")) {
-      clicked = "help";
-    }
-    else if (GUILayout.Button("Buy")) {
-      clicked = "Buy";
-    }
-    else if (GUILayout.Button("Hire")) {
-      clicked = "Hire";
-    }
-    else if (GUILayout.Button("Objectives")) {
-      clicked = "Objectives";
-    }
-    else if (GUILayout.Button("Zones")) {
-      clicked = "Zones";
-    }
-    else if (GUILayout.Button("Save")) {
-      clicked = "Save";
-    }
-    else if (GUILayout.Button("Quit")) {
-      clicked = "";
-      Application.Quit();
-      Debug.Log("quit from menu");
-    }
-    else if (GUILayout.Button("Close menu")) {
-      clicked = "";
-    }
-  }
-
-  public static string MenuLevel(int level) {
-    string[] parts = menus.clicked.Split(':');
-    return parts[level];
-  }
-
-  public static void ActiveScreen(string screen) {
-    active_screen = screen;
-    Debug.Log("menues ActiveScreen for " + screen);
-    IPCManagerScript.SendRequest("on_screen:" + screen_dict[screen]);
-  }
-
-  public static void ClosedScreen(string screen) {
-    active_screen = "office";
-    IPCManagerScript.SendRequest("on_screen:" + UI_SCREEN_OFFICE);
-    IPCManagerScript.DialogClosed();
-  }
-
   // Update is called once per frame
-  void Update() {
+  private void Update() {
     if (Input.GetKeyDown("h")) {
       Debug.Log("h key is down");
       Vector3 pos = GameLoadBehavior.home_pos;
@@ -326,5 +179,137 @@ public class menus : MonoBehaviour {
         }
       }
     }
+  }
+
+  private void OnGUI() {
+    GUI.skin = guiSkin;
+    checkSelect();
+    //Debug.Log("time is " + GameStatusScript.time_label);
+    GUI.Label(new Rect(200, 5, 475, 20), GameStatusScript.time_label, labelStyle);
+    GUI.Label(new Rect(200, 35, 475, 50), GameStatusScript.cash_label, labelStyle);
+    //Debug.Log("bonus label " + GameStatusScript.bonus_label);
+    GUI.Label(new Rect(700, 65, 875, 80), GameStatusScript.bonus_label, labelStyle);
+    //GUI.Label(new Rect(20, 55, 275, 60), "the goose drank", labelStyle);
+  }
+
+
+  private void checkSelect() {
+    if (clicked_was == "" && clicked != "") // new click, advise engine
+      IPCManagerScript.DialogUp();
+    else if (clicked_was != "" && clicked == "" && active_screen == "office") IPCManagerScript.DialogClosed();
+
+    if (clicked_was == "menu" && clicked != "" && clicked != "menu") {
+      // new click, advise engine
+      Debug.Log("clicked is " + clicked);
+      if (screen_dict.ContainsKey(clicked)) IPCManagerScript.SendRequest("on_screen:" + screen_dict[clicked]);
+    }
+    else if (clicked_was != "menu" && clicked_was != "" && clicked == "" && active_screen == "office") {
+      if (screen_dict.ContainsKey(clicked_was)) IPCManagerScript.SendRequest("on_screen:" + UI_SCREEN_OFFICE);
+    }
+
+    clicked_was = clicked;
+    //Debug.Log("checkSelect");
+
+    //if (clicked == "" && !inHelp && Event.current.type != EventType.MouseDown)
+    if (clicked == "" && !inHelp) {
+      string pplabel = "Pause";
+      if (GameStatusScript.isPaused()) pplabel = "Play";
+
+      //Debug.Log( && Event.current.type == EventType.Layout
+      GUILayout.BeginArea(new Rect(5, 5, 150, 100));
+
+      GUILayout.BeginHorizontal();
+      if (GUILayout.Button(pplabel)) //Debug.Log("got button, send " + pplabel);
+        IPCManagerScript.SendRequest(pplabel);
+      //startup.doUserPause();
+
+      GUILayout.EndHorizontal();
+      GUILayout.EndArea();
+    }
+    else if (clicked == "menu") {
+      WindowRect = GUI.Window(1, WindowRect, MenuItemsFunc, "Menu");
+    }
+    else if (clicked == "help") {
+      Debug.Log("asked help");
+      //Application.OpenURL("file://" + startup.helpHome + "/README.html");
+      clicked = "";
+    }
+    else if (clicked == "Buy") {
+      Debug.Log("clicked Buy");
+      CatalogBehavior.doMenu();
+    }
+    else if (clicked == "Hire") {
+      Debug.Log("clicked Hire");
+      ITStaffBehavior.doItems();
+    }
+    else if (clicked == "Objectives") {
+      Debug.Log("clicked Objectives");
+      ObjectivesBehavior.doItems();
+    }
+    else if (clicked == "Zones") {
+      Debug.Log("clicked Zones");
+      ZoneBehavior.doItems();
+    }
+    else if (clicked == "Save") {
+      Debug.Log("clicked Save");
+      string fname = Path.Combine(GameLoadBehavior.user_app_path, "debug_save.sdf");
+      IPCManagerScript.SendRequest("save:" + fname);
+    }
+    //else if (clicked == "Servers" || clicked == "Workstations" || clicked == "Devices" ||clicked == "Buying")
+    else if (clicked.StartsWith("Catalog:")) {
+      CatalogBehavior.doItems();
+    }
+    else if (clicked.StartsWith("Component:")) {
+      ComponentBehavior.doItems();
+    }
+    else if (clicked.StartsWith("User:")) {
+      UserBehavior.doItems();
+    }
+  }
+
+  private void MenuItemsFunc(int id) {
+    if (GUILayout.Button("Help")) {
+      clicked = "help";
+    }
+    else if (GUILayout.Button("Buy")) {
+      clicked = "Buy";
+    }
+    else if (GUILayout.Button("Hire")) {
+      clicked = "Hire";
+    }
+    else if (GUILayout.Button("Objectives")) {
+      clicked = "Objectives";
+    }
+    else if (GUILayout.Button("Zones")) {
+      clicked = "Zones";
+    }
+    else if (GUILayout.Button("Save")) {
+      clicked = "Save";
+    }
+    else if (GUILayout.Button("Quit")) {
+      clicked = "";
+      Application.Quit();
+      Debug.Log("quit from menu");
+    }
+    else if (GUILayout.Button("Close menu")) {
+      clicked = "";
+    }
+  }
+
+  public static string MenuLevel(int level) {
+    string[] parts = clicked.Split(':');
+    return parts[level];
+  }
+
+  public static void ActiveScreen(string screen) {
+    active_screen = screen;
+    Debug.Log("menues ActiveScreen for " + screen);
+    IPCManagerScript.SendRequest("on_screen:" + screen_dict[screen]);
+  }
+
+  public static void ClosedScreen(string screen) {
+    active_screen = "office";
+    IPCManagerScript.SendRequest("on_screen:" + UI_SCREEN_OFFICE);
+    IPCManagerScript.DialogClosed();
   }
 }

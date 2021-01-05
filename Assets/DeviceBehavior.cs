@@ -1,21 +1,23 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using System;
 using System.IO;
 using System.Text;
 using UnityEngine;
 
 public class DeviceBehavior : ComponentBehavior {
-  static string DEVICES = "devices";
-  static string user_app_path;
+  private static readonly string DEVICES = "devices";
+  private static string user_app_path;
   private static string hw_name;
+
+  private void Start() {
+  }
 
   public static void LoadOneDevice(string device_file) {
     GameObject device;
     device = GameObject.Find("Device");
     //Debug.Log("user_app_path" + user_app_path + " file [" + computer_file+"]");
-    string cdir = System.IO.Path.Combine(user_app_path, DEVICES);
-    string cfile = System.IO.Path.Combine(cdir, device_file);
+    string cdir = Path.Combine(user_app_path, DEVICES);
+    string cfile = Path.Combine(cdir, device_file);
     //Debug.Log("computer " + cdir);
     GameObject new_d = Instantiate(device, new Vector3(1.0F, 0, 0), Quaternion.identity);
     DeviceBehavior script = (DeviceBehavior) new_d.GetComponent(typeof(DeviceBehavior));
@@ -57,8 +59,8 @@ public class DeviceBehavior : ComponentBehavior {
 
   public static void LoadDevices(string path) {
     user_app_path = path;
-    string cdir = System.IO.Path.Combine(user_app_path, DEVICES);
-    string[] clist = System.IO.Directory.GetFiles(cdir);
+    string cdir = Path.Combine(user_app_path, DEVICES);
+    string[] clist = Directory.GetFiles(cdir);
     int i = 1;
     foreach (string device_file in clist) {
       LoadOneDevice(device_file);
@@ -77,17 +79,12 @@ public class DeviceBehavior : ComponentBehavior {
         string value = null;
         do {
           value = ccUtils.SDTNext(reader, out tag).Trim();
-          if (value == null) {
+          if (value == null)
             continue;
-          }
-          else {
-            //Debug.Log("LoadComputer got " + value + " for tag " + tag);
-
-            switch (tag) {
-              case "HW": //Right now I think we're only using one of the params here, could change though
-                hw_name = value;
-                break;
-            }
+          switch (tag) {
+            case "HW": //Right now I think we're only using one of the params here, could change though
+              hw_name = value;
+              break;
           }
         } while (value != null);
       }
@@ -95,8 +92,5 @@ public class DeviceBehavior : ComponentBehavior {
     catch (Exception e) {
       Console.WriteLine(e.Message + "\n");
     }
-  }
-
-  void Start() {
   }
 }
