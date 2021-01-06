@@ -108,6 +108,7 @@ public class menus : MonoBehaviour {
     help_tip_panel.SetActive(false);
 
     screen_dict["Objectives"] = UI_SCREEN_OBJECTIVE;
+    screen_dict["AttackLog"] = UI_SCREEN_ATTACKLOG;
   }
 
   // Update is called once per frame
