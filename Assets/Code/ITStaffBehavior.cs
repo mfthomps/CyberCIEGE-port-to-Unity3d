@@ -6,7 +6,7 @@ using System.Xml.Linq;
 using UnityEngine;
 
 public class ITStaffBehavior : MonoBehaviour {
-  public static Dictionary<string, ITStaffBehavior> staff_dict = new Dictionary<string, ITStaffBehavior>();
+  private static Dictionary<string, ITStaffBehavior> staff_dict = new Dictionary<string, ITStaffBehavior>();
   private static readonly string STAFF = "staff";
   private static Rect WindowRect = new Rect(10, 10, 250, 300);
   public static Texture2D background, LOGO;
@@ -22,15 +22,7 @@ public class ITStaffBehavior : MonoBehaviour {
   public int salary;
 
   private string filePath;
-
-  // Use this for initialization
-  private void Start() {
-  }
-
-  // Update is called once per frame
-  private void Update() {
-  }
-
+  
   public static void doItems() {
     WindowRect = GUI.Window(1, WindowRect, HireMenu, "Hire IT/Security");
   }
@@ -54,7 +46,7 @@ public class ITStaffBehavior : MonoBehaviour {
     //Debug.Log("HireMenu clicked now " + menus.clicked);
   }
 
-  public static void LoadOneStaff(string user_file) {
+  private static void LoadOneStaff(string user_file) {
     GameObject user = GameObject.Find("ITStaff");
     if (user == null) {
       Debug.LogError("Error: LoadOneStaff got null when finding ITStaff game object.");
@@ -107,14 +99,14 @@ public class ITStaffBehavior : MonoBehaviour {
         LoadOneStaff(user_file);
   }
 
-  public void LoadStaff() {
+  private void LoadStaff() {
     try {
       StreamReader reader = new StreamReader(filePath, Encoding.Default);
       using (reader) {
         string tag;
         //Debug.Log("LoadUser read from " + filePath);
         ccUtils.PositionAfter(reader, "User");
-        string value = null;
+        string value;
         do {
           value = ccUtils.SDTNext(reader, out tag);
           if (value == null)
