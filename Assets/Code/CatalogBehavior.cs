@@ -165,7 +165,7 @@ public class CatalogBehavior : MonoBehaviour {
       if (index >= 0) {
         WorkSpaceScript.WorkSpace ws = WorkSpaceScript.GetWorkSpace(index);
         bool room = true;
-        Debug.Log("buying object name " + buying_object.name);
+        //Debug.Log("buying object name " + buying_object.name);
         if (buying_object.name.StartsWith("Computer")) {
           if (!ws.ComputerRoom()) room = false;
         }
@@ -173,7 +173,7 @@ public class CatalogBehavior : MonoBehaviour {
           if (!ws.DeviceRoom()) room = false;
         }
 
-        Debug.Log("ws " + index + " usage " + ws.usage + " room? " + room);
+        //Debug.Log("ws " + index + " usage " + ws.usage + " room? " + room);
         if (room && Input.GetMouseButtonDown(0) && !Input.GetKey(KeyCode.LeftAlt)) {
           Debug.Log("Catalog buy");
           do_buy = true;

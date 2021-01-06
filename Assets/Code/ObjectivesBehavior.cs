@@ -28,7 +28,7 @@ public class ObjectivesBehavior : MonoBehaviour {
     XmlNode objective_node = xml_doc.SelectSingleNode("//objective");
     string name = objective_node["name"].InnerText;
     string status = objective_node["completed"].InnerText;
-    Debug.Log("status is " + status);
+    //Debug.Log("status is " + status);
     bool completed = false;
     if (!bool.TryParse(status, out completed)) Debug.Log("Error: ObjectiveStatus parse " + status);
 

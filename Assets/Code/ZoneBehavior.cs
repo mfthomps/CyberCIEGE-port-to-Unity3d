@@ -94,7 +94,7 @@ public class ZoneBehavior : MonoBehaviour {
           if (value == null)
             continue;
           if (value == "") {
-            Debug.Log("ZoneBehavior empty value");
+            //Debug.Log("ZoneBehavior empty value");
             continue;
           }
 

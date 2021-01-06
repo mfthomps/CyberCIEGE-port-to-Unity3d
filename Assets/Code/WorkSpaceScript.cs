@@ -32,7 +32,7 @@ public class WorkSpaceScript : MonoBehaviour {
           line = reader.ReadLine().Trim();
           if (line == "WORKSPACELIST" || line == "end")
             continue;
-          Debug.Log("LoadWorkSpace got " + line);
+          //Debug.Log("LoadWorkSpace got " + line);
           string[] parts = line.Split(new char[0], StringSplitOptions.RemoveEmptyEntries);
           int x = 0;
           int y = 0;
@@ -148,7 +148,7 @@ public class WorkSpaceScript : MonoBehaviour {
       int i = 0;
       while (!retval && i < computer_slots.Length) {
         if (computer_slots[i] == null) {
-          Debug.Log("slot empty " + i);
+          //Debug.Log("slot empty " + i);
           retval = true;
         }
 

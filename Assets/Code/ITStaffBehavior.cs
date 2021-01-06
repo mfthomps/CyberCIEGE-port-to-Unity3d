@@ -57,7 +57,7 @@ public class ITStaffBehavior : MonoBehaviour {
   public static void LoadOneStaff(string user_file) {
     GameObject user = GameObject.Find("ITStaff");
     if (user == null) {
-      Debug.Log("Error: LoadOneStaff got null when finding ITStaff game object.");
+      Debug.LogError("Error: LoadOneStaff got null when finding ITStaff game object.");
       return;
     }
 

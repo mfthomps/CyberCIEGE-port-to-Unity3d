@@ -198,7 +198,7 @@ public class menus : MonoBehaviour {
 
     if (clicked_was == "menu" && clicked != "" && clicked != "menu") {
       // new click, advise engine
-      Debug.Log("clicked is " + clicked);
+      //Debug.Log("clicked is " + clicked);
       if (screen_dict.ContainsKey(clicked)) IPCManagerScript.SendRequest("on_screen:" + screen_dict[clicked]);
     }
     else if (clicked_was != "menu" && clicked_was != "" && clicked == "" && active_screen == "office") {
@@ -228,28 +228,22 @@ public class menus : MonoBehaviour {
       WindowRect = GUI.Window(1, WindowRect, MenuItemsFunc, "Menu");
     }
     else if (clicked == "help") {
-      Debug.Log("asked help");
       //Application.OpenURL("file://" + startup.helpHome + "/README.html");
       clicked = "";
     }
     else if (clicked == "Buy") {
-      Debug.Log("clicked Buy");
       CatalogBehavior.doMenu();
     }
     else if (clicked == "Hire") {
-      Debug.Log("clicked Hire");
       ITStaffBehavior.doItems();
     }
     else if (clicked == "Objectives") {
-      Debug.Log("clicked Objectives");
       ObjectivesBehavior.doItems();
     }
     else if (clicked == "Zones") {
-      Debug.Log("clicked Zones");
       ZoneBehavior.doItems();
     }
     else if (clicked == "Save") {
-      Debug.Log("clicked Save");
       string fname = Path.Combine(GameLoadBehavior.user_app_path, "debug_save.sdf");
       IPCManagerScript.SendRequest("save:" + fname);
     }

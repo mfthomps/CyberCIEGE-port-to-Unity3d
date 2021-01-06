@@ -115,7 +115,7 @@ public class ComponentBehavior : MonoBehaviour {
   public static void doItems() {
     /* find the computer that brought up a menu, and call its menuItems method */
     string component_name = menus.MenuLevel(1);
-    Debug.Log("look in dict for " + component_name);
+    //Debug.Log("look in dict for " + component_name);
     if (!computer_dict.ContainsKey(component_name)) {
       Debug.Log("Error ComponentBehavior, doItems, not in computer_dict: " + component_name);
       menus.clicked = "";
@@ -129,12 +129,12 @@ public class ComponentBehavior : MonoBehaviour {
     }
     else {
       string submenu = menus.MenuLevel(2);
-      Debug.Log("submenu is <" + submenu + "> level is " + level + " clicked " + menus.clicked);
+      //Debug.Log("submenu is <" + submenu + "> level is " + level + " clicked " + menus.clicked);
       switch (submenu) {
         case "Networks":
           if (level == 3) {
             string operation = menus.MenuLevel(3);
-            Debug.Log("level 3, operation " + operation);
+            //Debug.Log("level 3, operation " + operation);
             if (operation == "Connect")
               WindowRect = GUI.Window(2, WindowRect, script.ConnectList, operation);
             else if (operation == "Disconnect")
@@ -219,7 +219,7 @@ public class ComponentBehavior : MonoBehaviour {
       menus.clicked += ":Disconnect";
     else if (GUILayout.Button("Close menu")) menus.clicked = "";
 
-    Debug.Log("NetworkItems clicked now " + menus.clicked);
+    //Debug.Log("NetworkItems clicked now " + menus.clicked);
   }
 
   public void SetFilePath(string path) {
