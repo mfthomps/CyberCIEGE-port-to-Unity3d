@@ -6,8 +6,9 @@ public class menus : MonoBehaviour {
   private static readonly GUIStyle labelStyle = new GUIStyle();
   public static string clockLabelString = "001000";
   public static string clicked = "";
-  private static MaxCamera cameraScript;
-  private static GameObject mainCamera;
+  
+  [SerializeField] private MaxCamera cameraController;
+  
   private static GameObject backdrop;
   private static string clicked_was = "";
 
@@ -71,10 +72,7 @@ public class menus : MonoBehaviour {
 
     helpStyle.normal.background = black;
     helpStyle.normal.textColor = Color.white;
-    mainCamera = GameObject.Find("Main Camera");
-    //mainCamera.transform.position = pos;
-    cameraScript = (MaxCamera) Camera.main.GetComponent(typeof(MaxCamera));
-
+    
     labelStyle.normal.textColor = Color.black;
 
     /* create dictionary of menu/gui panels so they can be deactivated and yet 
@@ -115,9 +113,7 @@ public class menus : MonoBehaviour {
   private void Update() {
     if (Input.GetKeyDown("h")) {
       Vector3 pos = GameLoadBehavior.home_pos;
-
-      mainCamera.transform.rotation = GameLoadBehavior.home_rot;
-      cameraScript.setPosition(pos);
+      cameraController.setPosition(pos);
     }
     else if (Input.GetKeyDown("u")) {
       UserBehavior ub = UserBehavior.GetNextUser();
@@ -128,7 +124,7 @@ public class menus : MonoBehaviour {
       }
 
       GameObject user = ub.gameObject;
-      cameraScript.setPosition(user.transform.position);
+      cameraController.setPosition(user.transform.position);
     }
     else if (Input.GetKeyDown("?")) {
       IPCManagerScript.SendRequest("dump_conditions");
@@ -140,7 +136,7 @@ public class menus : MonoBehaviour {
       ComponentBehavior ub = ComponentBehavior.GetNextComponent();
       GameObject computer = ub.gameObject;
       Debug.Log("next component is " + ub.component_name + " pos x" + computer.transform.position.x);
-      cameraScript.setPosition(computer.transform.position);
+      cameraController.setPosition(computer.transform.position);
     }
     else if (Input.GetMouseButtonDown(1) && !Input.GetKey(KeyCode.LeftAlt)) {
       menu_panels["HelpTip"].SetActive(false);
