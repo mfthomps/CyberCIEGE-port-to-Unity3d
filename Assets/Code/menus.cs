@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class menus : MonoBehaviour {
   private static readonly GUIStyle labelStyle = new GUIStyle();
-  public static string clockLabelString = "001000";
   public static string clicked = "";
-  private static MaxCamera cameraScript;
-  private static GameObject mainCamera;
-  private static GameObject backdrop;
+
+  [SerializeField] private MaxCamera cameraController;
+  [SerializeField] private GUISkin guiSkin;
+
   private static string clicked_was = "";
 
   public static Dictionary<string, GameObject> menu_panels = new Dictionary<string, GameObject>();
@@ -42,25 +42,13 @@ public class menus : MonoBehaviour {
   public static int UI_SCREEN_SL_NET = 21;
   public static int UI_SCREEN_ML_NET = 22;
   public static int UI_SCREEN_ATTACKLOG = 23;
-
   public static int UI_SCREEN_CYBER_CHARK = 24;
-  public GUISkin guiSkin;
-  public Texture2D background, LOGO;
-  public bool DragWindow = true;
-  public string levelToLoadWhenClickedPlay = "";
-  public string[] AboutTextLines = new string[0];
-  public string editableText;
-  public int gridSelect = -1;
-  public Vector2 scrollPosition;
-  public bool inHelp;
 
-  public RectTransform myPanel;
-  public GameObject myTextPrefab;
+
+  private bool inHelp;
   private Texture2D black;
   private GUIStyle helpStyle;
-  private Color savedColor;
   private Rect WindowRect = new Rect(10, 10, 250, 300);
-  private Color workingColor;
 
   // Use this for initialization
   private void Start() {
@@ -71,9 +59,6 @@ public class menus : MonoBehaviour {
 
     helpStyle.normal.background = black;
     helpStyle.normal.textColor = Color.white;
-    mainCamera = GameObject.Find("Main Camera");
-    //mainCamera.transform.position = pos;
-    cameraScript = (MaxCamera) Camera.main.GetComponent(typeof(MaxCamera));
 
     labelStyle.normal.textColor = Color.black;
 
@@ -114,11 +99,8 @@ public class menus : MonoBehaviour {
   // Update is called once per frame
   private void Update() {
     if (Input.GetKeyDown("h")) {
-      Debug.Log("h key is down");
       Vector3 pos = GameLoadBehavior.home_pos;
-
-      mainCamera.transform.rotation = GameLoadBehavior.home_rot;
-      cameraScript.setPosition(pos);
+      cameraController.setPosition(pos);
     }
     else if (Input.GetKeyDown("u")) {
       UserBehavior ub = UserBehavior.GetNextUser();
@@ -129,21 +111,19 @@ public class menus : MonoBehaviour {
       }
 
       GameObject user = ub.gameObject;
-      cameraScript.setPosition(user.transform.position);
+      cameraController.setPosition(user.transform.position);
     }
     else if (Input.GetKeyDown("?")) {
-      Debug.Log("got dump keydown");
       IPCManagerScript.SendRequest("dump_conditions");
     }
     else if (Input.GetKeyDown("d")) {
-      Debug.Log("got d keydown");
       IPCManagerScript.SendRequest("dump_conditions");
     }
     else if (Input.GetKeyDown("c")) {
       ComponentBehavior ub = ComponentBehavior.GetNextComponent();
       GameObject computer = ub.gameObject;
       Debug.Log("next component is " + ub.component_name + " pos x" + computer.transform.position.x);
-      cameraScript.setPosition(computer.transform.position);
+      cameraController.setPosition(computer.transform.position);
     }
     else if (Input.GetMouseButtonDown(1) && !Input.GetKey(KeyCode.LeftAlt)) {
       menu_panels["HelpTip"].SetActive(false);
