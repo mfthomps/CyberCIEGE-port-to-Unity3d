@@ -1,188 +1,542 @@
 fileFormatVersion: 2
 guid: 1370e0abc02d92e4d93e9c478c5b18f1
 ModelImporter:
-  serializedVersion: 23
-  fileIDToRecycleName:
-    100000: ankle_left
-    100002: ankle_right
-    100004: chest
-    100006: chest 1
-    100008: clavicle_left
-    100010: clavicle_right
-    100012: elbow_left
-    100014: elbow_right
-    100016: fingers1_left
-    100018: fingers1_right
-    100020: fingers2_left
-    100022: fingers2_right
-    100024: fingers_end_left
-    100026: fingers_end_right
-    100028: fingers_left
-    100030: fingers_right
-    100032: foot_left
-    100034: foot_left 1
-    100036: foot_right
-    100038: foot_right 1
-    100040: god_joint
-    100042: hand_left
-    100044: hand_left 1
-    100046: hand_right
-    100048: hand_right 1
-    100050: head
-    100052: head 1
-    100054: head_end
-    100056: hip
-    100058: hip_left
-    100060: hip_right
-    100062: index1_left
-    100064: index1_right
-    100066: index2_left
-    100068: index2_right
-    100070: index_end_left
-    100072: index_end_right
-    100074: index_left
-    100076: index_right
-    100078: //RootNode
-    100080: itguy
-    100082: knee_left
-    100084: knee_right
-    100086: leg_left
-    100088: leg_right
-    100090: lowerarm_left
-    100092: lowerarm_right
-    100094: midsection
-    100096: neck
-    100098: shoulder_left
-    100100: shoulder_right
-    100102: spine_1
-    100104: spine_2
-    100106: thumb1_left
-    100108: thumb1_right
-    100110: thumb2_left
-    100112: thumb2_right
-    100114: thumb_end_left
-    100116: thumb_end_right
-    100118: thumb_left
-    100120: thumb_right
-    100122: toe_left
-    100124: toe_right
-    100126: upperarm_left
-    100128: upperarm_right
-    100130: wrist_left
-    100132: wrist_right
-    400000: ankle_left
-    400002: ankle_right
-    400004: chest
-    400006: chest 1
-    400008: clavicle_left
-    400010: clavicle_right
-    400012: elbow_left
-    400014: elbow_right
-    400016: fingers1_left
-    400018: fingers1_right
-    400020: fingers2_left
-    400022: fingers2_right
-    400024: fingers_end_left
-    400026: fingers_end_right
-    400028: fingers_left
-    400030: fingers_right
-    400032: foot_left
-    400034: foot_left 1
-    400036: foot_right
-    400038: foot_right 1
-    400040: god_joint
-    400042: hand_left
-    400044: hand_left 1
-    400046: hand_right
-    400048: hand_right 1
-    400050: head
-    400052: head 1
-    400054: head_end
-    400056: hip
-    400058: hip_left
-    400060: hip_right
-    400062: index1_left
-    400064: index1_right
-    400066: index2_left
-    400068: index2_right
-    400070: index_end_left
-    400072: index_end_right
-    400074: index_left
-    400076: index_right
-    400078: //RootNode
-    400080: itguy
-    400082: knee_left
-    400084: knee_right
-    400086: leg_left
-    400088: leg_right
-    400090: lowerarm_left
-    400092: lowerarm_right
-    400094: midsection
-    400096: neck
-    400098: shoulder_left
-    400100: shoulder_right
-    400102: spine_1
-    400104: spine_2
-    400106: thumb1_left
-    400108: thumb1_right
-    400110: thumb2_left
-    400112: thumb2_right
-    400114: thumb_end_left
-    400116: thumb_end_right
-    400118: thumb_left
-    400120: thumb_right
-    400122: toe_left
-    400124: toe_right
-    400126: upperarm_left
-    400128: upperarm_right
-    400130: wrist_left
-    400132: wrist_right
-    2100000: itguy_mat
-    4300000: foot_left
-    4300002: foot_right
-    4300004: midsection
-    4300006: chest
-    4300008: upperarm_left
-    4300010: lowerarm_left
-    4300012: upperarm_right
-    4300014: lowerarm_right
-    4300016: head
-    4300018: thumb_left
-    4300020: index_left
-    4300022: hand_left
-    4300024: fingers_left
-    4300026: thumb_right
-    4300028: index_right
-    4300030: hand_right
-    4300032: fingers_right
-    4300034: leg_left
-    4300036: leg_right
-    4300038: hip
-    7400000: Take 001
-    9500000: //RootNode
-    13700000: chest
-    13700002: fingers_left
-    13700004: fingers_right
-    13700006: foot_left
-    13700008: foot_right
-    13700010: hand_left
-    13700012: hand_right
-    13700014: head
-    13700016: hip
-    13700018: index_left
-    13700020: index_right
-    13700022: leg_left
-    13700024: leg_right
-    13700026: lowerarm_left
-    13700028: lowerarm_right
-    13700030: midsection
-    13700032: thumb_left
-    13700034: thumb_right
-    13700036: upperarm_left
-    13700038: upperarm_right
+  serializedVersion: 19301
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: ankle_left
+  - first:
+      1: 100002
+    second: ankle_right
+  - first:
+      1: 100004
+    second: chest
+  - first:
+      1: 100006
+    second: chest 1
+  - first:
+      1: 100008
+    second: clavicle_left
+  - first:
+      1: 100010
+    second: clavicle_right
+  - first:
+      1: 100012
+    second: elbow_left
+  - first:
+      1: 100014
+    second: elbow_right
+  - first:
+      1: 100016
+    second: fingers1_left
+  - first:
+      1: 100018
+    second: fingers1_right
+  - first:
+      1: 100020
+    second: fingers2_left
+  - first:
+      1: 100022
+    second: fingers2_right
+  - first:
+      1: 100024
+    second: fingers_end_left
+  - first:
+      1: 100026
+    second: fingers_end_right
+  - first:
+      1: 100028
+    second: fingers_left
+  - first:
+      1: 100030
+    second: fingers_right
+  - first:
+      1: 100032
+    second: foot_left
+  - first:
+      1: 100034
+    second: foot_left 1
+  - first:
+      1: 100036
+    second: foot_right
+  - first:
+      1: 100038
+    second: foot_right 1
+  - first:
+      1: 100040
+    second: god_joint
+  - first:
+      1: 100042
+    second: hand_left
+  - first:
+      1: 100044
+    second: hand_left 1
+  - first:
+      1: 100046
+    second: hand_right
+  - first:
+      1: 100048
+    second: hand_right 1
+  - first:
+      1: 100050
+    second: head
+  - first:
+      1: 100052
+    second: head 1
+  - first:
+      1: 100054
+    second: head_end
+  - first:
+      1: 100056
+    second: hip
+  - first:
+      1: 100058
+    second: hip_left
+  - first:
+      1: 100060
+    second: hip_right
+  - first:
+      1: 100062
+    second: index1_left
+  - first:
+      1: 100064
+    second: index1_right
+  - first:
+      1: 100066
+    second: index2_left
+  - first:
+      1: 100068
+    second: index2_right
+  - first:
+      1: 100070
+    second: index_end_left
+  - first:
+      1: 100072
+    second: index_end_right
+  - first:
+      1: 100074
+    second: index_left
+  - first:
+      1: 100076
+    second: index_right
+  - first:
+      1: 100078
+    second: //RootNode
+  - first:
+      1: 100080
+    second: itguy
+  - first:
+      1: 100082
+    second: knee_left
+  - first:
+      1: 100084
+    second: knee_right
+  - first:
+      1: 100086
+    second: leg_left
+  - first:
+      1: 100088
+    second: leg_right
+  - first:
+      1: 100090
+    second: lowerarm_left
+  - first:
+      1: 100092
+    second: lowerarm_right
+  - first:
+      1: 100094
+    second: midsection
+  - first:
+      1: 100096
+    second: neck
+  - first:
+      1: 100098
+    second: shoulder_left
+  - first:
+      1: 100100
+    second: shoulder_right
+  - first:
+      1: 100102
+    second: spine_1
+  - first:
+      1: 100104
+    second: spine_2
+  - first:
+      1: 100106
+    second: thumb1_left
+  - first:
+      1: 100108
+    second: thumb1_right
+  - first:
+      1: 100110
+    second: thumb2_left
+  - first:
+      1: 100112
+    second: thumb2_right
+  - first:
+      1: 100114
+    second: thumb_end_left
+  - first:
+      1: 100116
+    second: thumb_end_right
+  - first:
+      1: 100118
+    second: thumb_left
+  - first:
+      1: 100120
+    second: thumb_right
+  - first:
+      1: 100122
+    second: toe_left
+  - first:
+      1: 100124
+    second: toe_right
+  - first:
+      1: 100126
+    second: upperarm_left
+  - first:
+      1: 100128
+    second: upperarm_right
+  - first:
+      1: 100130
+    second: wrist_left
+  - first:
+      1: 100132
+    second: wrist_right
+  - first:
+      4: 400000
+    second: ankle_left
+  - first:
+      4: 400002
+    second: ankle_right
+  - first:
+      4: 400004
+    second: chest
+  - first:
+      4: 400006
+    second: chest 1
+  - first:
+      4: 400008
+    second: clavicle_left
+  - first:
+      4: 400010
+    second: clavicle_right
+  - first:
+      4: 400012
+    second: elbow_left
+  - first:
+      4: 400014
+    second: elbow_right
+  - first:
+      4: 400016
+    second: fingers1_left
+  - first:
+      4: 400018
+    second: fingers1_right
+  - first:
+      4: 400020
+    second: fingers2_left
+  - first:
+      4: 400022
+    second: fingers2_right
+  - first:
+      4: 400024
+    second: fingers_end_left
+  - first:
+      4: 400026
+    second: fingers_end_right
+  - first:
+      4: 400028
+    second: fingers_left
+  - first:
+      4: 400030
+    second: fingers_right
+  - first:
+      4: 400032
+    second: foot_left
+  - first:
+      4: 400034
+    second: foot_left 1
+  - first:
+      4: 400036
+    second: foot_right
+  - first:
+      4: 400038
+    second: foot_right 1
+  - first:
+      4: 400040
+    second: god_joint
+  - first:
+      4: 400042
+    second: hand_left
+  - first:
+      4: 400044
+    second: hand_left 1
+  - first:
+      4: 400046
+    second: hand_right
+  - first:
+      4: 400048
+    second: hand_right 1
+  - first:
+      4: 400050
+    second: head
+  - first:
+      4: 400052
+    second: head 1
+  - first:
+      4: 400054
+    second: head_end
+  - first:
+      4: 400056
+    second: hip
+  - first:
+      4: 400058
+    second: hip_left
+  - first:
+      4: 400060
+    second: hip_right
+  - first:
+      4: 400062
+    second: index1_left
+  - first:
+      4: 400064
+    second: index1_right
+  - first:
+      4: 400066
+    second: index2_left
+  - first:
+      4: 400068
+    second: index2_right
+  - first:
+      4: 400070
+    second: index_end_left
+  - first:
+      4: 400072
+    second: index_end_right
+  - first:
+      4: 400074
+    second: index_left
+  - first:
+      4: 400076
+    second: index_right
+  - first:
+      4: 400078
+    second: //RootNode
+  - first:
+      4: 400080
+    second: itguy
+  - first:
+      4: 400082
+    second: knee_left
+  - first:
+      4: 400084
+    second: knee_right
+  - first:
+      4: 400086
+    second: leg_left
+  - first:
+      4: 400088
+    second: leg_right
+  - first:
+      4: 400090
+    second: lowerarm_left
+  - first:
+      4: 400092
+    second: lowerarm_right
+  - first:
+      4: 400094
+    second: midsection
+  - first:
+      4: 400096
+    second: neck
+  - first:
+      4: 400098
+    second: shoulder_left
+  - first:
+      4: 400100
+    second: shoulder_right
+  - first:
+      4: 400102
+    second: spine_1
+  - first:
+      4: 400104
+    second: spine_2
+  - first:
+      4: 400106
+    second: thumb1_left
+  - first:
+      4: 400108
+    second: thumb1_right
+  - first:
+      4: 400110
+    second: thumb2_left
+  - first:
+      4: 400112
+    second: thumb2_right
+  - first:
+      4: 400114
+    second: thumb_end_left
+  - first:
+      4: 400116
+    second: thumb_end_right
+  - first:
+      4: 400118
+    second: thumb_left
+  - first:
+      4: 400120
+    second: thumb_right
+  - first:
+      4: 400122
+    second: toe_left
+  - first:
+      4: 400124
+    second: toe_right
+  - first:
+      4: 400126
+    second: upperarm_left
+  - first:
+      4: 400128
+    second: upperarm_right
+  - first:
+      4: 400130
+    second: wrist_left
+  - first:
+      4: 400132
+    second: wrist_right
+  - first:
+      21: 2100000
+    second: itguy_mat
+  - first:
+      43: 4300000
+    second: foot_left
+  - first:
+      43: 4300002
+    second: foot_right
+  - first:
+      43: 4300004
+    second: midsection
+  - first:
+      43: 4300006
+    second: chest
+  - first:
+      43: 4300008
+    second: upperarm_left
+  - first:
+      43: 4300010
+    second: lowerarm_left
+  - first:
+      43: 4300012
+    second: upperarm_right
+  - first:
+      43: 4300014
+    second: lowerarm_right
+  - first:
+      43: 4300016
+    second: head
+  - first:
+      43: 4300018
+    second: thumb_left
+  - first:
+      43: 4300020
+    second: index_left
+  - first:
+      43: 4300022
+    second: hand_left
+  - first:
+      43: 4300024
+    second: fingers_left
+  - first:
+      43: 4300026
+    second: thumb_right
+  - first:
+      43: 4300028
+    second: index_right
+  - first:
+      43: 4300030
+    second: hand_right
+  - first:
+      43: 4300032
+    second: fingers_right
+  - first:
+      43: 4300034
+    second: leg_left
+  - first:
+      43: 4300036
+    second: leg_right
+  - first:
+      43: 4300038
+    second: hip
+  - first:
+      74: 7400000
+    second: Take 001
+  - first:
+      95: 9500000
+    second: //RootNode
+  - first:
+      137: 13700000
+    second: chest
+  - first:
+      137: 13700002
+    second: fingers_left
+  - first:
+      137: 13700004
+    second: fingers_right
+  - first:
+      137: 13700006
+    second: foot_left
+  - first:
+      137: 13700008
+    second: foot_right
+  - first:
+      137: 13700010
+    second: hand_left
+  - first:
+      137: 13700012
+    second: hand_right
+  - first:
+      137: 13700014
+    second: head
+  - first:
+      137: 13700016
+    second: hip
+  - first:
+      137: 13700018
+    second: index_left
+  - first:
+      137: 13700020
+    second: index_right
+  - first:
+      137: 13700022
+    second: leg_left
+  - first:
+      137: 13700024
+    second: leg_right
+  - first:
+      137: 13700026
+    second: lowerarm_left
+  - first:
+      137: 13700028
+    second: lowerarm_right
+  - first:
+      137: 13700030
+    second: midsection
+  - first:
+      137: 13700032
+    second: thumb_left
+  - first:
+      137: 13700034
+    second: thumb_right
+  - first:
+      137: 13700036
+    second: upperarm_left
+  - first:
+      137: 13700038
+    second: upperarm_right
   externalObjects: {}
   materials:
-    importMaterials: 1
+    materialImportMode: 1
     materialName: 0
     materialSearch: 1
     materialLocation: 1
@@ -214,34 +568,41 @@ ModelImporter:
     globalScale: 1
     meshCompression: 0
     addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
     importLights: 1
+    fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
     preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
     useFileScale: 1
-    previousCalculatedGlobalScale: 0.30479997
-    hasPreviousCalculatedGlobalScale: 1
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
-  copyAvatar: 0
   humanDescription:
-    serializedVersion: 2
+    serializedVersion: 3
     human: []
     skeleton: []
     armTwist: 0.5
@@ -251,14 +612,16 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
+    globalScale: 1
     rootMotionBoneName: 
-    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
   humanoidOversampling: 1
+  avatarSetup: 1
   additionalBone: 0
   userData: 
   assetBundleName: 
