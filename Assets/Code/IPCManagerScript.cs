@@ -1,11 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text;
 using Code.AttackLog;
+using Code.Scriptable_Variables;
 using UnityEditor;
 using UnityEngine;
 
 public class IPCManagerScript : MonoBehaviour {
+  [SerializeField] private StringListVariable attackLogVariable;
+  
   private static NetworkStream serverStream;
 
   // Use this for initialization
@@ -61,7 +65,11 @@ public class IPCManagerScript : MonoBehaviour {
           break;
         case "attack_log":
           //Debug.Log("got status %s" + message);
-          AttackLogScript.AddEntry(message);
+          // AttackLogScript.AddEntry(message);
+          var logs = attackLogVariable.Value;
+          logs.Add(message);
+          //note: have to create a new List in order to trigger the OnChanged() event
+          attackLogVariable.Value = new List<string>(logs);
           break;
         case "load_computer":
           ComputerBehavior.LoadOneComputer(message + ".sdf");
