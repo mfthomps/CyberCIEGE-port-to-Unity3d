@@ -1,5 +1,14 @@
 {
   "dependencies": {
+    "com.futuretech.shared": {
+      "version": "https://gitlab.nps.edu/moves/scriptable-variables.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.inputsystem": "1.0.0-preview.5"
+      },
+      "hash": "b755cf5005c6d5fbf1c7d1c8f82e996dbff4b222"
+    },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
       "depth": 0,
@@ -49,6 +58,15 @@
       "depth": 0,
       "source": "registry",
       "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.inputsystem": {
+      "version": "1.0.0-preview.5",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.ugui": "1.0.0"
+      },
       "url": "https://packages.unity.com"
     },
     "com.unity.test-framework": {
