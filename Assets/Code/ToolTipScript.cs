@@ -17,7 +17,6 @@ public class ToolTipScript : MonoBehaviour {
 
   public static void AddTip(string message) {
     GameObject help_tip_panel = menus.menu_panels["HelpTip"];
-    Debug.Log("ToolTipScript message " + message);
     ToolTipScript tool_script = (ToolTipScript) help_tip_panel.GetComponent(typeof(ToolTipScript));
     help_tip_panel.SetActive(false);
     StringReader reader = new StringReader(message);

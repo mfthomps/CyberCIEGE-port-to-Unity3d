@@ -39,14 +39,11 @@ public class ComponentBehavior : MonoBehaviour {
   public static ComponentBehavior GetNextComponent() {
     ComponentBehavior first_component = null;
     bool gotit = false;
-    Debug.Log("GetNextComponent, num is " + computer_dict.Count);
     foreach (KeyValuePair<string, ComponentBehavior> entry in computer_dict) {
       ComponentBehavior component = entry.Value;
-      Debug.Log("check " + component.component_name);
       if (!component.IsActiveComponent())
         continue;
       if (gotit) {
-        Debug.Log("got it, return " + component.component_name);
         current_component = component;
         return component;
       }
@@ -54,7 +51,6 @@ public class ComponentBehavior : MonoBehaviour {
       if (first_component == null)
         first_component = component;
       if (current_component == null) {
-        Debug.Log("current is null, return " + component.component_name);
         current_component = component;
         return component;
       }
@@ -62,8 +58,7 @@ public class ComponentBehavior : MonoBehaviour {
       if (component == current_component)
         gotit = true;
     }
-
-    Debug.Log("returning first " + first_component.component_name);
+    
     current_component = first_component;
     return first_component;
   }

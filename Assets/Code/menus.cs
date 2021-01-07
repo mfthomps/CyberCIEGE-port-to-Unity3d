@@ -114,7 +114,6 @@ public class menus : MonoBehaviour {
   // Update is called once per frame
   private void Update() {
     if (Input.GetKeyDown("h")) {
-      Debug.Log("h key is down");
       Vector3 pos = GameLoadBehavior.home_pos;
 
       mainCamera.transform.rotation = GameLoadBehavior.home_rot;
@@ -132,11 +131,9 @@ public class menus : MonoBehaviour {
       cameraScript.setPosition(user.transform.position);
     }
     else if (Input.GetKeyDown("?")) {
-      Debug.Log("got dump keydown");
       IPCManagerScript.SendRequest("dump_conditions");
     }
     else if (Input.GetKeyDown("d")) {
-      Debug.Log("got d keydown");
       IPCManagerScript.SendRequest("dump_conditions");
     }
     else if (Input.GetKeyDown("c")) {
