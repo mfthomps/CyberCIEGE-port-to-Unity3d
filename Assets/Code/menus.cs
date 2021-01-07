@@ -4,12 +4,11 @@ using UnityEngine;
 
 public class menus : MonoBehaviour {
   private static readonly GUIStyle labelStyle = new GUIStyle();
-  public static string clockLabelString = "001000";
   public static string clicked = "";
-  
+
   [SerializeField] private MaxCamera cameraController;
-  
-  private static GameObject backdrop;
+  [SerializeField] private GUISkin guiSkin;
+
   private static string clicked_was = "";
 
   public static Dictionary<string, GameObject> menu_panels = new Dictionary<string, GameObject>();
@@ -43,25 +42,13 @@ public class menus : MonoBehaviour {
   public static int UI_SCREEN_SL_NET = 21;
   public static int UI_SCREEN_ML_NET = 22;
   public static int UI_SCREEN_ATTACKLOG = 23;
-
   public static int UI_SCREEN_CYBER_CHARK = 24;
-  public GUISkin guiSkin;
-  public Texture2D background, LOGO;
-  public bool DragWindow = true;
-  public string levelToLoadWhenClickedPlay = "";
-  public string[] AboutTextLines = new string[0];
-  public string editableText;
-  public int gridSelect = -1;
-  public Vector2 scrollPosition;
-  public bool inHelp;
 
-  public RectTransform myPanel;
-  public GameObject myTextPrefab;
+
+  private bool inHelp;
   private Texture2D black;
   private GUIStyle helpStyle;
-  private Color savedColor;
   private Rect WindowRect = new Rect(10, 10, 250, 300);
-  private Color workingColor;
 
   // Use this for initialization
   private void Start() {
@@ -72,7 +59,7 @@ public class menus : MonoBehaviour {
 
     helpStyle.normal.background = black;
     helpStyle.normal.textColor = Color.white;
-    
+
     labelStyle.normal.textColor = Color.black;
 
     /* create dictionary of menu/gui panels so they can be deactivated and yet 
