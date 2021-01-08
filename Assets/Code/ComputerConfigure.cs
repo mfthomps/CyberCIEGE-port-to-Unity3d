@@ -58,7 +58,8 @@ public class ComputerConfigure : MonoBehaviour {
     //menus.clicked = "Component:" + current_computer.component_name + ":Configure:ACL:" + asset_name;
   }
 
-  public void CloseClicked() {
+  //---------------------------------------------------------------------------
+  private void CloseClicked() {
     foreach (Transform child in procPanel) Destroy(child.gameObject);
 
     foreach (Transform child in passwordPanel) Destroy(child.gameObject);
@@ -68,6 +69,14 @@ public class ComputerConfigure : MonoBehaviour {
     menus.ClosedScreen(gameObject.name);
   }
 
+  //---------------------------------------------------------------------------
+  //Called when the UI should show the properties of this selected computer
+  public void ComputerSelected(SelectionListItem selectedItem) {
+    Debug.Log($"Computer {selectedItem} was selected");
+    //TODO Now update the UI with the attributes of the computer
+  }
+
+  //---------------------------------------------------------------------------
   public void SetPassword(string group_name, Dictionary<string, bool> dict, ComputerBehavior computer) {
     GameObject newText = Instantiate(myTextPrefab);
     newText.transform.SetParent(passwordPanel);
@@ -111,6 +120,7 @@ public class ComputerConfigure : MonoBehaviour {
   //---------------------------------------------------------------------------
   public void SetComputers(List<ComputerBehavior> computers) {
     computerList = computers;
+    _computerListUI.Clear(); //wipe out existing list of item
     foreach (ComputerBehavior computer in computerList) {
       if (computer) {
         _computerListUI.AddItem(computer.component_name);
@@ -133,18 +143,7 @@ public class ComputerConfigure : MonoBehaviour {
     asset_dropdown.AddOptions(ddo);
     //Debug.Log("SetAsset done");
   }
-
-  /*
-  public void SetTest()
-  {
-    foreach (string s in stringlist)
-    {
-      GameObject newText = (GameObject)Instantiate(myTextPrefab);
-      newText.transform.SetParent(myTextPanel);
-      newText.GetComponent<Text>().text = s;
-    }
-  }
-  */
+  
   public string GetCurrentAsset() {
     return asset_dropdown.captionText.text;
   }
