@@ -1,22 +1,21 @@
 ﻿using UnityEngine;
 
 namespace Code.Scriptable_Variables {
-  // A list of string values to share across components, scenes, and prefabs
-  [CreateAssetMenu(menuName = "Scriptable Objects/Variables/String List")]
-  public class StringListVariable : ListVariable<string> {
-    
+  [CreateAssetMenu(menuName = "Scriptable Objects/Variables/CC/Component List")]
+  public class ComputerListVariable : ListVariable<ComputerBehavior> {
     //---------------------------------------------------------------------------
     [ContextMenu("Reset To Default Value")]
     public void ContextMenuReset() {
       Reset();
     }
   }
-
+  
 #if UNITY_EDITOR
 //-----------------------------------------------------------------------------
-  [UnityEditor.CustomEditor(typeof(StringListVariable))]
+  [UnityEditor.CustomEditor(typeof(ComputerListVariable))]
   [UnityEditor.CanEditMultipleObjects]
-  public class StringListScriptableVariableEditor : StringListVariable.BaseScriptableVariableEditor {
+  public class ComputerListVariableVariableEditor : ComputerListVariable.BaseScriptableVariableEditor {
   }
 #endif
+ 
 }

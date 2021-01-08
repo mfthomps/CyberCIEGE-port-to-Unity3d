@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Code.Scriptable_Variables;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,7 +12,8 @@ using UnityEngine.UI;
 public class ComputerBehavior : ComponentBehavior {
   private static readonly string COMPUTERS = "computers";
 
-
+  [SerializeField] private ComputerListVariable computerListVariable;
+  
   private static Rect ConfigureRect = new Rect(10, 10, 900, 800);
   private static string hw_name;
   private readonly List<string> asset_list = new List<string>();
@@ -22,10 +24,6 @@ public class ComputerBehavior : ComponentBehavior {
 
   private ConfigurationSettings config_settings;
   private readonly List<string> user_list = new List<string>(); // currently users & groups, TBD separate
-
-  // Use this for initialization
-  private void Start() {
-  }
 
   public static void LoadOneComputer(string computer_file) {
     GameObject computer;
@@ -83,7 +81,7 @@ public class ComputerBehavior : ComponentBehavior {
     }
   }
 
-  public void LoadComputerInfoFromFile() {
+  private void LoadComputerInfoFromFile() {
     config_settings = new ConfigurationSettings(true, component_name);
 
     try {
@@ -121,6 +119,11 @@ public class ComputerBehavior : ComponentBehavior {
     catch (Exception e) {
       Console.WriteLine(e.Message + "\n");
     }
+
+    //add ourself to the computer list.
+    var componentList = this.computerListVariable.Value;
+    componentList.Add(this);
+    computerListVariable.Value = new List<ComputerBehavior>(componentList);
   }
 
   public void ACLConfigure(string asset_name) {
@@ -128,7 +131,7 @@ public class ComputerBehavior : ComponentBehavior {
   }
 
 
-  public void ConfigureCanvas() {
+  private void ConfigureCanvas() {
     //Debug.Log("ConfigureCanvas");
 
     GameObject computer_panel = menus.menu_panels["ComputerPanel"];
@@ -140,6 +143,7 @@ public class ComputerBehavior : ComponentBehavior {
 
 
     computer_config_script.SetAssets(asset_list, this);
+    computer_config_script.SetComputers(computerListVariable.Value);
 
     //computer_config_script.SetTest();
     //Debug.Log("return from ConfigureCanvas");
@@ -151,7 +155,6 @@ public class ComputerBehavior : ComponentBehavior {
   }
 
   public void HandleConfigure() {
-    Debug.Log("HandleConfigure");
     if (menus.clicked.EndsWith("Configure")) {
       menus.clicked = "";
       ConfigureCanvas();

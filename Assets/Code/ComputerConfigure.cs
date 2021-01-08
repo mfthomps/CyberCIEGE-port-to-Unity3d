@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Code.User_Interface;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +9,8 @@ using UnityEngine.UI;
  */
 public class ComputerConfigure : MonoBehaviour {
   protected static GUIStyle label_style = new GUIStyle();
+
+  [SerializeField] private SelectionList _computerListUI;
 
   //public RectTransform myTextPanel;
   public GameObject myTextPrefab;
@@ -28,27 +31,12 @@ public class ComputerConfigure : MonoBehaviour {
   private GameObject newText;
   private GameObject newTog;
   private float nextMessage;
-  private List<string> stringlist;
+  
+  private List<ComputerBehavior> computerList = new List<ComputerBehavior>();
 
 
   // Use this for initialization
   private void Start() {
-    stringlist = new List<string>();
-    stringlist.Add("hi");
-    stringlist.Add("there");
-    stringlist.Add("what?");
-    stringlist.Add("hi");
-    stringlist.Add("there");
-    stringlist.Add("what?");
-    stringlist.Add("hi");
-    stringlist.Add("there");
-    stringlist.Add("what?");
-    stringlist.Add("hi");
-    stringlist.Add("there");
-    stringlist.Add("what?");
-    stringlist.Add("hi");
-    stringlist.Add("there");
-    stringlist.Add("what?");
     nextMessage = Time.time + 1f;
     label_style.normal.textColor = Color.black;
     close_button.onClick.AddListener(CloseClicked);
@@ -120,6 +108,17 @@ public class ComputerConfigure : MonoBehaviour {
     }
   }
 
+  //---------------------------------------------------------------------------
+  public void SetComputers(List<ComputerBehavior> computers) {
+    computerList = computers;
+    foreach (ComputerBehavior computer in computerList) {
+      if (computer) {
+        _computerListUI.AddItem(computer.component_name);
+      }
+    }
+  }
+
+  //---------------------------------------------------------------------------
   public void SetAssets(List<string> asset_list, ComputerBehavior computer) {
     current_computer = computer;
     asset_dropdown.ClearOptions();

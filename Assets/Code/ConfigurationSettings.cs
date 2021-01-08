@@ -83,7 +83,7 @@ public class ConfigurationSettings {
     return retval;
   }
 
-  public void SetGroupValue(string group_name, Dictionary<string, bool> my_dict, string key, bool value) {
+  private void SetGroupValue(string group_name, Dictionary<string, bool> my_dict, string key, bool value) {
     my_dict[key] = value;
     XElement xml = new XElement(event_type,
       new XElement("name", the_name),
