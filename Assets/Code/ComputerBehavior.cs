@@ -130,6 +130,14 @@ public class ComputerBehavior : ComponentBehavior {
     ConfigureRect = GUILayout.Window(2, ConfigureRect, DoACL, "ACL for " + asset_name);
   }
 
+  //Refresh the UI with current configuration settings
+  public void UpdateUI() {
+    GameObject computer_panel = menus.menu_panels["ComputerPanel"];
+    computer_config_script = (ComputerConfigure) computer_panel.GetComponent(typeof(ComputerConfigure));
+    config_settings.ConfigureCanvas(this, computer_config_script);
+    computer_config_script.SetAssets(asset_list, this);
+    computer_config_script.SetComputers(computerListVariable.Value);
+  }
 
   private void ConfigureCanvas() {
     //Debug.Log("ConfigureCanvas");
@@ -140,7 +148,6 @@ public class ComputerBehavior : ComponentBehavior {
 
     computer_config_script = (ComputerConfigure) computer_panel.GetComponent(typeof(ComputerConfigure));
     config_settings.ConfigureCanvas(this, computer_config_script);
-
 
     computer_config_script.SetAssets(asset_list, this);
     computer_config_script.SetComputers(computerListVariable.Value);

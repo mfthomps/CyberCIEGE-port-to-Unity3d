@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using UnityEngine;
 
 public class ProceduralScript {
   public Dictionary<string, string> proc_dict = new Dictionary<string, string>();
+
+  public ProceduralScript() {
+  }
 
   // Use this for initialization
   public ProceduralScript(string fname) {
@@ -26,7 +30,7 @@ public class ProceduralScript {
       }
     }
     catch (Exception e) {
-      Console.WriteLine(e.Message + "\n");
+      Debug.LogError(e.Message);
     }
   }
 }

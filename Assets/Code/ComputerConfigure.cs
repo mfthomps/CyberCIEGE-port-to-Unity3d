@@ -73,11 +73,18 @@ public class ComputerConfigure : MonoBehaviour {
   //Called when the UI should show the properties of this selected computer
   public void ComputerSelected(ComponentListItem selectedItem) {
     Debug.Log($"Computer {selectedItem} was selected");
-    //TODO Now update the UI with the attributes of the computer
+    //Now update the UI with the attributes of the computer
+    ComputerBehavior computer = selectedItem.GetItem() as ComputerBehavior;
+    computer?.UpdateUI();
   }
 
   //---------------------------------------------------------------------------
   public void SetPassword(string group_name, Dictionary<string, bool> dict, ComputerBehavior computer) {
+    //destroy old UI
+    foreach (Transform child in passwordPanel) {
+      Destroy(child.gameObject);
+    }
+
     GameObject newText = Instantiate(myTextPrefab);
     newText.transform.SetParent(passwordPanel);
     newText.GetComponent<Text>().text = group_name;
@@ -98,7 +105,13 @@ public class ComputerConfigure : MonoBehaviour {
     }
   }
 
+  //---------------------------------------------------------------------------
   public void SetProc(Dictionary<string, bool> dict, ComputerBehavior computer) {
+    //destroy old UI
+    foreach (Transform child in procPanel) {
+      Destroy(child.gameObject);
+    }
+
     foreach (KeyValuePair<string, bool> entry in dict) {
       GameObject newTog = Instantiate(procPrefab);
       newTog.transform.SetParent(procPanel);

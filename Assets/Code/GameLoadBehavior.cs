@@ -19,11 +19,11 @@ public class GameLoadBehavior : MonoBehaviour {
   public static Quaternion home_rot = Quaternion.Euler(10.6f, -26.8f, 0.3f);
 
   private void Start() {
-    Debug.Log("HI THERE");
+    
     /* connect to server*/
     IPCManagerScript.ConnectServer();
     //AfterServerReady();
-    Debug.Log("back from wait init server");
+    
     //GameObject ticker = GameObject.Find("ScrollText");
     //ScrollingTextScript st = (ScrollingTextScript)ticker.GetComponent(typeof(ScrollingTextScript));
     //st.AddMessage("the time has come for all brown dogs to come to the aid of their quick brown foxes");
@@ -56,7 +56,7 @@ public class GameLoadBehavior : MonoBehaviour {
 
   private static void LoadItems() {
     NetworkBehavior.LoadNetworks(user_app_path);
-    procedural_settings = new ProceduralScript("procedural.txt");
+    procedural_settings = CreateProceduralItems();
     physical_settings = new ProceduralScript("physical.txt");
     Debug.Log("Calling LoadHardwareTypes");
     CatalogBehavior.LoadHardwareTypes();
@@ -76,6 +76,16 @@ public class GameLoadBehavior : MonoBehaviour {
 
     //UserBehavior.UpdateStatus();
     //LoadMainOffice();
+  }
+
+  //---------------------------------------------------------------------------
+  //Work in progress.  Just hacking out a list of the procedural settings a 
+  //computer can be configured with.
+  private static ProceduralScript CreateProceduralItems() {
+    var procedural = new ProceduralScript {proc_dict = {
+      ["NoEmailAttachmentExecute"] = "Beware of Email Attachments"
+    }};
+    return procedural;
   }
 
   private IEnumerator Example() {

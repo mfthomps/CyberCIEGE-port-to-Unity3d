@@ -27,6 +27,11 @@ namespace Code.User_Interface {
     }
 
     //-------------------------------------------------------------------------
+    public ComponentBehavior GetItem() {
+      return _item;
+    }
+
+    //-------------------------------------------------------------------------
     //Call this when the item should be selected. Usually connected to a UnityEvent 
     //on a button or toggle.
     public void Click() {
