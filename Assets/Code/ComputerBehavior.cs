@@ -98,6 +98,21 @@ public class ComputerBehavior : ComponentBehavior {
           //Debug.Log("LoadComputer got " + value + " for tag " + tag);
           if (!config_settings.HandleConfigurationSetting(tag, value))
             switch (tag) {
+              case "ComponentProceduralSettings":
+                //special case to process all of the sub-elements
+                using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(value ?? ""))) {
+                  using (var substream = new StreamReader(stream)) {
+                    string v = null;
+                    do {
+                      v = ccUtils.SDTNext(substream, out string t);
+                      if (string.IsNullOrEmpty(v)) {
+                        continue;
+                      }
+                      config_settings.HandleConfigurationSetting(t, v);
+                    } while (v != null);
+                  }
+                }
+                break;
               case "Assets":
                 asset_list.Add(value);
                 AssetBehavior asset = AssetBehavior.asset_dict[value];
@@ -117,7 +132,7 @@ public class ComputerBehavior : ComponentBehavior {
       }
     }
     catch (Exception e) {
-      Console.WriteLine(e.Message + "\n");
+      Debug.LogError(e.Message);
     }
 
     //add ourself to the computer list.

@@ -83,9 +83,20 @@ public class GameLoadBehavior : MonoBehaviour {
   //computer can be configured with.
   //Note: Magic strings taken from the original CyberCIEGE project file "policy.cpp"
   private static ProceduralScript CreateProceduralItems() {
+
+      
     var procedural = new ProceduralScript {proc_dict = {
+      ["ProtectWithACL"] = "Protect With ACL",
+      ["WriteDownPasswords"] = "Allow Passwords on post-its",
+      ["LockorLogoff"] = "Lock Or Logoff if Unattended",
       ["NoEmailAttachmentExecute"] = "Beware of Email Attachments",
-      ["NoExternalSoftware"] = "No External Software"
+      ["NoExternalSoftware"] = "No External Software",
+      ["NoMediaLeaveZone"] = "No Media Leave Zone",
+      ["NoWebMail"] = "No Web Mail",
+      ["ApplyPatches"] = "User Apply Patches",
+      ["NoPhysicalModifications"] = "No Machine Modifications",
+      ["UserBackup"] = "Users Backup Data",
+      ["HoldsUserAsset"] = "Holds User Asset",
     }};
     return procedural;
   }
