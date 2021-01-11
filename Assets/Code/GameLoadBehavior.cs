@@ -81,9 +81,11 @@ public class GameLoadBehavior : MonoBehaviour {
   //---------------------------------------------------------------------------
   //Work in progress.  Just hacking out a list of the procedural settings a 
   //computer can be configured with.
+  //Note: Magic strings taken from the original CyberCIEGE project file "policy.cpp"
   private static ProceduralScript CreateProceduralItems() {
     var procedural = new ProceduralScript {proc_dict = {
-      ["NoEmailAttachmentExecute"] = "Beware of Email Attachments"
+      ["NoEmailAttachmentExecute"] = "Beware of Email Attachments",
+      ["NoExternalSoftware"] = "No External Software"
     }};
     return procedural;
   }
