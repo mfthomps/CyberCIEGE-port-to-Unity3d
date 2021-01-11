@@ -9,6 +9,8 @@ public class menus : MonoBehaviour {
   [SerializeField] private MaxCamera cameraController;
   [SerializeField] private GUISkin guiSkin;
 
+  [SerializeField] private GameObject _computerPanel;
+
   private static string clicked_was = "";
 
   public static Dictionary<string, GameObject> menu_panels = new Dictionary<string, GameObject>();
@@ -68,9 +70,9 @@ public class menus : MonoBehaviour {
     menu_panels["ACLPanel"] = acl_panel;
     acl_panel.SetActive(false);
 
-    GameObject computer_panel = GameObject.Find("ComputerPanel");
-    menu_panels["ComputerPanel"] = computer_panel;
-    computer_panel.SetActive(false);
+    //GameObject computer_panel = GameObject.Find("ComputerPanel");
+    menu_panels["ComputerPanel"] = _computerPanel;
+    _computerPanel.SetActive(false);
 
     GameObject zone_panel = GameObject.Find("ZonePanel");
     menu_panels["ZonePanel"] = zone_panel;
