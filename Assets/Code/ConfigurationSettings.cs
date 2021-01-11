@@ -9,22 +9,24 @@ public class ConfigurationSettings {
   private static readonly string PWD_COMPLEX = "PasswordCharacterSet";
 
   private readonly string event_type = "componentEvent";
-  public Dictionary<string, Dictionary<string, bool>> group_dict = new Dictionary<string, Dictionary<string, bool>>();
+  private Dictionary<string, Dictionary<string, bool>> group_dict = new Dictionary<string, Dictionary<string, bool>>();
 
-  public Dictionary<string, string> group_value = new Dictionary<string, string>();
+  private Dictionary<string, string> group_value = new Dictionary<string, string>();
 
   /* instance-specific data */
-  public Dictionary<string, bool> proc_dict = new Dictionary<string, bool>();
-  public Dictionary<string, bool> pw_change_dict = new Dictionary<string, bool>();
-  public Dictionary<string, bool> pw_complex_dict = new Dictionary<string, bool>();
-  public Dictionary<string, bool> pw_len_dict = new Dictionary<string, bool>();
+  private Dictionary<string, bool> proc_dict = new Dictionary<string, bool>();
+  private Dictionary<string, bool> pw_change_dict = new Dictionary<string, bool>();
+  private Dictionary<string, bool> pw_complex_dict = new Dictionary<string, bool>();
+  private Dictionary<string, bool> pw_len_dict = new Dictionary<string, bool>();
   private string the_name = "";
 
   public ConfigurationSettings(bool is_computer, string the_name) {
     this.the_name = the_name;
     if (!is_computer) event_type = "zoneEvent";
 
-    foreach (string key in GameLoadBehavior.procedural_settings.proc_dict.Keys) proc_dict[key] = false;
+    foreach (string key in GameLoadBehavior.procedural_settings.proc_dict.Keys) {
+      proc_dict[key] = false;
+    }
     //Debug.Log("LoadComputer proc key " + key);
 
     pw_len_dict["Short"] = false;
@@ -83,7 +85,7 @@ public class ConfigurationSettings {
     return retval;
   }
 
-  public void SetGroupValue(string group_name, Dictionary<string, bool> my_dict, string key, bool value) {
+  private void SetGroupValue(string group_name, Dictionary<string, bool> my_dict, string key, bool value) {
     my_dict[key] = value;
     XElement xml = new XElement(event_type,
       new XElement("name", the_name),

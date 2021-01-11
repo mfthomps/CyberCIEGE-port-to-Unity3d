@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Code.User_Interface;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +9,8 @@ using UnityEngine.UI;
  */
 public class ComputerConfigure : MonoBehaviour {
   protected static GUIStyle label_style = new GUIStyle();
+
+  [SerializeField] private ComponentList _computerListUI;
 
   //public RectTransform myTextPanel;
   public GameObject myTextPrefab;
@@ -28,27 +31,12 @@ public class ComputerConfigure : MonoBehaviour {
   private GameObject newText;
   private GameObject newTog;
   private float nextMessage;
-  private List<string> stringlist;
+  
+  private List<ComputerBehavior> computerList = new List<ComputerBehavior>();
 
 
   // Use this for initialization
   private void Start() {
-    stringlist = new List<string>();
-    stringlist.Add("hi");
-    stringlist.Add("there");
-    stringlist.Add("what?");
-    stringlist.Add("hi");
-    stringlist.Add("there");
-    stringlist.Add("what?");
-    stringlist.Add("hi");
-    stringlist.Add("there");
-    stringlist.Add("what?");
-    stringlist.Add("hi");
-    stringlist.Add("there");
-    stringlist.Add("what?");
-    stringlist.Add("hi");
-    stringlist.Add("there");
-    stringlist.Add("what?");
     nextMessage = Time.time + 1f;
     label_style.normal.textColor = Color.black;
     close_button.onClick.AddListener(CloseClicked);
@@ -70,7 +58,8 @@ public class ComputerConfigure : MonoBehaviour {
     //menus.clicked = "Component:" + current_computer.component_name + ":Configure:ACL:" + asset_name;
   }
 
-  public void CloseClicked() {
+  //---------------------------------------------------------------------------
+  private void CloseClicked() {
     foreach (Transform child in procPanel) Destroy(child.gameObject);
 
     foreach (Transform child in passwordPanel) Destroy(child.gameObject);
@@ -80,7 +69,22 @@ public class ComputerConfigure : MonoBehaviour {
     menus.ClosedScreen(gameObject.name);
   }
 
+  //---------------------------------------------------------------------------
+  //Called when the UI should show the properties of this selected computer
+  public void ComputerSelected(ComponentListItem selectedItem) {
+    Debug.Log($"Computer {selectedItem} was selected");
+    //Now update the UI with the attributes of the computer
+    ComputerBehavior computer = selectedItem.GetItem() as ComputerBehavior;
+    computer?.UpdateUI();
+  }
+
+  //---------------------------------------------------------------------------
   public void SetPassword(string group_name, Dictionary<string, bool> dict, ComputerBehavior computer) {
+    //destroy old UI
+    foreach (Transform child in passwordPanel) {
+      Destroy(child.gameObject);
+    }
+
     GameObject newText = Instantiate(myTextPrefab);
     newText.transform.SetParent(passwordPanel);
     newText.GetComponent<Text>().text = group_name;
@@ -101,7 +105,13 @@ public class ComputerConfigure : MonoBehaviour {
     }
   }
 
+  //---------------------------------------------------------------------------
   public void SetProc(Dictionary<string, bool> dict, ComputerBehavior computer) {
+    //destroy old UI
+    foreach (Transform child in procPanel) {
+      Destroy(child.gameObject);
+    }
+
     foreach (KeyValuePair<string, bool> entry in dict) {
       GameObject newTog = Instantiate(procPrefab);
       newTog.transform.SetParent(procPanel);
@@ -120,6 +130,18 @@ public class ComputerConfigure : MonoBehaviour {
     }
   }
 
+  //---------------------------------------------------------------------------
+  public void SetComputers(List<ComputerBehavior> computers) {
+    computerList = computers;
+    _computerListUI.ClearItems(); //wipe out existing list of item
+    foreach (ComputerBehavior computer in computerList) {
+      if (computer) {
+        _computerListUI.AddItem(computer);
+      }
+    }
+  }
+
+  //---------------------------------------------------------------------------
   public void SetAssets(List<string> asset_list, ComputerBehavior computer) {
     current_computer = computer;
     asset_dropdown.ClearOptions();
@@ -134,18 +156,7 @@ public class ComputerConfigure : MonoBehaviour {
     asset_dropdown.AddOptions(ddo);
     //Debug.Log("SetAsset done");
   }
-
-  /*
-  public void SetTest()
-  {
-    foreach (string s in stringlist)
-    {
-      GameObject newText = (GameObject)Instantiate(myTextPrefab);
-      newText.transform.SetParent(myTextPanel);
-      newText.GetComponent<Text>().text = s;
-    }
-  }
-  */
+  
   public string GetCurrentAsset() {
     return asset_dropdown.captionText.text;
   }

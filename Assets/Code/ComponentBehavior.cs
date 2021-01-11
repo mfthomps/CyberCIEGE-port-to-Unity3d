@@ -11,7 +11,6 @@ public class ComponentBehavior : MonoBehaviour {
   public static Dictionary<string, ComponentBehavior> computer_dict = new Dictionary<string, ComponentBehavior>();
   protected static GUIStyle label_style = new GUIStyle();
   private static Rect WindowRect = new Rect(10, 10, 250, 300);
-  public static Texture2D background;
   public static ComponentBehavior current_component;
 
   public string component_name;
@@ -67,7 +66,7 @@ public class ComponentBehavior : MonoBehaviour {
     return true;
   }
 
-  public void LoadComponent() {
+  protected void LoadComponent() {
     try {
       StreamReader reader = new StreamReader(filePath, Encoding.Default);
       using (reader) {
