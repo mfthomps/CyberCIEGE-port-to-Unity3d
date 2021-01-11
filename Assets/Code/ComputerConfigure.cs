@@ -10,7 +10,7 @@ using UnityEngine.UI;
 public class ComputerConfigure : MonoBehaviour {
   protected static GUIStyle label_style = new GUIStyle();
 
-  [SerializeField] private SelectionList _computerListUI;
+  [SerializeField] private ComponentList _computerListUI;
 
   //public RectTransform myTextPanel;
   public GameObject myTextPrefab;
@@ -71,7 +71,7 @@ public class ComputerConfigure : MonoBehaviour {
 
   //---------------------------------------------------------------------------
   //Called when the UI should show the properties of this selected computer
-  public void ComputerSelected(SelectionListItem selectedItem) {
+  public void ComputerSelected(ComponentListItem selectedItem) {
     Debug.Log($"Computer {selectedItem} was selected");
     //TODO Now update the UI with the attributes of the computer
   }
@@ -120,10 +120,10 @@ public class ComputerConfigure : MonoBehaviour {
   //---------------------------------------------------------------------------
   public void SetComputers(List<ComputerBehavior> computers) {
     computerList = computers;
-    _computerListUI.Clear(); //wipe out existing list of item
+    _computerListUI.ClearItems(); //wipe out existing list of item
     foreach (ComputerBehavior computer in computerList) {
       if (computer) {
-        _computerListUI.AddItem(computer.component_name);
+        _computerListUI.AddItem(computer);
       }
     }
   }
