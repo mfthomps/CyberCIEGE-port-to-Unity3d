@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Code.Scriptable_Variables;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ZoneBehavior : MonoBehaviour {
+  [SerializeField] private ZoneListVariable _zoneListVariable;
+  
   private static Rect WindowRect = new Rect(10, 10, 250, 300);
   
   private static string root_zone_name; //May use to scale computer procedurally if I can't do it manually.
@@ -134,6 +137,11 @@ public class ZoneBehavior : MonoBehaviour {
     catch (Exception e) {
       Console.WriteLine(e.Message + "\n");
     }
+
+    //add ourself to the zone list variable.
+    var zoneList = _zoneListVariable.Value;
+    zoneList.Add(this);
+    _zoneListVariable.Value = new List<ZoneBehavior>(zoneList);
   }
 
   private void DoPosition() {
