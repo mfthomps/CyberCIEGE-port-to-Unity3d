@@ -275,7 +275,6 @@ public class UserBehavior : MonoBehaviour {
   }
 
   public void Configure() {
-    Debug.Log("Configure");
     if (menus.clicked.EndsWith("Configure")) {
       menus.clicked = "";
       ConfigureCanvas();
@@ -303,10 +302,8 @@ public class UserBehavior : MonoBehaviour {
     }
     else {
       string submenu = menus.MenuLevel(2);
-      Debug.Log("submenu is <" + submenu + "> level is " + level + " clicked " + menus.clicked);
       switch (submenu) {
         case "Configure":
-          Debug.Log("is configure");
           script.Configure();
           break;
       }
