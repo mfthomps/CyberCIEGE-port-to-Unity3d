@@ -21,9 +21,6 @@ public class UserBehavior : MonoBehaviour {
 
   private string filePath;
 
-  // Use this for initialization
-  private void Start() {
-  }
 
   private void OnMouseDown() {
     Debug.Log("down for " + filePath + " user_name " + user_name);

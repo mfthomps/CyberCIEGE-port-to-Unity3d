@@ -22,10 +22,6 @@ public class UserConfigure : MonoBehaviour {
     menus.screen_dict[gameObject.name] = menus.UI_SCREEN_USER;
   }
 
-  // Update is called once per frame
-  private void Update() {
-  }
-
   private void CloseClicked() {
     //Debug.Log("Component menu closed");
     gameObject.SetActive(false);
