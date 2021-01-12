@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using NaughtyAttributes;
 using UnityEngine;
 
 public class menus : MonoBehaviour {
@@ -10,6 +11,10 @@ public class menus : MonoBehaviour {
   [SerializeField] private GUISkin guiSkin;
 
   [SerializeField] private GameObject _computerPanel;
+  
+  [Tag]
+  [Tooltip("The Tag of User GameObjects. Used to click on Users")]
+  [SerializeField] private string _userTag;
 
   private static string clicked_was = "";
 
@@ -148,7 +153,7 @@ public class menus : MonoBehaviour {
 
           clicked = "Component:" + bh.component_name;
         }
-        else if (hit.transform.gameObject.name.StartsWith("User")) {
+        else if (hit.transform.gameObject.CompareTag(_userTag)) {
           UserBehavior bh = (UserBehavior) hit.transform.gameObject.GetComponent(typeof(UserBehavior));
           clicked = "User:" + bh.user_name;
         }

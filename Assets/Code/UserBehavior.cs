@@ -21,9 +21,6 @@ public class UserBehavior : MonoBehaviour {
 
   private string filePath;
 
-  // Use this for initialization
-  private void Start() {
-  }
 
   private void OnMouseDown() {
     Debug.Log("down for " + filePath + " user_name " + user_name);
@@ -275,7 +272,6 @@ public class UserBehavior : MonoBehaviour {
   }
 
   public void Configure() {
-    Debug.Log("Configure");
     if (menus.clicked.EndsWith("Configure")) {
       menus.clicked = "";
       ConfigureCanvas();
@@ -303,10 +299,8 @@ public class UserBehavior : MonoBehaviour {
     }
     else {
       string submenu = menus.MenuLevel(2);
-      Debug.Log("submenu is <" + submenu + "> level is " + level + " clicked " + menus.clicked);
       switch (submenu) {
         case "Configure":
-          Debug.Log("is configure");
           script.Configure();
           break;
       }
