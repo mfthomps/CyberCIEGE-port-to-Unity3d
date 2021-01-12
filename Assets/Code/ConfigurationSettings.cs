@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Linq;
+using Code.Policy;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,12 +21,12 @@ public class ConfigurationSettings {
   private Dictionary<string, bool> pw_len_dict = new Dictionary<string, bool>();
   private string the_name = "";
 
-  public ConfigurationSettings(bool is_computer, string the_name) {
+  public ConfigurationSettings(bool is_computer, string the_name, List<Policy> computerPolicies) {
     this.the_name = the_name;
     if (!is_computer) event_type = "zoneEvent";
 
-    foreach (string key in GameLoadBehavior.procedural_settings.proc_dict.Keys) {
-      proc_dict[key] = false;
+    foreach (var key in computerPolicies) {
+      proc_dict[key.Name] = false;
     }
     //Debug.Log("LoadComputer proc key " + key);
 

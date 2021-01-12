@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce766a7f21734c5aa21f5814c7ab2c03, type: 3}
+  m_Name: Computer Policy List
+  m_EditorClassIdentifier: 
+  description: The list of Computer policies available to the game.
+  value:
+  - Name: ProtectWithACL
+    Description: Protect With ACL
+    PolicyType: 1
+  - Name: WriteDownPasswords
+    Description: Allow Passwords on post-its
+    PolicyType: 1
+  - Name: LockorLogoff
+    Description: Lock Or Logoff if Unattended
+    PolicyType: 1
+  - Name: NoEmailAttachmentExecute
+    Description: Beware of Email Attachments
+    PolicyType: 1
+  - Name: NoExternalSoftware
+    Description: No External Software
+    PolicyType: 1
+  - Name: NoMediaLeaveZone
+    Description: No Media Leave Zone
+    PolicyType: 1
+  - Name: NoWebMail
+    Description: No Web Mail
+    PolicyType: 1
+  - Name: ApplyPatches
+    Description: User Apply Patches
+    PolicyType: 1
+  - Name: NoPhysicalModifications
+    Description: No Machine Modifications
+    PolicyType: 1
+  - Name: UserBackup
+    Description: Users Backup Data
+    PolicyType: 1
+  - Name: HoldsUserAsset
+    Description: Holds User Asset
+    PolicyType: 1
+  - Name: UpdateAntivirus:Regular
+    Description: Regular Antivirus Updates
+    PolicyType: 1
+  - Name: UpdateAntivirus:Automatic
+    Description: Automatic Antivirus Updates
+    PolicyType: 1
+  defaultValue: []

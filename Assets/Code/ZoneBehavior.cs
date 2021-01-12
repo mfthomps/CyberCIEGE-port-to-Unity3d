@@ -8,6 +8,10 @@ using UnityEngine.UI;
 
 public class ZoneBehavior : MonoBehaviour {
   [SerializeField] private ZoneListVariable _zoneListVariable;
+  [Tooltip("The variable containing the game's list of policies available to the Computers.")]
+  [SerializeField] private PolicyListVariable computerPolicyListVariable;
+  [Tooltip("The variable containing the game's list of physical security policies available to the Zones.")]
+  [SerializeField] private PolicyListVariable physicalPolicyListVariable;
   
   private static Rect WindowRect = new Rect(10, 10, 250, 300);
   
@@ -73,8 +77,8 @@ public class ZoneBehavior : MonoBehaviour {
   }
 
   private void LoadZone() {
-    config_settings = new ConfigurationSettings(false, "");
-    phys_settings = new PhysicalSettings();
+    config_settings = new ConfigurationSettings(false, "", computerPolicyListVariable.Value);
+    phys_settings = new PhysicalSettings(physicalPolicyListVariable.Value);
     try {
       StreamReader reader = new StreamReader(file_path, Encoding.Default);
       using (reader) {

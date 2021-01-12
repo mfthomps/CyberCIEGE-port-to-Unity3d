@@ -12,7 +12,10 @@ using UnityEngine.UI;
 public class ComputerBehavior : ComponentBehavior {
   private static readonly string COMPUTERS = "computers";
 
+  [Tooltip("The variable containing the list of all the Computers currently in the scenario.")]
   [SerializeField] private ComputerListVariable computerListVariable;
+  [Tooltip("The variable containing the list of all the Policies available to apply to Computers")]
+  [SerializeField] private PolicyListVariable computerPolicyListVariable;
   
   private static Rect ConfigureRect = new Rect(10, 10, 900, 800);
   private static string hw_name;
@@ -82,7 +85,7 @@ public class ComputerBehavior : ComponentBehavior {
   }
 
   private void LoadComputerInfoFromFile() {
-    config_settings = new ConfigurationSettings(true, component_name);
+    config_settings = new ConfigurationSettings(true, component_name, computerPolicyListVariable.Value);
 
     try {
       StreamReader reader = new StreamReader(filePath, Encoding.Default);
