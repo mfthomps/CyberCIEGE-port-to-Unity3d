@@ -3,8 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class ZoneConfigure : MonoBehaviour {
-  protected static GUIStyle label_style = new GUIStyle();
-  public RectTransform myTextPanel;
+  private static GUIStyle label_style = new GUIStyle();
   public GameObject myTextPrefab;
 
   public RectTransform procPanel;
@@ -36,11 +35,7 @@ public class ZoneConfigure : MonoBehaviour {
     menus.screen_dict[gameObject.name] = menus.UI_SCREEN_ZONE;
   }
 
-  // Update is called once per frame
-  private void Update() {
-  }
-
-  public void CloseClicked() {
+  private void CloseClicked() {
     foreach (Transform child in procPanel) Destroy(child.gameObject);
 
     foreach (Transform child in passwordPanel) Destroy(child.gameObject);

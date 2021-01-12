@@ -7,10 +7,9 @@ using UnityEngine.UI;
 
 public class ZoneBehavior : MonoBehaviour {
   private static Rect WindowRect = new Rect(10, 10, 250, 300);
-  public static Texture2D background, LOGO;
-
-  public static string root_zone_name; //May use to scale computer procedurally if I can't do it manually.
-  public static Dictionary<string, ZoneBehavior> zone_dict = new Dictionary<string, ZoneBehavior>();
+  
+  private static string root_zone_name; //May use to scale computer procedurally if I can't do it manually.
+  private static Dictionary<string, ZoneBehavior> zone_dict = new Dictionary<string, ZoneBehavior>();
   public string zone_name;
   private ConfigurationSettings config_settings;
 
@@ -21,18 +20,9 @@ public class ZoneBehavior : MonoBehaviour {
   private int ulc_x;
   private int ulc_y;
 
-  private ZoneConfigure
-    zone_config_script; /* menu of current configuration values shared between instances TBC static?*/
+  private ZoneConfigure zone_config_script; /* menu of current configuration values shared between instances TBC static?*/
 
-  // Use this for initialization
-  private void Start() {
-  }
-
-  // Update is called once per frame
-  private void Update() {
-  }
-
-  public static void LoadOneZone(string zone_file, Color color) {
+  private static void LoadOneZone(string zone_file, Color color) {
     GameObject zone = GameObject.Find("Zone");
     //Debug.Log("user_app_path" + user_app_path + " file [" + User_file+"]");
     string cfile = Path.Combine(GameLoadBehavior.user_app_path, zone_file);
@@ -59,7 +49,7 @@ public class ZoneBehavior : MonoBehaviour {
       }
   }
 
-  public void SetFilePath(string path) {
+  private void SetFilePath(string path) {
     file_path = path;
   }
 
@@ -79,7 +69,7 @@ public class ZoneBehavior : MonoBehaviour {
       }
   }
 
-  public void LoadZone() {
+  private void LoadZone() {
     config_settings = new ConfigurationSettings(false, "");
     phys_settings = new PhysicalSettings();
     try {
@@ -146,7 +136,7 @@ public class ZoneBehavior : MonoBehaviour {
     }
   }
 
-  public void DoPosition() {
+  private void DoPosition() {
     Debug.Log("zone " + zone_name + " " + ulc_x + " " + ulc_y + " " + lrc_x + " " + lrc_y);
     int left = ulc_x;
     int right = lrc_x;
@@ -164,7 +154,7 @@ public class ZoneBehavior : MonoBehaviour {
     transform.localScale = scale;
   }
 
-  public void ConfigureCanvas() {
+  private void ConfigureCanvas() {
     Debug.Log("ZoneBehavior ConfigureCanvas");
 
     GameObject zone_panel = menus.menu_panels["ZonePanel"];
