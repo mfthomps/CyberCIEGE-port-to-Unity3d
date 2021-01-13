@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Code.Policy;
 using Code.User_Interface;
 using UnityEngine;
@@ -11,9 +12,13 @@ using UnityEngine.UI;
 public class ComputerConfigure : MonoBehaviour {
   protected static GUIStyle label_style = new GUIStyle();
 
+  [Tooltip("The variable to contain the list of active computers.")]
   [SerializeField] private ComponentList _computerListUI;
-
-  //public RectTransform myTextPanel;
+  [Tooltip("The list of Policies to apply to the Computer Procedural settings.")]
+  [SerializeField] private PolicyList _proceduralPolicyList;
+  [Tooltip("The list of Policies to apply to the Computer Configuration settings.")]
+  [SerializeField] private PolicyList _configurationPolicyList;
+  
   public GameObject myTextPrefab;
   public RectTransform procPanel;
   public GameObject procPrefab;
@@ -32,15 +37,14 @@ public class ComputerConfigure : MonoBehaviour {
   public GameObject passwordPrefab;
 
   public Button close_button;
-  private ComputerBehavior current_computer;
+  private ComputerBehavior _selectedComputer;
   private GameObject newText;
   private GameObject newTog;
   private float nextMessage;
   
   private List<ComputerBehavior> computerList = new List<ComputerBehavior>();
-
-
-  // Use this for initialization
+  
+  //---------------------------------------------------------------------------
   private void Start() {
     nextMessage = Time.time + 1f;
     label_style.normal.textColor = Color.black;
@@ -65,8 +69,6 @@ public class ComputerConfigure : MonoBehaviour {
 
   //---------------------------------------------------------------------------
   private void CloseClicked() {
-    foreach (Transform child in procPanel) Destroy(child.gameObject);
-    foreach (Transform child in configurationSettingsPanel) Destroy(child.gameObject);
     foreach (Transform child in passwordPanel) Destroy(child.gameObject);
 
     Debug.Log("Component menu closed");
@@ -80,6 +82,7 @@ public class ComputerConfigure : MonoBehaviour {
     Debug.Log($"Computer {selectedItem} was selected");
     //Now update the UI with the attributes of the computer
     ComputerBehavior computer = selectedItem.GetItem() as ComputerBehavior;
+    _selectedComputer = computer;
     computer?.UpdateUI();
   }
 
@@ -111,30 +114,31 @@ public class ComputerConfigure : MonoBehaviour {
   }
 
   //---------------------------------------------------------------------------
+  //The supplied list of Policies and values should be displayed for the supplied computer.
   public void SetProc(Dictionary<Policy, bool> dict, ComputerBehavior computer) {
-    //destroy old UI
-    foreach (Transform child in procPanel) {
-      Destroy(child.gameObject);
-    }
-    foreach (Transform child in configurationSettingsPanel) {
-      Destroy(child.gameObject);
-    }
+    _selectedComputer = computer;
+    
+    //remove old items
+    _proceduralPolicyList.ClearItems();
+    _configurationPolicyList.ClearItems();
 
-    foreach (var entry in dict) {
-      var parent = entry.Key.PolicyType == PolicyType.ProceduralSecurity ? procPanel : configurationSettingsPanel;
-      GameObject newToggle = Instantiate(procPrefab, parent, true);
-
-      Toggle t = newToggle.GetComponent<Toggle>();
-      if (t == null) {
-        Debug.Log("Toggle is null");
-        return;
+    foreach (var item in dict) {
+      switch (item.Key.PolicyType) {
+        case PolicyType.None:
+          break;
+        case PolicyType.ProceduralSecurity:
+          _proceduralPolicyList.AddItem((item.Key, item.Value));
+          break;
+        case PolicyType.Configuration:
+          _configurationPolicyList.AddItem((item.Key, item.Value));
+          break;
+        case PolicyType.ProceduralOther:
+          break;
+        case PolicyType.PhysicalSecurity:
+          break;
+        default:
+          throw new ArgumentOutOfRangeException();
       }
-
-      t.GetComponentInChildren<Text>().text = entry.Key.Name;
-      t.isOn = entry.Value;
-      t.onValueChanged.AddListener(delegate { computer.ProcChanged(t); });
-
-      //Debug.Log("added " + entry.Key);
     }
   }
 
@@ -151,7 +155,6 @@ public class ComputerConfigure : MonoBehaviour {
 
   //---------------------------------------------------------------------------
   public void SetAssets(List<string> asset_list, ComputerBehavior computer) {
-    current_computer = computer;
     asset_dropdown.ClearOptions();
     var ddo = new List<Dropdown.OptionData>();
     foreach (string asset in asset_list) {
@@ -167,5 +170,13 @@ public class ComputerConfigure : MonoBehaviour {
   
   public string GetCurrentAsset() {
     return asset_dropdown.captionText.text;
+  }
+  
+  //---------------------------------------------------------------------------
+  //Call this when a Policy value should be changed on the selected computer.
+  public void OnPolicyChanged(Policy policy, bool isOn) {
+    if (_selectedComputer) {
+      _selectedComputer.PolicyValueChanged(policy, isOn);
+    }
   }
 }

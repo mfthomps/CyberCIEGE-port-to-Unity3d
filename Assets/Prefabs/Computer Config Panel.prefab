@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4686513768401875472}
   - component: {fileID: 6537112524663740204}
+  - component: {fileID: 4542172503284251853}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -61,6 +62,20 @@ MonoBehaviour:
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
+--- !u!114 &4542172503284251853
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 93856235401845771}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 0
+  m_VerticalFit: 2
 --- !u!1 &1199081107283218757
 GameObject:
   m_ObjectHideFlags: 0
@@ -611,6 +626,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1199081107480151157}
   - component: {fileID: 1199081107480151156}
+  - component: {fileID: 6619732994858883846}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -662,6 +678,20 @@ MonoBehaviour:
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
+--- !u!114 &6619732994858883846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1199081107480151114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 0
+  m_VerticalFit: 2
 --- !u!1 &1199081107541295858
 GameObject:
   m_ObjectHideFlags: 0
@@ -1435,7 +1465,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 52.35
+  m_fontSize: 40.5
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1831,7 +1861,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1199081108558869911}
   m_Direction: 0
   m_Value: 0
-  m_Size: 0.99999994
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2413,6 +2443,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _computerListUI: {fileID: 1199081107599436806}
+  _proceduralPolicyList: {fileID: 7401979537878943229}
+  _configurationPolicyList: {fileID: 3707033206979746980}
   myTextPrefab: {fileID: 1995475270654728, guid: d8e6390b8f364ab42987a31771df1318,
     type: 3}
   procPanel: {fileID: 1199081107480151157}
@@ -7134,6 +7166,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1199081108920828698}
+  - component: {fileID: 7401979537878943229}
   m_Layer: 5
   m_Name: Procedural Settings
   m_TagString: Untagged
@@ -7162,6 +7195,34 @@ RectTransform:
   m_AnchoredPosition: {x: 5, y: 0}
   m_SizeDelta: {x: -10, y: -20}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &7401979537878943229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1199081108920828699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3518cdb6d43540eaac00cd302e730372, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefab: {fileID: -1618096660056944143, guid: a508a680580cf8149b419bda129608a7, type: 3}
+  contentArea: {fileID: 1199081107480151157}
+  PolicyChanged:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1199081107830559961}
+        m_MethodName: OnPolicyChanged
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1199081108948945709
 GameObject:
   m_ObjectHideFlags: 0
@@ -7409,7 +7470,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 44.85
+  m_fontSize: 34.85
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -10730,7 +10791,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 39.7
+  m_fontSize: 30.85
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -10781,6 +10842,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6673025426689554085}
+  - component: {fileID: 3707033206979746980}
   m_Layer: 5
   m_Name: Configuration Settings
   m_TagString: Untagged
@@ -10809,3 +10871,31 @@ RectTransform:
   m_AnchoredPosition: {x: 5, y: 0}
   m_SizeDelta: {x: -10, y: -20}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &3707033206979746980
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8712163987406319113}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3518cdb6d43540eaac00cd302e730372, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefab: {fileID: -1618096660056944143, guid: a508a680580cf8149b419bda129608a7, type: 3}
+  contentArea: {fileID: 4686513768401875472}
+  PolicyChanged:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1199081107830559961}
+        m_MethodName: OnPolicyChanged
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2

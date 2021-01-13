@@ -131,6 +131,8 @@ public class ConfigurationSettings {
     }
   }
 
+  
+  //TODO Moved to ProceduralPolicyChanged()
   public void ProcChanged(Toggle toggle) {
     string field = toggle.GetComponentInChildren<Text>().text;
     Debug.Log("Computer ProcChanged " + field + " to " + toggle.isOn);
@@ -146,6 +148,19 @@ public class ConfigurationSettings {
 
       IPCManagerScript.SendRequest(xml.ToString());      
     }
-
   }
+  
+  //----------------------------------------------------------------------------
+  public void ProceduralPolicyChanged(Policy policy, bool isOn) {
+    Debug.Log("Computer ProcChanged " + policy.Name + " to " + isOn);
+    proc_dict[policy] = isOn;
+    XElement xml = new XElement(event_type,
+      new XElement("name", the_name),
+      new XElement("procSetting",
+        new XElement("field", policy.Name + ":"),
+        new XElement("value", isOn)));
+
+    IPCManagerScript.SendRequest(xml.ToString());
+  }
+  
 }

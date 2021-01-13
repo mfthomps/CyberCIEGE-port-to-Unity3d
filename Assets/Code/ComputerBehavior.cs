@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Code.Policy;
 using Code.Scriptable_Variables;
 using UnityEngine;
 using UnityEngine.UI;
@@ -265,8 +266,10 @@ public class ComputerBehavior : ComponentBehavior {
   }
 
   */
-  public void ProcChanged(Toggle toggle) {
-    config_settings.ProcChanged(toggle);
+
+  //Call this when the computer should change the value of a Policy.
+  public void PolicyValueChanged(Policy policy, bool isOn) {
+    config_settings.ProceduralPolicyChanged(policy, isOn);
   }
 
   public void PasswordChanged(string group_name, Toggle toggle) {
