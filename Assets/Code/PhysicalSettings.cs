@@ -1,16 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Linq;
+using Code.Policy;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PhysicalSettings {
-  public List<string> groups_allowed = new List<string>();
-  public Dictionary<string, bool> phys_dict = new Dictionary<string, bool>();
-  public List<string> users_allowed = new List<string>();
+  private List<string> groups_allowed = new List<string>();
+  private Dictionary<string, bool> phys_dict = new Dictionary<string, bool>();
+  private List<string> users_allowed = new List<string>();
   private ZoneBehavior zone;
 
-  public PhysicalSettings() {
-    foreach (string key in GameLoadBehavior.physical_settings.proc_dict.Keys) phys_dict[key] = false;
+  public PhysicalSettings(List<Policy> physicalSecurityPolicies) {
+    foreach (var key in physicalSecurityPolicies) {
+      phys_dict[key.Name] = false;
+    }
+
     //Debug.Log("LoadComputer proc key " + key);
   }
 

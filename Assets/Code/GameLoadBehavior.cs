@@ -9,8 +9,6 @@ public class GameLoadBehavior : MonoBehaviour {
     Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "CyberCIEGE");
 
   public static GameObject main_floor;
-  public static ProceduralScript procedural_settings;
-  public static ProceduralScript physical_settings;
 
   public static DACGroups dac_groups;
 
@@ -56,9 +54,6 @@ public class GameLoadBehavior : MonoBehaviour {
 
   private static void LoadItems() {
     NetworkBehavior.LoadNetworks(user_app_path);
-    procedural_settings = CreateProceduralItems();
-    physical_settings = new ProceduralScript("physical.txt");
-    Debug.Log("Calling LoadHardwareTypes");
     CatalogBehavior.LoadHardwareTypes();
     CatalogBehavior.LoadCatalog(user_app_path);
     OrganizationScript.LoadOrganization();
@@ -77,30 +72,7 @@ public class GameLoadBehavior : MonoBehaviour {
     //UserBehavior.UpdateStatus();
     //LoadMainOffice();
   }
-
-  //---------------------------------------------------------------------------
-  //Work in progress.  Just hacking out a list of the procedural settings a 
-  //computer can be configured with.
-  //Note: Magic strings taken from the original CyberCIEGE project file "policy.cpp"
-  private static ProceduralScript CreateProceduralItems() {
-
-      
-    var procedural = new ProceduralScript {proc_dict = {
-      ["ProtectWithACL"] = "Protect With ACL",
-      ["WriteDownPasswords"] = "Allow Passwords on post-its",
-      ["LockorLogoff"] = "Lock Or Logoff if Unattended",
-      ["NoEmailAttachmentExecute"] = "Beware of Email Attachments",
-      ["NoExternalSoftware"] = "No External Software",
-      ["NoMediaLeaveZone"] = "No Media Leave Zone",
-      ["NoWebMail"] = "No Web Mail",
-      ["ApplyPatches"] = "User Apply Patches",
-      ["NoPhysicalModifications"] = "No Machine Modifications",
-      ["UserBackup"] = "Users Backup Data",
-      ["HoldsUserAsset"] = "Holds User Asset",
-    }};
-    return procedural;
-  }
-
+  
   private IEnumerator Example() {
     print(Time.time);
     yield return new WaitForSeconds(1);

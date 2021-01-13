@@ -1,10 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Code.Policy;
+using Code.User_Interface;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ZoneConfigure : MonoBehaviour {
-  protected static GUIStyle label_style = new GUIStyle();
-  public RectTransform myTextPanel;
+  [Tooltip("The list of Policies to apply to the Zone Procedural settings.")]
+  [SerializeField] private PolicyList _proceduralPolicyList;
+  [Tooltip("The list of Policies to apply to the Zone Configuration settings.")]
+  [SerializeField] private PolicyList _configurationPolicyList;
+  
+  private static GUIStyle label_style = new GUIStyle();
   public GameObject myTextPrefab;
 
   public RectTransform procPanel;
@@ -25,6 +32,7 @@ public class ZoneConfigure : MonoBehaviour {
   private GameObject newTog;
   private float nextMessage;
   private List<string> stringlist;
+  private ZoneBehavior _selectedZone;
 
 
   // Use this for initialization
@@ -36,17 +44,9 @@ public class ZoneConfigure : MonoBehaviour {
     menus.screen_dict[gameObject.name] = menus.UI_SCREEN_ZONE;
   }
 
-  // Update is called once per frame
-  private void Update() {
-  }
-
-  public void CloseClicked() {
-    foreach (Transform child in procPanel) Destroy(child.gameObject);
-
+  private void CloseClicked() {
     foreach (Transform child in passwordPanel) Destroy(child.gameObject);
-
     foreach (Transform child in physPanel) Destroy(child.gameObject);
-
     foreach (Transform child in accessPanel) Destroy(child.gameObject);
 
     Debug.Log("Zone menu closed");
@@ -75,22 +75,32 @@ public class ZoneConfigure : MonoBehaviour {
     }
   }
 
-  public void SetProc(Dictionary<string, bool> dict, ZoneBehavior zone) {
-    foreach (KeyValuePair<string, bool> entry in dict) {
-      GameObject newTog = Instantiate(procPrefab);
-      newTog.transform.SetParent(procPanel);
-
-      Toggle t = newTog.GetComponent<Toggle>();
-      if (t == null) {
-        Debug.Log("Toggle is null");
-        return;
+  //---------------------------------------------------------------------------
+  //TODO Duplicate of ComputerConfigure.SetProc()
+  public void SetProc(Dictionary<Policy, bool> dict, ZoneBehavior zone) {
+    _selectedZone = zone;
+    
+    //remove old items
+    _proceduralPolicyList.ClearItems();
+    _configurationPolicyList.ClearItems();
+    
+    foreach (var item in dict) {
+      switch (item.Key.PolicyType) {
+        case PolicyType.None:
+          break;
+        case PolicyType.ProceduralSecurity:
+          _proceduralPolicyList.AddItem((item.Key, item.Value));
+          break;
+        case PolicyType.Configuration:
+          _configurationPolicyList.AddItem((item.Key, item.Value));
+          break;
+        case PolicyType.ProceduralOther:
+          break;
+        case PolicyType.PhysicalSecurity:
+          break;
+        default:
+          throw new ArgumentOutOfRangeException();
       }
-
-      t.GetComponentInChildren<Text>().text = entry.Key;
-      t.isOn = entry.Value;
-      t.onValueChanged.AddListener(delegate { zone.ProcChanged(t); });
-
-      //Debug.Log("added " + entry.Key);
     }
   }
 
@@ -126,6 +136,14 @@ public class ZoneConfigure : MonoBehaviour {
       t.GetComponentInChildren<Text>().text = entry.Key;
       t.isOn = entry.Value;
       t.onValueChanged.AddListener(delegate { zone.AccessChanged(t); });
+    }
+  }
+  
+  //---------------------------------------------------------------------------
+  //Call this when a Policy value should be changed on the selected computer.
+  public void OnPolicyChanged(Policy policy, bool isOn) {
+    if (_selectedZone) {
+      _selectedZone.PolicyValueChanged(policy, isOn);
     }
   }
 }

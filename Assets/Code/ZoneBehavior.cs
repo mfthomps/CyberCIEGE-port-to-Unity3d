@@ -2,15 +2,22 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Code.Policy;
+using Code.Scriptable_Variables;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ZoneBehavior : MonoBehaviour {
+  [SerializeField] private ZoneListVariable _zoneListVariable;
+  [Tooltip("The variable containing the game's list of policies available to the Computers.")]
+  [SerializeField] private PolicyListVariable computerPolicyListVariable;
+  [Tooltip("The variable containing the game's list of physical security policies available to the Zones.")]
+  [SerializeField] private PolicyListVariable physicalPolicyListVariable;
+  
   private static Rect WindowRect = new Rect(10, 10, 250, 300);
-  public static Texture2D background, LOGO;
-
-  public static string root_zone_name; //May use to scale computer procedurally if I can't do it manually.
-  public static Dictionary<string, ZoneBehavior> zone_dict = new Dictionary<string, ZoneBehavior>();
+  
+  private static string root_zone_name; //May use to scale computer procedurally if I can't do it manually.
+  private static Dictionary<string, ZoneBehavior> zone_dict = new Dictionary<string, ZoneBehavior>();
   public string zone_name;
   private ConfigurationSettings config_settings;
 
@@ -21,18 +28,9 @@ public class ZoneBehavior : MonoBehaviour {
   private int ulc_x;
   private int ulc_y;
 
-  private ZoneConfigure
-    zone_config_script; /* menu of current configuration values shared between instances TBC static?*/
+  private ZoneConfigure zone_config_script; /* menu of current configuration values shared between instances TBC static?*/
 
-  // Use this for initialization
-  private void Start() {
-  }
-
-  // Update is called once per frame
-  private void Update() {
-  }
-
-  public static void LoadOneZone(string zone_file, Color color) {
+  private static void LoadOneZone(string zone_file, Color color) {
     GameObject zone = GameObject.Find("Zone");
     //Debug.Log("user_app_path" + user_app_path + " file [" + User_file+"]");
     string cfile = Path.Combine(GameLoadBehavior.user_app_path, zone_file);
@@ -59,7 +57,7 @@ public class ZoneBehavior : MonoBehaviour {
       }
   }
 
-  public void SetFilePath(string path) {
+  private void SetFilePath(string path) {
     file_path = path;
   }
 
@@ -79,9 +77,9 @@ public class ZoneBehavior : MonoBehaviour {
       }
   }
 
-  public void LoadZone() {
-    config_settings = new ConfigurationSettings(false, "");
-    phys_settings = new PhysicalSettings();
+  private void LoadZone() {
+    config_settings = new ConfigurationSettings(false, "", computerPolicyListVariable.Value);
+    phys_settings = new PhysicalSettings(physicalPolicyListVariable.Value);
     try {
       StreamReader reader = new StreamReader(file_path, Encoding.Default);
       using (reader) {
@@ -144,9 +142,14 @@ public class ZoneBehavior : MonoBehaviour {
     catch (Exception e) {
       Console.WriteLine(e.Message + "\n");
     }
+
+    //add ourself to the zone list variable.
+    var zoneList = _zoneListVariable.Value;
+    zoneList.Add(this);
+    _zoneListVariable.Value = new List<ZoneBehavior>(zoneList);
   }
 
-  public void DoPosition() {
+  private void DoPosition() {
     Debug.Log("zone " + zone_name + " " + ulc_x + " " + ulc_y + " " + lrc_x + " " + lrc_y);
     int left = ulc_x;
     int right = lrc_x;
@@ -164,7 +167,7 @@ public class ZoneBehavior : MonoBehaviour {
     transform.localScale = scale;
   }
 
-  public void ConfigureCanvas() {
+  private void ConfigureCanvas() {
     Debug.Log("ZoneBehavior ConfigureCanvas");
 
     GameObject zone_panel = menus.menu_panels["ZonePanel"];
@@ -176,9 +179,11 @@ public class ZoneBehavior : MonoBehaviour {
     zone_panel.SetActive(true);
   }
 
-  public void ProcChanged(Toggle toggle) {
-    config_settings.ProcChanged(toggle);
+ 
+  public void PolicyValueChanged(Policy policy, bool isOn) {
+    config_settings.ProceduralPolicyChanged(policy, isOn);
   }
+  
 
   public void PhysChanged(Toggle toggle) {
     phys_settings.PhysChanged(toggle);

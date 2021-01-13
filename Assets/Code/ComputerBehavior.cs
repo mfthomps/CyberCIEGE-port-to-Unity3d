@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Code.Policy;
 using Code.Scriptable_Variables;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,7 +13,10 @@ using UnityEngine.UI;
 public class ComputerBehavior : ComponentBehavior {
   private static readonly string COMPUTERS = "computers";
 
+  [Tooltip("The variable containing the list of all the Computers currently in the scenario.")]
   [SerializeField] private ComputerListVariable computerListVariable;
+  [Tooltip("The variable containing the list of all the Policies available to apply to Computers")]
+  [SerializeField] private PolicyListVariable computerPolicyListVariable;
   
   private static Rect ConfigureRect = new Rect(10, 10, 900, 800);
   private static string hw_name;
@@ -82,7 +86,7 @@ public class ComputerBehavior : ComponentBehavior {
   }
 
   private void LoadComputerInfoFromFile() {
-    config_settings = new ConfigurationSettings(true, component_name);
+    config_settings = new ConfigurationSettings(true, component_name, computerPolicyListVariable.Value);
 
     try {
       StreamReader reader = new StreamReader(filePath, Encoding.Default);
@@ -132,7 +136,7 @@ public class ComputerBehavior : ComponentBehavior {
       }
     }
     catch (Exception e) {
-      Debug.LogError(e.Message);
+      Debug.LogError(e.Message + " " + e.StackTrace);
     }
 
     //add ourself to the computer list.
@@ -262,8 +266,10 @@ public class ComputerBehavior : ComponentBehavior {
   }
 
   */
-  public void ProcChanged(Toggle toggle) {
-    config_settings.ProcChanged(toggle);
+
+  //Call this when the computer should change the value of a Policy.
+  public void PolicyValueChanged(Policy policy, bool isOn) {
+    config_settings.ProceduralPolicyChanged(policy, isOn);
   }
 
   public void PasswordChanged(string group_name, Toggle toggle) {
