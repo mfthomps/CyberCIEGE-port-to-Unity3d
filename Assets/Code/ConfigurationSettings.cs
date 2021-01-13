@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Linq;
+using Code.Policy;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,17 +15,17 @@ public class ConfigurationSettings {
   private Dictionary<string, string> group_value = new Dictionary<string, string>();
 
   /* instance-specific data */
-  private Dictionary<string, bool> proc_dict = new Dictionary<string, bool>();
+  private Dictionary<Policy, bool> proc_dict = new Dictionary<Policy, bool>();
   private Dictionary<string, bool> pw_change_dict = new Dictionary<string, bool>();
   private Dictionary<string, bool> pw_complex_dict = new Dictionary<string, bool>();
   private Dictionary<string, bool> pw_len_dict = new Dictionary<string, bool>();
   private string the_name = "";
 
-  public ConfigurationSettings(bool is_computer, string the_name) {
+  public ConfigurationSettings(bool is_computer, string the_name, List<Policy> computerPolicies) {
     this.the_name = the_name;
     if (!is_computer) event_type = "zoneEvent";
 
-    foreach (string key in GameLoadBehavior.procedural_settings.proc_dict.Keys) {
+    foreach (var key in computerPolicies) {
       proc_dict[key] = false;
     }
     //Debug.Log("LoadComputer proc key " + key);
@@ -67,13 +68,24 @@ public class ConfigurationSettings {
     zone_config_script.SetPassword(PWD_COMPLEX, pw_complex_dict, zone);
   }
 
+  private Policy FindPolicyByName(string name) {
+    foreach (Policy policy in proc_dict.Keys) {
+      if (policy.Name == name) {
+        return policy;
+      }
+    }
+    return new Policy();
+  }
+
   public bool HandleConfigurationSetting(string tag, string value) {
     bool retval = true;
-    if (proc_dict.ContainsKey(tag)) {
+    Policy policy = FindPolicyByName(tag);
+    
+    if (policy.Name == tag) {
       bool result = false;
       if (!bool.TryParse(value, out result)) Debug.Log("Error ConfigurationSettings parse " + tag);
 
-      proc_dict[tag] = result;
+      proc_dict[policy] = result;
     }
     else if (group_value.ContainsKey(tag)) {
       group_value[tag] = value;
@@ -118,18 +130,18 @@ public class ConfigurationSettings {
       group_value[group_name] = field;
     }
   }
-
-  public void ProcChanged(Toggle toggle) {
-    string field = toggle.GetComponentInChildren<Text>().text;
-    Debug.Log("Computer ProcChanged " + field + " to " + toggle.isOn);
-    proc_dict[field] = toggle.isOn;
-
+  
+  //----------------------------------------------------------------------------
+  public void ProceduralPolicyChanged(Policy policy, bool isOn) {
+    Debug.Log($"Item {the_name} changed {policy.Name}  to {isOn}");
+    proc_dict[policy] = isOn;
     XElement xml = new XElement(event_type,
       new XElement("name", the_name),
       new XElement("procSetting",
-        new XElement("field", field + ":"),
-        new XElement("value", toggle.isOn)));
+        new XElement("field", policy.Name + ":"),
+        new XElement("value", isOn)));
 
     IPCManagerScript.SendRequest(xml.ToString());
   }
+  
 }

@@ -5,7 +5,8 @@ using UnityEngine;
 namespace Code.User_Interface {
   //Represents one selectable Component item in the Component List UI screen
   public class ComponentListItem : DynamicListItem<ComponentBehavior> {
-    [Tooltip("The element that should display the item's label string.")] [SerializeField]
+    [Tooltip("The element that should display the item's label string.")]
+    [SerializeField]
     private TMP_Text labelUI;
 
     public delegate void OnClickedDelegate(ComponentListItem item);

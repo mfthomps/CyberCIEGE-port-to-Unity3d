@@ -90,24 +90,24 @@ public class DisplayTextScript : MonoBehaviour {
     }
   }
 
-  public void SetProc(Dictionary<string, bool> dict, ComputerBehavior computer) {
-    foreach (KeyValuePair<string, bool> entry in dict) {
-      GameObject newTog = Instantiate(procPrefab);
-      newTog.transform.SetParent(procPanel);
-
-      Toggle t = newTog.GetComponent<Toggle>();
-      if (t == null) {
-        Debug.Log("Toggle is null");
-        return;
-      }
-
-      t.GetComponentInChildren<Text>().text = entry.Key;
-      t.isOn = entry.Value;
-      t.onValueChanged.AddListener(delegate { computer.ProcChanged(t); });
-
-      //Debug.Log("added " + entry.Key);
-    }
-  }
+  // public void SetProc(Dictionary<string, bool> dict, ComputerBehavior computer) {
+  //   foreach (KeyValuePair<string, bool> entry in dict) {
+  //     GameObject newTog = Instantiate(procPrefab);
+  //     newTog.transform.SetParent(procPanel);
+  //
+  //     Toggle t = newTog.GetComponent<Toggle>();
+  //     if (t == null) {
+  //       Debug.Log("Toggle is null");
+  //       return;
+  //     }
+  //
+  //     t.GetComponentInChildren<Text>().text = entry.Key;
+  //     t.isOn = entry.Value;
+  //     t.onValueChanged.AddListener(delegate { computer.ProcChanged(t); });
+  //
+  //     //Debug.Log("added " + entry.Key);
+  //   }
+  // }
 
   public void SetAssets(List<string> asset_list, ComputerBehavior computer) {
     asset_dropdown.ClearOptions();

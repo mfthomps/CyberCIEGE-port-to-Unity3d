@@ -2,12 +2,17 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Code.Policy;
 using Code.Scriptable_Variables;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ZoneBehavior : MonoBehaviour {
   [SerializeField] private ZoneListVariable _zoneListVariable;
+  [Tooltip("The variable containing the game's list of policies available to the Computers.")]
+  [SerializeField] private PolicyListVariable computerPolicyListVariable;
+  [Tooltip("The variable containing the game's list of physical security policies available to the Zones.")]
+  [SerializeField] private PolicyListVariable physicalPolicyListVariable;
   
   private static Rect WindowRect = new Rect(10, 10, 250, 300);
   
@@ -73,8 +78,8 @@ public class ZoneBehavior : MonoBehaviour {
   }
 
   private void LoadZone() {
-    config_settings = new ConfigurationSettings(false, "");
-    phys_settings = new PhysicalSettings();
+    config_settings = new ConfigurationSettings(false, "", computerPolicyListVariable.Value);
+    phys_settings = new PhysicalSettings(physicalPolicyListVariable.Value);
     try {
       StreamReader reader = new StreamReader(file_path, Encoding.Default);
       using (reader) {
@@ -174,9 +179,11 @@ public class ZoneBehavior : MonoBehaviour {
     zone_panel.SetActive(true);
   }
 
-  public void ProcChanged(Toggle toggle) {
-    config_settings.ProcChanged(toggle);
+ 
+  public void PolicyValueChanged(Policy policy, bool isOn) {
+    config_settings.ProceduralPolicyChanged(policy, isOn);
   }
+  
 
   public void PhysChanged(Toggle toggle) {
     phys_settings.PhysChanged(toggle);
