@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Code.Policy;
 using Code.User_Interface;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,6 +17,10 @@ public class ComputerConfigure : MonoBehaviour {
   public GameObject myTextPrefab;
   public RectTransform procPanel;
   public GameObject procPrefab;
+
+  [Tooltip("Where the configuration setting policies should be parented.")]
+  [SerializeField] private RectTransform configurationSettingsPanel;
+  
   public RectTransform passwordPanel;
 
   //public RectTransform assetPanel;
@@ -61,7 +66,7 @@ public class ComputerConfigure : MonoBehaviour {
   //---------------------------------------------------------------------------
   private void CloseClicked() {
     foreach (Transform child in procPanel) Destroy(child.gameObject);
-
+    foreach (Transform child in configurationSettingsPanel) Destroy(child.gameObject);
     foreach (Transform child in passwordPanel) Destroy(child.gameObject);
 
     Debug.Log("Component menu closed");
@@ -106,23 +111,26 @@ public class ComputerConfigure : MonoBehaviour {
   }
 
   //---------------------------------------------------------------------------
-  public void SetProc(Dictionary<string, bool> dict, ComputerBehavior computer) {
+  public void SetProc(Dictionary<Policy, bool> dict, ComputerBehavior computer) {
     //destroy old UI
     foreach (Transform child in procPanel) {
       Destroy(child.gameObject);
     }
+    foreach (Transform child in configurationSettingsPanel) {
+      Destroy(child.gameObject);
+    }
 
-    foreach (KeyValuePair<string, bool> entry in dict) {
-      GameObject newTog = Instantiate(procPrefab);
-      newTog.transform.SetParent(procPanel);
+    foreach (var entry in dict) {
+      var parent = entry.Key.PolicyType == PolicyType.ProceduralSecurity ? procPanel : configurationSettingsPanel;
+      GameObject newToggle = Instantiate(procPrefab, parent, true);
 
-      Toggle t = newTog.GetComponent<Toggle>();
+      Toggle t = newToggle.GetComponent<Toggle>();
       if (t == null) {
         Debug.Log("Toggle is null");
         return;
       }
 
-      t.GetComponentInChildren<Text>().text = entry.Key;
+      t.GetComponentInChildren<Text>().text = entry.Key.Name;
       t.isOn = entry.Value;
       t.onValueChanged.AddListener(delegate { computer.ProcChanged(t); });
 

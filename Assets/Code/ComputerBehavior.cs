@@ -135,7 +135,7 @@ public class ComputerBehavior : ComponentBehavior {
       }
     }
     catch (Exception e) {
-      Debug.LogError(e.Message);
+      Debug.LogError(e.Message + " " + e.StackTrace);
     }
 
     //add ourself to the computer list.

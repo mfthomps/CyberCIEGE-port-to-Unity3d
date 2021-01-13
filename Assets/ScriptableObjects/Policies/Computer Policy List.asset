@@ -53,4 +53,82 @@ MonoBehaviour:
   - Name: UpdateAntivirus:Automatic
     Description: Automatic Antivirus Updates
     PolicyType: 1
+  - Name: OffsiteBackup
+    Description: Offsite Backup
+    PolicyType: 2
+  - Name: AdminBackup
+    Description: Admin Backup
+    PolicyType: 2
+  - Name: RemoteAuthentication
+    Description: Remote Authentication
+    PolicyType: 2
+  - Name: LocalAuthentication
+    Description: Local Authentication
+    PolicyType: 2
+  - Name: EnforcePasswordPolicy
+    Description: Enforce Password Policy
+    PolicyType: 2
+  - Name: MinimalLogging
+    Description: Minimal Logging
+    PolicyType: 2
+  - Name: DetailedLogging
+    Description: Detailed Logging
+    PolicyType: 2
+  - Name: UseOneTimePasswordToken
+    Description: Use One Time Password
+    PolicyType: 2
+  - Name: UseBiometrics
+    Description: Require Biometrics
+    PolicyType: 2
+  - Name: UseSmartcard
+    Description: Require Card Reader
+    PolicyType: 2
+  - Name: ScanEmailAttachments
+    Description: Scan Email Attachments
+    PolicyType: 2
+  - Name: StripEmailAttachments
+    Description: Strip Email Attachments
+    PolicyType: 2
+  - Name: AutomaticLockLogout
+    Description: Automatic Lock if Unattended
+    PolicyType: 2
+  - Name: SelfAdminister
+    Description: Self Administer
+    PolicyType: 2
+  - Name: SelfAdministerMAC
+    Description: Self Administer MAC
+    PolicyType: 2
+  - Name: UserRunsPrivileged
+    Description: User Runs Privileged
+    PolicyType: 2
+  - Name: BlockRemovableMedia
+    Description: Block Removable Media
+    PolicyType: 2
+  - Name: BlockLocalStorage
+    Description: Block Local Storage
+    PolicyType: 2
+  - Name: UpdatePatches:Regular
+    Description: Regular Patch Update
+    PolicyType: 2
+  - Name: UpdatePatches:Automatic
+    Description: Automatic Patch Update
+    PolicyType: 2
+  - Name: UpdatePatches:AsReleased
+    Description: Update Patches as Released
+    PolicyType: 2
+  - Name: ManagedAntivirus
+    Description: Managed Antivirus
+    PolicyType: 2
+  - Name: CM:Weak
+    Description: Weak CM
+    PolicyType: 2
+  - Name: CM:Moderate
+    Description: Moderate CM
+    PolicyType: 2
+  - Name: CM:Strong
+    Description: Strong CM
+    PolicyType: 2
+  - Name: MeasuredBoot
+    Description: Measured Boot
+    PolicyType: 2
   defaultValue: []

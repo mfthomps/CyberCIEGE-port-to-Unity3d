@@ -15,7 +15,7 @@ public class ConfigurationSettings {
   private Dictionary<string, string> group_value = new Dictionary<string, string>();
 
   /* instance-specific data */
-  private Dictionary<string, bool> proc_dict = new Dictionary<string, bool>();
+  private Dictionary<Policy, bool> proc_dict = new Dictionary<Policy, bool>();
   private Dictionary<string, bool> pw_change_dict = new Dictionary<string, bool>();
   private Dictionary<string, bool> pw_complex_dict = new Dictionary<string, bool>();
   private Dictionary<string, bool> pw_len_dict = new Dictionary<string, bool>();
@@ -26,7 +26,7 @@ public class ConfigurationSettings {
     if (!is_computer) event_type = "zoneEvent";
 
     foreach (var key in computerPolicies) {
-      proc_dict[key.Name] = false;
+      proc_dict[key] = false;
     }
     //Debug.Log("LoadComputer proc key " + key);
 
@@ -68,13 +68,24 @@ public class ConfigurationSettings {
     zone_config_script.SetPassword(PWD_COMPLEX, pw_complex_dict, zone);
   }
 
+  private Policy FindPolicyByName(string name) {
+    foreach (Policy policy in proc_dict.Keys) {
+      if (policy.Name == name) {
+        return policy;
+      }
+    }
+    return new Policy();
+  }
+
   public bool HandleConfigurationSetting(string tag, string value) {
     bool retval = true;
-    if (proc_dict.ContainsKey(tag)) {
+    Policy policy = FindPolicyByName(tag);
+    
+    if (policy.Name == tag) {
       bool result = false;
       if (!bool.TryParse(value, out result)) Debug.Log("Error ConfigurationSettings parse " + tag);
 
-      proc_dict[tag] = result;
+      proc_dict[policy] = result;
     }
     else if (group_value.ContainsKey(tag)) {
       group_value[tag] = value;
@@ -123,14 +134,18 @@ public class ConfigurationSettings {
   public void ProcChanged(Toggle toggle) {
     string field = toggle.GetComponentInChildren<Text>().text;
     Debug.Log("Computer ProcChanged " + field + " to " + toggle.isOn);
-    proc_dict[field] = toggle.isOn;
+    Policy policy = FindPolicyByName(field);
+    if (policy.Name == field) {
+      proc_dict[policy] = toggle.isOn;
 
-    XElement xml = new XElement(event_type,
-      new XElement("name", the_name),
-      new XElement("procSetting",
-        new XElement("field", field + ":"),
-        new XElement("value", toggle.isOn)));
+      XElement xml = new XElement(event_type,
+        new XElement("name", the_name),
+        new XElement("procSetting",
+          new XElement("field", field + ":"),
+          new XElement("value", toggle.isOn)));
 
-    IPCManagerScript.SendRequest(xml.ToString());
+      IPCManagerScript.SendRequest(xml.ToString());      
+    }
+
   }
 }

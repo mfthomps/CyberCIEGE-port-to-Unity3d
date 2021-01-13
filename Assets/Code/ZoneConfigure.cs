@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Code.Policy;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -70,8 +71,8 @@ public class ZoneConfigure : MonoBehaviour {
     }
   }
 
-  public void SetProc(Dictionary<string, bool> dict, ZoneBehavior zone) {
-    foreach (KeyValuePair<string, bool> entry in dict) {
+  public void SetProc(Dictionary<Policy, bool> dict, ZoneBehavior zone) {
+    foreach (var entry in dict) {
       GameObject newTog = Instantiate(procPrefab);
       newTog.transform.SetParent(procPanel);
 
@@ -81,7 +82,7 @@ public class ZoneConfigure : MonoBehaviour {
         return;
       }
 
-      t.GetComponentInChildren<Text>().text = entry.Key;
+      t.GetComponentInChildren<Text>().text = entry.Key.Name;
       t.isOn = entry.Value;
       t.onValueChanged.AddListener(delegate { zone.ProcChanged(t); });
 
