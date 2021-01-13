@@ -179,12 +179,7 @@ public class ZoneBehavior : MonoBehaviour {
     zone_panel.SetActive(true);
   }
 
-  //TODO move to PolicyValueChanged()
-  public void ProcChanged(Toggle toggle) {
-    config_settings.ProcChanged(toggle);
-  }
-  
-
+ 
   public void PolicyValueChanged(Policy policy, bool isOn) {
     config_settings.ProceduralPolicyChanged(policy, isOn);
   }

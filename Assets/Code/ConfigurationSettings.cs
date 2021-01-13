@@ -130,29 +130,10 @@ public class ConfigurationSettings {
       group_value[group_name] = field;
     }
   }
-
-  
-  //TODO Moved to ProceduralPolicyChanged()
-  public void ProcChanged(Toggle toggle) {
-    string field = toggle.GetComponentInChildren<Text>().text;
-    Debug.Log("Computer ProcChanged " + field + " to " + toggle.isOn);
-    Policy policy = FindPolicyByName(field);
-    if (policy.Name == field) {
-      proc_dict[policy] = toggle.isOn;
-
-      XElement xml = new XElement(event_type,
-        new XElement("name", the_name),
-        new XElement("procSetting",
-          new XElement("field", field + ":"),
-          new XElement("value", toggle.isOn)));
-
-      IPCManagerScript.SendRequest(xml.ToString());      
-    }
-  }
   
   //----------------------------------------------------------------------------
   public void ProceduralPolicyChanged(Policy policy, bool isOn) {
-    Debug.Log("Computer ProcChanged " + policy.Name + " to " + isOn);
+    Debug.Log($"Item {the_name} changed {policy.Name}  to {isOn}");
     proc_dict[policy] = isOn;
     XElement xml = new XElement(event_type,
       new XElement("name", the_name),
