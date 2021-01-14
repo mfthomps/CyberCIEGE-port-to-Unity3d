@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Xml.Linq;
+using Code.Factories;
 using UnityEngine;
 
 public class ITStaffBehavior : MonoBehaviour {
   private static Dictionary<string, ITStaffBehavior> staff_dict = new Dictionary<string, ITStaffBehavior>();
-  private static readonly string STAFF = "staff";
+  
   private static Rect WindowRect = new Rect(10, 10, 250, 300);
   public static Texture2D background, LOGO;
   public string user_name;
@@ -46,37 +47,29 @@ public class ITStaffBehavior : MonoBehaviour {
     //Debug.Log("HireMenu clicked now " + menus.clicked);
   }
 
-  private static void LoadOneStaff(string user_file) {
-    GameObject user = GameObject.Find("ITStaff");
-    if (user == null) {
-      Debug.LogError("Error: LoadOneStaff got null when finding ITStaff game object.");
-      return;
-    }
-
-    //Debug.Log("user_app_path" + user_app_path + " file [" + User_file+"]");
+  public void LoadOneStaff(string user_file) {
+    
     string cfile = Path.Combine(GameLoadBehavior.user_app_path, user_file);
-    Debug.Log("user " + cfile);
-    GameObject new_c = Instantiate(user, new Vector3(1.0F, 0, 0), Quaternion.identity);
-    ITStaffBehavior script = (ITStaffBehavior) new_c.GetComponent(typeof(ITStaffBehavior));
-    script.SetFilePath(cfile);
-    new_c.SetActive(true);
-    script.LoadStaff();
-    int pos = script.position;
+    
+    SetFilePath(cfile);
+    gameObject.SetActive(true);
+    LoadStaff();
+    int pos = position;
     //Debug.Log("LoadUsers " + script.User_name + " pos is " + pos);
     if (pos < 0) {
-      Debug.Log("LoadOneStaff got invalid pos for " + script.user_name);
+      Debug.Log("LoadOneStaff got invalid pos for " + user_name);
       return;
     }
 
     if (pos >= 0) {
-      WorkSpaceScript.WorkSpace ws = WorkSpaceScript.GetWorkSpace(pos);
+      WorkSpace ws = WorkspaceFactory.GetWorkSpace(pos);
       if (ws == null) {
         Debug.Log("ITStaffBehavior got null workspace for pos" + pos);
         return;
       }
 
-      if (!ws.AddUser(script.user_name)) {
-        Debug.Log("ITStaffBehavior AddUser, could not user, already populated " + script.user_name);
+      if (!ws.AddUser(user_name)) {
+        Debug.Log("ITStaffBehavior AddUser, could not user, already populated " + user_name);
         return;
       }
 
@@ -84,21 +77,13 @@ public class ITStaffBehavior : MonoBehaviour {
       ccUtils.GridTo3dPos(ws.x, ws.y, out xf, out zf);
       //Debug.Log(ws.x + " " + ws.y + " " + xf + " " + zf);
       Vector3 v = new Vector3(xf - 1.0f, 0.5f, zf);
-      new_c.transform.position = v;
+      transform.position = v;
     }
     else {
-      Debug.Log("no postion for " + script.user_name);
+      Debug.Log("no postion for " + user_name);
     }
   }
-
-  public static void LoadStaffFromFile() {
-    string user_dir = Path.Combine(GameLoadBehavior.user_app_path, STAFF);
-    string[] clist = Directory.GetFiles(user_dir);
-    foreach (string user_file in clist)
-      if (user_file.EndsWith(".sdf"))
-        LoadOneStaff(user_file);
-  }
-
+  
   private void LoadStaff() {
     try {
       StreamReader reader = new StreamReader(filePath, Encoding.Default);
