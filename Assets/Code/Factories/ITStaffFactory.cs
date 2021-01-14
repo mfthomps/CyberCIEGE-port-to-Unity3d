@@ -8,14 +8,17 @@ namespace Code.Factories {
     
     [SerializeField] private ITStaffBehavior _prefab;
     
-    public GameObject Create(Transform parent = null) {
+    //--------------------------------------------------------------------------
+    public void Create(string filename, Transform parent = null) {
       throw new System.NotImplementedException();
     }
 
+    //--------------------------------------------------------------------------
     public void CreateAll(string path, Transform parent = null) {
       LoadStaffFromFile(path, parent);
     }
     
+    //--------------------------------------------------------------------------
     private void LoadStaffFromFile(string path, Transform parent = null) {
       string user_dir = Path.Combine(path, STAFF);
       string[] clist = Directory.GetFiles(user_dir);

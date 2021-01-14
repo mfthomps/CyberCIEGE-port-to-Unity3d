@@ -9,21 +9,21 @@ namespace Code.Factories {
     [SerializeField] private OrganizationScript prefab;
     
     //-------------------------------------------------------------------------
-    public GameObject Create(Transform parent = null) {
-      OrganizationScript newOrg = Instantiate(prefab, parent);
-      LoadOrganization(newOrg);
-      return newOrg.gameObject;
-    }
-
-    //-------------------------------------------------------------------------
-    public void CreateAll(string path, Transform parent = null) {
+    public void Create(string filename, Transform parent = null) {
       throw new NotImplementedException();
     }
 
     //-------------------------------------------------------------------------
-    private void LoadOrganization(OrganizationScript organization) {
+    // Note, I think there can be only one Organization (?)
+    public void CreateAll(string path, Transform parent = null) {
+      OrganizationScript newOrg = Instantiate(prefab, parent);
+      LoadOrganization(newOrg, path);
+    }
+
+    //-------------------------------------------------------------------------
+    private void LoadOrganization(OrganizationScript organization, string path) {
       string tag;
-      string full_path = Path.Combine(GameLoadBehavior.user_app_path, "organization.sdf");
+      string full_path = Path.Combine(path, "organization.sdf");
 
       StreamReader reader = new StreamReader(full_path, Encoding.Default);
       using (reader) {

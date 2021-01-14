@@ -75,10 +75,10 @@ public class IPCManagerScript : MonoBehaviour {
           attackLogVariable.Value = new List<string>(logs);
           break;
         case "load_computer":
-          _computerFactory.CreateOne(message + ".sdf");
+          _computerFactory.Create(message + ".sdf");
           break;
         case "load_device":
-          _deviceFactory.CreateOne(message + ".sdf");
+          _deviceFactory.Create(message + ".sdf");
           break;
         case "user_status":
           UserBehavior.UpdateStatus(message);

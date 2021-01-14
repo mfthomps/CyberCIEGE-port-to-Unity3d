@@ -8,20 +8,18 @@ namespace Code.Factories {
     
     private static readonly string COMPUTERS = "computers";
 
-    public GameObject Create(Transform parent = null) {
-      var item = Instantiate(_prefab, parent);
-      return item.gameObject;
-    }
-
-    public void CreateAll(string path, Transform parent = null) {
-      LoadAllComputers(path);
-    }
-    
-    public void CreateOne(string filename, Transform parent = null) {
+    //-------------------------------------------------------------------------
+    public void Create(string filename, Transform parent = null) {
       var item = Instantiate(_prefab, parent);
       item.LoadOneComputer(filename);
     }
 
+    //-------------------------------------------------------------------------
+    public void CreateAll(string path, Transform parent = null) {
+      LoadAllComputers(path);
+    }
+    
+    //-------------------------------------------------------------------------
     private void LoadAllComputers(string path, Transform parent = null) {
       string cdir = Path.Combine(path, COMPUTERS);
       string[] clist = Directory.GetFiles(cdir);

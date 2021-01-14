@@ -9,7 +9,7 @@ namespace Code.Factories {
     private static readonly string USERS = "users";
     
     //-------------------------------------------------------------------------
-    public GameObject Create(Transform parent = null) {
+    public void Create(string filename, Transform parent = null) {
       throw new System.NotImplementedException();
     }
 

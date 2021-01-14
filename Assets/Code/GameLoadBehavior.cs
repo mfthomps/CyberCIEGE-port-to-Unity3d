@@ -75,8 +75,8 @@ public class GameLoadBehavior : MonoBehaviour {
     NetworkBehavior.LoadNetworks(user_app_path);
     CatalogBehavior.LoadHardwareTypes();
     CatalogBehavior.LoadCatalog(user_app_path);
-    _organizationFactory.Create();
-    _workspaceFactory.Create();
+    _organizationFactory.CreateAll(user_app_path);
+    _workspaceFactory.CreateAll(user_app_path);
     dac_groups = new DACGroups();
     _userFactory.CreateAll(user_app_path);
     AssetBehavior.LoadAssets();

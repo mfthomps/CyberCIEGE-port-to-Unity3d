@@ -15,15 +15,14 @@ namespace Code.Factories {
     private static readonly List<WorkSpace> _workSpaces = new List<WorkSpace>();
     
     //-------------------------------------------------------------------------
-    public GameObject Create(Transform parent = null) {
-      var item = Instantiate(_prefab, parent);
-      LoadWorkSpace(item);
-      return item.gameObject;
-      
-    }
-    //-------------------------------------------------------------------------
-    public void CreateAll(string path, Transform parent) {
+    public void Create(string filename, Transform parent = null) {
       throw new NotImplementedException();
+    }
+    
+    //-------------------------------------------------------------------------
+    public void CreateAll(string path, Transform parent = null) {
+      var item = Instantiate(_prefab, parent);
+      LoadWorkSpace(item, path);
     }
     
     //-------------------------------------------------------------------------
@@ -69,10 +68,10 @@ namespace Code.Factories {
     }
     
     //-------------------------------------------------------------------------
-    private void LoadWorkSpace(WorkSpaceScript workspace) {
+    private void LoadWorkSpace(WorkSpaceScript workspace, string path) {
       string fname = _organizationDictionary["WorkSpaceFile"];
       string line;
-      string full_path = Path.Combine(GameLoadBehavior.user_app_path, fname);
+      string full_path = Path.Combine(path, fname);
       Debug.Log("LoadWorkSpace fname is " + full_path);
       try {
         StreamReader reader = new StreamReader(full_path, Encoding.Default);

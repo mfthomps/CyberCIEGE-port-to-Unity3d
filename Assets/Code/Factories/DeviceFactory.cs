@@ -10,20 +10,18 @@ namespace Code.Factories {
     
     private readonly string DEVICES = "devices";
 
-    public GameObject Create(Transform parent = null) {
-      var item = Instantiate(_prefab, parent);
-      return item.gameObject;
-    }
-
-    public void CreateOne(string filename, Transform parent = null) {
+    //-------------------------------------------------------------------------
+    public void Create(string filename, Transform parent = null) {
       DeviceBehavior item = Instantiate(_prefab, parent);
       item.LoadOneDevice(filename);
     }
 
+    //-------------------------------------------------------------------------
     public void CreateAll(string path, Transform parent = null) {
       LoadDevices(path, parent = null);
     }
 
+    //-------------------------------------------------------------------------
     private void LoadDevices(string path, Transform parent = null) {
       user_app_path = path;
       string cdir = Path.Combine(user_app_path, DEVICES);

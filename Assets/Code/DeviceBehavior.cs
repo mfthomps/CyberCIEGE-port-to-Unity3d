@@ -52,7 +52,7 @@ public class DeviceBehavior : ComponentBehavior {
 
   
   private void LoadDevice() {
-    try {
+
       StreamReader reader = new StreamReader(filePath, Encoding.Default);
       using (reader) {
         string tag;
@@ -60,8 +60,8 @@ public class DeviceBehavior : ComponentBehavior {
         ccUtils.PositionAfter(reader, "Component");
         string value = null;
         do {
-          value = ccUtils.SDTNext(reader, out tag).Trim();
-          if (value == null)
+          value = ccUtils.SDTNext(reader, out tag);
+          if ((value == null) || (tag == null))
             continue;
           switch (tag) {
             case "HW": //Right now I think we're only using one of the params here, could change though
@@ -70,9 +70,6 @@ public class DeviceBehavior : ComponentBehavior {
           }
         } while (value != null);
       }
-    }
-    catch (Exception e) {
-      Debug.LogError(e.Message);
-    }
+
   }
 }
