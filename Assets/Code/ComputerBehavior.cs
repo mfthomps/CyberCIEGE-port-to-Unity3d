@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Code.Factories;
 using Code.Policy;
 using Code.Scriptable_Variables;
 using UnityEngine;
@@ -29,116 +29,96 @@ public class ComputerBehavior : ComponentBehavior {
   private ConfigurationSettings config_settings;
   private readonly List<string> user_list = new List<string>(); // currently users & groups, TBD separate
 
-  public static void LoadOneComputer(string computer_file) {
-    GameObject computer;
-    computer = GameObject.Find("Computer");
-    //Debug.Log("user_app_path" + user_app_path + " file [" + computer_file+"]");
+  public void LoadOneComputer(string computer_file) {
     string cdir = Path.Combine(GameLoadBehavior.user_app_path, COMPUTERS);
     string cfile = Path.Combine(cdir, computer_file);
-    Debug.Log("computer " + cdir);
-    GameObject new_c = Instantiate(computer, new Vector3(1.0F, 0, 0), Quaternion.identity);
-    ComputerBehavior script = (ComputerBehavior) new_c.GetComponent(typeof(ComputerBehavior));
-    script.SetFilePath(cfile);
-    new_c.SetActive(true);
-    script.LoadComponent();
-    script.LoadComputerInfoFromFile();
-    script.hw = hw_name;
+    
+    SetFilePath(cfile);
+    gameObject.SetActive(true);
+    LoadComponent();
+    LoadComputerInfoFromFile();
+    hw = hw_name;
     //This is the part that will hopefully load the correct assets from dict
-    SkinnedMeshRenderer this_render = new_c.GetComponent<SkinnedMeshRenderer>();
+    SkinnedMeshRenderer this_render = GetComponent<SkinnedMeshRenderer>();
     try {
-      this_render.sharedMesh = CatalogBehavior.object_mesh_dict[script.hw];
+      this_render.sharedMesh = CatalogBehavior.object_mesh_dict[hw];
     }
     catch (KeyNotFoundException) {
-      Debug.Log("Key Exception in object_mesh_dict caused by " + script.hw);
+      Debug.Log("Key Exception in object_mesh_dict caused by " + hw);
     }
 
     try {
-      this_render.material = CatalogBehavior.object_mat_dict[script.hw];
+      this_render.material = CatalogBehavior.object_mat_dict[hw];
     }
     catch (KeyNotFoundException) {
-      Debug.Log("Key Exception in object_mat_dict caused by  " + script.hw);
+      Debug.Log("Key Exception in object_mat_dict caused by  " + hw);
     }
 
-    int pos = script.position;
+    int pos = position;
     //Debug.Log("LoadComputers " + script.computer_name + " pos is " + pos);
     if (pos < 0) {
-      Debug.Log("LoadOneComputer got invalid pos for " + script.component_name);
+      Debug.Log("LoadOneComputer got invalid pos for " + component_name);
       return;
     }
 
-    WorkSpaceScript.WorkSpace ws = WorkSpaceScript.GetWorkSpace(pos);
-    int slot = ws.AddComputer(script.component_name);
+    WorkSpace ws = WorkspaceFactory.GetWorkSpace(pos);
+    int slot = ws.AddComputer(component_name);
     float xf, zf;
     ccUtils.GridTo3dPos(ws.x, ws.y, out xf, out zf);
     //Debug.Log(ws.x + " " + ws.y + " " + xf + " " + zf);
     Vector3 v = new Vector3(xf, 0.5f, zf);
-    new_c.transform.position = v;
-  }
-
-  public static void LoadAllComputers() {
-    string cdir = Path.Combine(GameLoadBehavior.user_app_path, COMPUTERS);
-    string[] clist = Directory.GetFiles(cdir);
-    int i = 1;
-    foreach (string computer_file in clist) {
-      LoadOneComputer(computer_file);
-      i++;
-    }
+    transform.position = v;
   }
 
   private void LoadComputerInfoFromFile() {
     config_settings = new ConfigurationSettings(true, component_name, computerPolicyListVariable.Value);
-
-    try {
-      StreamReader reader = new StreamReader(filePath, Encoding.Default);
-      using (reader) {
-        string tag;
-        //Debug.("LoadComputer read from " + filePath);
-        ccUtils.PositionAfter(reader, "Component");
-        string value = null;
-        do {
-          value = ccUtils.SDTNext(reader, out tag).Trim();
-          if (value == null)
-            continue;
-          //Debug.Log("LoadComputer got " + value + " for tag " + tag);
-          if (!config_settings.HandleConfigurationSetting(tag, value))
-            switch (tag) {
-              case "ComponentProceduralSettings":
-                //special case to process all of the sub-elements
-                using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(value ?? ""))) {
-                  using (var substream = new StreamReader(stream)) {
-                    string v = null;
-                    do {
-                      v = ccUtils.SDTNext(substream, out string t);
-                      if (string.IsNullOrEmpty(v)) {
-                        continue;
-                      }
-                      config_settings.HandleConfigurationSetting(t, v);
-                    } while (v != null);
-                  }
+    
+    StreamReader reader = new StreamReader(filePath, Encoding.Default);
+    using (reader) {
+      string tag;
+      //Debug.("LoadComputer read from " + filePath);
+      ccUtils.PositionAfter(reader, "Component");
+      string value = null;
+      do {
+        value = ccUtils.SDTNext(reader, out tag);
+        if ((value == null) || (tag == null))
+          continue;
+        //Debug.Log("LoadComputer got " + value + " for tag " + tag);
+        if (!config_settings.HandleConfigurationSetting(tag, value))
+          switch (tag) {
+            case "ComponentProceduralSettings":
+              //special case to process all of the sub-elements
+              using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(value ?? ""))) {
+                using (var substream = new StreamReader(stream)) {
+                  string v = null;
+                  do {
+                    v = ccUtils.SDTNext(substream, out string t);
+                    if (string.IsNullOrEmpty(v)) {
+                      continue;
+                    }
+                    config_settings.HandleConfigurationSetting(t, v);
+                  } while (v != null);
                 }
-                break;
-              case "Assets":
-                asset_list.Add(value);
-                AssetBehavior asset = AssetBehavior.asset_dict[value];
-                asset.SetComputer(this);
-                break;
-              case "AccessListLocal":
-                user_list.Add(value);
-                break;
-              case "User":
-                assigned_user = value;
-                break;
-              case "HW":
-                hw_name = value;
-                break;
-            }
-        } while (value != null);
-      }
+              }
+              break;
+            case "Assets":
+              asset_list.Add(value);
+              AssetBehavior asset = AssetBehavior.asset_dict[value];
+              asset.SetComputer(this);
+              break;
+            case "AccessListLocal":
+              user_list.Add(value);
+              break;
+            case "User":
+              assigned_user = value;
+              break;
+            case "HW":
+              hw_name = value;
+              break;
+          }
+      } while (value != null);
     }
-    catch (Exception e) {
-      Debug.LogError(e.Message + " " + e.StackTrace);
-    }
-
+  
     //add ourself to the computer list.
     var componentList = this.computerListVariable.Value;
     componentList.Add(this);

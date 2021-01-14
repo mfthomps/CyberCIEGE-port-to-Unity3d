@@ -4,9 +4,12 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+using Code.Scriptable_Variables;
 using UnityEngine;
 
 public class ComponentBehavior : MonoBehaviour {
+  [SerializeField] private StringStringVariable _organizationDict;
+
   /* static data */
   public static Dictionary<string, ComponentBehavior> computer_dict = new Dictionary<string, ComponentBehavior>();
   protected static GUIStyle label_style = new GUIStyle();
@@ -160,10 +163,10 @@ public class ComponentBehavior : MonoBehaviour {
   private void ConnectList(int id) {
     List<string> copy_list = NetworkBehavior.network_list.ToList();
     bool is_internet = false;
-    if (!bool.TryParse(OrganizationScript.GetValue("Internet"), out is_internet))
-      Debug.Log("Error: ConnectList parsing internet " + OrganizationScript.GetValue("Internet"));
+    if (!bool.TryParse(_organizationDict["Internet"], out is_internet))
+      Debug.Log("Error: ConnectList parsing internet " + _organizationDict["Internet"]);
 
-    if (gameObject.name.StartsWith("Device") && is_internet) copy_list.Add(OrganizationScript.GetValue("InternetName"));
+    if (gameObject.name.StartsWith("Device") && is_internet) copy_list.Add(_organizationDict["InternetName"]);
 
     //Debug.Log("NetworkList len of list is " + network_list.Count);
     foreach (string network in copy_list)

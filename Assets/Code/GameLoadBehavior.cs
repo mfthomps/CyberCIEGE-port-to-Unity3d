@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.IO;
+using Code.Factories;
 using UnityEngine;
 
 public class GameLoadBehavior : MonoBehaviour {
@@ -15,6 +16,24 @@ public class GameLoadBehavior : MonoBehaviour {
   /* TBD FIX CAMERA management */
   public static Vector3 home_pos = new Vector3(58.0f, 11.0f, 27.0f);
   public static Quaternion home_rot = Quaternion.Euler(10.6f, -26.8f, 0.3f);
+
+  [Tooltip("The factory to use for creating Computers")]
+  [SerializeField] private ComputerFactory _computerFactory;
+  
+  [Tooltip("The factory to use for creating Organizations")]
+  [SerializeField] private OrganizationFactory _organizationFactory;
+  
+  [Tooltip("The factory to use for creating Workspaces")]
+  [SerializeField] private WorkspaceFactory _workspaceFactory;
+  
+  [Tooltip("The factory to use for creating Devices")]
+  [SerializeField] private DeviceFactory _deviceFactory;
+  
+  [Tooltip("The factory to use for creating ITStaff")]
+  [SerializeField] private ITStaffFactory _itStaffFactory;
+  
+  [Tooltip("The factory to use for creating Users")]
+  [SerializeField] private UserFactory _userFactory;
 
   private void Start() {
     
@@ -52,20 +71,18 @@ public class GameLoadBehavior : MonoBehaviour {
     Debug.Log("main_floor instantiated, name is " + main_floor.name);
   }
 
-  private static void LoadItems() {
+  private void LoadItems() {
     NetworkBehavior.LoadNetworks(user_app_path);
     CatalogBehavior.LoadHardwareTypes();
     CatalogBehavior.LoadCatalog(user_app_path);
-    OrganizationScript.LoadOrganization();
-    GameObject ws = GameObject.Find("WorkSpace");
-    WorkSpaceScript ws_script = (WorkSpaceScript) ws.GetComponent(typeof(WorkSpaceScript));
-    WorkSpaceScript.LoadWorkSpace();
+    _organizationFactory.CreateAll(user_app_path);
+    _workspaceFactory.CreateAll(user_app_path);
     dac_groups = new DACGroups();
-    UserBehavior.LoadUsers();
+    _userFactory.CreateAll(user_app_path);
     AssetBehavior.LoadAssets();
-    ComputerBehavior.LoadAllComputers();
-    DeviceBehavior.LoadDevices(user_app_path);
-    ITStaffBehavior.LoadStaffFromFile();
+    _computerFactory.CreateAll(user_app_path);
+    _deviceFactory.CreateAll(user_app_path);
+    _itStaffFactory.CreateAll(user_app_path);
     ZoneBehavior.LoadZones();
     ObjectivesBehavior.LoadObjectives();
 
@@ -79,7 +96,7 @@ public class GameLoadBehavior : MonoBehaviour {
     print(Time.time);
   }
 
-  public static void AfterServerReady() {
+  public void AfterServerReady() {
     LoadItems();
     Debug.Log("Back from LoadItems");
 

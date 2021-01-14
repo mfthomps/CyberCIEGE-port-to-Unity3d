@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+using Code.Factories;
 using UnityEngine;
 
 public class CatalogBehavior : MonoBehaviour {
@@ -39,9 +40,7 @@ public class CatalogBehavior : MonoBehaviour {
     }
   }
 
-
-  public static void
-    LoadHardwareTypes() //Note: catalog.sdf is dynamically created by the headless process and contains only HW that will be used in the scenario, so we need to load meshes and materials for *all* objects in the catalog.
+  public static void LoadHardwareTypes() //Note: catalog.sdf is dynamically created by the headless process and contains only HW that will be used in the scenario, so we need to load meshes and materials for *all* objects in the catalog.
   {
     server_list = new List<string>();
     ws_list = new List<string>();
@@ -161,9 +160,9 @@ public class CatalogBehavior : MonoBehaviour {
       Vector3 pos = new Vector3(pt.x, 0, pt.y);
       buying_object.transform.position = pos;
       int xout, yout, index;
-      WorkSpaceScript.FindClosestWorkspaceCenter(out xout, out yout, out index);
+      WorkspaceFactory.FindClosestWorkspaceCenter(out xout, out yout, out index);
       if (index >= 0) {
-        WorkSpaceScript.WorkSpace ws = WorkSpaceScript.GetWorkSpace(index);
+        WorkSpace ws = WorkspaceFactory.GetWorkSpace(index);
         bool room = true;
         //Debug.Log("buying object name " + buying_object.name);
         if (buying_object.name.StartsWith("Computer")) {
@@ -175,7 +174,6 @@ public class CatalogBehavior : MonoBehaviour {
 
         //Debug.Log("ws " + index + " usage " + ws.usage + " room? " + room);
         if (room && Input.GetMouseButtonDown(0) && !Input.GetKey(KeyCode.LeftAlt)) {
-          Debug.Log("Catalog buy");
           do_buy = true;
         }
       }
@@ -189,12 +187,12 @@ public class CatalogBehavior : MonoBehaviour {
     }
   }
 
-  public static void BuyItHere() {
+  private static void BuyItHere() {
     Destroy(buying_object);
     buying_object = null;
     //int item_id = catalog_ids[buying_item];
     int outx, outy, index;
-    WorkSpaceScript.FindClosestWorkspaceCenter(out outx, out outy, out index);
+    WorkspaceFactory.FindClosestWorkspaceCenter(out outx, out outy, out index);
     // catalogName position
     XElement xml = new XElement("componentEvent",
       new XElement("name", ""),

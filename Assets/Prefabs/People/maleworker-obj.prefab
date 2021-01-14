@@ -3996,8 +3996,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5586993617183589734}
   - component: {fileID: 5586993617183589735}
-  - component: {fileID: 5586993617183589728}
-  - component: {fileID: 7533493470065244416}
   m_Layer: 0
   m_Name: maleworker-obj
   m_TagString: User
@@ -4040,35 +4038,3 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &5586993617183589728
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5586993617183589729}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca6e88d6943ea1e41b4d8e728e2ac1a6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  user_name: 
-  position: -1
-  department: 
-  current_thought: 
-  training: 0
-  failed_goals: []
---- !u!136 &7533493470065244416
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5586993617183589729}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 1.8
-  m_Direction: 1
-  m_Center: {x: 0, y: 1, z: 0}

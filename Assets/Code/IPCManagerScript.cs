@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text;
-using Code.AttackLog;
+using Code.Factories;
 using Code.Scriptable_Variables;
 using UnityEditor;
 using UnityEngine;
 
 public class IPCManagerScript : MonoBehaviour {
   [SerializeField] private StringListVariable attackLogVariable;
+  [SerializeField] private GameLoadBehavior _gameLoadBehavior;
+  [SerializeField] private DeviceFactory _deviceFactory;
+  [SerializeField] private ComputerFactory _computerFactory;
   
   private static NetworkStream serverStream;
 
@@ -44,7 +47,7 @@ public class IPCManagerScript : MonoBehaviour {
         if (read_string == "ready") {
           Debug.Log("IPCManager got server ready");
           server_ready = true;
-          GameLoadBehavior.AfterServerReady();
+          _gameLoadBehavior.AfterServerReady();
           SendRequest("begin");
           SendRequest("on_screen:" + menus.UI_SCREEN_OFFICE);
         }
@@ -72,10 +75,10 @@ public class IPCManagerScript : MonoBehaviour {
           attackLogVariable.Value = new List<string>(logs);
           break;
         case "load_computer":
-          ComputerBehavior.LoadOneComputer(message + ".sdf");
+          _computerFactory.Create(message + ".sdf");
           break;
         case "load_device":
-          DeviceBehavior.LoadOneDevice(message + ".sdf");
+          _deviceFactory.Create(message + ".sdf");
           break;
         case "user_status":
           UserBehavior.UpdateStatus(message);

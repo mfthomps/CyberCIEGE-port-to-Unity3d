@@ -4,11 +4,16 @@ using System.IO;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
+using Code.Factories;
 using UnityEngine;
 
 public class UserBehavior : MonoBehaviour {
+  [SerializeField] private GameObject _maleChildGameObject;
+  [SerializeField] private GameObject _femaleChildGameObject;
+  [SerializeField] private GameObject _techChildGameObject;
+  
   public static Dictionary<string, UserBehavior> user_dict = new Dictionary<string, UserBehavior>();
-  private static readonly string USERS = "users";
+  
   private static Rect WindowRect = new Rect(10, 10, 250, 300);
   public static Texture2D background, LOGO;
   public static UserBehavior current_user;
@@ -21,6 +26,13 @@ public class UserBehavior : MonoBehaviour {
 
   private string filePath;
 
+  
+  //---------------------------------------------------------------------------
+  private void Awake() {
+    if (_maleChildGameObject) {_maleChildGameObject.SetActive(false);} 
+    if (_femaleChildGameObject) {_femaleChildGameObject.SetActive(false);} 
+    if (_techChildGameObject) {_techChildGameObject.SetActive(false);} 
+  }
 
   private void OnMouseDown() {
     Debug.Log("down for " + filePath + " user_name " + user_name);
@@ -61,107 +73,57 @@ public class UserBehavior : MonoBehaviour {
     return first_user;
   }
 
-  public bool IsActiveUser() {
+  private bool IsActiveUser() {
     if (department != "Security" && department != "Tech")
       return true;
     return false;
   }
-  /*public static void LoadOneUser(string user_file)
-  {
-    GameObject user = GameObject.Find("User");
-    //Debug.Log("user_app_path" + user_app_path + " file [" + User_file+"]");
-    string cfile = System.IO.Path.Combine(GameLoadBehavior.user_app_path, user_file);
-    //Debug.Log("user " + cdir);
-    GameObject new_c = Instantiate(user, new Vector3(1.0F, 0, 0), Quaternion.identity);
-    UserBehavior script = (UserBehavior)new_c.GetComponent(typeof(UserBehavior));
-    script.SetFilePath(cfile);
-    new_c.SetActive(true);
-    script.LoadUser();
-    int pos = script.position;
-    //Debug.Log("LoadUsers " + script.user_name + " pos is " + pos);
-    if (pos < 0)
-    {
-      Debug.Log("LoadOneUser got invalid pos for " + script.user_name);
-      return;
-    }
-    if (pos >= 0)
-    {
-      WorkSpaceScript.WorkSpace ws = WorkSpaceScript.GetWorkSpace(pos);
-      if (ws == null)
-      {
-        Debug.Log("UserBehavior got null workspace for pos" + pos);
-        return;
-      }
-      if (!ws.AddUser(script.user_name))
-      {
-        Debug.Log("UserBehavior AddUser, could not user, already populated " + script.user_name);
-        return;
-      }
-      float xf, zf;
-      ccUtils.GridTo3dPos(ws.x, ws.y, out xf, out zf);
-      //Debug.Log(ws.x + " " + ws.y + " " + xf + " " + zf);
-      Vector3 v = new Vector3(xf - 1.0f, 0.5f, zf);
-      new_c.transform.position = v;
-    }
-    else
-    {
-      Debug.Log("no postion for " + script.user_name);
-    }
-  }*/
-
-  public static void LoadOneUser(string user_file) {
+  
+  //---------------------------------------------------------------------------
+  public void LoadOneUser(string user_file) {
     string cfile = Path.Combine(GameLoadBehavior.user_app_path, user_file);
     var this_user_info = new Dictionary<string, string>();
-    GameObject user;
-
+    
     this_user_info = LoadUser(cfile, this_user_info);
     Debug.Log("LoadOneUser " + user_file);
     string this_user_gender = this_user_info["Gender"];
     string this_user_dept = this_user_info["Dept"];
 
     if (this_user_dept == "Tech")
-      user = GameObject.Find("itstaff-obj");
+      _techChildGameObject.SetActive(true);
     else if (this_user_gender == "female")
-      user = GameObject.Find("femworker-obj");
+      _femaleChildGameObject.SetActive(true);
     else
-      user = GameObject.Find("maleworker-obj");
-
-    GameObject new_c = Instantiate(user, new Vector3(1.0F, 0, 0), Quaternion.identity);
-    // UserBehavior script = new_c.GetComponent<UserBehavior>();
-    UserBehavior script = (UserBehavior) new_c.GetComponent(typeof(UserBehavior));
-    if (script == null) {
-      Debug.Log("Error: LoadUser failed to get script for " + user_file);
-      return;
-    }
-
-    script.SetFilePath(cfile);
-    new_c.SetActive(true);
+      _maleChildGameObject.SetActive(true);
+    
+    SetFilePath(cfile);
+    gameObject.SetActive(true);
     //Now we can load the stuff that used to be done in LoadUser
-    script.user_name = this_user_info["Name"];
-    user_dict.Add(this_user_info["Name"], script);
-    script.department = this_user_info["Dept"];
-    if (!int.TryParse(this_user_info["PosIndex"], out script.position))
+    user_name = this_user_info["Name"];
+    user_dict.Add(this_user_info["Name"], this);
+    department = this_user_info["Dept"];
+    if (!int.TryParse(this_user_info["PosIndex"], out position))
       Debug.Log("Error: LoadUser parsing position" + this_user_info["PosIndex"]);
 
-    if (!int.TryParse(this_user_info["InitialTraining"], out script.training))
+    if (!int.TryParse(this_user_info["InitialTraining"], out training))
       Debug.Log("Error: LoadUser parsing training" + this_user_info["InitialTraining"]);
 
-    int pos = script.position;
+    int pos = position;
     //Debug.Log("LoadUsers " + script.user_name + " pos is " + pos);
     if (pos < 0) {
-      Debug.Log("LoadOneUser got invalid pos for " + script.user_name);
+      Debug.Log("LoadOneUser got invalid pos for " + user_name);
       return;
     }
 
     if (pos >= 0) {
-      WorkSpaceScript.WorkSpace ws = WorkSpaceScript.GetWorkSpace(pos);
+      WorkSpace ws = WorkspaceFactory.GetWorkSpace(pos);
       if (ws == null) {
         Debug.Log("UserBehavior got null workspace for pos" + pos);
         return;
       }
 
-      if (!ws.AddUser(script.user_name)) {
-        Debug.Log("UserBehavior AddUser, could not user, already populated " + script.user_name);
+      if (!ws.AddUser(user_name)) {
+        Debug.Log("UserBehavior AddUser, could not user, already populated " + user_name);
         return;
       }
 
@@ -169,21 +131,13 @@ public class UserBehavior : MonoBehaviour {
       ccUtils.GridTo3dPos(ws.x, ws.y, out xf, out zf);
       //Debug.Log(ws.x + " " + ws.y + " " + xf + " " + zf);
       Vector3 v = new Vector3(xf - 1.0f, 0.5f, zf);
-      new_c.transform.position = v;
+      transform.position = v;
     }
     else {
-      Debug.Log("no postion for " + script.user_name);
+      Debug.Log("no position for " + user_name);
     }
   }
-
-  public static void LoadUsers() {
-    string user_dir = Path.Combine(GameLoadBehavior.user_app_path, USERS);
-    string[] clist = Directory.GetFiles(user_dir);
-    foreach (string user_file in clist)
-      if (user_file.EndsWith(".sdf"))
-        LoadOneUser(user_file);
-  }
-
+  
   public static void UpdateStatus(string message) {
     StringReader xmlreader = new StringReader(message);
     //xmlreader.Read(); // skip BOM ???
@@ -219,7 +173,7 @@ public class UserBehavior : MonoBehaviour {
   }
 
   //public void LoadUser()
-  public static Dictionary<string, string> LoadUser(string thisFilePath, Dictionary<string, string> this_user_info) {
+  private static Dictionary<string, string> LoadUser(string thisFilePath, Dictionary<string, string> this_user_info) {
     try {
       StreamReader reader = new StreamReader(thisFilePath, Encoding.Default);
       using (reader) {

@@ -68,22 +68,25 @@ public class ConfigurationSettings {
     zone_config_script.SetPassword(PWD_COMPLEX, pw_complex_dict, zone);
   }
 
-  private Policy FindPolicyByName(string name) {
+  private (Policy, bool) FindPolicyByName(string name) {
     foreach (Policy policy in proc_dict.Keys) {
       if (policy.Name == name) {
-        return policy;
+        return (policy, true);
       }
     }
-    return new Policy();
+
+    return (new Policy(), false);
   }
 
   public bool HandleConfigurationSetting(string tag, string value) {
     bool retval = true;
-    Policy policy = FindPolicyByName(tag);
+    (Policy policy, bool policyFound) = FindPolicyByName(tag);
     
-    if (policy.Name == tag) {
+    if (policyFound) {
       bool result = false;
-      if (!bool.TryParse(value, out result)) Debug.Log("Error ConfigurationSettings parse " + tag);
+      if (!bool.TryParse(value, out result)) {
+        Debug.LogError($"Error parsing tag '{tag}' value '{value}'");
+      }
 
       proc_dict[policy] = result;
     }
