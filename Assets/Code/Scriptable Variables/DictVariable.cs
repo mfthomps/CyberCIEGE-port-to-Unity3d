@@ -5,30 +5,46 @@ namespace Code.Scriptable_Variables {
   
   //A ScriptableVariable that contains a templated Dictionary
   public class DictVariable<K,V> : ScriptableVariable {
-    protected Dictionary<K,V> value = new Dictionary<K,V>();
+    public delegate void ValueChangeHandler(K key, V value);
+    
+    //Called when the dictionary contents have been modified
+    public event ValueChangeHandler OnValueChanged;
+    
+    protected readonly Dictionary<K,V> Value = new Dictionary<K,V>();
     
     //-------------------------------------------------------------------------
     public V this[K key] {
-      get => value[key];
-      set => this.value[key] = value;
+      get => Value[key];
+      set {
+        if ((Value.ContainsKey(key) && !Value[key].Equals(value)) ||
+             !Value.ContainsKey(key) ) {
+          Value[key] = value;
+          ValueChanged(key, value);
+        }
+      }
+    }
+    
+    //-------------------------------------------------------------------------
+    private void ValueChanged(K key, V v) {
+      OnValueChanged?.Invoke(key, v);
     }
 
     //-------------------------------------------------------------------------
     public void Clear() {
-      value.Clear();
+      Value.Clear();
     }
     
     //-------------------------------------------------------------------------
     public Dictionary<K, V>.KeyCollection Keys() {
-      return value.Keys;
+      return Value.Keys;
     }
     
     //-------------------------------------------------------------------------
     public Dictionary<K, V>.ValueCollection Values() {
-      return value.Values;
+      return Value.Values;
     }
 
     //-------------------------------------------------------------------------
-    public int Length => this.value.Count;
+    public int Length => Value.Count;
   }
 }
