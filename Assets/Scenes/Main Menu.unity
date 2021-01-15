@@ -1386,6 +1386,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 378904635}
+  - component: {fileID: 378904636}
   m_Layer: 0
   m_Name: Scenario Status
   m_TagString: Untagged
@@ -1407,6 +1408,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &378904636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 378904634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a21b3683a5ab4649a3d3b52f4f938ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ccInstallPath: {fileID: 11400000, guid: 4343d78c466f6144c90128e3ac58caa0, type: 2}
+  selectedCampaign: {fileID: 11400000, guid: 0b6a70ca27689314bbd3fcb449390de0, type: 2}
+  selectedScenario: {fileID: 11400000, guid: bf8473fe96189164ba4b44d650d80e95, type: 2}
+  label: {fileID: 516868328}
 --- !u!1 &406771691
 GameObject:
   m_ObjectHideFlags: 0
@@ -1857,6 +1874,18 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &497284187 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 564040623204313464, guid: 680345386362d664bb2735f526c637e2,
+    type: 3}
+  m_PrefabInstance: {fileID: 497284181}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 497284183}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &516868326
 GameObject:
   m_ObjectHideFlags: 0
@@ -6518,6 +6547,7 @@ MonoBehaviour:
   selectedCampaign: {fileID: 11400000, guid: 0b6a70ca27689314bbd3fcb449390de0, type: 2}
   selectedScenario: {fileID: 11400000, guid: bf8473fe96189164ba4b44d650d80e95, type: 2}
   selectedSavedGame: {fileID: 11400000, guid: 73b642d9a0fad98458416652ef5b85e6, type: 2}
+  playButton: {fileID: 497284187}
 --- !u!1 &2039154536
 GameObject:
   m_ObjectHideFlags: 0

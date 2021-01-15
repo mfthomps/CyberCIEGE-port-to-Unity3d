@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
 using Shared.ScriptableVariables;
 
@@ -58,7 +57,7 @@ namespace Code.MainMenu {
       CyberCIEGEParser.ForEachSavedGame(ccInstallPath.Value, selectedCampaign.Value, selectedScenario.Value,
         (savedGamePath) => {
           _validSavedGames.Add(savedGamePath);
-          items.Add(Path.GetFileNameWithoutExtension(savedGamePath));
+          items.Add(savedGamePath);
         }
       );
 

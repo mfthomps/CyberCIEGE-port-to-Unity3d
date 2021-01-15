@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
-using System.IO;
 using UnityEngine;
+using UnityEngine.UI;
 using Shared.ScriptableVariables;
 
 namespace Code.MainMenu {
@@ -15,6 +15,9 @@ namespace Code.MainMenu {
     public StringVariable selectedScenario;
     [Tooltip("Selected scenario value")]
     public StringVariable selectedSavedGame;
+    [Header("Input Variables")]
+    [Tooltip("Button to play the game")]
+    public Button playButton;
 
     private Process _gameProcess;
 
@@ -36,30 +39,50 @@ namespace Code.MainMenu {
     }
 
     // ------------------------------------------------------------------------
+    void OnEnable() {
+      ccInstallPath.OnValueChanged += UpdatePlayButton;
+      selectedCampaign.OnValueChanged += UpdatePlayButton;
+      selectedScenario.OnValueChanged += UpdatePlayButton;
+      selectedSavedGame.OnValueChanged += UpdatePlayButton;
+    }
+
+    // ------------------------------------------------------------------------
+    void OnDisable() {
+      ccInstallPath.OnValueChanged -= UpdatePlayButton;
+      selectedCampaign.OnValueChanged -= UpdatePlayButton;
+      selectedScenario.OnValueChanged -= UpdatePlayButton;
+      selectedSavedGame.OnValueChanged -= UpdatePlayButton;
+    }
+
+    // ------------------------------------------------------------------------
     public void Play() {
+      var newGame = string.IsNullOrEmpty(selectedSavedGame.Value);
       _gameProcess = new Process();
+      _gameProcess.StartInfo.FileName = CyberCIEGEParser.GetCyberCIEGELauncher(ccInstallPath.Value, newGame);
       string args = "";
-      if (string.IsNullOrEmpty(selectedSavedGame.Value)) {
-        string cmd = Path.Combine(ccInstallPath.Value, "ccse/SAT/bin/CyberCIEGE.bat");
-        _gameProcess.StartInfo.FileName = cmd;
+      if (newGame) {
         args = $"\"{selectedCampaign.Value}\" {selectedScenario.Value} {selectedScenario.Value} yes";
       }
-      else
-      {
-        var campaignDirectory = Path.Combine(ccInstallPath.Value, "game", selectedCampaign.Value);
-        var userDirectory = Path.Combine(campaignDirectory, System.Environment.UserName);
-        var sdfPath = Path.Combine(userDirectory, $"{selectedSavedGame.Value}.sdf");
-        var logFile = Path.Combine(userDirectory, "logs", selectedScenario.Value);
+      else {
+        var logFile = CyberCIEGEParser.GetLogFile(ccInstallPath.Value, selectedCampaign.Value, selectedScenario.Value);
+        var sdfPath = CyberCIEGEParser.GetSaveFile(ccInstallPath.Value, selectedCampaign.Value, selectedSavedGame.Value);
         args = $"\"{selectedCampaign.Value}\" \"{logFile}\" \"{selectedSavedGame.Value}\" \"{sdfPath}\" headless";
 
-        _gameProcess.StartInfo.FileName = Path.Combine(ccInstallPath.Value, "ccse/SAT/bin/SavedCyberCIEGE.bat");
       }
-      // Debug.Log("args is " + args);
+      UnityEngine.Debug.Log("args is " + args);
       _gameProcess.StartInfo.Arguments = args;
 
-      string working_dir = Path.Combine(ccInstallPath.Value, "ccse");
+      string working_dir = CyberCIEGEParser.GetCyberCIEGEWorkingDirectory(ccInstallPath.Value);
       _gameProcess.StartInfo.WorkingDirectory = working_dir;
       _gameProcess.Start();
+    }
+
+    // ------------------------------------------------------------------------
+    private void UpdatePlayButton() {
+      // Only enable the play button if the input variables are valid
+      playButton.interactable = !string.IsNullOrEmpty(ccInstallPath.Value) &&
+        !string.IsNullOrEmpty(selectedCampaign.Value) &&
+        !string.IsNullOrEmpty(selectedScenario.Value);
     }
   }
 }
