@@ -31,7 +31,7 @@ namespace Code.MainMenu {
       itemUI.SetToggleGroup(toggleGroup);
 
       // Set the item's interactability based on if the campaign is unlocked
-      itemUI.SetInteractable(IsItemInteractable());
+      itemUI.SetInteractable(IsItemInteractable(item));
 
       // Select the item if it was previously selected before a list reset
       itemUI.SetSelected(IsItemSelected(item));
@@ -51,7 +51,7 @@ namespace Code.MainMenu {
     protected abstract List<string> GetItems();
 
     // ------------------------------------------------------------------------
-    protected abstract bool IsItemInteractable();
+    protected abstract bool IsItemInteractable(string item);
 
     // ------------------------------------------------------------------------
     protected abstract bool IsItemSelected(string item);

@@ -48,19 +48,19 @@ namespace Code.MainMenu {
     // ------------------------------------------------------------------------
     protected override List<string> GetItems() {
       var items = new List<string>();
-      CyberCIEGEParser.ForEachCampaign(ccInstallPath.Value, (campaignName => items.Add(campaignName)));
+      CyberCIEGEParser.ForEachCampaign(ccInstallPath.Value, (campaign) => items.Add(campaign.name));
       return items;
     }
 
     // ------------------------------------------------------------------------
-    protected override bool IsItemInteractable() {
+    protected override bool IsItemInteractable(string item) {
       // If the scenarios are unlocked, then all campaigns are unlocked
       if (scenariosUnlocked.Value) {
         return true;
       }
 
-      // TODO: Figure out campaign's point value and player's point value
-      return true;
+      // Otherwise, check if this campaign is locked
+      return CyberCIEGEParser.IsCampaignUnlocked(ccInstallPath.Value, item);
     }
 
     // ------------------------------------------------------------------------

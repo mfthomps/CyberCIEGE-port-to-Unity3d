@@ -65,7 +65,7 @@ namespace Code.MainMenu {
     }
 
     // ------------------------------------------------------------------------
-    protected override bool IsItemInteractable() {
+    protected override bool IsItemInteractable(string item) {
       return true;
     }
 

@@ -7,6 +7,24 @@ using UnityEngine;
 
 namespace Code.MainMenu {
   public class CyberCIEGEParser {
+    // Campaign catalog keys
+    private static string CAMPAIGN_CATALOG_FILE = "CampaignCatalog.xml";
+    private static string CAMPAIGN_CATALOG_NODE = "//campaigncatalog/campaign";
+
+    // Campaign keys
+    private static string CAMPAIGN_FILE = "campaign.xml";
+    private static string CAMPAIGN_NODE = "//campaignrelease/campaign";
+    private static string CAMPAIGN_NAME = "name";
+    private static string CAMPAIGN_PREREQUISITE = "prereq";
+    private static string CAMPAIGN_SCENARIO = "scenario";
+
+    // Scenario keys
+    private static string SCENARIO_NAME = "name";
+    private static string SCENARIO_ID = "sdf";
+    private static string SCENARIO_POINTS = "points";
+    private static string SCENARIO_PREREQUISITE = "prereq";
+
+    // Log Event keys
     private static string LOG_EVENT_GAME = "gameEvent";
     private static string LOG_EVENT_GAME_START = "start";
     private static string LOG_EVENT_GAME_END = "end";
@@ -16,42 +34,72 @@ namespace Code.MainMenu {
     private static string LOG_EVENT_TRIGGER_NAME = "name";
     private static string LOG_EVENT_TRIGGER_TYPE = "triggerType";
     private static string LOG_EVENT_TRIGGER_SET_PHASE = "SET_PHASE";
+
+    // Scenario Status constants
     private static string SCENARIO_STATUS_NOT_STARTED = "Not Started";
     private static string SCENARIO_STATUS_WON = "Won";
     private static string SCENARIO_STATUS_LOST = "Lost";
     private static string SCENARIO_STATUS_QUIT = "Quit";
 
     // --------------------------------------------------------------------------
-    public static void ForEachCampaign(string ccInstallPath, Action<string> callback) {
+    public static void ForEachCampaign(string ccInstallPath, Action<Campaign> callback) {
       // Open the campaign catalog file
-      var catalogPath = Path.Combine(GetBinDirectory(ccInstallPath), "CampaignCatalog.xml");
+      var catalogPath = Path.Combine(GetBinDirectory(ccInstallPath), CAMPAIGN_CATALOG_FILE);
       if (File.Exists(catalogPath)) {
         var campaignCatalog = new XmlDocument();
         campaignCatalog.Load(catalogPath);
 
         // Find all campaigns in the catalog
-        var campaignNodes = campaignCatalog.SelectNodes("//campaigncatalog/campaign");
+        var campaignNodes = campaignCatalog.SelectNodes(CAMPAIGN_CATALOG_NODE);
         foreach (XmlNode campaignNode in campaignNodes) {
-          callback(campaignNode["name"].InnerText.Trim());
+          var campaignName = campaignNode[CAMPAIGN_NAME].InnerText.Trim();
+          string campaignPrerequisite = null;
+          if (campaignNode.SelectSingleNode(CAMPAIGN_PREREQUISITE) != null) {
+            campaignPrerequisite = campaignNode[CAMPAIGN_PREREQUISITE].InnerText.Trim();
+          }
+          callback(new Campaign(campaignName, campaignPrerequisite));
         }
       }
     }
 
     // --------------------------------------------------------------------------
-    public static void ForEachScenario(string ccInstallPath, string campaign, Action<string, string> callback) {
+    public static void ForEachScenario(string ccInstallPath, string campaign, Action<Scenario> callback) {
       // Open the selected campaign file
-      var campaignPath = Path.Combine(GetCampaignDirectory(ccInstallPath, campaign), "campaign.xml");
+      var campaignPath = Path.Combine(GetCampaignDirectory(ccInstallPath, campaign), CAMPAIGN_FILE);
       if (File.Exists(campaignPath)) {
         var campaignDocument = new XmlDocument();
         campaignDocument.Load(campaignPath);
 
         // Find all the scenarios in the campaign
-        var campaignNode = campaignDocument.SelectSingleNode("//campaignrelease/campaign");
-        var scenarioNodes = campaignNode.SelectNodes("scenario");
+        var campaignNode = campaignDocument.SelectSingleNode(CAMPAIGN_NODE);
+        var scenarioNodes = campaignNode.SelectNodes(CAMPAIGN_SCENARIO);
         foreach (XmlNode scenarioNode in scenarioNodes) {
-          var scenarioName = scenarioNode["name"].InnerText.Trim();
-          var scenarioID = scenarioNode["sdf"].InnerText.Trim();
-          callback(scenarioName, scenarioID);
+          var scenarioName = scenarioNode[SCENARIO_NAME].InnerText.Trim();
+          var scenarioID = scenarioNode[SCENARIO_ID].InnerText.Trim();
+          int points = 0, prerequisiteScenarioIndex = -1;
+          // Try to get the points for this scenario
+          var pointsText = scenarioNode[SCENARIO_POINTS].InnerText.Trim();
+          if (!string.IsNullOrEmpty(pointsText)) {
+            try {
+              points = int.Parse(pointsText);
+            }
+            catch (Exception e) {
+              Debug.Log($"Campaign {campaign}, Scenario {scenarioName} has points node with non-integer value: {pointsText}.");
+            }
+          }
+          // If the scenario has a prerequisite, try to get its index
+          if (scenarioNode.SelectSingleNode(SCENARIO_PREREQUISITE) != null) {
+            var prerequisiteText = scenarioNode[SCENARIO_PREREQUISITE].InnerText.Trim();
+            if (!string.IsNullOrEmpty(prerequisiteText)) {
+              try {
+                prerequisiteScenarioIndex = int.Parse(prerequisiteText) - 1;
+              }
+              catch (Exception e) {
+                Debug.Log($"Campaign {campaign}, Scenario {scenarioName} has prereq node with non-integer value : {prerequisiteText}.");
+              }
+            }
+          }
+          callback(new Scenario(scenarioName, scenarioID, points, prerequisiteScenarioIndex));
         }
       }
     }
@@ -115,6 +163,31 @@ namespace Code.MainMenu {
       return scenarioStatus;
     }
 
+    // ------------------------------------------------------------------------
+    public static bool IsCampaignUnlocked(string ccInstallPath, string campaign) {
+      var campaignUnlocked = true;
+
+      // Go through all the campaigns to find this one
+      ForEachCampaign(ccInstallPath, (campaignData) => {
+        // Is this the campaign we're interested in and does it have a prerequisite?
+        if (campaignData.name == campaign && !string.IsNullOrEmpty(campaignData.prerequisite)) {
+          // If the prerequisite has any scenarios that aren't completed, then this campaign is locked
+          ForEachScenario(ccInstallPath, campaignData.prerequisite, (scenario) => {
+            if (!DidUserCompleteScenario(ccInstallPath, campaignData.prerequisite, scenario.id)) {
+              campaignUnlocked = false;
+            }
+          });
+        }
+      });
+
+      return campaignUnlocked;
+    }
+
+    // ------------------------------------------------------------------------
+    public static bool DidUserCompleteScenario(string ccInstallPath, string campaign, string scenario) {
+      return GetScenarioStatus(ccInstallPath, campaign, scenario) == SCENARIO_STATUS_WON;
+    }
+
     // --------------------------------------------------------------------------
     public static string GetBinDirectory(string ccInstallPath) {
       return Path.Combine(ccInstallPath, "ccse", "SAT", "bin");
@@ -153,6 +226,11 @@ namespace Code.MainMenu {
     // ------------------------------------------------------------------------
     public static string GetCyberCIEGEWorkingDirectory(string ccInstallPath) {
       return Path.Combine(ccInstallPath, "ccse");
+    }
+
+    // ------------------------------------------------------------------------
+    private static string GetScenarioStatus(string logFilepath) {
+      return GetScenarioStatus(logFilepath, SCENARIO_STATUS_NOT_STARTED, new Stack<string>());
     }
 
     // ------------------------------------------------------------------------

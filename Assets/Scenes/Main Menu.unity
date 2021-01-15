@@ -866,6 +866,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 195450976}
+  - component: {fileID: 195450977}
   m_Layer: 0
   m_Name: Progress Tracker
   m_TagString: Untagged
@@ -887,6 +888,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &195450977
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 195450975}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77b80b0a6a0a04c48a157bc221dd4288, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ccInstallPath: {fileID: 11400000, guid: 4343d78c466f6144c90128e3ac58caa0, type: 2}
+  slider: {fileID: 310849633}
 --- !u!1 &274596323
 GameObject:
   m_ObjectHideFlags: 0
@@ -1148,6 +1163,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 310849631}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &310849633 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6322421117258553557, guid: 3d7260f87fae46a4fa9bc0509fbbcf52,
+    type: 3}
+  m_PrefabInstance: {fileID: 310849631}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &345528013
 PrefabInstance:
   m_ObjectHideFlags: 0

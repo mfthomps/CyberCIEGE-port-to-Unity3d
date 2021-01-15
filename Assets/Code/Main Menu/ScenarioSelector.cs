@@ -18,7 +18,8 @@ namespace Code.MainMenu {
 
     private static string PREF_KEY_SCENARIO = @"Selected Scenario";
 
-    private Dictionary<string, string> _scenarioIDMap = new Dictionary<string, string>();
+    private Dictionary<string, Scenario> _scenarioMap = new Dictionary<string, Scenario>();
+    private Dictionary<int, Scenario> _scenarioIndexMap = new Dictionary<int, Scenario>();
 
     // ------------------------------------------------------------------------
     protected override void Awake() {
@@ -54,12 +55,14 @@ namespace Code.MainMenu {
     // ------------------------------------------------------------------------
     protected override List<string> GetItems() {
       var items = new List<string>();
-      _scenarioIDMap.Clear();
+      _scenarioMap.Clear();
+      _scenarioIndexMap.Clear();
 
       CyberCIEGEParser.ForEachScenario(ccInstallPath.Value, selectedCampaign.Value,
-        (scenarioName, scenarioID) => {
-          _scenarioIDMap.Add(scenarioName, scenarioID);
-          items.Add(scenarioName);
+        (scenario) => {
+          _scenarioMap.Add(scenario.name, scenario);
+          _scenarioIndexMap.Add(items.Count, scenario);
+          items.Add(scenario.name);
         }
       );
 
@@ -67,24 +70,27 @@ namespace Code.MainMenu {
     }
 
     // ------------------------------------------------------------------------
-    protected override bool IsItemInteractable() {
+    protected override bool IsItemInteractable(string item) {
       // If the scenarios are unlocked, then all campaigns are unlocked
-      if (scenariosUnlocked.Value) {
+      // Also, if the scenario has no prerequisite, it is unlocked
+      var scenario = _scenarioMap[item];
+      if (scenariosUnlocked.Value || scenario.prerequisiteIndex < 0) {
         return true;
       }
 
-      // TODO: Figure out campaign's point value and player's point value
-      return true;
+      // This scenario is interactable if its prerequisite has been completed
+      var prerequisite = _scenarioIndexMap[scenario.prerequisiteIndex];
+      return CyberCIEGEParser.DidUserCompleteScenario(ccInstallPath.Value, selectedCampaign.Value, prerequisite.id);
     }
 
     // ------------------------------------------------------------------------
     protected override bool IsItemSelected(string item) {
-      return selectedScenario.Value == _scenarioIDMap[item];
+      return selectedScenario.Value == _scenarioMap[item].id;
     }
 
     // ------------------------------------------------------------------------
     protected override void ItemSelected(string item) {
-      selectedScenario.Value = _scenarioIDMap[item];
+      selectedScenario.Value = _scenarioMap[item].id;
       PlayerPrefs.SetString(PREF_KEY_SCENARIO, selectedScenario.Value);
     }
   }

@@ -33,7 +33,7 @@ namespace Code.MainMenu {
       if (!string.IsNullOrEmpty(ccInstallPath.Value) &&
           !string.IsNullOrEmpty(selectedCampaign.Value) &&
           !string.IsNullOrEmpty(selectedScenario.Value)) {
-        label.text = $"Most Recent Progress:\n{CyberCIEGEParser.GetScenarioStatus(ccInstallPath.Value, selectedCampaign.Value, selectedScenario.Value)}";
+        label.text = $"Farthest Progress:\n{CyberCIEGEParser.GetScenarioStatus(ccInstallPath.Value, selectedCampaign.Value, selectedScenario.Value)}";
       }
     }
   }
