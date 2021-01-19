@@ -40,9 +40,9 @@ public class GameStatusScript : MonoBehaviour {
 
     // Game clock time
     XmlNode clockNode = xmlDoc.SelectSingleNode("//status/clock");
-    string hour = clockNode["hour"].InnerText;
-    string minute = clockNode["minute"].InnerText;
-    currentTime.Value = hour + ":" + minute;
+    var hour = Convert.ToInt32(clockNode["hour"].InnerText);
+    var minute = Convert.ToInt32(clockNode["minute"].InnerText);
+    currentTime.Value = String.Format("{0}:{1:00}", hour, minute);
 
     // Player funding
     XmlNode cashNode = xmlDoc.SelectSingleNode("//status/cash");
