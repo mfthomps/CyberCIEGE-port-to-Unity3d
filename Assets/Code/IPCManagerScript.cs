@@ -6,32 +6,30 @@ using Code.Factories;
 using Code.Scriptable_Variables;
 using UnityEditor;
 using UnityEngine;
+using Shared.ScriptableVariables;
 
 public class IPCManagerScript : MonoBehaviour {
   [SerializeField] private StringListVariable attackLogVariable;
   [SerializeField] private GameLoadBehavior _gameLoadBehavior;
   [SerializeField] private DeviceFactory _deviceFactory;
   [SerializeField] private ComputerFactory _computerFactory;
-  
+
+  [Header("Output Events")]
+  [Tooltip("Event to fire when game status changes")]
+  public StringGameEvent gameStatusChanged;
+  [Tooltip("Event to fire when current user message changes")]
+  public StringGameEvent currentMessageChanged;
+
   private static NetworkStream serverStream;
 
   // Use this for initialization
   private static string read_string;
 
-  private static ScrollingTextScript scrolling_text;
-
   //static ToolTipScript tool_tip_script = null;
   public static bool server_ready; /* ignore server messages until we receive the ready message */
   private static float elapsed_since_receive;
 
-  private void Start() {
-    GameObject go = GameObject.Find("ScrollText");
-    scrolling_text = (ScrollingTextScript) go.GetComponent(typeof(ScrollingTextScript));
-    //go = GameObject.Find("ToolTip");
-    //tool_tip_script = (ToolTipScript)go.GetComponent(typeof(ToolTipScript));
-  }
-
-  // Update is called once per frame
+  // --------------------------------------------------------------------------
   private void Update() {
     float delta = Time.deltaTime;
     elapsed_since_receive += delta;
@@ -64,7 +62,7 @@ public class IPCManagerScript : MonoBehaviour {
       switch (command) {
         case "status":
           //Debug.Log("got status %s" + message);
-          GameStatusScript.UpdateStatus(message);
+          gameStatusChanged?.Raise(message);
           break;
         case "attack_log":
           //Debug.Log("got status %s" + message);
@@ -84,10 +82,10 @@ public class IPCManagerScript : MonoBehaviour {
           UserBehavior.UpdateStatus(message);
           break;
         case "ticker":
-          scrolling_text.AddTicker(message);
+          currentMessageChanged?.Raise(message);
           break;
         case "withdraw_ticker":
-          scrolling_text.WithdrawTicker(message);
+          currentMessageChanged?.Raise(null);
           break;
         case "message":
           MessageScript message_panel =
@@ -150,6 +148,11 @@ public class IPCManagerScript : MonoBehaviour {
 #else
 		Application.Quit();
 #endif
+  }
+
+  // --------------------------------------------------------------------------
+  public void ToggleGamePaused(bool paused) {
+    SendRequest(paused ? "Pause" : "Play");
   }
 
   public static void SendRequest(string request) {
