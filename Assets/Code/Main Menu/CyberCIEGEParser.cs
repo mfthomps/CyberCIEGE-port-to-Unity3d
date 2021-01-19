@@ -156,7 +156,7 @@ namespace Code.MainMenu {
       }
 
       // If the player quit or lost, show the farthest phase they reached
-      if (scenarioStatus == SCENARIO_STATUS_QUIT || scenarioStatus == SCENARIO_STATUS_LOST) {
+      if ((scenarioStatus == SCENARIO_STATUS_QUIT || scenarioStatus == SCENARIO_STATUS_LOST) && phasesReached.Count > 0) {
         scenarioStatus = $"{scenarioStatus}: {phasesReached.Pop()}";
       }
 
