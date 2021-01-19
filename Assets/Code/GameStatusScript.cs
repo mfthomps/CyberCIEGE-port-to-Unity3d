@@ -2,54 +2,79 @@
 using System.IO;
 using System.Xml;
 using UnityEngine;
+using Shared.ScriptableVariables;
 
 public class GameStatusScript : MonoBehaviour {
-  public static string time_label = "";
-  public static string cash_label = "";
+  [Header("Output Variables")]
+  [Tooltip("Whether the game is currently paused or not")]
+  public BooleanVariable gamePaused;
+  [Tooltip("Current player funds")]
+  public IntVariable currentFunds;
+  [Tooltip("Current player bonus/hour")]
+  public IntVariable currentBonus;
+  [Tooltip("Current simulation time")]
+  public StringVariable currentTime;
+  [Tooltip("Current user message")]
+  public StringVariable currentMessage;
 
-  public static string bonus_label = "";
-
-  // Use this for initialization
-  private static bool game_paused;
-
-  private void Start() {
+  // --------------------------------------------------------------------------
+  void OnDestroy() {
+    gamePaused.Reset();
+    currentFunds.Reset();
+    currentBonus.Reset();
+    currentTime.Reset();
+    currentMessage.Reset();
   }
 
-  public static bool isPaused() {
-    return game_paused;
-  }
-
-  public static void UpdateStatus(string message) {
+  // --------------------------------------------------------------------------
+  public void UpdateStatus(string message) {
     StringReader reader = new StringReader(message);
     //reader.Read(); // skip BOM ???
 
-    XmlDocument xml_doc = new XmlDocument();
-    xml_doc.Load(reader);
-    XmlNode paused_node = xml_doc.SelectSingleNode("//status/paused");
-    string value = paused_node.InnerText;
-    //Debug.Log("UpdateStatus, status is " + value);
-    game_paused = Convert.ToBoolean(value);
-    XmlNode clock_node = xml_doc.SelectSingleNode("//status/clock");
-    string hour = clock_node["hour"].InnerText;
-    string minute = clock_node["minute"].InnerText;
-    time_label = hour + ":" + minute;
-    XmlNode cash_node = xml_doc.SelectSingleNode("//status/cash");
-    cash_label = cash_node.InnerText;
-    //Debug.Log("UpdateStatus, cash is " + cash_label);
-    XmlNode bonus_node = xml_doc.SelectSingleNode("//status/bonus");
-    string bonus = bonus_node.InnerText;
-    //Debug.Log("UpdateStatus, bonus is " + bonus);
-    XmlNode penalty_node = xml_doc.SelectSingleNode("//status/asset_penalty");
-    string penalty = penalty_node.InnerText;
+    XmlDocument xmlDoc = new XmlDocument();
+    xmlDoc.Load(reader);
+
+    // Game paused state
+    XmlNode pausedNode = xmlDoc.SelectSingleNode("//status/paused");
+    gamePaused.Value = Convert.ToBoolean(pausedNode.InnerText);
+
+    // Game clock time
+    XmlNode clockNode = xmlDoc.SelectSingleNode("//status/clock");
+    var hour = Convert.ToInt32(clockNode["hour"].InnerText);
+    var minute = Convert.ToInt32(clockNode["minute"].InnerText);
+    currentTime.Value = String.Format("{0}:{1:00}", hour, minute);
+
+    // Player funding
+    XmlNode cashNode = xmlDoc.SelectSingleNode("//status/cash");
+    currentFunds.Value = Convert.ToInt32(cashNode.InnerText);
+
+    // Player bonus/hour with penalty
+    XmlNode bonusNode = xmlDoc.SelectSingleNode("//status/bonus");
+    var bonusString = bonusNode.InnerText;
+    XmlNode penaltyNode = xmlDoc.SelectSingleNode("//status/asset_penalty");
+    string penaltyString = penaltyNode.InnerText;
     int HOURS_PER_MONTH = 720;
     int bonusval = -1;
-    if (!int.TryParse(bonus, out bonusval)) Debug.Log("Error: UpdatateStatus parse bonus " + bonus);
-
+    if (!int.TryParse(bonusString, out bonusval)) Debug.Log("Error: UpdatateStatus parse bonus " + bonusString);
     int penaltyval = -1;
-    if (!int.TryParse(penalty, out penaltyval)) Debug.Log("Error: UpdatateStatus parse penalty " + bonus);
-
+    if (!int.TryParse(penaltyString, out penaltyval)) Debug.Log("Error: UpdatateStatus parse penalty " + penaltyString);
     int total = bonusval + penaltyval / HOURS_PER_MONTH;
-    //totalBonus += Enterprise.assetPenalty / (HOURS_PER_MONTH); // mft g.190
-    bonus_label = "bonus: " + total;
+    currentBonus.Value = total;
+
+    reader.Close();
+  }
+
+  // --------------------------------------------------------------------------
+  public void UpdateUserMessage(string message) {
+    StringReader reader = new StringReader(message);
+    //reader.Read(); // skip BOM ???
+
+    XmlDocument xmlDoc = new XmlDocument();
+    xmlDoc.Load(reader);
+
+    XmlNode textNode = xmlDoc.SelectSingleNode("//text");
+    currentMessage.Value = textNode.InnerText;
+
+    reader.Close();
   }
 }
