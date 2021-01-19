@@ -18,7 +18,7 @@ public class ZoneBehavior : MonoBehaviour {
   
   private static string root_zone_name; //May use to scale computer procedurally if I can't do it manually.
   private static Dictionary<string, ZoneBehavior> zone_dict = new Dictionary<string, ZoneBehavior>();
-  public string zone_name;
+  private string _zoneName;
   private ConfigurationSettings config_settings;
 
   // private string file_path;
@@ -29,6 +29,14 @@ public class ZoneBehavior : MonoBehaviour {
   private int ulc_y;
 
   private ZoneConfigure zone_config_script; /* menu of current configuration values shared between instances TBC static?*/
+
+  public string ZoneName {
+    get => _zoneName;
+    private set {
+      _zoneName = value;
+      gameObject.name = $"Zone--{_zoneName}";
+    }
+  }
 
   public static void doItems() {
     WindowRect = GUI.Window(1, WindowRect, ZoneMenu, "Zones");
@@ -67,12 +75,12 @@ public class ZoneBehavior : MonoBehaviour {
             ) //Debug.Log("LoadUser got " + value + " for tag " + tag);
               switch (tag) {
                 case "Name":
-                  zone_name = value;
+                  ZoneName = value;
                   //Debug.Log("LoadComponent adding to dict: " + this.user_name);
-                  zone_dict.Add(zone_name, this);
+                  zone_dict.Add(ZoneName, this);
                   config_settings.SetName(value);
                   string lowerName = value.ToLower();
-                  if (lowerName.Contains("entire") && root_zone_name == null) root_zone_name = zone_name;
+                  if (lowerName.Contains("entire") && root_zone_name == null) root_zone_name = ZoneName;
 
                   break;
                 case "ULC":
@@ -116,7 +124,7 @@ public class ZoneBehavior : MonoBehaviour {
   }
 
   public void DoPosition() {
-    Debug.Log("zone " + zone_name + " " + ulc_x + " " + ulc_y + " " + lrc_x + " " + lrc_y);
+    Debug.Log("zone " + ZoneName + " " + ulc_x + " " + ulc_y + " " + lrc_x + " " + lrc_y);
     int left = ulc_x;
     int right = lrc_x;
     int top = ulc_y;
