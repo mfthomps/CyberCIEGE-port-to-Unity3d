@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
+using Shared.SEUI;
 using UnityEngine;
 using UnityEngine.UI;
-using Shared.SEUI;
 
-namespace Code.MainMenu {
+namespace Code.User_Interface {
   // Logic class for String Item Selector UI
   public abstract class StringItemSelector : DynamicList<StringItemSelectorItem, string> {
     [Header("UI Elements")]
