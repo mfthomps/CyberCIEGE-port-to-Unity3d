@@ -21,7 +21,7 @@ public class ZoneBehavior : MonoBehaviour {
   public string zone_name;
   private ConfigurationSettings config_settings;
 
-  private string file_path;
+  // private string file_path;
   private int lrc_x;
   private int lrc_y;
   private PhysicalSettings phys_settings;
@@ -29,20 +29,6 @@ public class ZoneBehavior : MonoBehaviour {
   private int ulc_y;
 
   private ZoneConfigure zone_config_script; /* menu of current configuration values shared between instances TBC static?*/
-
-  private static void LoadOneZone(string zone_file, Color color) {
-    GameObject zone = GameObject.Find("Zone");
-    //Debug.Log("user_app_path" + user_app_path + " file [" + User_file+"]");
-    string cfile = Path.Combine(GameLoadBehavior.user_app_path, zone_file);
-    //Debug.Log("user " + cdir);
-    GameObject new_c = Instantiate(zone, new Vector3(1.0F, 0, 0), Quaternion.identity);
-    new_c.GetComponent<Renderer>().material.color = color;
-    ZoneBehavior script = (ZoneBehavior) new_c.GetComponent(typeof(ZoneBehavior));
-    script.SetFilePath(cfile);
-    new_c.SetActive(true);
-    script.LoadZone();
-    script.DoPosition();
-  }
 
   public static void doItems() {
     WindowRect = GUI.Window(1, WindowRect, ZoneMenu, "Zones");
@@ -57,34 +43,14 @@ public class ZoneBehavior : MonoBehaviour {
       }
   }
 
-  private void SetFilePath(string path) {
-    file_path = path;
-  }
 
-  public static void LoadZones() {
-    var colors = new Color[6];
-    colors[0] = Color.cyan;
-    colors[1] = Color.red;
-    colors[2] = Color.green;
-    colors[3] = Color.blue;
-    string zone_dir = Path.Combine(GameLoadBehavior.user_app_path, "zones");
-    string[] clist = Directory.GetFiles(zone_dir);
-    int i = 0;
-    foreach (string zone_file in clist)
-      if (zone_file.EndsWith(".sdf")) {
-        LoadOneZone(zone_file, colors[i]);
-        i++;
-      }
-  }
-
-  private void LoadZone() {
+  public void LoadZone(string zoneFile) {
     config_settings = new ConfigurationSettings(false, "", computerPolicyListVariable.Value);
     phys_settings = new PhysicalSettings(physicalPolicyListVariable.Value);
     try {
-      StreamReader reader = new StreamReader(file_path, Encoding.Default);
+      StreamReader reader = new StreamReader(zoneFile, Encoding.Default);
       using (reader) {
         string tag;
-        //Debug.Log("LoadUser read from " + file_path);
         ccUtils.PositionAfter(reader, "Zone");
         string value = null;
         do {
@@ -149,7 +115,7 @@ public class ZoneBehavior : MonoBehaviour {
     _zoneListVariable.Value = new List<ZoneBehavior>(zoneList);
   }
 
-  private void DoPosition() {
+  public void DoPosition() {
     Debug.Log("zone " + zone_name + " " + ulc_x + " " + ulc_y + " " + lrc_x + " " + lrc_y);
     int left = ulc_x;
     int right = lrc_x;

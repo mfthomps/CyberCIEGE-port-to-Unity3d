@@ -34,6 +34,9 @@ public class GameLoadBehavior : MonoBehaviour {
   
   [Tooltip("The factory to use for creating Users")]
   [SerializeField] private UserFactory _userFactory;
+  
+  [Tooltip("The factory to use for creating Zones")]
+  [SerializeField] private ZoneFactory _zoneFactory;
 
   private void Start() {
     
@@ -83,7 +86,7 @@ public class GameLoadBehavior : MonoBehaviour {
     _computerFactory.CreateAll(user_app_path);
     _deviceFactory.CreateAll(user_app_path);
     _itStaffFactory.CreateAll(user_app_path);
-    ZoneBehavior.LoadZones();
+    _zoneFactory.CreateAll(user_app_path);
     ObjectivesBehavior.LoadObjectives();
 
     //UserBehavior.UpdateStatus();
