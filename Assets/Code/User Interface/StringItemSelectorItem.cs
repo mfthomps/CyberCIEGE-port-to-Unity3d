@@ -1,9 +1,9 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
-using Shared.SEUI;
+﻿using Shared.SEUI;
 using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
-namespace Code.MainMenu {
+namespace Code.User_Interface {
   // Logic class for String Item Selector Item UI
   public class StringItemSelectorItem : DynamicListItem<string> {
     [Header("UI Elements")]
