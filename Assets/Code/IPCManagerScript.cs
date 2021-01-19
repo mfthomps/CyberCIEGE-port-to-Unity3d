@@ -30,10 +30,6 @@ public class IPCManagerScript : MonoBehaviour {
   private static float elapsed_since_receive;
 
   // --------------------------------------------------------------------------
-  void OnDestroy() {
-  }
-
-  // --------------------------------------------------------------------------
   private void Update() {
     float delta = Time.deltaTime;
     elapsed_since_receive += delta;
@@ -58,9 +54,6 @@ public class IPCManagerScript : MonoBehaviour {
       }
 
       string command = read_string;
-      if (command.Contains("status")) {
-        Debug.Log(command);
-      }
       string message = null;
       //Debug.Log("buf [" + read_string + "]");
       if (read_string.IndexOf(':') > 0) message = ccUtils.GetCommand(read_string, out command);
