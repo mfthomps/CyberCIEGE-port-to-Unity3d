@@ -3,7 +3,7 @@ using UnityEngine;
 using TMPro;
 using Shared.ScriptableVariables;
 
-namespace Code.User_Interface.MainMenu {
+namespace Code.User_Interface.Main {
   public class ScrollingMessage : MonoBehaviour {
     [Header("Input Variables")]
     [Tooltip("Whether the game is currently paused or not")]

@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using Shared.ScriptableVariables;
 
-namespace Code.User_Interface.MainMenu {
+namespace Code.User_Interface.Main {
   public class PauseControls : MonoBehaviour {
     [Header("Input Variables")]
     [Tooltip("Whether the game is currently paused or not")]

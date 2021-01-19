@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Shared.ScriptableVariables;
 
-namespace Code.User_Interface.MainMenu {
+namespace Code.User_Interface.Main {
   // A ViewType value to share across components, scenes, and prefabs
   [CreateAssetMenu(menuName = "Scriptable Objects/Variables/CC/View Type")]
   public class ViewTypeVariable : ScriptableVariable<ViewType> {

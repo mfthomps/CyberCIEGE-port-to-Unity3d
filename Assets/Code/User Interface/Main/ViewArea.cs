@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Code.User_Interface.MainMenu {
+namespace Code.User_Interface.Main {
   public class ViewArea : MonoBehaviour {
     [Header("Input Variables")]
     [Tooltip("The current view type we have selected")]

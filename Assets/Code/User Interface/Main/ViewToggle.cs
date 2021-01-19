@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace Code.User_Interface.MainMenu {
+namespace Code.User_Interface.Main {
   public class ViewToggle : MonoBehaviour {
     [Header("Output Variables")]
     [Tooltip("The current view type we have selected")]

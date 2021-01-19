@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine;
 using Shared.ScriptableVariables;
-using Code.User_Interface.MainMenu;
+using Code.User_Interface.Main;
 
 namespace Code.Test {
   public class TestMainUI : MonoBehaviour {
@@ -11,17 +11,17 @@ namespace Code.Test {
     public StringVariable currentCampaign;
     [Tooltip("Currently playing scenario")]
     public StringVariable currentScenario;
-    [Tooltip("Currently funds")]
-    public FloatVariable currentFunds;
-    [Tooltip("Currently bonus")]
-    public FloatVariable currentBonus;
-    [Tooltip("Currently building")]
+    [Tooltip("Current funds")]
+    public IntVariable currentFunds;
+    [Tooltip("Current bonus")]
+    public IntVariable currentBonus;
+    [Tooltip("Current building")]
     public StringVariable currentBuilding;
-    [Tooltip("Currently simulation date")]
+    [Tooltip("Current simulation date")]
     public StringVariable currentDate;
-    [Tooltip("Currently simulation time")]
+    [Tooltip("Current simulation time")]
     public StringVariable currentTime;
-    [Tooltip("Currently user message")]
+    [Tooltip("Current user message")]
     public StringVariable currentMessage;
     [Tooltip("Simulation Paused state")]
     public BooleanVariable gamePaused;
@@ -32,8 +32,8 @@ namespace Code.Test {
     IEnumerator Start() {
       currentCampaign.Value = "Current Campaign";
       currentScenario.Value = "Current Scenario";
-      currentFunds.Value = 99999.0f;
-      currentBonus.Value = 100.0f;
+      currentFunds.Value = 99999;
+      currentBonus.Value = -100;
       currentBuilding.Value = "Corner Office";
       currentDate.Value = DateTime.Now.ToString("MMMM dd");
       currentTime.Value = DateTime.Now.ToString("hh:mm tt");
