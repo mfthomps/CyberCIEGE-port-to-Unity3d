@@ -19,6 +19,10 @@ public class IPCManagerScript : MonoBehaviour {
   public StringGameEvent gameStatusChanged;
   [Tooltip("Event to fire when current user message changes")]
   public StringGameEvent currentMessageChanged;
+  [Tooltip("Event to fire when a phase is completed")]
+  public StringGameEvent phaseCompleted;
+  [Tooltip("Event to fire when an objective is updated")]
+  public StringGameEvent objectiveUpdated;
 
   private static NetworkStream serverStream;
 
@@ -99,11 +103,11 @@ public class IPCManagerScript : MonoBehaviour {
         case "tool_tip":
           ToolTipScript.AddTip(message);
           break;
-        case "objective":
-          ObjectivesBehavior.ObjectiveStatus(message);
+        case "phase_done":
+          phaseCompleted?.Raise(message);
           break;
-        case "phase":
-          ObjectivesBehavior.PhaseDone(message);
+        case "objective":
+          objectiveUpdated?.Raise(message);
           break;
         case "lose":
           SendRequest("exit");
