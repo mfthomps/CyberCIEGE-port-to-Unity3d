@@ -29,29 +29,43 @@ namespace Code.Factories {
       string[] clist = Directory.GetFiles(user_dir);
       foreach (string user_file in clist)
         if (user_file.EndsWith(".sdf")) {
+          
           ITStaffBehavior newStaff = Instantiate(_prefab, parent);
-          newStaff.Data = LoadOneStaff(user_file, newStaff);
-          UpdateGameObject(newStaff);
+          
+          if (LoadOneStaff(user_file, newStaff)) {
+            UpdateGameObject(newStaff);  
+          }
+          else {
+            Debug.LogError($"Couldn't read from the staff file {user_file}");
+            Destroy(newStaff.gameObject);  
+          }
         }
     }
     
     //--------------------------------------------------------------------------
-    private ITStaffDataObject LoadOneStaff(string user_file, ITStaffBehavior itStaffBehavior) {
-      var data = new ITStaffDataObject();
+    private bool LoadOneStaff(string user_file, ITStaffBehavior itStaffBehavior) {
       string cfile = Path.Combine(GameLoadBehavior.user_app_path, user_file);
-      
-      LoadStaff(cfile, itStaffBehavior, ref data);
-      
-      return data;
+      var data = LoadStaff(cfile, itStaffBehavior);
+      if (data == null) {
+        return false;
+      }
+
+      itStaffBehavior.Data = data;
+      return true;
     }
     
     //--------------------------------------------------------------------------
-    private static void LoadStaff(string filePath, ITStaffBehavior itStaffBehavior, ref ITStaffDataObject data) {
+    private static ITStaffDataObject LoadStaff(string filePath, ITStaffBehavior itStaffBehavior) {
+      var data = new ITStaffDataObject();
       try {
         StreamReader reader = new StreamReader(filePath, Encoding.Default);
         using (reader) {
           string tag;
           ccUtils.PositionAfter(reader, "User");
+          //if this is the end of the stream, then something went bad
+          if (reader.EndOfStream) {
+            return null;
+          }
           string value;
           do {
             value = ccUtils.SDTNext(reader, out tag);
@@ -101,6 +115,8 @@ namespace Code.Factories {
       catch (Exception e) {
         Debug.LogError(e.ToString());
       }
+
+      return data;
     }
     
     //--------------------------------------------------------------------------
