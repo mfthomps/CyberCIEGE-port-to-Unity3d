@@ -4,8 +4,11 @@ using UnityEngine;
 public class DeviceBehavior : ComponentBehavior {
   [SerializeField] private DeviceDataObject _data;
 
-  public DeviceDataObject Data {
+  public override ComponentDataObject Data {
     get => _data;
-    set => _data = value;
+    set {
+      base.Data = value;
+      _data = value as DeviceDataObject;
+    }
   }
 }
