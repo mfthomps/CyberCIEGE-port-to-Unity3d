@@ -1,11 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using Code.Scriptable_Variables;
 using NaughtyAttributes;
 using UnityEngine;
 
 public class menus : MonoBehaviour {
   private static readonly GUIStyle labelStyle = new GUIStyle();
   public static string clicked = "";
+  
+  [Tooltip("The scriptable variable that contains a list of the current" +
+           " Zones in the scenario.")]
+  [SerializeField] private ZoneListVariable _zoneListVariable;
 
   [SerializeField] private MaxCamera cameraController;
   [SerializeField] private GUISkin guiSkin;
@@ -208,7 +213,7 @@ public class menus : MonoBehaviour {
       ObjectivesBehavior.doItems();
     }
     else if (clicked == "Zones") {
-      ZoneBehavior.doItems();
+      ZoneBehavior.doItems(_zoneListVariable.Value);
     }
     else if (clicked == "Save") {
       string fname = Path.Combine(GameLoadBehavior.user_app_path, "debug_save.sdf");

@@ -2213,6 +2213,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _prefab: {fileID: 6240403857814981039, guid: 2f9e021de4421b8408c4b1fc782cd857, type: 3}
+  computerPolicyListVariable: {fileID: 11400000, guid: 6947a957c41ad5e4bb5512db7594b65b,
+    type: 2}
+  physicalPolicyListVariable: {fileID: 11400000, guid: 2f97a60dfbe1c194f917cf45d2cce227,
+    type: 2}
+  _zoneListVariable: {fileID: 11400000, guid: 7b9705be4efa88f4f83f6bcaf84ee5bd, type: 2}
 --- !u!1 &1640991401
 GameObject:
   m_ObjectHideFlags: 0
@@ -4318,6 +4323,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2456addda260584ba4a82e56d73ce8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _zoneListVariable: {fileID: 11400000, guid: 7b9705be4efa88f4f83f6bcaf84ee5bd, type: 2}
   cameraController: {fileID: 1230447747}
   guiSkin: {fileID: 0}
   _computerPanel: {fileID: 1199081107441465558}
@@ -5519,7 +5525,7 @@ PrefabInstance:
     - target: {fileID: 2381771226587186109, guid: 3bb52e695fa0de741a2a96f3d3c1c715,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 8.1224
+      value: 8.122405
       objectReference: {fileID: 0}
     - target: {fileID: 2381771226610926076, guid: 3bb52e695fa0de741a2a96f3d3c1c715,
         type: 3}
