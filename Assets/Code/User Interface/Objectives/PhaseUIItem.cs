@@ -6,15 +6,20 @@ namespace Code.User_Interface.Objectives {
   public class PhaseUIItem : MonoBehaviour {
     public delegate void PhaseEventHandler();
     public event PhaseEventHandler onPhaseSelected;
+    public event PhaseEventHandler onInactiveObjectiveSelected;
 
     [Header("UI Elements")]
-    [Tooltip("Content area to put phase UI items")]
+    [Tooltip("UI to display when phase is inactive")]
+    public GameObject inactiveUI;
+    [Tooltip("Toggle to show this phase's inactive objective is currently selected")]
+    public Toggle inactiveUISelectionToggle;
+    [Tooltip("Content area to put objective UI items")]
     public RectTransform objectiveUIContentArea;
     [Tooltip("Label for showing the phase's display name")]
     public TMP_Text label;
     [Tooltip("Toggle to show this phase is completed")]
     public Toggle completedToggle;
-    [Tooltip("Toggle to show this objective is currently selected")]
+    [Tooltip("Toggle to show this phase is currently selected")]
     public Toggle selectionToggle;
 
     private Phase _phase;
@@ -28,9 +33,26 @@ namespace Code.User_Interface.Objectives {
     }
 
     // ------------------------------------------------------------------------
+    public bool IsComplete() {
+      return _phase.isComplete;
+    }
+
+    // ------------------------------------------------------------------------
     public void SetCompleted(bool isCompleted) {
       _phase.isComplete = isCompleted;
       completedToggle.isOn = isCompleted;
+    }
+
+    // ------------------------------------------------------------------------
+    public void ToggleActive(bool isActive) {
+      inactiveUI.SetActive(!isActive);
+      objectiveUIContentArea.gameObject.SetActive(isActive);
+    }
+
+    // ------------------------------------------------------------------------
+    public void ToggleInactiveSelected(bool isSelected) {
+      inactiveUISelectionToggle.isOn = isSelected;
+      selectionToggle.isOn = false;
     }
 
     // ------------------------------------------------------------------------
@@ -40,12 +62,18 @@ namespace Code.User_Interface.Objectives {
 
     // ------------------------------------------------------------------------
     public void ToggleSelected(bool isSelected) {
+      inactiveUISelectionToggle.isOn = false;
       selectionToggle.isOn = isSelected;
     }
 
     // ------------------------------------------------------------------------
     public void Select() {
       onPhaseSelected?.Invoke();
+    }
+
+    // ------------------------------------------------------------------------
+    public void InactiveObjectiveSelected() {
+      onInactiveObjectiveSelected?.Invoke();
     }
   }
 }

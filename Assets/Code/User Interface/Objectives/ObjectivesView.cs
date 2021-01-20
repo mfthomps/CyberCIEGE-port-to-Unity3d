@@ -32,6 +32,8 @@ namespace Code.User_Interface.Objectives {
           _objectivesUI.Add(objective.name, objectiveUI);
         }
       }
+
+      UpdateActivePhase();
     }
 
     // ------------------------------------------------------------------------
@@ -42,6 +44,8 @@ namespace Code.User_Interface.Objectives {
         if (_selectedPhase != null && _selectedPhase.name == phaseName) {
           UpdateDescription(_selectedPhase);
         }
+
+        UpdateActivePhase();
       }
     }
 
@@ -70,6 +74,23 @@ namespace Code.User_Interface.Objectives {
         // And deselect all other phase UI
         foreach (var existingPhaseUI in _phaseUI) {
           existingPhaseUI.Value.ToggleSelected(existingPhaseUI.Key == phase.name);
+        }
+
+        // And deselect all objective UI
+        foreach (var existingObjectiveUI in _objectivesUI) {
+          existingObjectiveUI.Value.ToggleSelected(false);
+        }
+      };
+      phaseUI.onInactiveObjectiveSelected += delegate() {
+        _selectedPhase = null;
+        _selectedObjective = null;
+
+        // Update description with locked objective text
+        UpdateDescription();
+
+        // And deselect all other phase UI's inactive objective
+        foreach (var existingPhaseUI in _phaseUI) {
+          existingPhaseUI.Value.ToggleInactiveSelected(existingPhaseUI.Key == phase.name);
         }
 
         // And deselect all objective UI
@@ -114,6 +135,11 @@ namespace Code.User_Interface.Objectives {
     }
 
     // ------------------------------------------------------------------------
+    private void UpdateDescription() {
+      descriptionLabel.text = "You cannot see these objectives until you reach this phase.";
+    }
+
+    // ------------------------------------------------------------------------
     private void UpdateDescription(Phase phase) {
       descriptionLabel.text = phase.GetDescription();
     }
@@ -121,6 +147,21 @@ namespace Code.User_Interface.Objectives {
     // ------------------------------------------------------------------------
     private void UpdateDescription(Objective objective) {
       descriptionLabel.text = objective.GetDescription();
+    }
+
+    // ------------------------------------------------------------------------
+    private void UpdateActivePhase() {
+      var foundIncompletePhase = false;
+      foreach (var phaseUI in _phaseUI.Values) {
+        // The first incomplete phase we find is the active phase
+        if (!foundIncompletePhase && !phaseUI.IsComplete()) {
+          foundIncompletePhase = true;
+          phaseUI.ToggleActive(true);
+        }
+        else {
+          phaseUI.ToggleActive(phaseUI.IsComplete());
+        }
+      }
     }
   }
 }
