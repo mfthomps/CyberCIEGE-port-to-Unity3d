@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using Code;
 using Code.Scriptable_Variables;
 using NaughtyAttributes;
 using UnityEngine;
@@ -134,7 +135,7 @@ public class menus : MonoBehaviour {
     else if (Input.GetKeyDown("c")) {
       ComponentBehavior ub = ComponentBehavior.GetNextComponent();
       GameObject computer = ub.gameObject;
-      Debug.Log("next component is " + ub.component_name + " pos x" + computer.transform.position.x);
+      Debug.Log("next component is " + ub.Data.component_name + " pos x" + computer.transform.position.x);
       cameraController.setPosition(computer.transform.position);
     }
     else if (Input.GetMouseButtonDown(1) && !Input.GetKey(KeyCode.LeftAlt)) {
@@ -156,7 +157,7 @@ public class menus : MonoBehaviour {
             //clicked = "";
           }
 
-          clicked = "Component:" + bh.component_name;
+          clicked = "Component:" + bh.Data.component_name;
         }
         else if (hit.transform.gameObject.CompareTag(_userTag)) {
           UserBehavior bh = (UserBehavior) hit.transform.gameObject.GetComponent(typeof(UserBehavior));
