@@ -18,10 +18,10 @@ public class ZoneBehavior : MonoBehaviour {
   
   private static string root_zone_name; //May use to scale computer procedurally if I can't do it manually.
   private static Dictionary<string, ZoneBehavior> zone_dict = new Dictionary<string, ZoneBehavior>();
-  public string zone_name;
+  private string _zoneName;
   private ConfigurationSettings config_settings;
 
-  private string file_path;
+  // private string file_path;
   private int lrc_x;
   private int lrc_y;
   private PhysicalSettings phys_settings;
@@ -30,18 +30,12 @@ public class ZoneBehavior : MonoBehaviour {
 
   private ZoneConfigure zone_config_script; /* menu of current configuration values shared between instances TBC static?*/
 
-  private static void LoadOneZone(string zone_file, Color color) {
-    GameObject zone = GameObject.Find("Zone");
-    //Debug.Log("user_app_path" + user_app_path + " file [" + User_file+"]");
-    string cfile = Path.Combine(GameLoadBehavior.user_app_path, zone_file);
-    //Debug.Log("user " + cdir);
-    GameObject new_c = Instantiate(zone, new Vector3(1.0F, 0, 0), Quaternion.identity);
-    new_c.GetComponent<Renderer>().material.color = color;
-    ZoneBehavior script = (ZoneBehavior) new_c.GetComponent(typeof(ZoneBehavior));
-    script.SetFilePath(cfile);
-    new_c.SetActive(true);
-    script.LoadZone();
-    script.DoPosition();
+  public string ZoneName {
+    get => _zoneName;
+    private set {
+      _zoneName = value;
+      gameObject.name = $"Zone--{_zoneName}";
+    }
   }
 
   public static void doItems() {
@@ -57,34 +51,14 @@ public class ZoneBehavior : MonoBehaviour {
       }
   }
 
-  private void SetFilePath(string path) {
-    file_path = path;
-  }
 
-  public static void LoadZones() {
-    var colors = new Color[6];
-    colors[0] = Color.cyan;
-    colors[1] = Color.red;
-    colors[2] = Color.green;
-    colors[3] = Color.blue;
-    string zone_dir = Path.Combine(GameLoadBehavior.user_app_path, "zones");
-    string[] clist = Directory.GetFiles(zone_dir);
-    int i = 0;
-    foreach (string zone_file in clist)
-      if (zone_file.EndsWith(".sdf")) {
-        LoadOneZone(zone_file, colors[i]);
-        i++;
-      }
-  }
-
-  private void LoadZone() {
+  public void LoadZone(string zoneFile) {
     config_settings = new ConfigurationSettings(false, "", computerPolicyListVariable.Value);
     phys_settings = new PhysicalSettings(physicalPolicyListVariable.Value);
     try {
-      StreamReader reader = new StreamReader(file_path, Encoding.Default);
+      StreamReader reader = new StreamReader(zoneFile, Encoding.Default);
       using (reader) {
         string tag;
-        //Debug.Log("LoadUser read from " + file_path);
         ccUtils.PositionAfter(reader, "Zone");
         string value = null;
         do {
@@ -101,12 +75,12 @@ public class ZoneBehavior : MonoBehaviour {
             ) //Debug.Log("LoadUser got " + value + " for tag " + tag);
               switch (tag) {
                 case "Name":
-                  zone_name = value;
+                  ZoneName = value;
                   //Debug.Log("LoadComponent adding to dict: " + this.user_name);
-                  zone_dict.Add(zone_name, this);
+                  zone_dict.Add(ZoneName, this);
                   config_settings.SetName(value);
                   string lowerName = value.ToLower();
-                  if (lowerName.Contains("entire") && root_zone_name == null) root_zone_name = zone_name;
+                  if (lowerName.Contains("entire") && root_zone_name == null) root_zone_name = ZoneName;
 
                   break;
                 case "ULC":
@@ -149,8 +123,8 @@ public class ZoneBehavior : MonoBehaviour {
     _zoneListVariable.Value = new List<ZoneBehavior>(zoneList);
   }
 
-  private void DoPosition() {
-    Debug.Log("zone " + zone_name + " " + ulc_x + " " + ulc_y + " " + lrc_x + " " + lrc_y);
+  public void DoPosition() {
+    Debug.Log("zone " + ZoneName + " " + ulc_x + " " + ulc_y + " " + lrc_x + " " + lrc_y);
     int left = ulc_x;
     int right = lrc_x;
     int top = ulc_y;
