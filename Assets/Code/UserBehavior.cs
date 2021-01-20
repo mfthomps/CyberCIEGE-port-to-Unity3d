@@ -22,9 +22,9 @@ public class UserBehavior : MonoBehaviour {
     get => _data;
     set {
       _data = value;
-      if (_data.this_user_dept == "Tech")
+      if (_data.department == "Tech")
         _techChildGameObject.SetActive(true);
-      else if (_data.this_user_gender == "female")
+      else if (_data.gender == "female")
         _femaleChildGameObject.SetActive(true);
       else
         _maleChildGameObject.SetActive(true);

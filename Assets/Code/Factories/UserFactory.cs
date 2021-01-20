@@ -67,10 +67,9 @@ namespace Code.Factories {
 
       LoadUser(cfile, ref this_user_info);
 
-      data.this_user_gender = this_user_info["Gender"];
-      data.this_user_dept = this_user_info["Dept"];
-      data.user_name = this_user_info["Name"];
-      data.department = this_user_info["Dept"];
+      data.gender =  this_user_info.ContainsKey("Gender") ? this_user_info["Gender"] : "";
+      data.user_name = this_user_info.ContainsKey("Name") ? this_user_info["Name"]   : "";
+      data.department = this_user_info.ContainsKey("Dept")? this_user_info["Dept"]   : "";
       
       if (!int.TryParse(this_user_info["PosIndex"], out data.position)) {
         Debug.Log("Error: LoadUser parsing position" + this_user_info["PosIndex"]);
