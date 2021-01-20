@@ -46,20 +46,9 @@ namespace Code.User_Interface.Objectives {
     }
 
     // ------------------------------------------------------------------------
-    public void SetObjectiveComplete(string objectiveName) {
+    public void ToggleObjectiveComplete(string objectiveName, bool isComplete) {
       if (_objectivesUI.ContainsKey(objectiveName)) {
-        _objectivesUI[objectiveName].SetCompleted(true);
-
-        if (_selectedObjective != null && _selectedObjective.name == objectiveName) {
-          UpdateDescription(_selectedObjective);
-        }
-      }
-    }
-
-    // ------------------------------------------------------------------------
-    public void SetObjectiveIncomplete(string objectiveName) {
-      if (_objectivesUI.ContainsKey(objectiveName)) {
-        _objectivesUI[objectiveName].SetCompleted(false);
+        _objectivesUI[objectiveName].SetCompleted(isComplete);
 
         if (_selectedObjective != null && _selectedObjective.name == objectiveName) {
           UpdateDescription(_selectedObjective);

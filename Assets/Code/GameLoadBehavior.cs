@@ -84,7 +84,6 @@ public class GameLoadBehavior : MonoBehaviour {
     _deviceFactory.CreateAll(user_app_path);
     _itStaffFactory.CreateAll(user_app_path);
     ZoneBehavior.LoadZones();
-    ObjectivesBehavior.LoadObjectives();
 
     //UserBehavior.UpdateStatus();
     //LoadMainOffice();

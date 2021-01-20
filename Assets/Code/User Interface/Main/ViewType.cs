@@ -1,13 +1,28 @@
 ﻿namespace Code.User_Interface.Main {
   public enum ViewType {
-    Office = 0,
-    Objectives,
+    Debrief = 1,
+    Office,
     Network,
     Component,
     Zone,
     User,
     Asset,
+    Game,
+    Buy,
+    Software,
     ITStaff,
-    Buy
+    Objectives,
+    Filter,
+    ACL,
+    Label,
+    LinkEncr,
+    VPN,
+    Email,
+    SSLClient,
+    SSLServer,
+    SLNet,
+    MLNet,
+    AttackLog,
+    CyberChark
   }
 }

@@ -14,12 +14,12 @@ namespace Code.Test {
 
     // ------------------------------------------------------------------------
     public void SetObjectiveComplete(string objectiveName) {
-      objectivesView.SetObjectiveComplete(objectiveName);
+      objectivesView.ToggleObjectiveComplete(objectiveName, true);
     }
 
     // ------------------------------------------------------------------------
     public void SetObjectiveIncomplete(string objectiveName) {
-      objectivesView.SetObjectiveIncomplete(objectiveName);
+      objectivesView.ToggleObjectiveComplete(objectiveName, false);
     }
   }
 }
