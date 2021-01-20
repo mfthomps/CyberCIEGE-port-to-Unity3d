@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Linq;
+using Code;
 using Code.Factories;
 using UnityEngine;
 using UnityEngine.UI;
 
+[Serializable]
 public class DACAccess {
   public static int READ_MASK = 1;
   public static int WRITE_MASK = 2;
@@ -94,7 +96,7 @@ public class DACAccess {
     entry.control = option_map[config.control_dropdown.captionText.text];
     entry.execute = option_map[config.execute_dropdown.captionText.text];
     int mode = entry.GetMode();
-    string component_name = asset.computer.component_name;
+    string component_name = asset.Data.Computer.component_name;
     string command = "changeGroupMask";
     string name_string = "groupName";
     if (UserFactory.user_dict.ContainsKey(user_group_name)) {
@@ -117,7 +119,7 @@ public class DACAccess {
   public void ClearEntry(string user_group_name) {
     DACEntry entry = dac_dict[user_group_name];
     entry.Clear();
-    string component_name = asset.computer.component_name;
+    string component_name = asset.Data.Computer.component_name;
     string command = "removeGroup";
     if (UserFactory.user_dict.ContainsKey(user_group_name)) command = "removeUser";
 

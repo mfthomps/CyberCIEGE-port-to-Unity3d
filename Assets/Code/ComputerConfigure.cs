@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using Code;
+using Code.Factories;
 using Code.Policy;
 using Code.User_Interface;
 using UnityEngine;
@@ -57,7 +59,7 @@ public class ComputerConfigure : MonoBehaviour {
   public void ACLClicked() {
     string asset_name = asset_dropdown.captionText.text;
     Debug.Log("ACL clicked, current asset is <" + asset_name + ">");
-    AssetBehavior asset_script = AssetBehavior.asset_dict[asset_name];
+    AssetBehavior asset_script = AssetFactory.asset_dict[asset_name];
     string dac_string = asset_script.GetDACString();
     Debug.Log(dac_string);
     GameObject acl_panel = menus.menu_panels["ACLPanel"];

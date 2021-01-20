@@ -104,7 +104,7 @@ public class ComputerBehavior : ComponentBehavior {
               break;
             case "Assets":
               asset_list.Add(value);
-              AssetBehavior asset = AssetBehavior.asset_dict[value];
+              AssetBehavior asset = AssetFactory.asset_dict[value];
               asset.SetComputer(this);
               break;
             case "AccessListLocal":
@@ -170,83 +170,7 @@ public class ComputerBehavior : ComponentBehavior {
       ACLConfigure(menus.MenuLevel(4));
     }
   }
-
-  /*  NOT USED, example of creation as part of OnGui 
-
-  public void DoConfigure(int i)
-  {
-    Dictionary<string,bool> copy_dict = new Dictionary<string, bool>(this.proc_dict);
-    //GUILayout.BeginArea(new Rect(25, 25, 150, 700));
-    GUILayout.BeginHorizontal();
-    GUILayout.BeginVertical();
-    GUILayout.Label("Procedural Settings", label_style);
-    foreach (KeyValuePair<string, bool> entry in copy_dict)
-    {
-      string label = ProceduralScript.proc_dict[entry.Key];
-      bool newval = GUILayout.Toggle(entry.Value, label);
-      if(newval != entry.Value)
-      {
-        //Debug.Log("ComputerConfig selected " + entry.Key+" value was "+entry.Value);
-        this.proc_dict[entry.Key] = newval;
-        XElement xml = new XElement("componentEvent",
-          new XElement("name", this.component_name),
-          new XElement("procSetting",
-            new XElement("field", entry.Key+":"),
-            new XElement("value", newval)));
-
-        IPCManagerScript.SendRequest(xml.ToString());
-        //Debug.Log("Value now " + this.proc_dict[entry.Key]);
-      }
-    }
-    GUILayout.EndVertical();
-    //GUILayout.EndArea();
-    
-    GUILayout.BeginVertical();
-    GUILayout.Label("Password Length", label_style);
-    DoToggleGroup(PWD_LEN);
-    GUILayout.Label("Change Frequency", label_style);
-    DoToggleGroup(PWD_CHANGE);
-    GUILayout.Label("Password Complexity", label_style);
-    DoToggleGroup(PWD_COMPLEX);
-    GUILayout.EndVertical();
-    GUILayout.EndHorizontal();
-  }
-  public void DoToggleGroup(string group_name)
-  {
-    Dictionary<string, bool> my_dict = this.group_dict[group_name];
-    Dictionary<string, bool> copy_dict = new Dictionary<string, bool>(my_dict);
-    foreach (KeyValuePair<string, bool> entry in copy_dict)
-    {
-      bool newval = GUILayout.Toggle(entry.Value, entry.Key);
-      if (newval != entry.Value)
-      {
-        if (this.group_value[group_name] != null)
-        {
-          SetGroupValue(group_name, my_dict, this.group_value[group_name], false);
-          //my_dict[this.group_value[group_name]] = false;
-          if (entry.Key != this.group_value[group_name])
-          {
-            // new selected, turn it on 
-  //my_dict[entry.Key] = true;
-            SetGroupValue(group_name, my_dict, entry.Key, true);
-            this.group_value[group_name] = entry.Key;
-          }
-          else
-          {
-            //toggle previous, so length now none ;
-            this.group_value[group_name] = null;
-          }
-        }
-        else
-        {
-          SetGroupValue(group_name, my_dict, entry.Key, true);
-          this.group_value[group_name] = entry.Key;
-        }
-      }
-    }
-  }
-
-  */
+  
 
   //Call this when the computer should change the value of a Policy.
   public void PolicyValueChanged(Policy policy, bool isOn) {
