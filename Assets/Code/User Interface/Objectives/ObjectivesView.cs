@@ -126,12 +126,12 @@ namespace Code.User_Interface.Objectives {
 
     // ------------------------------------------------------------------------
     private void UpdateDescription(Phase phase) {
-      descriptionLabel.text = phase.GetTitle();
+      descriptionLabel.text = phase.GetDescription();
     }
 
     // ------------------------------------------------------------------------
     private void UpdateDescription(Objective objective) {
-      descriptionLabel.text = objective.isComplete ? objective.completedText : objective.uncompletedText;
+      descriptionLabel.text = objective.GetDescription();
     }
   }
 }

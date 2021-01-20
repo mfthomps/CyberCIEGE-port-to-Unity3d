@@ -15,5 +15,14 @@
       }
       return $"Objective missing display name: {name}";
     }
+
+    // ------------------------------------------------------------------------
+    public string GetDescription() {
+      var descriptionText = isComplete ? completedText : uncompletedText;
+      if (!string.IsNullOrEmpty(displayName)) {
+        return $"{displayName}\n\n{descriptionText}";
+      }
+      return descriptionText;
+    }
   }
 }

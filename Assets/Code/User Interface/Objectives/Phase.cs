@@ -7,7 +7,7 @@
     public bool isComplete;
 
     // ------------------------------------------------------------------------
-    public string GetTitle() {
+    public string GetDescription() {
       var completionText = isComplete ? completedText : uncompletedText;
       if (!string.IsNullOrEmpty(displayName) && !string.IsNullOrEmpty(completionText)) {
         return $"{displayName}: {completionText}";
