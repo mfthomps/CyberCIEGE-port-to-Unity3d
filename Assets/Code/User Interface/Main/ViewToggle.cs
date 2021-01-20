@@ -30,10 +30,14 @@ namespace Code.User_Interface.Main {
       // If our toggle is on and it's not the current view type, set the current view type to us
       if (isOn && currentViewType.Value != viewType) {
         currentViewType.Value = viewType;
+        IPCManagerScript.DialogUp();
+        IPCManagerScript.SendRequest($"on_screen:{(int)viewType}");
       }
       // If we're turned off and the current view is ours, reset it to the office view
       else if (!isOn && currentViewType.Value == viewType) {
         currentViewType.Value = ViewType.Office;
+        IPCManagerScript.DialogClosed();
+        IPCManagerScript.SendRequest($"on_screen:{(int)ViewType.Office}");
       }
     }
 

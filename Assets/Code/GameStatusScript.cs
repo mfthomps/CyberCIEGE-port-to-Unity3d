@@ -66,15 +66,20 @@ public class GameStatusScript : MonoBehaviour {
 
   // --------------------------------------------------------------------------
   public void UpdateUserMessage(string message) {
-    StringReader reader = new StringReader(message);
-    //reader.Read(); // skip BOM ???
+    if (!string.IsNullOrEmpty(message)) {
+      StringReader reader = new StringReader(message);
+      //reader.Read(); // skip BOM ???
 
-    XmlDocument xmlDoc = new XmlDocument();
-    xmlDoc.Load(reader);
+      XmlDocument xmlDoc = new XmlDocument();
+      xmlDoc.Load(reader);
 
-    XmlNode textNode = xmlDoc.SelectSingleNode("//text");
-    currentMessage.Value = textNode.InnerText;
+      XmlNode textNode = xmlDoc.SelectSingleNode("//text");
+      currentMessage.Value = textNode.InnerText;
 
-    reader.Close();
+      reader.Close();
+    }
+    else {
+      currentMessage.Value = message;
+    }
   }
 }
