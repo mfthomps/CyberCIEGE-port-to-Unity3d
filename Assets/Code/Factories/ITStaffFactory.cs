@@ -110,16 +110,18 @@ namespace Code.Factories {
       
       int pos = staff.Data.position;
       if (pos < 0) {
-        Debug.Log("LoadOneStaff got invalid pos for " + staff.Data.user_name);
+        Debug.LogError($"Got invalid pos for '{staff.Data.user_name}'");
       }
       else {
         WorkSpace ws = WorkspaceFactory.GetWorkSpace(pos);
         if (ws == null) {
-          Debug.Log("ITStaffBehavior got null workspace for pos" + pos);
+          Debug.LogError("ITStaffBehavior got null workspace for pos " + pos);
+          return;
         }
-
+        
         if (!ws.AddUser(staff.Data.user_name)) {
-          Debug.Log("ITStaffBehavior AddUser, could not user, already populated " + staff.Data.user_name);
+          Debug.LogError($"Could not add {staff.Data.user_name} to WorkSpace at pos {pos}, already taken by {ws.user}");
+          return;
         }
 
         float xf, zf;
