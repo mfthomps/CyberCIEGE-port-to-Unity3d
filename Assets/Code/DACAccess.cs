@@ -104,7 +104,7 @@ public class DACAccess {
     XElement xml = new XElement("componentEvent",
       new XElement("name", component_name),
       new XElement("assetACL",
-        new XElement("assetName", asset.asset_name),
+        new XElement("assetName", asset.AssetName),
         new XElement(command,
           new XElement(name_string, user_group_name),
           new XElement("mode", mode))));
@@ -123,7 +123,7 @@ public class DACAccess {
     XElement xml = new XElement("componentEvent",
       new XElement("name", component_name),
       new XElement("assetACL",
-        new XElement("assetName", asset.asset_name),
+        new XElement("assetName", asset.AssetName),
         new XElement(command, user_group_name)));
 
     IPCManagerScript.SendRequest(xml.ToString());
