@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Code.Factories;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -37,10 +38,10 @@ public class UserConfigure : MonoBehaviour {
     var ddo = new List<Dropdown.OptionData>();
     int count = 0;
     int value = 0;
-    foreach (string key in UserBehavior.user_dict.Keys) {
+    foreach (string key in UserFactory.user_dict.Keys) {
       Dropdown.OptionData new_data = new Dropdown.OptionData(key);
       ddo.Add(new_data);
-      if (key == user.user_name)
+      if (key == user.Data.user_name)
         value = count;
       count++;
     }

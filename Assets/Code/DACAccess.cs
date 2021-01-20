@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Linq;
+using Code.Factories;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -96,7 +97,7 @@ public class DACAccess {
     string component_name = asset.computer.component_name;
     string command = "changeGroupMask";
     string name_string = "groupName";
-    if (UserBehavior.user_dict.ContainsKey(user_group_name)) {
+    if (UserFactory.user_dict.ContainsKey(user_group_name)) {
       command = "changeUserMask";
       name_string = "userName";
     }
@@ -118,7 +119,7 @@ public class DACAccess {
     entry.Clear();
     string component_name = asset.computer.component_name;
     string command = "removeGroup";
-    if (UserBehavior.user_dict.ContainsKey(user_group_name)) command = "removeUser";
+    if (UserFactory.user_dict.ContainsKey(user_group_name)) command = "removeUser";
 
     XElement xml = new XElement("componentEvent",
       new XElement("name", component_name),

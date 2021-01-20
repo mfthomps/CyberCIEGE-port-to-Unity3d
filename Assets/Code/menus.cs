@@ -160,7 +160,7 @@ public class menus : MonoBehaviour {
         }
         else if (hit.transform.gameObject.CompareTag(_userTag)) {
           UserBehavior bh = (UserBehavior) hit.transform.gameObject.GetComponent(typeof(UserBehavior));
-          clicked = "User:" + bh.user_name;
+          clicked = "User:" + bh.Data.user_name;
         }
       }
       else {

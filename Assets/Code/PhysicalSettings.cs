@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
+using Code.Factories;
 using Code.Policy;
 using UnityEngine;
 using UnityEngine.UI;
@@ -33,7 +34,7 @@ public class PhysicalSettings {
     }
     else if (tag == "PermittedUsers") {
       //Debug.Log("PhysicalSettings PermittedUsers " + value);
-      if (UserBehavior.user_dict.ContainsKey(value)) users_allowed.Add(value);
+      if (UserFactory.user_dict.ContainsKey(value)) users_allowed.Add(value);
       //Debug.Log("PhysicalSettings add user " + value);
       else if (value.StartsWith("*.")) groups_allowed.Add(value.Substring(2));
       //Debug.Log("PhysicalSettings add group " + value);
@@ -50,7 +51,7 @@ public class PhysicalSettings {
     zone_config_script.SetPhys(phys_dict, zone);
     var user_access_dict = new Dictionary<string, bool>();
     var group_access_dict = new Dictionary<string, bool>();
-    foreach (string key in UserBehavior.user_dict.Keys) {
+    foreach (string key in UserFactory.user_dict.Keys) {
       bool allowed = false;
       if (users_allowed.Contains(key))
         allowed = true;
@@ -88,7 +89,7 @@ public class PhysicalSettings {
     Debug.Log("Zone AccessChanged " + field + " to " + toggle.isOn);
     string user_or_group = "user";
     string add_or_remove = "accessAdd";
-    if (UserBehavior.user_dict.ContainsKey(field)) {
+    if (UserFactory.user_dict.ContainsKey(field)) {
       if (toggle.isOn) {
         users_allowed.Add(field);
       }
