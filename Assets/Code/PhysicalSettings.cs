@@ -42,7 +42,7 @@ public class PhysicalSettings {
   }
 
   public void ConfigureCanvas(ZoneBehavior zone, ZoneConfigure zone_config_script) {
-    Debug.Log("PhysicalSettings ConfigureCanvas for " + zone.zone_name + "items in dict: " + phys_dict.Count);
+    Debug.Log("PhysicalSettings ConfigureCanvas for " + zone.ZoneName + "items in dict: " + phys_dict.Count);
     zone_config_script.SetPhys(phys_dict, zone);
     var user_access_dict = new Dictionary<string, bool>();
     var group_access_dict = new Dictionary<string, bool>();
@@ -71,7 +71,7 @@ public class PhysicalSettings {
     phys_dict[field] = toggle.isOn;
 
     XElement xml = new XElement("zoneEvent",
-      new XElement("name", zone.zone_name),
+      new XElement("name", zone.ZoneName),
       new XElement("setting",
         new XElement("field", field + ":"),
         new XElement("value", toggle.isOn)));
@@ -105,7 +105,7 @@ public class PhysicalSettings {
     }
 
     XElement xml = new XElement("zoneEvent",
-      new XElement("name", zone.zone_name),
+      new XElement("name", zone.ZoneName),
       new XElement(add_or_remove,
         new XElement(user_or_group, field)));
 
