@@ -105,7 +105,6 @@ public class menus : MonoBehaviour {
     menu_panels["HelpTip"] = help_tip_panel;
     help_tip_panel.SetActive(false);
 
-    screen_dict["Objectives"] = UI_SCREEN_OBJECTIVE;
     screen_dict["AttackLog"] = UI_SCREEN_ATTACKLOG;
   }
 
@@ -210,9 +209,6 @@ public class menus : MonoBehaviour {
     else if (clicked == "Hire") {
       ITStaffBehavior.doItems();
     }
-    else if (clicked == "Objectives") {
-      ObjectivesBehavior.doItems();
-    }
     else if (clicked == "Zones") {
       ZoneBehavior.doItems(_zoneListVariable.Value);
     }
@@ -241,9 +237,6 @@ public class menus : MonoBehaviour {
     }
     else if (GUILayout.Button("Hire")) {
       clicked = "Hire";
-    }
-    else if (GUILayout.Button("Objectives")) {
-      clicked = "Objectives";
     }
     else if (GUILayout.Button("Zones")) {
       clicked = "Zones";

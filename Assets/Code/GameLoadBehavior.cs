@@ -90,7 +90,6 @@ public class GameLoadBehavior : MonoBehaviour {
     _deviceFactory.CreateAll(user_app_path);
     _itStaffFactory.CreateAll(user_app_path);
     _zoneFactory.CreateAll(user_app_path);
-    ObjectivesBehavior.LoadObjectives();
 
     //UserBehavior.UpdateStatus();
     //LoadMainOffice();
