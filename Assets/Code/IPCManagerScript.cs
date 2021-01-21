@@ -20,6 +20,8 @@ public class IPCManagerScript : MonoBehaviour {
   public StringGameEvent gameStatusChanged;
   [Tooltip("Event to fire when current user message changes")]
   public StringGameEvent currentMessageChanged;
+  [Tooltip("Event to fire when help tip message changes")]
+  public StringGameEvent helpTipMessageChanged;
   [Tooltip("Event to fire when a phase is completed")]
   public StringGameEvent phaseCompleted;
   [Tooltip("Event to fire when an objective is updated")]
@@ -30,7 +32,6 @@ public class IPCManagerScript : MonoBehaviour {
   // Use this for initialization
   private static string read_string;
 
-  //static ToolTipScript tool_tip_script = null;
   public static bool server_ready; /* ignore server messages until we receive the ready message */
   private static float elapsed_since_receive;
 
@@ -102,7 +103,7 @@ public class IPCManagerScript : MonoBehaviour {
           yesno_panel.ShowMessage(message);
           break;
         case "tool_tip":
-          ToolTipScript.AddTip(message);
+          helpTipMessageChanged?.Raise(message);
           break;
         case "phase_done":
           phaseCompleted?.Raise(message);
