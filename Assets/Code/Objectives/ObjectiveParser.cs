@@ -3,14 +3,14 @@ using System.IO;
 using System.Text;
 using UnityEngine;
 
-namespace Code.User_Interface.Objectives {
+namespace Code.Objectives {
   public class ObjectiveParser {
     public List<Phase> phases = new List<Phase>();
     public List<Objective> objectives = new List<Objective>();
 
     // ------------------------------------------------------------------------
-    public ObjectiveParser() {
-      var obj_file = Path.Combine(GameLoadBehavior.user_app_path, "objectives.sdf");
+    public ObjectiveParser(string objectivesDirectory) {
+      var obj_file = Path.Combine(objectivesDirectory, "objectives.sdf");
       //Debug.Log("LoadObjectives " + obj_file);
       StreamReader reader = new StreamReader(obj_file, Encoding.Default);
       using (reader) {

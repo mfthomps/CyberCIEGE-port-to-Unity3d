@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Code.Objectives;
 
 namespace Code.User_Interface.Objectives {
   public class ObjectivesView : MonoBehaviour {
@@ -21,7 +22,7 @@ namespace Code.User_Interface.Objectives {
 
     // ------------------------------------------------------------------------
     void Awake() {
-      var objectiveParser = new ObjectiveParser();
+      var objectiveParser = new ObjectiveParser(GameLoadBehavior.user_app_path);
       foreach (var phase in objectiveParser.phases) {
         _phaseUI.Add(phase.name, AddPhaseUI(phase));
       }
