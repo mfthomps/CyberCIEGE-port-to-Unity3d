@@ -13,12 +13,10 @@ namespace Code.User_Interface.Main {
     [Header("UI Elements")]
     [Tooltip("Label to show when game is paused")]
     public GameObject pausedLabel;
-    [Tooltip("Pause button icon")]
-    public Image pauseIcon;
-    [Tooltip("Icon to show when the game is currently paused")]
-    public Sprite pausedSprite;
-    [Tooltip("Icon to show when the game is currently playing")]
-    public Sprite unpausedSprite;
+    [Tooltip("Play Button")]
+    public GameObject playButton;
+    [Tooltip("Pause Button")]
+    public GameObject pauseButton;
 
     // ------------------------------------------------------------------------
     void OnEnable() {
@@ -39,7 +37,8 @@ namespace Code.User_Interface.Main {
     // ------------------------------------------------------------------------
     private void OnGamePausedChanged() {
       pausedLabel.SetActive(gamePaused.Value);
-      pauseIcon.sprite = gamePaused.Value ? pausedSprite : unpausedSprite;
+      playButton.SetActive(!gamePaused.Value);
+      pauseButton.SetActive(gamePaused.Value);
     }
   }
 }
