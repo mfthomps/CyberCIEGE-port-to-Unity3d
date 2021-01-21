@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 564040623204313462}
   - component: {fileID: 564040623204313463}
   - component: {fileID: 564040623204313464}
-  - component: {fileID: 564040623204313465}
   - component: {fileID: 8868199349022963915}
+  - component: {fileID: 2940585787216670892}
   m_Layer: 5
   m_Name: ft-ui-Button
   m_TagString: Untagged
@@ -121,25 +121,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!95 &564040623204313465
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 564040623204313466}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 2e70e2bf46568d744b2564a134c4125f, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &8868199349022963915
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -155,6 +136,25 @@ MonoBehaviour:
   _tooltipPrefab: {fileID: 7222113049118747447, guid: 172ef090b3cb7b64fbd8a55fbd4cae7d,
     type: 3}
   _tooltipText: Button, Button who's got the Button?
+--- !u!95 &2940585787216670892
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 564040623204313466}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c1e63b267317ebd44a75658cfba23584, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &564040623858192591
 GameObject:
   m_ObjectHideFlags: 0
@@ -230,7 +230,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4282927176
-  m_fontColor: {r: 0.07058824, g: 0.45882356, b: 0.9686275, a: 1}
+  m_fontColor: {r: 0.07058824, g: 0.4588236, b: 0.9686275, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
