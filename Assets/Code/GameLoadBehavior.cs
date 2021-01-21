@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using Code.Factories;
+using UltimateCameraController.Cameras.Controllers;
 using UnityEngine;
 using Code.Hardware;
 
@@ -14,10 +15,9 @@ public class GameLoadBehavior : MonoBehaviour {
   public static GameObject main_floor;
 
   public static DACGroups dac_groups;
-
-  /* TBD FIX CAMERA management */
-  public static Vector3 home_pos = new Vector3(58.0f, 11.0f, 27.0f);
-  public static Quaternion home_rot = Quaternion.Euler(10.6f, -26.8f, 0.3f);
+  
+  [Tooltip("The Camera Controller to use when jumping between items in the scenario.")]
+  [SerializeField] private CameraController cameraController;
 
   [Header("Output Variables")]
   [Tooltip("Variable containing all hardware (computers, servers, routers, etc) information for game")]
@@ -110,17 +110,20 @@ public class GameLoadBehavior : MonoBehaviour {
 
   public void AfterServerReady() {
     LoadItems();
-    Debug.Log("Back from LoadItems");
+    
+    //TODO Where should the camera start from?
+    //This will auto slave the camera target to the first user. If none, try the first component.
+    UserBehavior ub = UserBehavior.GetNextUser();
+    if (ub != null) {
+      cameraController.targetObject = ub.transform;  
+    }
+    else {
+      var component = ComponentBehavior.GetNextComponent();
+      if (component != null) {
+        cameraController.targetObject = component.transform;
+      }
+    }
 
-    GameObject mainCamera = GameObject.Find("Main Camera");
-    //		Vector3 pos = new Vector3(40.0f, 3.0f, 33.0f);
-    //		Quaternion rot = Quaternion.Euler(11.8f, 0.0f, 0.0f);
-
-    //mainCamera.transform.position = pos;
-    mainCamera.transform.rotation = home_rot;
-    Camera.main.depth = 1;
-    MaxCamera cameraScript = (MaxCamera) Camera.main.GetComponent(typeof(MaxCamera));
-    cameraScript.setPosition(home_pos);
   }
 
   // --------------------------------------------------------------------------
