@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Code.Objectives;
 
 namespace Code.User_Interface.Objectives {
   public class PhaseUIItem : MonoBehaviour {

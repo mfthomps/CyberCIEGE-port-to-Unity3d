@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using Code.Factories;
 using UltimateCameraController.Cameras.Controllers;
 using UnityEngine;
+using Code.Hardware;
 
 public class GameLoadBehavior : MonoBehaviour {
   //public static string user_app_path = "C:\\Documents and Settings\\mfthomps\\Application Data\\CyberCIEGE";
@@ -17,6 +19,11 @@ public class GameLoadBehavior : MonoBehaviour {
   [Tooltip("The Camera Controller to use when jumping between items in the scenario.")]
   [SerializeField] private CameraController cameraController;
 
+  [Header("Output Variables")]
+  [Tooltip("Variable containing all hardware (computers, servers, routers, etc) information for game")]
+  public HardwareCatalogVariable hardwareCatalog;
+
+  [Header("Factories")]
   [Tooltip("The factory to use for creating Computers")]
   [SerializeField] private ComputerFactory _computerFactory;
   
@@ -77,10 +84,10 @@ public class GameLoadBehavior : MonoBehaviour {
     Debug.Log("main_floor instantiated, name is " + main_floor.name);
   }
 
+  // --------------------------------------------------------------------------
   private void LoadItems() {
     NetworkBehavior.LoadNetworks(user_app_path);
-    CatalogBehavior.LoadHardwareTypes();
-    CatalogBehavior.LoadCatalog(user_app_path);
+    InitializeHardwareCatalog();
     _organizationFactory.CreateAll(user_app_path);
     _workspaceFactory.CreateAll(user_app_path);
     dac_groups = new DACGroups();
@@ -117,5 +124,17 @@ public class GameLoadBehavior : MonoBehaviour {
       }
     }
 
+  }
+
+  // --------------------------------------------------------------------------
+  private void InitializeHardwareCatalog() {
+    var assetBundle = AssetBundle.LoadFromFile(Path.Combine(Application.dataPath, "AssetBundles", "objects"));
+    var hardwareTypePath = Path.Combine(Application.dataPath, "HardwareTypes");
+    var hardwareDefinitions = new List<Tuple<HardwareType, string>>{
+      new Tuple<HardwareType, string>(HardwareType.Servers, Path.Combine(hardwareTypePath, "servers.txt")),
+      new Tuple<HardwareType, string>(HardwareType.Workstations, Path.Combine(hardwareTypePath, "workstations.txt")),
+      new Tuple<HardwareType, string>(HardwareType.NetworkDevices, Path.Combine(hardwareTypePath, "devices.txt")),
+    };
+    hardwareCatalog.Value = new HardwareCatalog(assetBundle, hardwareDefinitions, user_app_path);
   }
 }

@@ -1,4 +1,4 @@
-﻿namespace Code.User_Interface.Objectives {
+﻿namespace Code.Objectives {
   public class Phase {
     public string name;
     public string displayName;

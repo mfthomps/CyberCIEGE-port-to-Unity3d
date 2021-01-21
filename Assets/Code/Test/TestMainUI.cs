@@ -54,6 +54,7 @@ namespace Code.Test {
       currentTime.Reset();
       gamePaused.Reset();
       currentMessage.Reset();
+      currentViewType.Reset();
     }
 
     // --------------------------------------------------------------------------
