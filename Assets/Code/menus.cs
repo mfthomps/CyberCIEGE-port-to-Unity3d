@@ -3,6 +3,7 @@ using System.IO;
 using Code;
 using Code.Scriptable_Variables;
 using NaughtyAttributes;
+using UltimateCameraController.Cameras.Controllers;
 using UnityEngine;
 
 public class menus : MonoBehaviour {
@@ -13,7 +14,8 @@ public class menus : MonoBehaviour {
            " Zones in the scenario.")]
   [SerializeField] private ZoneListVariable _zoneListVariable;
 
-  [SerializeField] private MaxCamera cameraController;
+  [Tooltip("The Camera controller to use when jumping between items in the scenario")]
+  [SerializeField] private CameraController _cameraController;
   [SerializeField] private GUISkin guiSkin;
 
   [SerializeField] private GameObject _computerPanel;
@@ -107,19 +109,19 @@ public class menus : MonoBehaviour {
   // Update is called once per frame
   private void Update() {
     if (Input.GetKeyDown("h")) {
-      Vector3 pos = GameLoadBehavior.home_pos;
-      cameraController.setPosition(pos);
+      // Vector3 pos = GameLoadBehavior.home_pos;
+      // cameraController.setPosition(pos);
     }
     else if (Input.GetKeyDown("u")) {
       UserBehavior ub = UserBehavior.GetNextUser();
-      //Debug.Log("next user is " + ub.user_name);
+      
       if (ub == null) {
         Debug.Log("Error: menus, no next user");
         return;
       }
 
       GameObject user = ub.gameObject;
-      cameraController.setPosition(user.transform.position);
+      _cameraController.targetObject = user.transform;
     }
     else if (Input.GetKeyDown("?")) {
       IPCManagerScript.SendRequest("dump_conditions");
@@ -131,7 +133,7 @@ public class menus : MonoBehaviour {
       ComponentBehavior ub = ComponentBehavior.GetNextComponent();
       GameObject computer = ub.gameObject;
       Debug.Log("next component is " + ub.Data.component_name + " pos x" + computer.transform.position.x);
-      cameraController.setPosition(computer.transform.position);
+      _cameraController.targetObject = computer.transform;
     }
     else if (Input.GetMouseButtonDown(1) && !Input.GetKey(KeyCode.LeftAlt)) {
       Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
