@@ -1,47 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Xml.Linq;
+using Code;
+using Code.Factories;
 using Code.Scriptable_Variables;
 using UnityEngine;
 
 public class ComponentBehavior : MonoBehaviour {
   [SerializeField] private StringStringVariable _organizationDict;
 
+  public virtual ComponentDataObject Data { get; set; }
+  
   /* static data */
-  public static Dictionary<string, ComponentBehavior> computer_dict = new Dictionary<string, ComponentBehavior>();
-  protected static GUIStyle label_style = new GUIStyle();
+  private static GUIStyle label_style = new GUIStyle();
   private static Rect WindowRect = new Rect(10, 10, 250, 300);
-  public static ComponentBehavior current_component;
-
-  public string component_name;
-  public string description;
-  public string hw;
-  public int cost;
-  public int position = -1;
-  public List<string> network_list = new List<string>();
-  public GUISkin guiSkin;
-  protected string filePath;
+  private static ComponentBehavior current_component;
 
   private void Start() {
     label_style.normal.textColor = Color.black;
   }
-
-  private void OnMouseDown() {
-    Debug.Log("down for " + filePath + " component_name " + component_name);
-    if (component_name == null || component_name.Length == 0) {
-      Debug.Log("Component name is empty");
-    }
-
-    //menus.clicked = "Component:" + this.component_name;
-  }
-
+  
   public static ComponentBehavior GetNextComponent() {
     ComponentBehavior first_component = null;
     bool gotit = false;
-    foreach (KeyValuePair<string, ComponentBehavior> entry in computer_dict) {
+    foreach (KeyValuePair<string, ComponentBehavior> entry in ComponentFactory.computer_dict) {
       ComponentBehavior component = entry.Value;
       if (!component.IsActiveComponent())
         continue;
@@ -69,57 +51,17 @@ public class ComponentBehavior : MonoBehaviour {
     return true;
   }
 
-  protected void LoadComponent() {
-    try {
-      StreamReader reader = new StreamReader(filePath, Encoding.Default);
-      using (reader) {
-        string tag;
-        //Debug.("LoadComputer read from " + filePath);
-        ccUtils.PositionAfter(reader, "Component");
-        string value = null;
-        do {
-          value = ccUtils.SDTNext(reader, out tag);
-          if (value == null)
-            continue;
-          //Debug.Log("LoadComputer got " + value + " for tag " + tag);
-          switch (tag) {
-            case "Name":
-              component_name = value;
-              //Debug.Log("LoadComponent adding to dict: " + this.component_name);
-              computer_dict.Add(component_name, this);
-              break;
-            case "PosIndex":
-              if (!int.TryParse(value, out position)) Debug.Log("Error: LoadComponent position " + value);
-
-              break;
-            case "Network":
-              //	Debug.Break();
-              MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(value ?? ""));
-
-              string network_name = ccUtils.SDTField(stream, "Name");
-              network_list.Add(network_name);
-              //Debug.Log("component " + this.component_name + " added network " + network_name);
-              break;
-          }
-        } while (value != null);
-      }
-    }
-    catch (Exception e) {
-      Console.WriteLine(e.Message + "\n");
-    }
-  }
-
   public static void doItems() {
     /* find the computer that brought up a menu, and call its menuItems method */
     string component_name = menus.MenuLevel(1);
     //Debug.Log("look in dict for " + component_name);
-    if (!computer_dict.ContainsKey(component_name)) {
+    if (!ComponentFactory.computer_dict.ContainsKey(component_name)) {
       Debug.Log("Error ComponentBehavior, doItems, not in computer_dict: " + component_name);
       menus.clicked = "";
       return;
     }
 
-    ComponentBehavior script = computer_dict[component_name];
+    ComponentBehavior script = ComponentFactory.computer_dict[component_name];
     int level = ccUtils.SubstringCount(menus.clicked, ":");
     if (level == 1) {
       WindowRect = GUI.Window(1, WindowRect, script.MenuItems, "Item");
@@ -170,16 +112,16 @@ public class ComponentBehavior : MonoBehaviour {
 
     //Debug.Log("NetworkList len of list is " + network_list.Count);
     foreach (string network in copy_list)
-      if (!network_list.Contains(network))
+      if (!Data.network_list.Contains(network))
         if (GUILayout.Button(network)) {
           Debug.Log("selected " + network);
           menus.clicked = "";
           XElement xml = new XElement("componentEvent",
-            new XElement("name", component_name),
+            new XElement("name", Data.component_name),
             new XElement("networkConnect", network));
 
           Debug.Log(xml.ToString());
-          network_list.Add(network);
+          Data.network_list.Add(network);
           IPCManagerScript.SendRequest(xml.ToString());
         }
 
@@ -189,18 +131,18 @@ public class ComponentBehavior : MonoBehaviour {
   }
 
   private void DisconnectList(int id) {
-    Debug.Log("NetworkList len of list is " + network_list.Count);
-    List<string> copy_list = network_list.ToList();
+    Debug.Log("NetworkList len of list is " + Data.network_list.Count);
+    List<string> copy_list = Data.network_list.ToList();
     foreach (string network in copy_list)
       if (GUILayout.Button(network)) {
         Debug.Log("selected " + network);
         menus.clicked = "";
         XElement xml = new XElement("componentEvent",
-          new XElement("name", component_name),
+          new XElement("name", Data.component_name),
           new XElement("networkDisconnect", network));
 
         Debug.Log(xml);
-        network_list.Remove(network);
+        Data.network_list.Remove(network);
         IPCManagerScript.SendRequest(xml.ToString());
       }
 
@@ -219,11 +161,7 @@ public class ComponentBehavior : MonoBehaviour {
     //Debug.Log("NetworkItems clicked now " + menus.clicked);
   }
 
-  public void SetFilePath(string path) {
-    filePath = path;
-  }
-
-  public void Configure() {
+  private void Configure() {
     Debug.Log("ComponentBehavior Configure");
     if (gameObject.name.StartsWith("Computer")) {
       ComputerBehavior computer_script = (ComputerBehavior) this;

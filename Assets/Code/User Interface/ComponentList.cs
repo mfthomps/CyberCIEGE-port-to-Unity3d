@@ -14,7 +14,7 @@ namespace Code.User_Interface {
     protected override void OnItemAdded(ComponentBehavior item, ComponentListItem itemUI) {
       base.OnItemAdded(item, itemUI);
       
-      itemUI.SetLabel(item.component_name);
+      itemUI.SetLabel(item.Data.component_name);
       itemUI.OnClicked += OnItemClicked;
     }
     

@@ -1,11 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using Code;
+using Code.Scriptable_Variables;
 using NaughtyAttributes;
 using UnityEngine;
 
 public class menus : MonoBehaviour {
   private static readonly GUIStyle labelStyle = new GUIStyle();
   public static string clicked = "";
+  
+  [Tooltip("The scriptable variable that contains a list of the current" +
+           " Zones in the scenario.")]
+  [SerializeField] private ZoneListVariable _zoneListVariable;
 
   [SerializeField] private MaxCamera cameraController;
   [SerializeField] private GUISkin guiSkin;
@@ -128,7 +134,7 @@ public class menus : MonoBehaviour {
     else if (Input.GetKeyDown("c")) {
       ComponentBehavior ub = ComponentBehavior.GetNextComponent();
       GameObject computer = ub.gameObject;
-      Debug.Log("next component is " + ub.component_name + " pos x" + computer.transform.position.x);
+      Debug.Log("next component is " + ub.Data.component_name + " pos x" + computer.transform.position.x);
       cameraController.setPosition(computer.transform.position);
     }
     else if (Input.GetMouseButtonDown(1) && !Input.GetKey(KeyCode.LeftAlt)) {
@@ -150,11 +156,11 @@ public class menus : MonoBehaviour {
             //clicked = "";
           }
 
-          clicked = "Component:" + bh.component_name;
+          clicked = "Component:" + bh.Data.component_name;
         }
         else if (hit.transform.gameObject.CompareTag(_userTag)) {
           UserBehavior bh = (UserBehavior) hit.transform.gameObject.GetComponent(typeof(UserBehavior));
-          clicked = "User:" + bh.user_name;
+          clicked = "User:" + bh.Data.user_name;
         }
       }
       else {
@@ -204,7 +210,7 @@ public class menus : MonoBehaviour {
       ITStaffBehavior.doItems();
     }
     else if (clicked == "Zones") {
-      ZoneBehavior.doItems();
+      ZoneBehavior.doItems(_zoneListVariable.Value);
     }
     else if (clicked == "Save") {
       string fname = Path.Combine(GameLoadBehavior.user_app_path, "debug_save.sdf");
