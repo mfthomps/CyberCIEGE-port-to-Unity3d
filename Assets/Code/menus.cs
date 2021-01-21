@@ -99,7 +99,6 @@ public class menus : MonoBehaviour {
     menu_panels["HelpTip"] = help_tip_panel;
     help_tip_panel.SetActive(false);
 
-    screen_dict["Objectives"] = UI_SCREEN_OBJECTIVE;
     screen_dict["AttackLog"] = UI_SCREEN_ATTACKLOG;
   }
 
@@ -170,12 +169,6 @@ public class menus : MonoBehaviour {
   private void OnGUI() {
     GUI.skin = guiSkin;
     checkSelect();
-    //Debug.Log("time is " + GameStatusScript.time_label);
-    GUI.Label(new Rect(200, 5, 475, 20), GameStatusScript.time_label, labelStyle);
-    GUI.Label(new Rect(200, 35, 475, 50), GameStatusScript.cash_label, labelStyle);
-    //Debug.Log("bonus label " + GameStatusScript.bonus_label);
-    GUI.Label(new Rect(700, 65, 875, 80), GameStatusScript.bonus_label, labelStyle);
-    //GUI.Label(new Rect(20, 55, 275, 60), "the goose drank", labelStyle);
   }
 
 
@@ -197,22 +190,7 @@ public class menus : MonoBehaviour {
     //Debug.Log("checkSelect");
 
     //if (clicked == "" && !inHelp && Event.current.type != EventType.MouseDown)
-    if (clicked == "" && !inHelp) {
-      string pplabel = "Pause";
-      if (GameStatusScript.isPaused()) pplabel = "Play";
-
-      //Debug.Log( && Event.current.type == EventType.Layout
-      GUILayout.BeginArea(new Rect(5, 5, 150, 100));
-
-      GUILayout.BeginHorizontal();
-      if (GUILayout.Button(pplabel)) //Debug.Log("got button, send " + pplabel);
-        IPCManagerScript.SendRequest(pplabel);
-      //startup.doUserPause();
-
-      GUILayout.EndHorizontal();
-      GUILayout.EndArea();
-    }
-    else if (clicked == "menu") {
+    if (clicked == "menu") {
       WindowRect = GUI.Window(1, WindowRect, MenuItemsFunc, "Menu");
     }
     else if (clicked == "help") {
@@ -224,9 +202,6 @@ public class menus : MonoBehaviour {
     }
     else if (clicked == "Hire") {
       ITStaffBehavior.doItems();
-    }
-    else if (clicked == "Objectives") {
-      ObjectivesBehavior.doItems();
     }
     else if (clicked == "Zones") {
       ZoneBehavior.doItems();
@@ -256,9 +231,6 @@ public class menus : MonoBehaviour {
     }
     else if (GUILayout.Button("Hire")) {
       clicked = "Hire";
-    }
-    else if (GUILayout.Button("Objectives")) {
-      clicked = "Objectives";
     }
     else if (GUILayout.Button("Zones")) {
       clicked = "Zones";
