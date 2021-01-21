@@ -192,10 +192,12 @@ public class ccUtils : MonoBehaviour {
 
       int coffset = line.IndexOf(':');
       retval = line.Substring(coffset + 1).Trim('\n', '\r', ' ');
-      //Debug.Log("retval is <" + retval + ">");
+      tag = line.Substring(0, coffset).Trim();
+
+      //Debug.Log("retval is <" + retval + ">"+" tag is "+tag);
+
       if (retval == ":end") return "";
 
-      tag = line.Substring(0, coffset).Trim();
       //Debug.Log("SDTNext retval <" + retval + "> tag " + tag);
       if (retval.EndsWith(":end")) {
         if (retval.Length > 0) {

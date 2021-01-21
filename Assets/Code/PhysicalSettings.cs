@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Xml.Linq;
+using Code.Factories;
 using Code.Policy;
 using UnityEngine;
 using UnityEngine.UI;
 
+[Serializable]
 public class PhysicalSettings {
   private List<string> groups_allowed = new List<string>();
   private Dictionary<string, bool> phys_dict = new Dictionary<string, bool>();
@@ -19,7 +22,9 @@ public class PhysicalSettings {
   }
 
   public bool HandleConfigurationSetting(string tag, string value) {
-    //Debug.Log("handleConfig  " + tag + " " + value);
+    if (string.IsNullOrEmpty(tag)) {
+      return false;
+    }
     bool retval = true;
     if (phys_dict.ContainsKey(tag)) {
       bool result = false;
@@ -29,7 +34,7 @@ public class PhysicalSettings {
     }
     else if (tag == "PermittedUsers") {
       //Debug.Log("PhysicalSettings PermittedUsers " + value);
-      if (UserBehavior.user_dict.ContainsKey(value)) users_allowed.Add(value);
+      if (UserFactory.user_dict.ContainsKey(value)) users_allowed.Add(value);
       //Debug.Log("PhysicalSettings add user " + value);
       else if (value.StartsWith("*.")) groups_allowed.Add(value.Substring(2));
       //Debug.Log("PhysicalSettings add group " + value);
@@ -42,11 +47,11 @@ public class PhysicalSettings {
   }
 
   public void ConfigureCanvas(ZoneBehavior zone, ZoneConfigure zone_config_script) {
-    Debug.Log("PhysicalSettings ConfigureCanvas for " + zone.ZoneName + "items in dict: " + phys_dict.Count);
+    Debug.Log("PhysicalSettings ConfigureCanvas for " + zone.Data.ZoneName + "items in dict: " + phys_dict.Count);
     zone_config_script.SetPhys(phys_dict, zone);
     var user_access_dict = new Dictionary<string, bool>();
     var group_access_dict = new Dictionary<string, bool>();
-    foreach (string key in UserBehavior.user_dict.Keys) {
+    foreach (string key in UserFactory.user_dict.Keys) {
       bool allowed = false;
       if (users_allowed.Contains(key))
         allowed = true;
@@ -71,7 +76,7 @@ public class PhysicalSettings {
     phys_dict[field] = toggle.isOn;
 
     XElement xml = new XElement("zoneEvent",
-      new XElement("name", zone.ZoneName),
+      new XElement("name", zone.Data.ZoneName),
       new XElement("setting",
         new XElement("field", field + ":"),
         new XElement("value", toggle.isOn)));
@@ -84,7 +89,7 @@ public class PhysicalSettings {
     Debug.Log("Zone AccessChanged " + field + " to " + toggle.isOn);
     string user_or_group = "user";
     string add_or_remove = "accessAdd";
-    if (UserBehavior.user_dict.ContainsKey(field)) {
+    if (UserFactory.user_dict.ContainsKey(field)) {
       if (toggle.isOn) {
         users_allowed.Add(field);
       }
@@ -105,7 +110,7 @@ public class PhysicalSettings {
     }
 
     XElement xml = new XElement("zoneEvent",
-      new XElement("name", zone.ZoneName),
+      new XElement("name", zone.Data.ZoneName),
       new XElement(add_or_remove,
         new XElement(user_or_group, field)));
 
