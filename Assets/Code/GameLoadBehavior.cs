@@ -88,8 +88,6 @@ public class GameLoadBehavior : MonoBehaviour {
   private void LoadItems() {
     NetworkBehavior.LoadNetworks(user_app_path);
     InitializeHardwareCatalog();
-    CatalogBehavior.LoadHardwareTypes();
-    CatalogBehavior.LoadCatalog(user_app_path);
     _organizationFactory.CreateAll(user_app_path);
     _workspaceFactory.CreateAll(user_app_path);
     dac_groups = new DACGroups();

@@ -8,6 +8,7 @@ namespace Code.Hardware {
   public class HardwareCatalog {
     // Note: catalog.sdf is dynamically created by the headless process and contains only HW that will be used in the scenario, so we need to load meshes and materials for *all* objects in the catalog.
     private Dictionary<string, HardwareAsset> _hardwareAssetMap = new Dictionary<string, HardwareAsset>();
+    private Dictionary<string, HardwareType> _hardwareTypeMap = new Dictionary<string, HardwareType>();
     private Dictionary<HardwareType, List<Hardware>> _scenarioHardwareMap = new Dictionary<HardwareType, List<Hardware>>();
 
     // ------------------------------------------------------------------------
@@ -16,15 +17,13 @@ namespace Code.Hardware {
     // - hardwareDefinitionInformations: List of hardware types and filepaths to where the hardware of that type is defined
     // - scenarioHardwareCatalogDirectory: Directory to load scenario specific hardware catalog from
     public HardwareCatalog(AssetBundle assetBundle, List<Tuple<HardwareType, string>> hardwareDefinitionInformations, string scenarioHardwareCatalogDirectory) {
-      var hardwareTypeMap = new Dictionary<string, HardwareType>();
-
       // Gather all of the hardware assets we have to choose from
       foreach (var hardwareDefinitionInformation in hardwareDefinitionInformations) {
         var hardwareAssets = HardwareParser.GetHardwareAssetsFromFile(hardwareDefinitionInformation.Item2, assetBundle);
         foreach (var hardwareAsset in hardwareAssets) {
           if (!_hardwareAssetMap.ContainsKey(hardwareAsset.Key)) {
             _hardwareAssetMap.Add(hardwareAsset.Key, hardwareAsset.Value);
-            hardwareTypeMap.Add(hardwareAsset.Key, hardwareDefinitionInformation.Item1);
+            _hardwareTypeMap.Add(hardwareAsset.Key, hardwareDefinitionInformation.Item1);
           }
         }
       }
@@ -34,7 +33,7 @@ namespace Code.Hardware {
       foreach (var hardware in scenarioSpecificHardware) {
         // Only add hardware we have assets to use in game
         if (_hardwareAssetMap.ContainsKey(hardware.name)) {
-          var hardwareType = hardwareTypeMap[hardware.name];
+          var hardwareType = _hardwareTypeMap[hardware.name];
           // If this hardware type has not been mapped yet, add it
           if (!_scenarioHardwareMap.ContainsKey(hardwareType)) {
             _scenarioHardwareMap.Add(hardwareType, new List<Hardware>());
@@ -50,6 +49,14 @@ namespace Code.Hardware {
         return _hardwareAssetMap[hardwareID];
       }
       return null;
+    }
+
+    // ------------------------------------------------------------------------
+    public HardwareType GetHardwareType(string hardwareID) {
+      if (_hardwareTypeMap.ContainsKey(hardwareID)) {
+        return _hardwareTypeMap[hardwareID];
+      }
+      return HardwareType.Invalid;
     }
 
     // ------------------------------------------------------------------------

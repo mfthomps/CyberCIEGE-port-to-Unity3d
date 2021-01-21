@@ -37,8 +37,10 @@ namespace Code.User_Interface.Buy {
 
     // ------------------------------------------------------------------------
     void Awake() {
-      foreach (var hardwareType in Enum.GetValues(typeof(HardwareType))) {
-        AddHardwareTypeToggle((HardwareType)hardwareType);
+      foreach (HardwareType hardwareType in Enum.GetValues(typeof(HardwareType))) {
+        if (hardwareType != HardwareType.Invalid) {
+          AddHardwareTypeToggle(hardwareType);
+        }
       }
     }
 

@@ -3,11 +3,16 @@ using System.IO;
 using System.Text;
 using Code.Scriptable_Variables;
 using UnityEngine;
+using Code.Hardware;
 
 namespace Code.Factories {
   //Factory that creates Computers
   public class ComputerFactory : ComponentFactory, iFactory {
     [SerializeField] private ComputerBehavior _prefab;
+
+    [Header("Input Variables")]
+    [Tooltip("Variable containing all hardware (computers, servers, routers, etc) information for game")]
+    public HardwareCatalogVariable hardwareCatalog;
 
     [Tooltip("The variable containing the list of all the Computers currently in the scenario.")]
     [SerializeField] private ComputerListVariable computerListVariable;
@@ -46,19 +51,14 @@ namespace Code.Factories {
     //-------------------------------------------------------------------------
     private void UpdateGameObject(ComputerBehavior newComputer) {
       //This is the part that will hopefully load the correct assets from dict
-      SkinnedMeshRenderer this_render = newComputer.GetComponent<SkinnedMeshRenderer>();
-      try {
-        this_render.sharedMesh = CatalogBehavior.object_mesh_dict[newComputer.Data.hw];
+      var hardwareAsset = hardwareCatalog.Value.GetHardwareAsset(newComputer.Data.hw);
+      if (hardwareAsset != null) {
+        SkinnedMeshRenderer this_render = newComputer.GetComponent<SkinnedMeshRenderer>();
+        this_render.sharedMesh = hardwareAsset.mesh;
+        this_render.material = hardwareAsset.material;
       }
-      catch (KeyNotFoundException) {
-        Debug.Log("Key Exception in object_mesh_dict caused by " + newComputer.Data.hw);
-      }
-
-      try {
-        this_render.material = CatalogBehavior.object_mat_dict[newComputer.Data.hw];
-      }
-      catch (KeyNotFoundException) {
-        Debug.Log("Key Exception in object_mat_dict caused by  " + newComputer.Data.hw);
+      else {
+        Debug.LogError($"Hardware asset missing for computer: {newComputer.Data.hw}");
       }
 
       int pos = newComputer.Data.position;

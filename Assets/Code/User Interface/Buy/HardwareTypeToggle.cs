@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Code.Hardware;
@@ -17,7 +16,7 @@ namespace Code.User_Interface.Buy {
 
     // ------------------------------------------------------------------------
     public void SetHardwareType(HardwareType hardwareType, ToggleGroup toggleGroup) {
-      label.text = Enum.GetName(typeof(HardwareType), hardwareType);
+      label.text = GetHardwareTypeLabel(hardwareType);
       toggle.group = toggleGroup;
     }
 
@@ -26,6 +25,23 @@ namespace Code.User_Interface.Buy {
       if (isOn) {
         onHardwareTypeSelected?.Invoke();
       }
+    }
+
+    // ------------------------------------------------------------------------
+    private string GetHardwareTypeLabel(HardwareType hardwareType) {
+      switch (hardwareType) {
+        case HardwareType.Office:
+          return "OFFICE";
+        case HardwareType.Workstations:
+          return "WORKSTATIONS";
+        case HardwareType.Servers:
+          return "SERVERS";
+        case HardwareType.NetworkDevices:
+          return "NETWORK DEVICES";
+        case HardwareType.IDDevice:
+          return "ID DEVICES";
+      }
+      return null;
     }
   }
 }
