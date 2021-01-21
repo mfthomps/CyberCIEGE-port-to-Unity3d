@@ -10,8 +10,13 @@ namespace Code.User_Interface.Main {
     public void ContextMenuReset() {
       Reset();
     }
-  }
 
+    //---------------------------------------------------------------------------
+    // TODO: Put in ability to add views to stack and pop them from stack in this function
+    public void Back() {
+      Reset();
+    }
+  }
 
 #if UNITY_EDITOR
 //-----------------------------------------------------------------------------
