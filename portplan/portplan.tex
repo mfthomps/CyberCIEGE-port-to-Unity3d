@@ -211,6 +211,21 @@ IPCManager calls UserBehavior {\tt UpdateStatus} to set thoughts, happiness, pro
 Thoughts displayed when the user is selected, and bubble thoughts when hovered over.
 Productivity controls whether typing or pounding keyboard.
 
+The simulation engine has only a few cases in which it cares about user movement:
+\begin{itemize}
+	\item A "move user" trigger fires to assign a user a new workspace and optionally more the user
+		there right way.  This will be reflected in the XML as a move\_user field (TBD).
+	\item A "vist user" trigger fires to cause a user to visit another user.  This case also requires
+		the UI to notify the simulation engine when visit occurs, i.e., walking user reaches target user.
+	\item A "visit computer" trigger fires to cause a user to visit a computer.  This case also requires feedback.
+	\item Users passing through checkpoints, e.g, AI\_CheckChokePt in iconicAI.  These are only used
+		within one suite of scenarios.  Design for this UI/Simulation interation is TBD.
+\end{itemize}
+Otherwise, the character movements are as defined in the iconicAI.cpp file.  Broadly, users go to their computers
+if they have them, and wander if they do not.  If the user is not achieving goals (see iconicAI) and/or is unhappy,
+they pound the keyboard, otherwise they type.
+
+
 IPCManager will (not done yet) call UserBehavior to set walk destinations.
 UserBehavior will call IPCManager to report entrance to zones and reaching
 walk destinations.
@@ -250,6 +265,7 @@ CCPacket, CCPacketDetails; CCPacketReader; CyberChark
 
 \subsection{Triggers}
 \begin{itemize}
+\item Objectives/Phases: Unity stub: ObjectivesBehavior
 \item Camera movements: to user/computer/device/predefined positions.
 \item Ticker messages (scrollers) and withdrawl of messages. Unity stub: ScrollingText.cs
 \item Tool tips.  Unity stub: ToolTipScript.cs
