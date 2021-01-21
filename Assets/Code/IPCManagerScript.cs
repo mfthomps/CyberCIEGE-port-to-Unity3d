@@ -190,10 +190,12 @@ public class IPCManagerScript : MonoBehaviour {
     //			System.Net.Sockets.SocketFlags.None);
   }
 
+  // --------------------------------------------------------------------------
   public static void DialogUp() {
     SendRequest("dialog_up");
   }
 
+  // --------------------------------------------------------------------------
   public static void DialogClosed(string message = null) {
     if (message == null)
       SendRequest("dialog_closed");

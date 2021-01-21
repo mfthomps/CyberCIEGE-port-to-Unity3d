@@ -1,12 +1,16 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Text;
 using UnityEngine;
+using Code.Hardware;
 
 namespace Code.Factories {
   //Factory that create Device GameObjects
   public class DeviceFactory : ComponentFactory, iFactory{
     [SerializeField] private DeviceBehavior _prefab;
+
+    [Header("Input Variables")]
+    [Tooltip("Variable containing all hardware (computers, servers, routers, etc) information for game")]
+    public HardwareCatalogVariable hardwareCatalog;
 
     private string user_app_path;
     
@@ -54,19 +58,15 @@ namespace Code.Factories {
     
     //-------------------------------------------------------------------------
     private void UpdateGameObject(DeviceBehavior device) {
-      SkinnedMeshRenderer this_render = device.GetComponent<SkinnedMeshRenderer>();
-      try {
-        this_render.sharedMesh = CatalogBehavior.object_mesh_dict[device.Data.hw];
+      //This is the part that will hopefully load the correct assets from dict
+      var hardwareAsset = hardwareCatalog.Value.GetHardwareAsset(device.Data.hw);
+      if (hardwareAsset != null) {
+        SkinnedMeshRenderer this_render = device.GetComponent<SkinnedMeshRenderer>();
+        this_render.sharedMesh = hardwareAsset.mesh;
+        this_render.material = hardwareAsset.material;
       }
-      catch (KeyNotFoundException) {
-        Debug.Log("Key exception in object_mesh_dict caused by " + device.Data.hw);
-      }
-
-      try {
-        this_render.material = CatalogBehavior.object_mat_dict[device.Data.hw];
-      }
-      catch (KeyNotFoundException) {
-        Debug.Log("Key exception in object_mat_dict caused by " + device.Data.hw);
+      else {
+        Debug.LogError($"Hardware asset missing for device: {device.Data.hw}");
       }
 
       int pos = device.Data.position;

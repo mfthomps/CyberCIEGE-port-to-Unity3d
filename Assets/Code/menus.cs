@@ -203,9 +203,6 @@ public class menus : MonoBehaviour {
       //Application.OpenURL("file://" + startup.helpHome + "/README.html");
       clicked = "";
     }
-    else if (clicked == "Buy") {
-      CatalogBehavior.doMenu();
-    }
     else if (clicked == "Hire") {
       ITStaffBehavior.doItems();
     }
@@ -217,9 +214,6 @@ public class menus : MonoBehaviour {
       IPCManagerScript.SendRequest("save:" + fname);
     }
     //else if (clicked == "Servers" || clicked == "Workstations" || clicked == "Devices" ||clicked == "Buying")
-    else if (clicked.StartsWith("Catalog:")) {
-      CatalogBehavior.doItems();
-    }
     else if (clicked.StartsWith("Component:")) {
       ComponentBehavior.doItems();
     }
@@ -231,9 +225,6 @@ public class menus : MonoBehaviour {
   private void MenuItemsFunc(int id) {
     if (GUILayout.Button("Help")) {
       clicked = "help";
-    }
-    else if (GUILayout.Button("Buy")) {
-      clicked = "Buy";
     }
     else if (GUILayout.Button("Hire")) {
       clicked = "Hire";
