@@ -19,9 +19,10 @@ namespace Code.User_Interface.Objectives {
     private Dictionary<string, ObjectiveUIItem> _objectivesUI = new Dictionary<string, ObjectiveUIItem>();
     private Phase _selectedPhase;
     private Objective _selectedObjective;
+    private string _activePhase;
 
     // ------------------------------------------------------------------------
-    void Awake() {
+    public void Init() {
       var objectiveParser = new ObjectiveParser(GameLoadBehavior.user_app_path);
       foreach (var phase in objectiveParser.phases) {
         _phaseUI.Add(phase.name, AddPhaseUI(phase));
@@ -34,19 +35,36 @@ namespace Code.User_Interface.Objectives {
         }
       }
 
-      UpdateActivePhase();
+      // Setup the initial active state of each phase to start
+      var foundIncompletePhase = false;
+      foreach (var phaseUI in _phaseUI) {
+        // The first incomplete phase we find is the active phase
+        if (!foundIncompletePhase && !phaseUI.Value.IsComplete()) {
+          foundIncompletePhase = true;
+          phaseUI.Value.ToggleActive(true);
+          _activePhase = phaseUI.Key;
+        }
+        else {
+          phaseUI.Value.ToggleActive(phaseUI.Value.IsComplete());
+        }
+      }
     }
 
     // ------------------------------------------------------------------------
     public void SetPhaseDone(string phaseName) {
-      if (_phaseUI.ContainsKey(phaseName)) {
-        _phaseUI[phaseName].SetCompleted(true);
+      if (_activePhase != phaseName) {
+        if (!string.IsNullOrEmpty(_activePhase) && _phaseUI.ContainsKey(_activePhase)) {
+          _phaseUI[_activePhase].SetCompleted(true);
 
-        if (_selectedPhase != null && _selectedPhase.name == phaseName) {
-          UpdateDescription(_selectedPhase);
+          if (_selectedPhase != null && _selectedPhase.name == _activePhase) {
+            UpdateDescription(_selectedPhase);
+          }
+
+          _activePhase = phaseName;
+          if (!string.IsNullOrEmpty(_activePhase) && _phaseUI.ContainsKey(_activePhase)) {
+            _phaseUI[_activePhase].ToggleActive(true);
+          }
         }
-
-        UpdateActivePhase();
       }
     }
 
@@ -148,21 +166,6 @@ namespace Code.User_Interface.Objectives {
     // ------------------------------------------------------------------------
     private void UpdateDescription(Objective objective) {
       descriptionLabel.text = objective.GetDescription();
-    }
-
-    // ------------------------------------------------------------------------
-    private void UpdateActivePhase() {
-      var foundIncompletePhase = false;
-      foreach (var phaseUI in _phaseUI.Values) {
-        // The first incomplete phase we find is the active phase
-        if (!foundIncompletePhase && !phaseUI.IsComplete()) {
-          foundIncompletePhase = true;
-          phaseUI.ToggleActive(true);
-        }
-        else {
-          phaseUI.ToggleActive(phaseUI.IsComplete());
-        }
-      }
     }
   }
 }
