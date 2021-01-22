@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Code.Scriptable_Variables;
 using UnityEngine;
 
 namespace Code.Factories {
@@ -10,8 +11,9 @@ namespace Code.Factories {
     public static Dictionary<string, StaffBehavior> staff_dict = new Dictionary<string, StaffBehavior>();
     
     private static readonly string STAFF = "staff";
-
-    [SerializeField] private StaffBehavior _prefab;
+    
+    [Tooltip("Mapping of magic department string to StaffBehavior prefab")]
+    [SerializeField] private StringToStaffBehaviorMappingObject _prefabMapping;
 
     //--------------------------------------------------------------------------
     public void Create(string filename, Transform parent = null) {
@@ -29,33 +31,40 @@ namespace Code.Factories {
       string[] clist = Directory.GetFiles(user_dir);
       foreach (string user_file in clist)
         if (user_file.EndsWith(".sdf")) {
+
+          StaffBehavior newStaff = LoadOneStaff(user_file, parent); 
           
-          StaffBehavior newStaff = Instantiate(_prefab, parent);
-          
-          if (LoadOneStaff(user_file, newStaff)) {
+          if (newStaff) {
             UpdateGameObject(newStaff);  
           }
           else {
-            Debug.LogError($"Couldn't read from the staff file {user_file}");
-            Destroy(newStaff.gameObject);  
+            Debug.LogError($"Couldn't create staff instance using {user_file}");
           }
         }
     }
     
     //--------------------------------------------------------------------------
-    private bool LoadOneStaff(string user_file, StaffBehavior staffBehavior) {
+    private StaffBehavior LoadOneStaff(string user_file, Transform parent=null) {
       string cfile = Path.Combine(GameLoadBehavior.user_app_path, user_file);
-      var data = LoadStaff(cfile, staffBehavior);
+      StaffDataObject data = LoadStaff(cfile);
       if (data == null) {
-        return false;
+        return null;
       }
 
-      staffBehavior.Data = data;
-      return true;
+      StaffBehavior prefab = _prefabMapping.GetPrefabByKey(data.department);
+      if (!prefab) {
+        return null;
+      }
+      
+      StaffBehavior newStaff = Instantiate(prefab, parent);
+      newStaff.Data = data;
+      staff_dict.Add(data.user_name, newStaff);
+      
+      return newStaff;
     }
     
     //--------------------------------------------------------------------------
-    private static StaffDataObject LoadStaff(string filePath, StaffBehavior staffBehavior) {
+    private static StaffDataObject LoadStaff(string filePath) {
       var data = new StaffDataObject();
       try {
         StreamReader reader = new StreamReader(filePath, Encoding.Default);
@@ -76,7 +85,6 @@ namespace Code.Factories {
             switch (tag) {
               case "Name":
                 data.user_name = value;
-                staff_dict.Add(data.user_name, staffBehavior);
                 break;
               case "PosIndex":
                 if (!int.TryParse(value, out data.position)) {
