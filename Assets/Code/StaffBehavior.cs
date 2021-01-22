@@ -3,12 +3,12 @@ using Code.Factories;
 using UnityEngine;
 
 namespace Code {
-  public class ITStaffBehavior : MonoBehaviour {
-    [SerializeField] private ITStaffDataObject _data;
+  public class StaffBehavior : MonoBehaviour {
+    [SerializeField] private StaffDataObject _data;
   
     private static Rect WindowRect = new Rect(10, 10, 250, 300);
 
-    public ITStaffDataObject Data {
+    public StaffDataObject Data {
       get => _data;
       set => _data = value;
     }
@@ -18,9 +18,9 @@ namespace Code {
     }
 
     private static void HireMenu(int id) {
-      foreach (string key in ITStaffFactory.staff_dict.Keys)
+      foreach (string key in StaffFactory.staff_dict.Keys)
         if (GUILayout.Button(key)) {
-          ITStaffBehavior script = ITStaffFactory.staff_dict[key];
+          StaffBehavior script = StaffFactory.staff_dict[key];
           // TBD fix cost / salary to match game
           XElement xml = new XElement("userEvent",
             new XElement("hire",

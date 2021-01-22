@@ -5,13 +5,13 @@ using System.Text;
 using UnityEngine;
 
 namespace Code.Factories {
-  //Factory that create ITStaff GameObjects
-  public class ITStaffFactory : MonoBehaviour, iFactory {
-    public static Dictionary<string, ITStaffBehavior> staff_dict = new Dictionary<string, ITStaffBehavior>();
+  //Factory that create Staff GameObjects
+  public class StaffFactory : MonoBehaviour, iFactory {
+    public static Dictionary<string, StaffBehavior> staff_dict = new Dictionary<string, StaffBehavior>();
     
     private static readonly string STAFF = "staff";
 
-    [SerializeField] private ITStaffBehavior _prefab;
+    [SerializeField] private StaffBehavior _prefab;
 
     //--------------------------------------------------------------------------
     public void Create(string filename, Transform parent = null) {
@@ -30,7 +30,7 @@ namespace Code.Factories {
       foreach (string user_file in clist)
         if (user_file.EndsWith(".sdf")) {
           
-          ITStaffBehavior newStaff = Instantiate(_prefab, parent);
+          StaffBehavior newStaff = Instantiate(_prefab, parent);
           
           if (LoadOneStaff(user_file, newStaff)) {
             UpdateGameObject(newStaff);  
@@ -43,20 +43,20 @@ namespace Code.Factories {
     }
     
     //--------------------------------------------------------------------------
-    private bool LoadOneStaff(string user_file, ITStaffBehavior itStaffBehavior) {
+    private bool LoadOneStaff(string user_file, StaffBehavior staffBehavior) {
       string cfile = Path.Combine(GameLoadBehavior.user_app_path, user_file);
-      var data = LoadStaff(cfile, itStaffBehavior);
+      var data = LoadStaff(cfile, staffBehavior);
       if (data == null) {
         return false;
       }
 
-      itStaffBehavior.Data = data;
+      staffBehavior.Data = data;
       return true;
     }
     
     //--------------------------------------------------------------------------
-    private static ITStaffDataObject LoadStaff(string filePath, ITStaffBehavior itStaffBehavior) {
-      var data = new ITStaffDataObject();
+    private static StaffDataObject LoadStaff(string filePath, StaffBehavior staffBehavior) {
+      var data = new StaffDataObject();
       try {
         StreamReader reader = new StreamReader(filePath, Encoding.Default);
         using (reader) {
@@ -76,7 +76,7 @@ namespace Code.Factories {
             switch (tag) {
               case "Name":
                 data.user_name = value;
-                staff_dict.Add(data.user_name, itStaffBehavior);
+                staff_dict.Add(data.user_name, staffBehavior);
                 break;
               case "PosIndex":
                 if (!int.TryParse(value, out data.position)) {
@@ -120,7 +120,7 @@ namespace Code.Factories {
     }
     
     //--------------------------------------------------------------------------
-    private static void UpdateGameObject(ITStaffBehavior staff) {
+    private static void UpdateGameObject(StaffBehavior staff) {
       //This is a new ITStaff, which is presumed to not be hired yet. Hence,
       //this person should not be rendered in the scene.
       //TODO How to know when this Staff person has been hired and _should_ be rendered?
