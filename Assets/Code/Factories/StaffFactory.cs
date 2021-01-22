@@ -133,7 +133,7 @@ namespace Code.Factories {
       //this person should not be rendered in the scene.
       //TODO How to know when this Staff person has been hired and _should_ be rendered?
       staff.gameObject.SetActive(false);
-      staff.gameObject.name = $"ITStaff--{staff.Data.user_name}";
+      staff.gameObject.name = $"Staff-{staff.Data.department}--{staff.Data.user_name}";
     }
   }
 }
