@@ -38,13 +38,13 @@ namespace UltimateCameraController.Cameras.Controllers
 			 targetCamera = GetComponent<Camera>();
 		 }
 	 
-		 private void Update()
+		 public void ChangeZoom(float delta)
 		 {
 			 //We cache camera's field of view in a temporary variable
 			 float fieldOfView = targetCamera.fieldOfView;
 	 
 			 //Simple calculation to perform the zoom functionality
-			 fieldOfView += Input.GetAxis("Mouse ScrollWheel") * sensitivity * -1;
+			 fieldOfView += delta * sensitivity * -1;
 	 
 			 //We ensure that the camera's field of view is always within
 			 //the specified limits

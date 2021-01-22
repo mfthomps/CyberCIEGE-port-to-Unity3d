@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using Code;
-using Code.Scriptable_Variables;
+using UnityEngine;
 using NaughtyAttributes;
 using UltimateCameraController.Cameras.Controllers;
-using UnityEngine;
+using Code;
+using Code.Scriptable_Variables;
 
 public class menus : MonoBehaviour {
   private static readonly GUIStyle labelStyle = new GUIStyle();
@@ -106,65 +106,13 @@ public class menus : MonoBehaviour {
     screen_dict["AttackLog"] = UI_SCREEN_ATTACKLOG;
   }
 
-  // Update is called once per frame
-  private void Update() {
-    if (Input.GetKeyDown("h")) {
-      // Vector3 pos = GameLoadBehavior.home_pos;
-      // cameraController.setPosition(pos);
+  // --------------------------------------------------------------------------
+  public void OpenContextMenu() {
+    if (string.IsNullOrEmpty(clicked)) {
+      clicked = "menu";
     }
-    else if (Input.GetKeyDown("u")) {
-      UserBehavior ub = UserBehavior.GetNextUser();
-      
-      if (ub == null) {
-        Debug.Log("Error: menus, no next user");
-        return;
-      }
-
-      GameObject user = ub.gameObject;
-      _cameraController.targetObject = user.transform;
-    }
-    else if (Input.GetKeyDown("?")) {
-      IPCManagerScript.SendRequest("dump_conditions");
-    }
-    else if (Input.GetKeyDown("d")) {
-      IPCManagerScript.SendRequest("dump_conditions");
-    }
-    else if (Input.GetKeyDown("c")) {
-      ComponentBehavior ub = ComponentBehavior.GetNextComponent();
-      GameObject computer = ub.gameObject;
-      Debug.Log("next component is " + ub.Data.component_name + " pos x" + computer.transform.position.x);
-      _cameraController.targetObject = computer.transform;
-    }
-    else if (Input.GetMouseButtonDown(1) && !Input.GetKey(KeyCode.LeftAlt)) {
-      Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-      RaycastHit hit;
-
-      if (Physics.Raycast(ray, out hit, 100)) {
-        //Debug.Log("raycast on " + hit.transform.gameObject.name);
-        if (hit.transform.gameObject.name.StartsWith("Computer") ||
-            hit.transform.gameObject.name.StartsWith("Device")) {
-          ComponentBehavior bh = (ComponentBehavior) hit.transform.gameObject.GetComponent(typeof(ComponentBehavior));
-
-          //computer_canvas.SetActive(true);
-          if (hit.transform.gameObject.gameObject.name.StartsWith("Computer")) {
-            ComputerBehavior computer_script =
-              (ComputerBehavior) hit.transform.gameObject.GetComponent(typeof(ComputerBehavior));
-            //computer_script.ConfigureCanvas();
-            //clicked = "";
-          }
-
-          clicked = "Component:" + bh.Data.component_name;
-        }
-        else if (hit.transform.gameObject.CompareTag(_userTag)) {
-          UserBehavior bh = (UserBehavior) hit.transform.gameObject.GetComponent(typeof(UserBehavior));
-          clicked = "User:" + bh.Data.user_name;
-        }
-      }
-      else {
-        if (Input.GetMouseButtonDown(1)) {
-          clicked = "menu";
-        }
-      }
+    else if (clicked == "menu") {
+      clicked = "";
     }
   }
 
@@ -172,7 +120,6 @@ public class menus : MonoBehaviour {
     GUI.skin = guiSkin;
     checkSelect();
   }
-
 
   private void checkSelect() {
     if (clicked_was == "" && clicked != "") // new click, advise engine

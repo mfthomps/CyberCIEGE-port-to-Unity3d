@@ -207,11 +207,11 @@ public class ccUtils : MonoBehaviour {
     ycoord = (int) (yin / GRID_SIZE + 0.5);
   }
 
-  public static Vector2 GetMouseGrid() {
+  public static Vector2 GetMouseGrid(Vector2 screenPosition) {
     //Debug.Log("mouse down on floor");
     Plane plane = new Plane(Vector3.up, Vector3.zero);
     Vector2 retval = new Vector2(0.0f, 0.0f);
-    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+    Ray ray = Camera.main.ScreenPointToRay(screenPosition);
     float distance;
     if (plane.Raycast(ray, out distance)) {
       Vector3 point = ray.GetPoint(distance);
