@@ -35,10 +35,8 @@ namespace Code.Factories {
     }
     
     //-------------------------------------------------------------------------
-    public static bool FindClosestWorkspaceCenter(out int xout, out int yout, out int index) {
-      Vector2 gridloc = ccUtils.GetMouseGrid();
-
-      return FindClosestWorkspaceCenter(gridloc.x, gridloc.y, out xout, out yout, out index);
+    public static bool FindClosestWorkspaceCenter(Vector2 gridPosition, out int xout, out int yout, out int index) {
+      return FindClosestWorkspaceCenter(gridPosition.x, gridPosition.y, out xout, out yout, out index);
     }
     
     //-------------------------------------------------------------------------

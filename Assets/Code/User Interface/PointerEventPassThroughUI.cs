@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 
 namespace Code.User_Interface {
   // Class that fires UnityEvents on pointer events, but passes the event on to the next item behind this one
-  public class PointerEventPassThroughUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler, IPointerClickHandler {
+  public class PointerEventPassThroughUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IScrollHandler {
     [Header("Output Events")]
     [Tooltip("Event to fire on pointer enter")]
     public UnityEvent onPointerEnter;
@@ -36,17 +36,43 @@ namespace Code.User_Interface {
 
     // ------------------------------------------------------------------------
     public void OnPointerDown(PointerEventData data) {
-      HandlePointerEvent<IPointerDownHandler>(data, onPointerDown, (objectToTrigger) => objectToTrigger.OnPointerDown(data));
+      if (!data.dragging) {
+        HandlePointerEvent<IPointerDownHandler>(data, onPointerDown, (objectToTrigger) => objectToTrigger.OnPointerDown(data));
+      }
     }
 
     // ------------------------------------------------------------------------
     public void OnPointerUp(PointerEventData data) {
-      HandlePointerEvent<IPointerUpHandler>(data, onPointerUp, (objectToTrigger) => objectToTrigger.OnPointerUp(data));
+      if (!data.dragging) {
+        HandlePointerEvent<IPointerUpHandler>(data, onPointerUp, (objectToTrigger) => objectToTrigger.OnPointerUp(data));
+      }
     }
 
     // ------------------------------------------------------------------------
     public void OnPointerClick(PointerEventData data) {
-      HandlePointerEvent<IPointerClickHandler>(data, onPointerClick, (objectToTrigger) => objectToTrigger.OnPointerClick(data));
+      if (!data.dragging) {
+        HandlePointerEvent<IPointerClickHandler>(data, onPointerClick, (objectToTrigger) => objectToTrigger.OnPointerClick(data));
+      }
+    }
+
+    // ------------------------------------------------------------------------
+    public void OnBeginDrag(PointerEventData data) {
+      HandlePointerEvent<IBeginDragHandler>(data, null, (objectToTrigger) => objectToTrigger.OnBeginDrag(data));
+    }
+
+    // ------------------------------------------------------------------------
+    public void OnDrag(PointerEventData data) {
+      HandlePointerEvent<IDragHandler>(data, null, (objectToTrigger) => objectToTrigger.OnDrag(data));
+    }
+
+    // ------------------------------------------------------------------------
+    public void OnEndDrag(PointerEventData data) {
+      HandlePointerEvent<IEndDragHandler>(data, null, (objectToTrigger) => objectToTrigger.OnEndDrag(data));
+    }
+
+    // ------------------------------------------------------------------------
+    public void OnScroll(PointerEventData data) {
+      HandlePointerEvent<IScrollHandler>(data, null, (objectToTrigger) => objectToTrigger.OnScroll(data));
     }
 
     // ------------------------------------------------------------------------

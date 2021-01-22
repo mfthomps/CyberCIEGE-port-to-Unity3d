@@ -31,7 +31,7 @@ namespace UltimateCameraController.Cameras.Controllers
 		public bool orbitAroundTarget = true; //Do we want to add orbit functionality to the camera
 		
 		[Tooltip("The speed by which the camera rotates when orbiting")]
-		[Range(2f, 15f)]
+		[Range(0.0001f, 15f)]
 		public float rotationSpeed; //The speed by which the camera rotates when orbiting
 
 		[Tooltip("The mouse button that the player must hold in order to orbit the camera")]
@@ -65,24 +65,17 @@ namespace UltimateCameraController.Cameras.Controllers
 				//the camera will move to its new postion
 				transform.position = Vector3.Slerp(transform.position, newPosition, cameraFollowSmoothness);
 			}
-
-			//If we want to make the player able to orbit around the target
-			if (orbitAroundTarget)
-			{
-				//We call the function to orbit the camera
-				OrbitCamera();
-			}
 		}
 
 		//Method to handle Orbit of the Camera
-		private void OrbitCamera()
+		public void OrbitCamera(Vector2 delta)
 		{
 			//If the player holds the selected mouse button
-			if (Input.GetMouseButton((int)mouseButton))
+			if (orbitAroundTarget)
 			{
 				//We cache the mouse rotation values multiplied by the rotation speed
-				float y_rotate = Input.GetAxis("Mouse X") * rotationSpeed;
-				float x_rotate = Input.GetAxis("Mouse Y") * rotationSpeed;
+				float y_rotate = delta.x * rotationSpeed;
+				float x_rotate = delta.y * rotationSpeed;
 				
 				//We calculate the rotation angles based on the cached values and a specific axes
 				Quaternion xAngle = Quaternion.AngleAxis(y_rotate, Vector3.up);
