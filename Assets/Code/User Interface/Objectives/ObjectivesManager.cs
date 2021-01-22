@@ -9,6 +9,11 @@ namespace Code.User_Interface.Objectives {
     public ObjectivesView objectivesView;
 
     // ------------------------------------------------------------------------
+    void Awake() {
+      objectivesView.Init();
+    }
+
+    // ------------------------------------------------------------------------
     public void SetPhaseDone(string phaseName) {
       objectivesView.SetPhaseDone(phaseName);
     }
