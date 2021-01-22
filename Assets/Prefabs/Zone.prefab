@@ -51,7 +51,7 @@ MeshCollider:
   m_GameObject: {fileID: 6240403857814981038}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   m_Convex: 0
   m_CookingOptions: 30
@@ -63,7 +63,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6240403857814981038}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -107,9 +107,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26ff033062fc4f741a6bb2910f988176, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _zoneListVariable: {fileID: 11400000, guid: 7b9705be4efa88f4f83f6bcaf84ee5bd, type: 2}
-  computerPolicyListVariable: {fileID: 11400000, guid: 6947a957c41ad5e4bb5512db7594b65b,
-    type: 2}
-  physicalPolicyListVariable: {fileID: 11400000, guid: 2f97a60dfbe1c194f917cf45d2cce227,
-    type: 2}
-  zone_name: 
+  _data:
+    lrc_x: 0
+    lrc_y: 0
+    ulc_x: 0
+    ulc_y: 0
+    ZoneName: 
+    RootZoneName: 
