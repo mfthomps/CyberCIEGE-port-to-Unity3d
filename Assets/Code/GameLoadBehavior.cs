@@ -6,6 +6,7 @@ using Code.Factories;
 using UltimateCameraController.Cameras.Controllers;
 using UnityEngine;
 using Code.Hardware;
+using UnityEngine.Serialization;
 
 public class GameLoadBehavior : MonoBehaviour {
   //public static string user_app_path = "C:\\Documents and Settings\\mfthomps\\Application Data\\CyberCIEGE";
@@ -38,8 +39,9 @@ public class GameLoadBehavior : MonoBehaviour {
   [Tooltip("The factory to use for creating Devices")]
   [SerializeField] private DeviceFactory _deviceFactory;
   
+  [FormerlySerializedAs("_itStaffFactory")]
   [Tooltip("The factory to use for creating ITStaff")]
-  [SerializeField] private ITStaffFactory _itStaffFactory;
+  [SerializeField] private StaffFactory _staffFactory;
   
   [Tooltip("The factory to use for creating Users")]
   [SerializeField] private UserFactory _userFactory;
@@ -97,7 +99,7 @@ public class GameLoadBehavior : MonoBehaviour {
     _assetFactory.CreateAll(user_app_path);
     _computerFactory.CreateAll(user_app_path);
     _deviceFactory.CreateAll(user_app_path);
-    _itStaffFactory.CreateAll(user_app_path);
+    _staffFactory.CreateAll(user_app_path);
     _zoneFactory.CreateAll(user_app_path);
 
     //UserBehavior.UpdateStatus();

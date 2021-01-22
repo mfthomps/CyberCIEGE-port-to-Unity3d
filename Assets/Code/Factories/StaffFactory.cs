@@ -2,16 +2,18 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Code.Scriptable_Variables;
 using UnityEngine;
 
 namespace Code.Factories {
-  //Factory that create ITStaff GameObjects
-  public class ITStaffFactory : MonoBehaviour, iFactory {
-    public static Dictionary<string, ITStaffBehavior> staff_dict = new Dictionary<string, ITStaffBehavior>();
+  //Factory that create Staff GameObjects
+  public class StaffFactory : MonoBehaviour, iFactory {
+    public static Dictionary<string, StaffBehavior> staff_dict = new Dictionary<string, StaffBehavior>();
     
     private static readonly string STAFF = "staff";
-
-    [SerializeField] private ITStaffBehavior _prefab;
+    
+    [Tooltip("Mapping of magic department string to StaffBehavior prefab")]
+    [SerializeField] private StringToStaffBehaviorMappingObject _prefabMapping;
 
     //--------------------------------------------------------------------------
     public void Create(string filename, Transform parent = null) {
@@ -29,34 +31,41 @@ namespace Code.Factories {
       string[] clist = Directory.GetFiles(user_dir);
       foreach (string user_file in clist)
         if (user_file.EndsWith(".sdf")) {
+
+          StaffBehavior newStaff = LoadOneStaff(user_file, parent); 
           
-          ITStaffBehavior newStaff = Instantiate(_prefab, parent);
-          
-          if (LoadOneStaff(user_file, newStaff)) {
+          if (newStaff) {
             UpdateGameObject(newStaff);  
           }
           else {
-            Debug.LogError($"Couldn't read from the staff file {user_file}");
-            Destroy(newStaff.gameObject);  
+            Debug.LogError($"Couldn't create staff instance using {user_file}");
           }
         }
     }
     
     //--------------------------------------------------------------------------
-    private bool LoadOneStaff(string user_file, ITStaffBehavior itStaffBehavior) {
+    private StaffBehavior LoadOneStaff(string user_file, Transform parent=null) {
       string cfile = Path.Combine(GameLoadBehavior.user_app_path, user_file);
-      var data = LoadStaff(cfile, itStaffBehavior);
+      StaffDataObject data = LoadStaff(cfile);
       if (data == null) {
-        return false;
+        return null;
       }
 
-      itStaffBehavior.Data = data;
-      return true;
+      StaffBehavior prefab = _prefabMapping.GetPrefabByKey(data.department);
+      if (!prefab) {
+        return null;
+      }
+      
+      StaffBehavior newStaff = Instantiate(prefab, parent);
+      newStaff.Data = data;
+      staff_dict.Add(data.user_name, newStaff);
+      
+      return newStaff;
     }
     
     //--------------------------------------------------------------------------
-    private static ITStaffDataObject LoadStaff(string filePath, ITStaffBehavior itStaffBehavior) {
-      var data = new ITStaffDataObject();
+    private static StaffDataObject LoadStaff(string filePath) {
+      var data = new StaffDataObject();
       try {
         StreamReader reader = new StreamReader(filePath, Encoding.Default);
         using (reader) {
@@ -76,7 +85,6 @@ namespace Code.Factories {
             switch (tag) {
               case "Name":
                 data.user_name = value;
-                staff_dict.Add(data.user_name, itStaffBehavior);
                 break;
               case "PosIndex":
                 if (!int.TryParse(value, out data.position)) {
@@ -120,12 +128,12 @@ namespace Code.Factories {
     }
     
     //--------------------------------------------------------------------------
-    private static void UpdateGameObject(ITStaffBehavior staff) {
+    private static void UpdateGameObject(StaffBehavior staff) {
       //This is a new ITStaff, which is presumed to not be hired yet. Hence,
       //this person should not be rendered in the scene.
       //TODO How to know when this Staff person has been hired and _should_ be rendered?
       staff.gameObject.SetActive(false);
-      staff.gameObject.name = $"ITStaff--{staff.Data.user_name}";
+      staff.gameObject.name = $"Staff-{staff.Data.department}--{staff.Data.user_name}";
     }
   }
 }

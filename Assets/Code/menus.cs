@@ -200,7 +200,7 @@ public class menus : MonoBehaviour {
       clicked = "";
     }
     else if (clicked == "Hire") {
-      ITStaffBehavior.doItems();
+      StaffBehavior.doItems();
     }
     else if (clicked == "Zones") {
       ZoneBehavior.doItems(_zoneListVariable.Value);

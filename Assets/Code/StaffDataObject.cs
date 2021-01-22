@@ -1,9 +1,9 @@
 ﻿using System;
 
 namespace Code {
-  //Data relating to one ITStaffBehavior instance
+  //Data relating to one StaffBehavior instance
   [Serializable]
-  public class ITStaffDataObject {
+  public class StaffDataObject {
     public string user_name;
     public int position = -1;
     public string department;

@@ -284,7 +284,7 @@ GameObject:
   - component: {fileID: 116868715}
   - component: {fileID: 116868716}
   m_Layer: 0
-  m_Name: IT Staff Factory
+  m_Name: Staff Factory
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -316,7 +316,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5dd01a6f70794adba2316e03b5df3947, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _prefab: {fileID: 1087776242062782609, guid: 1495db720a5b8494289668e6c96324f6, type: 3}
+  _prefabMapping: {fileID: 11400000, guid: 00d8e0ec77f2295499dac3b15a7de8f5, type: 2}
 --- !u!1 &155726752
 GameObject:
   m_ObjectHideFlags: 0
@@ -427,7 +427,7 @@ MonoBehaviour:
   _organizationFactory: {fileID: 1389746343}
   _workspaceFactory: {fileID: 1742613798}
   _deviceFactory: {fileID: 1699261856}
-  _itStaffFactory: {fileID: 116868716}
+  _staffFactory: {fileID: 116868716}
   _userFactory: {fileID: 948691737}
   _zoneFactory: {fileID: 1638482057}
   _assetFactory: {fileID: 1533467271}
@@ -4993,6 +4993,11 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7162591383809416500, guid: e1a917defb943f64bb67556379cf7d09,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8115594570697215365, guid: e1a917defb943f64bb67556379cf7d09,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -5400,7 +5405,7 @@ PrefabInstance:
     - target: {fileID: 2381771226587186109, guid: 3bb52e695fa0de741a2a96f3d3c1c715,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 78.70115
+      value: 85.34185
       objectReference: {fileID: 0}
     - target: {fileID: 2381771226610926076, guid: 3bb52e695fa0de741a2a96f3d3c1c715,
         type: 3}
