@@ -103,10 +103,6 @@ public class menus : MonoBehaviour {
     menu_panels["YesNoPanel"] = yesno_panel;
     yesno_panel.SetActive(false);
 
-    GameObject help_tip_panel = GameObject.Find("HelpTip");
-    menu_panels["HelpTip"] = help_tip_panel;
-    help_tip_panel.SetActive(false);
-
     screen_dict["AttackLog"] = UI_SCREEN_ATTACKLOG;
   }
 
@@ -140,7 +136,6 @@ public class menus : MonoBehaviour {
       _cameraController.targetObject = computer.transform;
     }
     else if (Input.GetMouseButtonDown(1) && !Input.GetKey(KeyCode.LeftAlt)) {
-      menu_panels["HelpTip"].SetActive(false);
       Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
       RaycastHit hit;
 
@@ -168,7 +163,6 @@ public class menus : MonoBehaviour {
       else {
         if (Input.GetMouseButtonDown(1)) {
           clicked = "menu";
-          menu_panels["HelpTip"].SetActive(false);
         }
       }
     }

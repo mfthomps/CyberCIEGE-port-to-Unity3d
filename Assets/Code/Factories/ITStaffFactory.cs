@@ -121,30 +121,11 @@ namespace Code.Factories {
     
     //--------------------------------------------------------------------------
     private static void UpdateGameObject(ITStaffBehavior staff) {
-      staff.gameObject.SetActive(true);
+      //This is a new ITStaff, which is presumed to not be hired yet. Hence,
+      //this person should not be rendered in the scene.
+      //TODO How to know when this Staff person has been hired and _should_ be rendered?
+      staff.gameObject.SetActive(false);
       staff.gameObject.name = $"ITStaff--{staff.Data.user_name}";
-      
-      int pos = staff.Data.position;
-      if (pos < 0) {
-        Debug.LogError($"Got invalid pos for '{staff.Data.user_name}'");
-      }
-      else {
-        WorkSpace ws = WorkspaceFactory.GetWorkSpace(pos);
-        if (ws == null) {
-          Debug.LogError("ITStaffBehavior got null workspace for pos " + pos);
-          return;
-        }
-        
-        if (!ws.AddUser(staff.Data.user_name)) {
-          Debug.LogError($"Could not add {staff.Data.user_name} to WorkSpace at pos {pos}, already taken by {ws.user}");
-          return;
-        }
-
-        float xf, zf;
-        ccUtils.GridTo3dPos(ws.x, ws.y, out xf, out zf);
-        Vector3 v = new Vector3(xf - 1.0f, 0.5f, zf);
-        staff.transform.position = v;
-      }
     }
   }
 }
