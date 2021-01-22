@@ -8,6 +8,10 @@ using UnityEngine;
 namespace Code.Factories {
   //Factory that create Staff GameObjects
   public class StaffFactory : MonoBehaviour, iFactory {
+    [Tooltip("The scriptable variable to store all the current Staff instances.")]
+    [SerializeField] private StaffListVariable _staffListVariable;
+    
+    //TODO Remove this dictionary when its not referenced anymore, in lieu of the StaffListVariable. 
     public static Dictionary<string, StaffBehavior> staff_dict = new Dictionary<string, StaffBehavior>();
     
     private static readonly string STAFF = "staff";
@@ -32,7 +36,7 @@ namespace Code.Factories {
       foreach (string user_file in clist)
         if (user_file.EndsWith(".sdf")) {
 
-          StaffBehavior newStaff = LoadOneStaff(user_file, parent); 
+          StaffBehavior newStaff = InstantiateStaffFromFile(user_file, parent); 
           
           if (newStaff) {
             UpdateGameObject(newStaff);  
@@ -44,9 +48,9 @@ namespace Code.Factories {
     }
     
     //--------------------------------------------------------------------------
-    private StaffBehavior LoadOneStaff(string user_file, Transform parent=null) {
+    private StaffBehavior InstantiateStaffFromFile(string user_file, Transform parent=null) {
       string cfile = Path.Combine(GameLoadBehavior.user_app_path, user_file);
-      StaffDataObject data = LoadStaff(cfile);
+      StaffDataObject data = LoadStaffData(cfile);
       if (data == null) {
         return null;
       }
@@ -59,12 +63,13 @@ namespace Code.Factories {
       StaffBehavior newStaff = Instantiate(prefab, parent);
       newStaff.Data = data;
       staff_dict.Add(data.user_name, newStaff);
-      
+      _staffListVariable.Add(newStaff);
+
       return newStaff;
     }
     
     //--------------------------------------------------------------------------
-    private static StaffDataObject LoadStaff(string filePath) {
+    private static StaffDataObject LoadStaffData(string filePath) {
       var data = new StaffDataObject();
       try {
         StreamReader reader = new StreamReader(filePath, Encoding.Default);
@@ -88,7 +93,7 @@ namespace Code.Factories {
                 break;
               case "PosIndex":
                 if (!int.TryParse(value, out data.position)) {
-                  Debug.Log("Error: LoadStaff parsing position" + value);
+                  Debug.LogError("LoadStaff parsing position " + value);
                 }
                 break;
               case "Dept":
@@ -96,24 +101,29 @@ namespace Code.Factories {
                 break;
               case "Cost":
                 if (!int.TryParse(value, out data.cost)) {
-                  Debug.Log("Error: LoadStaff parsing cost" + value);
+                  Debug.LogError("LoadStaff parsing cost " + value);
                 }
                 break;
               case "Skill":
                 if (!int.TryParse(value, out data.skill)) {
-                  Debug.Log("Error: LoadStaff parsing skill" + value);
+                  Debug.LogError("LoadStaff parsing skill " + value);
                 }
 
                 break;
               case "HISupportSkill":
                 if (!int.TryParse(value, out data.hi_skill)) {
-                  Debug.Log("Error: LoadStaff parsing hi_skill" + value);
+                  Debug.LogError("LoadStaff parsing hi_skill " + value);
                 }
 
                 break;
               case "HWSupportSkill":
                 if (!int.TryParse(value, out data.hw_skill)) {
-                  Debug.Log("Error: LoadStaff parsing hw_skill" + value);
+                  Debug.LogError("LoadStaff parsing hw_skill " + value);
+                }
+                break;
+              case "DaysTillAvailable":
+                if (!int.TryParse(value, out data.daysTillAvailable)) {
+                  Debug.LogError("LoadStaff parsing DaysTillAvailable " + value);
                 }
                 break;
             }
@@ -129,10 +139,7 @@ namespace Code.Factories {
     
     //--------------------------------------------------------------------------
     private static void UpdateGameObject(StaffBehavior staff) {
-      //This is a new ITStaff, which is presumed to not be hired yet. Hence,
-      //this person should not be rendered in the scene.
-      //TODO How to know when this Staff person has been hired and _should_ be rendered?
-      staff.gameObject.SetActive(false);
+      staff.gameObject.SetActive(staff.Data.IsCurrentlyHired());
       staff.gameObject.name = $"Staff-{staff.Data.department}--{staff.Data.user_name}";
     }
   }

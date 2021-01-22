@@ -316,6 +316,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5dd01a6f70794adba2316e03b5df3947, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _staffListVariable: {fileID: 11400000, guid: bb81c43d222433549a0af763cf35c0be, type: 2}
   _prefabMapping: {fileID: 11400000, guid: 00d8e0ec77f2295499dac3b15a7de8f5, type: 2}
 --- !u!1 &155726752
 GameObject:
@@ -1005,6 +1006,8 @@ MonoBehaviour:
   resettables:
   - {fileID: 11400000, guid: c112593a94ef1824eb659aa87624cd5a, type: 2}
   - {fileID: 11400000, guid: 7b9705be4efa88f4f83f6bcaf84ee5bd, type: 2}
+  - {fileID: 11400000, guid: 8380099111649e944adcc17e9f804d36, type: 2}
+  - {fileID: 11400000, guid: bb81c43d222433549a0af763cf35c0be, type: 2}
   resetComplete: {fileID: 0}
 --- !u!4 &523011746
 Transform:
@@ -2956,6 +2959,11 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2105339841513253487, guid: dd0399aed0d5ede48aa1e2581709654e,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3176805058651691880, guid: dd0399aed0d5ede48aa1e2581709654e,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -3179,6 +3187,16 @@ PrefabInstance:
     - target: {fileID: 3985532482584604601, guid: dd0399aed0d5ede48aa1e2581709654e,
         type: 3}
       propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4143874339388157129, guid: dd0399aed0d5ede48aa1e2581709654e,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4143874339388157129, guid: dd0399aed0d5ede48aa1e2581709654e,
+        type: 3}
+      propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5429223504127285694, guid: dd0399aed0d5ede48aa1e2581709654e,
