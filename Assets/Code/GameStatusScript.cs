@@ -40,7 +40,7 @@ public class GameStatusScript : MonoBehaviour {
     StringReader reader = new StringReader(message);
     //reader.Read(); // skip BOM ???
 
-    Debug.Log($"Game status update:\n{message}");
+    // Debug.Log($"Game status update:\n{message}");
 
     var xmlDoc = new XmlDocument();
     xmlDoc.Load(reader);
