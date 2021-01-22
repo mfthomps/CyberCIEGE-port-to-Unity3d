@@ -29,5 +29,10 @@ namespace Code {
     public bool CanBeHiredNow() {
       return daysTillAvailable == 0;
     }
+
+    //--------------------------------------------------------------------------
+    public void SetHired(bool hired) {
+      daysTillAvailable = hired ? -1 : 0;
+    }
   }
 }

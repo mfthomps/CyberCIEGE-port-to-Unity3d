@@ -1,18 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Xml.Linq;
 using Code.Scriptable_Variables;
+using Shared.ScriptableVariables;
 using UnityEngine;
 
 namespace Code.Factories {
-  //Factory that create Staff GameObjects
+  //Factory that create Staff GameObjects.
+  //Call HireStaff() to hire an unemployed staff member.
   public class StaffFactory : MonoBehaviour, iFactory {
     [Tooltip("The scriptable variable to store all the current Staff instances.")]
     [SerializeField] private StaffListVariable _staffListVariable;
-    
-    //TODO Remove this dictionary when its not referenced anymore, in lieu of the StaffListVariable. 
-    public static Dictionary<string, StaffBehavior> staff_dict = new Dictionary<string, StaffBehavior>();
+
+    //TODO This is temporarily called from our own content menu. Once that context menu is removed,
+    //this field can be removed (assuming it will be triggered from somewhere else).
+    [SerializeField] private StringGameEvent _hireStaffEvent;
     
     private static readonly string STAFF = "staff";
     
@@ -27,6 +30,34 @@ namespace Code.Factories {
     //--------------------------------------------------------------------------
     public void CreateAll(string path, Transform parent = null) {
       LoadStaffFromFile(path, parent);
+    }
+
+    //--------------------------------------------------------------------------
+    //Hire a staff member using their scenario name, if they are currently available
+    //to be hired.
+    public void HireStaff(string staffUserName) {
+      var staff = _staffListVariable.Value.Find(x => x.Data.user_name == staffUserName);
+      
+      if (staff && staff.Data.CanBeHiredNow()) {
+        //activate the object
+        staff.Data.SetHired(true);
+        staff.gameObject.SetActive(true);
+        
+        //TODO position the GameObject
+        
+        XElement xml = new XElement("userEvent",
+          new XElement("hire",
+            new XElement("name", staff.Data.user_name),
+            new XElement("salary", staff.Data.cost)),
+          new XElement("cost", staff.Data.cost));
+          
+        Debug.Log($"Hired Staff: {staff.Data.user_name}");
+        IPCManagerScript.SendRequest(xml.ToString());
+        menus.clicked = "";        
+      }
+      else {
+        Debug.LogError($"Can't hire {staffUserName}");
+      }
     }
 
     //--------------------------------------------------------------------------
@@ -62,7 +93,7 @@ namespace Code.Factories {
       
       StaffBehavior newStaff = Instantiate(prefab, parent);
       newStaff.Data = data;
-      staff_dict.Add(data.user_name, newStaff);
+      
       _staffListVariable.Add(newStaff);
 
       return newStaff;
@@ -142,5 +173,27 @@ namespace Code.Factories {
       staff.gameObject.SetActive(staff.Data.IsCurrentlyHired());
       staff.gameObject.name = $"Staff-{staff.Data.department}--{staff.Data.user_name}";
     }
+    
+    //--------------------------------------------------------------------------
+    //TODO - Temp context menu
+    private static Rect WindowRect = new Rect(10, 10, 250, 300);
+    
+    //--------------------------------------------------------------------------
+    //TODO - Temp menu
+    public void doItems() {
+      WindowRect = GUI.Window(1, WindowRect, HireMenu, "Hire IT/Security");
+    }
+
+    //--------------------------------------------------------------------------
+    //TODO - Temp menu
+    private void HireMenu(int id) {
+      var canBeHiredList = _staffListVariable.Value.FindAll(x => x.Data.CanBeHiredNow());
+      foreach (var staff in canBeHiredList) {
+        if (GUILayout.Button(staff.Data.user_name)) {
+          _hireStaffEvent?.Raise(staff.Data.user_name);
+        }
+      }
+    }
+
   }
 }
