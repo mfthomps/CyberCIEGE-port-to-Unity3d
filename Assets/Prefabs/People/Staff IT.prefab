@@ -893,7 +893,7 @@ GameObject:
   - component: {fileID: 1087776242062782614}
   - component: {fileID: 1087776242062782609}
   m_Layer: 0
-  m_Name: ITStaff
+  m_Name: Staff IT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -946,16 +946,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09702b547ae1b554b8799011e93dac9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  user_name: 
-  position: -1
-  department: 
-  current_thought: 
-  skill: 0
-  hw_skill: 0
-  hi_skill: 0
-  sw_skill: 0
-  cost: 0
-  salary: 0
+  _data:
+    user_name: 
+    position: -1
+    department: 
+    current_thought: 
+    skill: 0
+    hw_skill: 0
+    hi_skill: 0
+    sw_skill: 0
+    cost: 0
+    salary: 0
+    daysTillAvailable: -1
 --- !u!1 &1087776242092569196
 GameObject:
   m_ObjectHideFlags: 0

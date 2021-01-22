@@ -71,12 +71,7 @@ public class IPCManagerScript : MonoBehaviour {
           gameStatusChanged?.Raise(message);
           break;
         case "attack_log":
-          //Debug.Log("got status %s" + message);
-          // AttackLogScript.AddEntry(message);
-          var logs = attackLogVariable.Value;
-          logs.Add(message);
-          //note: have to create a new List in order to trigger the OnChanged() event
-          attackLogVariable.Value = new List<string>(logs);
+          attackLogVariable.Add(message);
           break;
         case "load_computer":
           _computerFactory.Create(message + ".sdf");

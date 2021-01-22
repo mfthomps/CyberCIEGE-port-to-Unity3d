@@ -77,9 +77,7 @@ namespace Code.Factories {
       newComputer.gameObject.name = $"Computer--{newComputer.Data.component_name}";
 
       //add it to the computer list.
-      var componentList = this.computerListVariable.Value;
-      componentList.Add(newComputer);
-      computerListVariable.Value = new List<ComputerBehavior>(componentList);
+      computerListVariable.Add(newComputer);
     }
 
     //-------------------------------------------------------------------------
