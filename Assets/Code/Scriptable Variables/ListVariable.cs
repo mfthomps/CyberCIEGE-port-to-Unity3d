@@ -7,9 +7,8 @@ namespace Code.Scriptable_Variables {
 
     //Add an item to the list. Note, this creates a whole new List with the item added to it.
     public void Add(T item) {
-      var thisList = Value;
-      thisList.Add(item);
-      Value = new List<T>(thisList);
+      Value.Add(item);
+      ValueChanged();
     }
   }
 }
