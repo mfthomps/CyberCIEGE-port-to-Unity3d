@@ -12,6 +12,8 @@ public class GameLoadBehavior : MonoBehaviour {
   public static string user_app_path =
     Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "CyberCIEGE");
 
+  public static string ccInstallPath;
+
   public static GameObject main_floor;
 
   public static DACGroups dac_groups;

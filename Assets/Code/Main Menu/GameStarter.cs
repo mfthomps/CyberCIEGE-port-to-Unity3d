@@ -56,6 +56,8 @@ namespace Code.MainMenu {
 
     // ------------------------------------------------------------------------
     public void Play() {
+      GameLoadBehavior.ccInstallPath = ccInstallPath.Value;
+
       var newGame = string.IsNullOrEmpty(selectedSavedGame.Value);
       _gameProcess = new Process();
       _gameProcess.StartInfo.FileName = CyberCIEGEParser.GetCyberCIEGELauncher(ccInstallPath.Value, newGame);
