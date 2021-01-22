@@ -6,7 +6,7 @@
     Component,
     Computer,
     Device,
-    ITStaff,
+    Staff,
     User,
     Workspace,
     Zone

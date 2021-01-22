@@ -3,7 +3,7 @@ using System.IO;
 using UnityEngine;
 using NaughtyAttributes;
 using UltimateCameraController.Cameras.Controllers;
-using Code;
+using Code.Factories;
 using Code.Scriptable_Variables;
 
 public class menus : MonoBehaviour {
@@ -13,6 +13,9 @@ public class menus : MonoBehaviour {
   [Tooltip("The scriptable variable that contains a list of the current" +
            " Zones in the scenario.")]
   [SerializeField] private ZoneListVariable _zoneListVariable;
+
+  [Tooltip("The factory/manager that deals with all Staff")]
+  [SerializeField] private StaffFactory _staffFactory;
 
   [Tooltip("The Camera controller to use when jumping between items in the scenario")]
   [SerializeField] private CameraController _cameraController;
@@ -147,7 +150,7 @@ public class menus : MonoBehaviour {
       clicked = "";
     }
     else if (clicked == "Hire") {
-      ITStaffBehavior.doItems();
+      _staffFactory.doItems();
     }
     else if (clicked == "Zones") {
       ZoneBehavior.doItems(_zoneListVariable.Value);
