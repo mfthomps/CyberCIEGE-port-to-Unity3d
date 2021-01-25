@@ -31,7 +31,7 @@ namespace UltimateCameraController.Cameras.Controllers
 		public bool orbitAroundTarget = true; //Do we want to add orbit functionality to the camera
 		
 		[Tooltip("The speed by which the camera rotates when orbiting")]
-		[Range(2f, 15f)]
+		[Range(0.0001f, 15f)]
 		public float rotationSpeed; //The speed by which the camera rotates when orbiting
 
 		[Tooltip("The mouse button that the player must hold in order to orbit the camera")]
