@@ -10,5 +10,11 @@ namespace Code.Scriptable_Variables {
       Value.Add(item);
       ValueChanged();
     }
+
+    // ------------------------------------------------------------------------
+    public void Clear() {
+      Value.Clear();
+      ValueChanged();
+    }
   }
 }
