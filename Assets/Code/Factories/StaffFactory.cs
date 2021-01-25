@@ -170,6 +170,18 @@ namespace Code.Factories {
     
     //--------------------------------------------------------------------------
     private static void UpdateGameObject(StaffBehavior staff) {
+      //Position the new Staff based on their "position", read from the .sdf file.
+      WorkSpace ws = WorkspaceFactory.GetWorkSpace(staff.Data.position);
+      if (ws == null) {
+        Debug.Log($"Can't find a position to place {staff.Data.user_name} with position {staff.Data.position}");
+      }
+      else {
+        ccUtils.GridTo3dPos(ws.x, ws.y, out float xf, out float zf);
+        // Vector3 v = new Vector3(xf - 1.0f, 0.5f, zf); //TODO what were these offsets for?
+        staff.transform.position = new Vector3(xf, 0, zf);
+      }
+      
+      //activate and rename
       staff.gameObject.SetActive(staff.Data.IsCurrentlyHired());
       staff.gameObject.name = $"Staff-{staff.Data.department}--{staff.Data.user_name}";
     }
