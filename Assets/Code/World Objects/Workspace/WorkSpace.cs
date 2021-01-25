@@ -1,8 +1,11 @@
-﻿public class WorkSpace {
+﻿using System;
+
+[Serializable]
+public class WorkSpace {
   public string[] computer_slots;
   public string[] device_slots;
   public char direction;
-  public char usage;
+  public char usage; //I = inactive, A = Active, S = Server
   public string user;
   public int x;
   public int y;

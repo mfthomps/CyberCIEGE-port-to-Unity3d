@@ -2,6 +2,7 @@
 using System.Text;
 using UnityEngine;
 using Code.Hardware;
+using Code.Scriptable_Variables;
 
 namespace Code.Factories {
   //Factory that create Device GameObjects
@@ -11,6 +12,9 @@ namespace Code.Factories {
     [Header("Input Variables")]
     [Tooltip("Variable containing all hardware (computers, servers, routers, etc) information for game")]
     public HardwareCatalogVariable hardwareCatalog;
+
+    [Tooltip("The list of all the currently loaded workspaces")]
+    [SerializeField] private WorkSpaceListVariable _workSpaceListVariable;
 
     private string user_app_path;
     
@@ -74,7 +78,7 @@ namespace Code.Factories {
         Debug.Log("LoadOneDevice got invalid pos for " + device.Data.component_name);
       }
 
-      WorkSpace ws = WorkspaceFactory.GetWorkSpace(pos);
+      WorkSpace ws = _workSpaceListVariable.GetWorkSpace(pos);
       int slot = ws.AddDevice(device.Data.component_name);
       float xf, zf;
       ccUtils.GridTo3dPos(ws.x, ws.y, out xf, out zf);

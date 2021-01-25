@@ -2,8 +2,8 @@
 using UnityEngine;
 using NaughtyAttributes;
 using Shared.ScriptableVariables;
-using Code.Factories;
 using Code.Hardware;
+using Code.Scriptable_Variables;
 
 namespace Code.User_Interface.Office {
   public class SceneSelector : MonoBehaviour {
@@ -13,6 +13,8 @@ namespace Code.User_Interface.Office {
     [Header("Input Variables")]
     [Tooltip("Variable containing all hardware (computers, servers, routers, etc) information for game")]
     public HardwareCatalogVariable hardwareCatalog;
+    [Tooltip("The list of all the currently loaded workspaces")]
+    [SerializeField] private WorkSpaceListVariable _workSpaceListVariable;
     [Header("Customization")]
     [Tag]
     [Tooltip("The Tag of User GameObjects. Used to click on Users")]
@@ -71,9 +73,9 @@ namespace Code.User_Interface.Office {
       var pt = ccUtils.GetMouseGrid(screenPosition);
       var pos = new Vector3(pt.x, 0, pt.y);
       int xout, yout, roomIndex;
-      WorkspaceFactory.FindClosestWorkspaceCenter(pt, out xout, out yout, out roomIndex);
+      _workSpaceListVariable.FindClosestWorkspaceCenter(pt, out xout, out yout, out roomIndex);
       if (roomIndex >= 0) {
-        var ws = WorkspaceFactory.GetWorkSpace(roomIndex);
+        var ws = _workSpaceListVariable.GetWorkSpace(roomIndex);
         var canBePlacedInRoom = true;
         switch (hardwareCatalog.Value.GetHardwareType(_hardwareToBuy)) {
           case HardwareType.Workstations:
