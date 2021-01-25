@@ -11,6 +11,13 @@ namespace Code.User_Interface {
     public ItemClickedEvent ItemClicked;
 
     //-------------------------------------------------------------------------
+    public void SetSelected(ComponentBehavior item, bool isSelected) {
+      if (listItems.ContainsKey(item)) {
+        listItems[item].SetSelected(isSelected);
+      }
+    }
+
+    //-------------------------------------------------------------------------
     protected override void OnItemAdded(ComponentBehavior item, ComponentListItem itemUI) {
       base.OnItemAdded(item, itemUI);
       

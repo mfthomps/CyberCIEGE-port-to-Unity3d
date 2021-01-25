@@ -5,9 +5,12 @@ using Code;
 using Code.Factories;
 using Code.Scriptable_Variables;
 using UnityEngine;
+using Code.World_Objects.Network;
 
 public class ComponentBehavior : MonoBehaviour {
   [SerializeField] private StringStringVariable _organizationDict;
+  [Tooltip("The variable containing the list of all the Networks currently in the scenario.")]
+  [SerializeField] private NetworkListVariable networkListVariable;
 
   public virtual ComponentDataObject Data { get; set; }
   
@@ -103,7 +106,7 @@ public class ComponentBehavior : MonoBehaviour {
   }
 
   private void ConnectList(int id) {
-    List<string> copy_list = NetworkBehavior.network_list.ToList();
+    List<string> copy_list = networkListVariable.Value.ConvertAll(network => network.Data.name);
     bool is_internet = false;
     if (!bool.TryParse(_organizationDict["Internet"], out is_internet))
       Debug.Log("Error: ConnectList parsing internet " + _organizationDict["Internet"]);
