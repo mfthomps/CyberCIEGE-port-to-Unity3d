@@ -32,6 +32,8 @@ namespace Code.Factories {
 
     //-------------------------------------------------------------------------
     private void LoadZones(string path, Transform parent) {
+      _zoneListVariable.Clear();
+
       var colors = new Color[6];
       colors[0] = Color.cyan;
       colors[1] = Color.red;

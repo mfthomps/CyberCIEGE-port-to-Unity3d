@@ -1,11 +1,15 @@
 ﻿using System.Xml.Linq;
 using UnityEngine;
 using NaughtyAttributes;
+using Shared.ScriptableVariables;
 using Code.Factories;
 using Code.Hardware;
 
 namespace Code.User_Interface.Office {
   public class SceneSelector : MonoBehaviour {
+    [Header("Output Variables")]
+    [Tooltip("Currently selected object in game to show properties for")]
+    public GameObjectVariable selectedObject;
     [Header("Input Variables")]
     [Tooltip("Variable containing all hardware (computers, servers, routers, etc) information for game")]
     public HardwareCatalogVariable hardwareCatalog;
@@ -35,7 +39,7 @@ namespace Code.User_Interface.Office {
 
     // --------------------------------------------------------------------------
     private void TryToSelectObject(Vector2 screenPosition) {
-      Ray ray = UnityEngine.Camera.main.ScreenPointToRay(Input.mousePosition);
+      Ray ray = UnityEngine.Camera.main.ScreenPointToRay(screenPosition);
       RaycastHit hit;
 
       if (Physics.Raycast(ray, out hit, 100)) {
@@ -43,21 +47,22 @@ namespace Code.User_Interface.Office {
         if (hit.transform.gameObject.name.StartsWith("Computer") ||
             hit.transform.gameObject.name.StartsWith("Device")) {
           ComponentBehavior bh = (ComponentBehavior) hit.transform.gameObject.GetComponent(typeof(ComponentBehavior));
-
-          //computer_canvas.SetActive(true);
-          if (hit.transform.gameObject.gameObject.name.StartsWith("Computer")) {
-            ComputerBehavior computer_script =
-              (ComputerBehavior) hit.transform.gameObject.GetComponent(typeof(ComputerBehavior));
-            //computer_script.ConfigureCanvas();
-            //clicked = "";
-          }
-
           menus.clicked = "Component:" + bh.Data.component_name;
+          selectedObject.Value = hit.transform.gameObject;
         }
         else if (hit.transform.gameObject.CompareTag(_userTag)) {
           UserBehavior bh = (UserBehavior) hit.transform.gameObject.GetComponent(typeof(UserBehavior));
           menus.clicked = "User:" + bh.Data.user_name;
+          selectedObject.Value = hit.transform.gameObject;
         }
+        else {
+          menus.clicked = "";
+          selectedObject.Value = null;
+        }
+      }
+      else {
+        menus.clicked = "";
+        selectedObject.Value = null;
       }
     }
 
