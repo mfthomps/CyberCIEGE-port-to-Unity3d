@@ -7,9 +7,12 @@ using UnityEngine.UI;
 namespace Code.AttackLog {
   public class AttackLogDisplay : MonoBehaviour {
     [Tooltip("Text text UI to display the logs")]
-    [SerializeField] private TMP_Text textField;
+    // [SerializeField] private TMP_Text textField;
+
+    [SerializeField] private AttackLogItem attackLogItem;
     [Tooltip("The close button that should close the dialog.")]
     [SerializeField] private Button closeButton;
+    [SerializeField] private Transform scrollviewContentArea;
 
     public delegate void OnClosed();
     //Fired when the dialog has been closed
@@ -32,9 +35,16 @@ namespace Code.AttackLog {
     //---------------------------------------------------------------------------
     //Show the Attack Log dialog on the screen and render the supplied logs
     public void ShowDialog(IEnumerable<string> logs) {
-      if (textField) {
-        textField.text = string.Join("\n", logs);
+      // if (textField) {
+      //   textField.text = string.Join("\n", logs);
+      // }
+      //  attackLogItem.gameObject;
+      foreach(string log in logs) {
+        var currentItem = Instantiate(attackLogItem.gameObject,scrollviewContentArea);
+        AttackLogItem currentAttackLogItem = currentItem.GetComponent<AttackLogItem>();
+        currentAttackLogItem.MessageField = log;
       }
+
       gameObject.SetActive(true);
     }
 
