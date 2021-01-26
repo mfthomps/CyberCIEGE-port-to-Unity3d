@@ -2,6 +2,21 @@
 
 [Serializable]
 public class WorkSpace {
+  
+  [Serializable]
+  public enum WorkSpaceType {
+    Inactive,
+    Active,
+    Server
+  }
+  
+  public enum WorkSpaceDirection {
+    North,
+    East,
+    South,
+    West
+  }
+  
   public string[] computer_slots;
   public string[] device_slots;
   public char direction;
@@ -94,5 +109,25 @@ public class WorkSpace {
 
   public void ClearUser() {
     user = null;
+  }
+
+  //---------------------------------------------------------------------------
+  public WorkSpaceType GetUsageType() {
+    switch (usage) {
+      case 'I' : return WorkSpaceType.Inactive;
+      case 'A' : return WorkSpaceType.Active;
+      case 'S' : return WorkSpaceType.Server;
+      default: return WorkSpaceType.Inactive;
+    }
+  }
+  //---------------------------------------------------------------------------
+  public WorkSpaceDirection GetDirection() {
+    switch (direction) {
+      case 'N' : return WorkSpaceDirection.North;
+      case 'E' : return WorkSpaceDirection.East;
+      case 'S' : return WorkSpaceDirection.South;
+      case 'W' : return WorkSpaceDirection.West;
+      default: return WorkSpaceDirection.North;
+    }
   }
 }
