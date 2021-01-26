@@ -27,17 +27,20 @@ public class GameLoadBehavior : MonoBehaviour {
   public HardwareCatalogVariable hardwareCatalog;
 
   [Header("Factories")]
+  [Tooltip("The factory to use for creating Assets")]
+  [SerializeField] private AssetFactory _assetFactory;
+
   [Tooltip("The factory to use for creating Computers")]
   [SerializeField] private ComputerFactory _computerFactory;
   
-  [Tooltip("The factory to use for creating Organizations")]
-  [SerializeField] private OrganizationFactory _organizationFactory;
-  
-  [Tooltip("The factory to use for creating Workspaces")]
-  [SerializeField] private WorkspaceFactory _workspaceFactory;
-  
   [Tooltip("The factory to use for creating Devices")]
   [SerializeField] private DeviceFactory _deviceFactory;
+  
+  [Tooltip("The factory to use for creating Networks")]
+  [SerializeField] private NetworkFactory _networkFactory;
+
+  [Tooltip("The factory to use for creating Organizations")]
+  [SerializeField] private OrganizationFactory _organizationFactory;
   
   [FormerlySerializedAs("_itStaffFactory")]
   [Tooltip("The factory to use for creating ITStaff")]
@@ -46,24 +49,20 @@ public class GameLoadBehavior : MonoBehaviour {
   [Tooltip("The factory to use for creating Users")]
   [SerializeField] private UserFactory _userFactory;
   
+  [Tooltip("The factory to use for creating Workspaces")]
+  [SerializeField] private WorkspaceFactory _workspaceFactory;
+
   [Tooltip("The factory to use for creating Zones")]
   [SerializeField] private ZoneFactory _zoneFactory;
   
-  [Tooltip("The factory to use for creating Assets")]
-  [SerializeField] private AssetFactory _assetFactory;
-
+  // --------------------------------------------------------------------------
   private void Start() {
-    
     /* connect to server*/
     IPCManagerScript.ConnectServer();
     //AfterServerReady();
-    
-    //GameObject ticker = GameObject.Find("ScrollText");
-    //ScrollingTextScript st = (ScrollingTextScript)ticker.GetComponent(typeof(ScrollingTextScript));
-    //st.AddMessage("the time has come for all brown dogs to come to the aid of their quick brown foxes");
   }
 
-
+  // --------------------------------------------------------------------------
   private void LoadMainOffice() {
     string path = Path.Combine(user_app_path, "mainoffice.txt");
     StreamReader f = new StreamReader(path);
@@ -90,9 +89,9 @@ public class GameLoadBehavior : MonoBehaviour {
 
   // --------------------------------------------------------------------------
   private void LoadItems() {
-    NetworkBehavior.LoadNetworks(user_app_path);
     InitializeHardwareCatalog();
     _organizationFactory.CreateAll(user_app_path);
+    _networkFactory.CreateAll(user_app_path);
     _workspaceFactory.CreateAll(user_app_path);
     dac_groups = new DACGroups();
     _userFactory.CreateAll(user_app_path);
@@ -101,17 +100,9 @@ public class GameLoadBehavior : MonoBehaviour {
     _deviceFactory.CreateAll(user_app_path);
     _staffFactory.CreateAll(user_app_path);
     _zoneFactory.CreateAll(user_app_path);
-
-    //UserBehavior.UpdateStatus();
-    //LoadMainOffice();
   }
   
-  private IEnumerator Example() {
-    print(Time.time);
-    yield return new WaitForSeconds(1);
-    print(Time.time);
-  }
-
+  // --------------------------------------------------------------------------
   public void AfterServerReady() {
     LoadItems();
     
@@ -127,7 +118,6 @@ public class GameLoadBehavior : MonoBehaviour {
         cameraController.targetObject = component.transform;
       }
     }
-
   }
 
   // --------------------------------------------------------------------------

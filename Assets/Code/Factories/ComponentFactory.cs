@@ -38,7 +38,7 @@ namespace Code.Factories {
               case "Network":
                 MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(value ?? ""));
                 string network_name = ccUtils.SDTField(stream, "Name");
-                data.network_list.Add(network_name);
+                data.ConnectToNetwork(network_name);
                 break;
             }
           } while (value != null);
