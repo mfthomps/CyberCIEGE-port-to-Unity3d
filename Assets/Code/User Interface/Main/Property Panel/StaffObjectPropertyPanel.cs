@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using TMPro;
+using Code.World_Objects.Staff;
 
 namespace Code.User_Interface.Main {
   public class StaffObjectPropertyPanel : GenericObjectPropertyPanel<StaffBehavior> {

@@ -80,10 +80,10 @@ public class ComputerConfigure : MonoBehaviour {
 
   //---------------------------------------------------------------------------
   //Called when the UI should show the properties of this selected computer
-  public void ComputerSelected(ComponentListItem selectedItem) {
+  public void ComputerSelected(ComponentBehavior selectedItem) {
     Debug.Log($"Computer {selectedItem} was selected");
     //Now update the UI with the attributes of the computer
-    ComputerBehavior computer = selectedItem.GetItem() as ComputerBehavior;
+    ComputerBehavior computer = selectedItem as ComputerBehavior;
     _selectedComputer = computer;
     computer?.UpdateUI();
   }

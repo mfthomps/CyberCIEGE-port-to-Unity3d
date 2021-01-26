@@ -1,24 +1,16 @@
-﻿using Shared.SEUI;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 using Code.World_Objects.Network;
 
 namespace Code.User_Interface.Network {
-  [System.Serializable]
-  public class NetworkEvent : UnityEvent<NetworkBehavior> {}
-  
   //Represents the list of Networks in the computer configure UI screen.
-  public class NetworkList : DynamicList<NetworkListItem, NetworkBehavior> {
-    [Header("Output Events")]
-    [Tooltip("Fired when a network connection should be toggled")]
-    public NetworkEvent toggleNetwork;
+  public class NetworkList : WorldObjectBehaviorList<NetworkListItem, NetworkBehavior> {
+    [System.Serializable]
+    public class ItemClickedEvent : UnityEvent<NetworkBehavior> {}
 
-    //-------------------------------------------------------------------------
-    public void SetSelected(NetworkBehavior item, bool isSelected) {
-      if (listItems.ContainsKey(item)) {
-        listItems[item].SetSelected(isSelected);
-      }
-    }
+    [Header("Output Events")]
+    [Tooltip("Fired when a network list item is clicked")]
+    public ItemClickedEvent onItemClicked;
 
     //-------------------------------------------------------------------------
     public void SetInteractable(NetworkBehavior item, bool isInteractable) {
@@ -31,7 +23,7 @@ namespace Code.User_Interface.Network {
     protected override void OnItemAdded(NetworkBehavior item, NetworkListItem itemUI) {
       base.OnItemAdded(item, itemUI);
       itemUI.onClicked += () => {
-        toggleNetwork?.Invoke(item);
+        onItemClicked?.Invoke(item);
       };
     }
   }

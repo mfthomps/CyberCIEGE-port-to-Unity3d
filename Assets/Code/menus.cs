@@ -149,9 +149,6 @@ public class menus : MonoBehaviour {
       //Application.OpenURL("file://" + startup.helpHome + "/README.html");
       clicked = "";
     }
-    else if (clicked == "Hire") {
-      _staffFactory.doItems();
-    }
     else if (clicked == "Zones") {
       ZoneBehavior.doItems(_zoneListVariable.Value);
     }
@@ -171,9 +168,6 @@ public class menus : MonoBehaviour {
   private void MenuItemsFunc(int id) {
     if (GUILayout.Button("Help")) {
       clicked = "help";
-    }
-    else if (GUILayout.Button("Hire")) {
-      clicked = "Hire";
     }
     else if (GUILayout.Button("Zones")) {
       clicked = "Zones";
