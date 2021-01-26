@@ -11,24 +11,15 @@ namespace Code.Factories {
   public class WorkspaceFactory : MonoBehaviour, iFactory {
     [SerializeField] private WorkSpaceScript _prefab;
 
-    [Tooltip("The chair prefab to use in a regular work space")]
-    [SerializeField] private GameObject _workSpaceChairPrefab;
-    [Tooltip("The work station prefab to use in a regular work space")]
-    [SerializeField] private GameObject _workSpaceWorkDeskPrefab;
-    // [Tooltip("The desk prefab to use in the server room")]
-    // [SerializeField] private GameObject _workSpaceWorkServerDeskPrefab;
-    // [Tooltip("The server rack prefab to use in the server room")]
-    // [SerializeField] private GameObject _workSpaceWorkServerRackPrefab;
-    [SerializeField] private List<GameObject> _random1List = new List<GameObject>();
-    [SerializeField] private List<GameObject> _random2List = new List<GameObject>();
-    
-    
+    [Tooltip("A List of WorkSpaceFurnitureVariables. One for every office type.")]
+    [SerializeField] private List<WorkSpaceFurnitureVariable> _workSpaceFurnitureVariables;
+
     [Header("Input Variables")]
     [SerializeField] private StringStringVariable _organizationDictionary;
     [Tooltip("The variable to contain the list of WorkSpaces in the current scenario")]
     [SerializeField] private WorkSpaceListVariable _workSpaceListVariable;
 
-    //Some temporal data read from the "workspace.sdf" file
+    //Some local data read from the "workspace.sdf" file
     private class WorkSpaceData {
       public int PosIndex;
       public bool IsServer;
@@ -161,7 +152,7 @@ namespace Code.Factories {
       workSpace.transform.rotation = GetRotation(workSpace.Data.GetDirection());
       
       workSpace.gameObject.name = $"WorkSpace--{index}";
-      PopulateWorkspace(workSpace);
+      PopulateWorkspace(workSpace, index);
     }
 
     //-------------------------------------------------------------------------
@@ -179,13 +170,31 @@ namespace Code.Factories {
 
     //-------------------------------------------------------------------------
     //Instantiate the office furniture for the supplied WorkSpace
-    private void PopulateWorkspace(WorkSpaceScript workSpace) {
-      //Chair
+    private void PopulateWorkspace(WorkSpaceScript workSpace, int index) {
+      //get the magic string of office type in order to find the grouping of
+      //furniture to populate the WorkSpaces with
+      string officeName = _organizationDictionary["MainOfficeVersion"];
+      WorkSpaceFurnitureVariable furnitureVar = _workSpaceFurnitureVariables.Find(
+        x => x.Value._associatedOfficeMagicString == officeName);
+      
+      WorkSpaceFurniture furniture = furnitureVar ? furnitureVar.Value : null;
+      
+      if (furniture == null) {
+        Debug.LogError($"No furniture object found for '{officeName}'");
+        return; 
+      }
+      
       if (workSpace.Data.GetWorkSpaceType() == WorkSpace.WorkSpaceType.Regular) {
-        //instantiate a _chairPrefab at the workstations x,y (rotation?) 
-        var chair = Instantiate(_workSpaceChairPrefab, workSpace.transform);
-        //table
-        var table = Instantiate(_workSpaceWorkDeskPrefab, workSpace.transform);
+        //regular WorkSpaces get a chair and a desk
+        GameObject chairPrefab = furniture.GetWorkSpaceChair(index);
+        if (chairPrefab) {
+          Instantiate(chairPrefab, workSpace.transform);
+        }
+
+        GameObject deskPrefab = furniture.GetWorkSpaceDesk(index);
+        if (deskPrefab) {
+          Instantiate(deskPrefab, workSpace.transform);
+        }
         //TODO add in the random office stuff using the random lists of objects 
         //and the scenario-define random number (random number range?)
       }
