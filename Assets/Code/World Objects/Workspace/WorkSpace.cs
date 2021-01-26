@@ -5,9 +5,9 @@ public class WorkSpace {
   
   [Serializable]
   public enum WorkSpaceType {
-    Inactive,
-    Active,
-    Server
+    Regular,
+    Server, 
+    Inactive
   }
   
   public enum WorkSpaceDirection {
@@ -32,7 +32,9 @@ public class WorkSpace {
     this.usage = usage;
     int num_computers = 1;
     int num_devices = 2;
-    if (usage == 'S') num_computers = 6;
+    if (usage == 'S') {
+      num_computers = 6;
+    }
 
     //this.computer_slots = (int[])Enumerable.Repeat(-1, num_computers);
     //this.device_slots = (int[])Enumerable.Repeat(-1, num_devices);
@@ -111,15 +113,7 @@ public class WorkSpace {
     user = null;
   }
 
-  //---------------------------------------------------------------------------
-  public WorkSpaceType GetUsageType() {
-    switch (usage) {
-      case 'I' : return WorkSpaceType.Inactive;
-      case 'A' : return WorkSpaceType.Active;
-      case 'S' : return WorkSpaceType.Server;
-      default: return WorkSpaceType.Inactive;
-    }
-  }
+  
   //---------------------------------------------------------------------------
   public WorkSpaceDirection GetDirection() {
     switch (direction) {
@@ -128,6 +122,16 @@ public class WorkSpace {
       case 'S' : return WorkSpaceDirection.South;
       case 'W' : return WorkSpaceDirection.West;
       default: return WorkSpaceDirection.North;
+    }
+  }
+
+  //---------------------------------------------------------------------------
+  public WorkSpaceType GetWorkSpaceType() {
+    switch (usage) {
+      case 'A' : return WorkSpaceType.Regular;
+      case 'I' : return WorkSpaceType.Inactive;
+      case 'S' : return WorkSpaceType.Server;
+      default: return WorkSpaceType.Inactive;
     }
   }
 }
