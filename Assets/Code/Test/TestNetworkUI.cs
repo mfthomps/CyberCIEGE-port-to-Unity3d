@@ -46,8 +46,8 @@ namespace Code.Test {
       };
       hardwareCatalog.Value = new HardwareCatalog(assetBundle, hardwareDefinitions, user_app_path);
 
-      _networkFactory.CreateAll(user_app_path);
       _organizationFactory.CreateAll(user_app_path);
+      _networkFactory.CreateAll(user_app_path);
       _workspaceFactory.CreateAll(user_app_path);
       _assetFactory.CreateAll(user_app_path);
       _computerFactory.CreateAll(user_app_path);
@@ -65,11 +65,11 @@ namespace Code.Test {
       var component = selectedObject.Value.GetComponent<ComponentBehavior>();
       if (component != null) {
         Debug.Log($"Toggle network: {network.Data.name} for {component.Data.component_name}");
-        if (!component.Data.network_list.Contains(network.Data.name)) {
-          component.Data.network_list.Add(network.Data.name);
+        if (!component.Data.IsConnectedToNetwork(network.Data.name)) {
+          component.Data.ConnectToNetwork(network.Data.name);
         }
         else {
-          component.Data.network_list.Remove(network.Data.name);
+          component.Data.DisconnectFromNetwork(network.Data.name);
         }
         selectedObject.Value = null;
         selectedObject.Value = component.gameObject;

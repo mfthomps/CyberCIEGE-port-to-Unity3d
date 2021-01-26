@@ -21,6 +21,13 @@ namespace Code.User_Interface.Network {
     }
 
     //-------------------------------------------------------------------------
+    public void SetInteractable(NetworkBehavior item, bool isInteractable) {
+      if (listItems.ContainsKey(item)) {
+        listItems[item].SetInteractable(isInteractable);
+      }
+    }
+
+    //-------------------------------------------------------------------------
     protected override void OnItemAdded(NetworkBehavior item, NetworkListItem itemUI) {
       base.OnItemAdded(item, itemUI);
       itemUI.onClicked += () => {

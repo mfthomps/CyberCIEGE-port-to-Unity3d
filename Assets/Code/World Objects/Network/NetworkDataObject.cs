@@ -8,6 +8,7 @@ namespace Code.World_Objects.Network {
     public string name;
     public bool isStatic;
     public bool isLeased;
+    public bool isInternet;
     public Color color;
   }
 }

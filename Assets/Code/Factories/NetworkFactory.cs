@@ -9,14 +9,19 @@ using Code.World_Objects.Network;
 namespace Code.Factories {
   // Factory that create Network GameObjects
   public class NetworkFactory : MonoBehaviour, iFactory {
-    [SerializeField] private NetworkBehavior _prefab;
-
     [Header("Input Variables")]
+    [Tooltip("Prefab for a NetworkBehavior that represents a Network in the scenario.")]
+    [SerializeField] private NetworkBehavior _prefab;
+    [Tooltip("The list of properties for the scenario's organization.")]
+    [SerializeField] private StringStringVariable _organizationDict;
+    [Header("Output Variables")]
     [Tooltip("The variable containing the list of all the Networks currently in the scenario.")]
     [SerializeField] private NetworkListVariable networkListVariable;
 
     private static Queue<Color> _networkColors = new Queue<Color>(new List<Color> { Color.red, Color.green, Color.blue, Color.yellow, Color.cyan, Color.magenta} );
     private readonly string NETWORKS = "networks.sdf";
+    private readonly string ORGANIZATION_HAS_INTERNET = "Internet";
+    private readonly string ORGANIZATION_INTERNET_NETWORK_NAME = "InternetName";
 
     //-------------------------------------------------------------------------
     void OnDestroy() {
@@ -26,7 +31,7 @@ namespace Code.Factories {
     //-------------------------------------------------------------------------
     public void Create(string filename, Transform parent = null) {
       var item = Instantiate(_prefab, parent);
-      item.Data = LoadOneNetwork(filename, item);
+      item.Data = ParseNetworkData(filename, item);
       UpdateGameObject(item);
     }
 
@@ -38,6 +43,15 @@ namespace Code.Factories {
     //-------------------------------------------------------------------------
     private void LoadNetworks(string path, Transform parent = null) {
       networkListVariable.Clear();
+
+      // Add an "Internet" network if our organization has the internet
+      if (_organizationDict.ContainsKey(ORGANIZATION_HAS_INTERNET) &&
+          bool.Parse(_organizationDict[ORGANIZATION_HAS_INTERNET])) {
+        var item = Instantiate(_prefab, parent);
+        item.Data = CreateNetworkData(_organizationDict[ORGANIZATION_INTERNET_NETWORK_NAME], true, false);
+        item.Data.isInternet = true;
+        UpdateGameObject(item);
+      }
 
       string filePath = Path.Combine(path, NETWORKS);
       try {
@@ -66,14 +80,21 @@ namespace Code.Factories {
     }
     
     //-------------------------------------------------------------------------
-    public NetworkDataObject LoadOneNetwork(string sdf, NetworkBehavior newNetwork) {
+    private NetworkDataObject ParseNetworkData(string sdf, NetworkBehavior newNetwork) {
+      MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(sdf ?? ""));
+      var name = ccUtils.SDTField(stream, "Name");
+      var isStatic = ccUtils.SDTFieldDefault(stream, "Static", false);
+      var isLeased = ccUtils.SDTFieldDefault(stream, "Leased", false);
+      return CreateNetworkData(name, isStatic, isLeased);
+    }
+
+    //-------------------------------------------------------------------------
+    private NetworkDataObject CreateNetworkData(string name, bool isStatic, bool isLeased) {
       var data = new NetworkDataObject();
 
-      //Debug.Log("LoadOneNetwork");
-      MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(sdf ?? ""));
-      data.name = ccUtils.SDTField(stream, "Name");
-      data.isStatic = ccUtils.SDTFieldDefault(stream, "Static", false);
-      data.isLeased = ccUtils.SDTFieldDefault(stream, "Leased", false);
+      data.name = name;
+      data.isStatic = isStatic;
+      data.isLeased = isLeased;
       data.color = _networkColors.Dequeue();
       _networkColors.Enqueue(data.color);
 

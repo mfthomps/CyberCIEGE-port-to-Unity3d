@@ -28,6 +28,7 @@ namespace Code.User_Interface.Network {
       deviceListVariable.OnValueChanged += UpdateNetworkableList;
       networkListVariable.OnValueChanged += UpdateNetworkList;
       UpdateNetworkableList();
+      UpdateNetworkList();
     }
 
     // ------------------------------------------------------------------------
@@ -88,8 +89,23 @@ namespace Code.User_Interface.Network {
     private void UpdateNetworkConnections() {
       foreach (var network in networkListVariable.Value) {
         if (network != null) {
-          var selectedComponent = selectedObject.Value?.GetComponent<ComponentBehavior>();
-          networkList.SetSelected(network, selectedComponent != null && selectedComponent.Data.network_list.Contains(network.Data.name));
+          bool networkSelected = false, networkChangeable = false;
+          if (selectedObject.Value != null) {
+            var selectedComponent = selectedObject.Value?.GetComponent<ComponentBehavior>();
+            networkSelected = selectedComponent != null && selectedComponent.Data.IsConnectedToNetwork(network.Data.name);
+            if (selectedComponent != null) {
+              // Internet networks can only be connected to by devices, not computers
+              if (network.Data.isInternet) {
+                networkChangeable = selectedComponent is DeviceBehavior;
+              }
+              // Otherwise, any ComponentBehavior can connect to it
+              else {
+                networkChangeable = true;
+              }
+            }
+          }
+          networkList.SetSelected(network, networkSelected);
+          networkList.SetInteractable(network, networkChangeable);
         }
       }
     }
