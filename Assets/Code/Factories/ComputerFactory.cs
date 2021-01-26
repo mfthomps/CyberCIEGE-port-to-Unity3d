@@ -26,6 +26,11 @@ namespace Code.Factories {
     private static readonly string COMPUTERS = "computers";
 
     //-------------------------------------------------------------------------
+    void OnDestroy() {
+      computerListVariable.Clear();
+    }
+
+    //-------------------------------------------------------------------------
     public void Create(string filename, Transform parent = null) {
       ComputerBehavior item = Instantiate(_prefab, parent);
       item.Data = LoadOneComputer(filename, item);

@@ -12,6 +12,8 @@ namespace Code.Factories {
     [Header("Input Variables")]
     [Tooltip("Variable containing all hardware (computers, servers, routers, etc) information for game")]
     public HardwareCatalogVariable hardwareCatalog;
+    [Tooltip("The variable containing the list of all the Devices currently in the scenario.")]
+    [SerializeField] private DeviceListVariable deviceListVariable;
 
     [Tooltip("The list of all the currently loaded workspaces")]
     [SerializeField] private WorkSpaceListVariable _workSpaceListVariable;
@@ -19,6 +21,11 @@ namespace Code.Factories {
     private string user_app_path;
     
     private readonly string DEVICES = "devices";
+
+    //-------------------------------------------------------------------------
+    void OnDestroy() {
+      deviceListVariable.Clear();
+    }
 
     //-------------------------------------------------------------------------
     public void Create(string filename, Transform parent = null) {
@@ -34,14 +41,13 @@ namespace Code.Factories {
 
     //-------------------------------------------------------------------------
     private void LoadDevices(string path, Transform parent = null) {
+      deviceListVariable.Clear();
       
       string cdir = Path.Combine(path, DEVICES);
       string[] clist = Directory.GetFiles(cdir);
       
       foreach (string device_file in clist) {
-        DeviceBehavior item = Instantiate(_prefab, parent);
-        item.Data = LoadOneDevice(device_file, item);
-        UpdateGameObject(item);
+        Create(device_file, parent);
       }
     }
     
@@ -86,11 +92,13 @@ namespace Code.Factories {
       device.transform.position = v;
 
       device.gameObject.name = $"Device--{device.Data.component_name}";
+
+      //add it to the device list.
+      deviceListVariable.Add(device);
     }
 
     //---------------------------------------------------------------------------
     private void LoadDevice(string filePath, ref DeviceDataObject data) {
-
       StreamReader reader = new StreamReader(filePath, Encoding.Default);
       using (reader) {
         string tag;
@@ -107,8 +115,6 @@ namespace Code.Factories {
           }
         } while (value != null);
       }
-
     }
-    
   }
 }

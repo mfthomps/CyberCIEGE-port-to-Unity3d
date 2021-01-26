@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
 namespace Code.Scriptable_Variables {
-  [CreateAssetMenu(menuName = "Scriptable Objects/Variables/CC/Computer List")]
-  public class ComputerListVariable : ListVariable<ComputerBehavior> {
+  [CreateAssetMenu(menuName = "Scriptable Objects/Variables/CC/Device List")]
+  public class DeviceListVariable : ListVariable<DeviceBehavior> {
     //---------------------------------------------------------------------------
     [ContextMenu("Reset To Default Value")]
     public void ContextMenuReset() {
@@ -12,9 +12,9 @@ namespace Code.Scriptable_Variables {
   
 #if UNITY_EDITOR
 //-----------------------------------------------------------------------------
-  [UnityEditor.CustomEditor(typeof(ComputerListVariable))]
+  [UnityEditor.CustomEditor(typeof(DeviceListVariable))]
   [UnityEditor.CanEditMultipleObjects]
-  public class ComputerListVariableVariableEditor : ComputerListVariable.BaseScriptableVariableEditor {
+  public class DeviceListVariableVariableEditor : DeviceListVariable.BaseScriptableVariableEditor {
   }
 #endif
  

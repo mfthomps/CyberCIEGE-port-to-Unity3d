@@ -46,5 +46,10 @@ namespace Code.Scriptable_Variables {
 
     //-------------------------------------------------------------------------
     public int Length => Value.Count;
+
+    //-------------------------------------------------------------------------
+    public bool ContainsKey(K key) {
+      return Value.ContainsKey(key);
+    }
   }
 }
