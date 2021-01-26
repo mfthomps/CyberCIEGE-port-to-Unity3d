@@ -36,6 +36,8 @@ namespace Code.Factories {
 
     //-------------------------------------------------------------------------
     private void LoadAllComputers(string path, Transform parent = null) {
+      computerListVariable.Clear();
+      
       string cdir = Path.Combine(path, COMPUTERS);
       string[] clist = Directory.GetFiles(cdir);
       foreach (string computer_file in clist) {

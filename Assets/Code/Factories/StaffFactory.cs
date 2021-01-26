@@ -62,6 +62,8 @@ namespace Code.Factories {
 
     //--------------------------------------------------------------------------
     private void LoadStaffFromFile(string path, Transform parent = null) {
+      _staffListVariable.Clear();
+
       string user_dir = Path.Combine(path, STAFF);
       string[] clist = Directory.GetFiles(user_dir);
       foreach (string user_file in clist)
