@@ -37,6 +37,11 @@ namespace Code.Factories {
       _workSpaceListVariable.Clear();
       LoadWorkSpacesFromFile(path, parent);
     }
+    
+    //-------------------------------------------------------------------------
+    public void OnDestroy() {
+      _workSpaceListVariable.Clear();
+    }
 
     //-------------------------------------------------------------------------
     private void LoadWorkSpacesFromFile(string path, Transform parent) {
