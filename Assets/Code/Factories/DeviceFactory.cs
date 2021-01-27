@@ -15,6 +15,9 @@ namespace Code.Factories {
     [Tooltip("The variable containing the list of all the Devices currently in the scenario.")]
     [SerializeField] private DeviceListVariable deviceListVariable;
 
+    [Tooltip("The list of all the currently loaded workspaces")]
+    [SerializeField] private WorkSpaceListVariable _workSpaceListVariable;
+
     private string user_app_path;
     
     private readonly string DEVICES = "devices";
@@ -81,7 +84,7 @@ namespace Code.Factories {
         Debug.Log("LoadOneDevice got invalid pos for " + device.Data.component_name);
       }
 
-      WorkSpace ws = WorkspaceFactory.GetWorkSpace(pos);
+      WorkSpace ws = _workSpaceListVariable.GetWorkSpace(pos);
       int slot = ws.AddDevice(device.Data.component_name);
       float xf, zf;
       ccUtils.GridTo3dPos(ws.x, ws.y, out xf, out zf);

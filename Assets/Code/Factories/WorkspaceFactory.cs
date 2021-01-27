@@ -3,16 +3,29 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Code.Scriptable_Variables;
+using Code.World_Objects.Workspace;
 using UnityEngine;
 
 namespace Code.Factories {
   //A factory that creates Workspace GameObjects
   public class WorkspaceFactory : MonoBehaviour, iFactory {
     [SerializeField] private WorkSpaceScript _prefab;
+
+    [Tooltip("A List of WorkSpaceFurnitureVariables. One for every office type.")]
+    [SerializeField] private List<WorkSpaceFurnitureVariable> _workSpaceFurnitureVariables;
+
+    [Header("Input Variables")]
     [SerializeField] private StringStringVariable _organizationDictionary;
-    
-    //TODO remove this static attribute
-    private static readonly List<WorkSpace> _workSpaces = new List<WorkSpace>();
+    [Tooltip("The variable to contain the list of WorkSpaces in the current scenario")]
+    [SerializeField] private WorkSpaceListVariable _workSpaceListVariable;
+
+    //Some local data read from the "workspace.sdf" file
+    private class WorkSpaceData {
+      public int PosIndex;
+      public bool IsServer;
+      public int Random1;
+      public int Random2;
+    }
     
     //-------------------------------------------------------------------------
     public void Create(string filename, Transform parent = null) {
@@ -21,88 +34,181 @@ namespace Code.Factories {
     
     //-------------------------------------------------------------------------
     public void CreateAll(string path, Transform parent = null) {
-      var item = Instantiate(_prefab, parent);
-      LoadWorkSpace(item, path);
+      _workSpaceListVariable.Clear();
+      LoadWorkSpacesFromFile(path, parent);
     }
     
     //-------------------------------------------------------------------------
-    public static WorkSpace GetWorkSpace(int pos) {
-      if (pos >= _workSpaces.Count || pos < 0) {
-        Debug.Log("Workspace request out of range " + pos);
-        return null;
-      }
-      return _workSpaces[pos];
+    public void OnDestroy() {
+      _workSpaceListVariable.Clear();
     }
-    
-    //-------------------------------------------------------------------------
-    public static bool FindClosestWorkspaceCenter(Vector2 gridPosition, out int xout, out int yout, out int index) {
-      return FindClosestWorkspaceCenter(gridPosition.x, gridPosition.y, out xout, out yout, out index);
-    }
-    
-    //-------------------------------------------------------------------------
-    private static bool FindClosestWorkspaceCenter(float xin, float yin, out int xout, out int yout, out int index) {
-      int i;
-      float distance, temp;
-      xout = 0;
-      yout = 0;
 
-      index = -1;
-      distance = 9999999.9f;
-      for (i = 0; i < _workSpaces.Count; i++) {
-        temp = (xin - _workSpaces[i].x) * (xin - _workSpaces[i].x)
-               + (yin - _workSpaces[i].y) * (yin - _workSpaces[i].y);
-        if (temp < distance) {
-          index = i;
-          distance = temp;
-          xout = _workSpaces[i].x;
-          yout = _workSpaces[i].y;
-        }
-      }
-
-      if (distance < 9999999.9f)
-        return true;
-
-      return false; // never found one
-    }
-    
     //-------------------------------------------------------------------------
-    private void LoadWorkSpace(WorkSpaceScript workspace, string path) {
+    private void LoadWorkSpacesFromFile(string path, Transform parent) {
+
+      //Read from the workspace.sdf file for some information
+      var wsDataList  = ParseSDF(path);
+      
       string fname = _organizationDictionary["WorkSpaceFile"];
       string line;
       string full_path = Path.Combine(path, fname);
-      Debug.Log("LoadWorkSpace fname is " + full_path);
+      
       try {
         StreamReader reader = new StreamReader(full_path, Encoding.Default);
         using (reader) {
           do {
             line = reader.ReadLine().Trim();
-            if (line == "WORKSPACELIST" || line == "end")
+            if (line == "WORKSPACELIST" || line == "end") {
               continue;
-            //Debug.Log("LoadWorkSpace got " + line);
-            string[] parts = line.Split(new char[0], StringSplitOptions.RemoveEmptyEntries);
-            int x = 0;
-            int y = 0;
-            if (!int.TryParse(parts[0], out x)) Debug.Log("Error: LoadWorkspace parse x " + parts[0] + " line " + line);
+            }
 
-            if (!int.TryParse(parts[1], out y)) Debug.Log("Error: LoadWorkspace parse y " + parts[1] + " line " + line);
+            string[] parts = line.Split(new char[0], StringSplitOptions.RemoveEmptyEntries);
+            
+            if (!int.TryParse(parts[0], out int x)) {
+              Debug.Log("Error: LoadWorkspace parse x " + parts[0] + " line " + line);
+            }
+
+            if (!int.TryParse(parts[1], out int y)) {
+              Debug.Log("Error: LoadWorkspace parse y " + parts[1] + " line " + line);
+            }
 
             char dir = parts[2][0];
             char usage = parts[3][0];
+
+            int currentWorkSpaceIndex = _workSpaceListVariable.Value.Count;
+            var wsData = wsDataList.Find(item => item.PosIndex == currentWorkSpaceIndex);
+            if (wsData != null) {
+              usage = wsData.IsServer ? 'S' : usage;
+            }
+
             WorkSpace ws = new WorkSpace(x, y, dir, usage);
-            _workSpaces.Add(ws);
+            _workSpaceListVariable.Add(ws);
+            var workSpace = Instantiate(_prefab, parent);
+            workSpace.Data = ws;
+            SetupGameObject(workSpace, _workSpaceListVariable.Value.Count-1);
           } while (line != "end" && line != null);
-
-          // Use this for initialization
         }
-
-        Debug.Log("LoadWorkSpace got " + _workSpaces.Count);
       }
       catch (Exception e) {
         Debug.LogError(e.Message);
       }
-
-      Debug.Log("LoadWorkSpace got " + _workSpaces.Count);
     }
 
+    //-------------------------------------------------------------------------
+    //Parse the workspace.sdf file and return the list of WorkSpace information
+    private static List<WorkSpaceData> ParseSDF(string path) {
+      string full_path = Path.Combine(path, "workspace.sdf");
+      var workSpaceDataList = new List<WorkSpaceData>();
+
+      StreamReader reader = new StreamReader(full_path, Encoding.Default);
+      using (reader) {
+        string value = null;
+        
+        do {
+          value = ccUtils.SDTNext(reader, out string key);
+          if ((value == null) || (key == null)) {
+            continue;
+          }
+
+          if (key == "Workspace") {
+            var wsData = new WorkSpaceData(){PosIndex = -1, Random1 = -1, Random2 = -1, IsServer = false};
+            workSpaceDataList.Add(wsData);
+            
+            using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(value ?? ""))) {
+              using (var substream = new StreamReader(stream)) {
+                string v = null;
+                do {
+                  v = ccUtils.SDTNext(substream, out string t);
+                  if (string.IsNullOrEmpty(v)) {
+                    continue;
+                  }
+                  switch (t) {
+                    case "PosIndex":
+                      int.TryParse(v, out int posIndex);
+                      wsData.PosIndex = posIndex;
+                      break;
+                    case "Type":
+                      wsData.IsServer = (v == "SERVER");
+                      break;
+                    case "Random1":
+                      int.TryParse(v, out int random1);
+                      wsData.Random1 = random1;
+                      break;
+                    case "Random2":
+                      int.TryParse(v, out int random2);
+                      wsData.Random2 = random2;
+                      break;
+                  }
+                } while (v != null);
+              }
+            }
+          }
+          
+        } while (value != null);
+
+        return workSpaceDataList;
+      }
+    }
+
+    //-------------------------------------------------------------------------
+    private void SetupGameObject(WorkSpaceScript workSpace, int index) { 
+      ccUtils.GridTo3dPos(workSpace.Data.x, workSpace.Data.y,  out float x, out float y);
+      workSpace.transform.position = new Vector3(x, 0, y);
+      workSpace.transform.rotation = GetRotation(workSpace.Data.GetDirection());
+      
+      workSpace.gameObject.name = $"WorkSpace--{index}";
+      PopulateWorkspace(workSpace, index);
+    }
+
+    //-------------------------------------------------------------------------
+    private static Quaternion GetRotation(WorkSpace.WorkSpaceDirection direction) {
+      switch (direction) {
+        case WorkSpace.WorkSpaceDirection.North: return Quaternion.Euler(0, -90, 0);
+        case WorkSpace.WorkSpaceDirection.East: return Quaternion.Euler(0, -180, 0);
+        case WorkSpace.WorkSpaceDirection.South: return Quaternion.Euler(0, 90, 0);
+        case WorkSpace.WorkSpaceDirection.West: return Quaternion.Euler(0, 0, 0);
+        default:
+          return Quaternion.identity;
+      }
+    }
+
+
+    //-------------------------------------------------------------------------
+    //Instantiate the office furniture for the supplied WorkSpace
+    private void PopulateWorkspace(WorkSpaceScript workSpace, int index) {
+      //get the magic string of office type in order to find the grouping of
+      //furniture to populate the WorkSpaces with
+      string officeName = _organizationDictionary["MainOfficeVersion"];
+      WorkSpaceFurnitureVariable furnitureVar = _workSpaceFurnitureVariables.Find(
+        x => x.Value._associatedOfficeMagicString == officeName);
+      
+      WorkSpaceFurniture furniture = furnitureVar ? furnitureVar.Value : null;
+      
+      if (furniture == null) {
+        Debug.LogError($"No furniture object found for '{officeName}'");
+        return; 
+      }
+      
+      if (workSpace.Data.GetWorkSpaceType() == WorkSpace.WorkSpaceType.Regular) {
+        //regular WorkSpaces get a chair and a desk
+        GameObject chairPrefab = furniture.GetWorkSpaceChair(index);
+        if (chairPrefab) {
+          Instantiate(chairPrefab, workSpace.transform);
+        }
+
+        GameObject deskPrefab = furniture.GetWorkSpaceDesk(index);
+        if (deskPrefab) {
+          Instantiate(deskPrefab, workSpace.transform);
+        }
+        //TODO add in the random office stuff using the random lists of objects 
+        //and the scenario-define random number (random number range?)
+      }
+      else if (workSpace.Data.GetWorkSpaceType() == WorkSpace.WorkSpaceType.Server) {
+        // //create table
+        // var table = Instantiate(_workSpaceWorkServerDeskPrefab, workSpace.transform);
+        // //create server rack
+        // var rack = Instantiate(_workSpaceWorkServerRackPrefab, workSpace.transform);
+      }
+    }
   }
 }

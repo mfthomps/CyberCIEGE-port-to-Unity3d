@@ -10,8 +10,11 @@ namespace Code.Factories {
   //Factory that create Staff GameObjects.
   //Call HireStaff() to hire an unemployed staff member.
   public class StaffFactory : MonoBehaviour, iFactory {
+    [Header("Input Variables")]
     [Tooltip("The scriptable variable to store all the current Staff instances.")]
     [SerializeField] private StaffListVariable _staffListVariable;
+    [Tooltip("The list of all the currently loaded workspaces")]
+    [SerializeField] private WorkSpaceListVariable _workSpaceListVariable;
 
     //TODO This is temporarily called from our own content menu. Once that context menu is removed,
     //this field can be removed (assuming it will be triggered from somewhere else).
@@ -171,9 +174,9 @@ namespace Code.Factories {
     }
     
     //--------------------------------------------------------------------------
-    private static void UpdateGameObject(StaffBehavior staff) {
+    private void UpdateGameObject(StaffBehavior staff) {
       //Position the new Staff based on their "position", read from the .sdf file.
-      WorkSpace ws = WorkspaceFactory.GetWorkSpace(staff.Data.position);
+      WorkSpace ws = _workSpaceListVariable.GetWorkSpace(staff.Data.position);
       if (ws == null) {
         Debug.Log($"Can't find a position to place {staff.Data.user_name} with position {staff.Data.position}");
       }
