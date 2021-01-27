@@ -27,7 +27,7 @@ public class AttackLogItem : MonoBehaviour
     private string _timeText;
 
     void Start () {
-      SetFlashing(false);
+      SetAsRead(false);
     }
 
     //---------------------------------------------------------------------------
@@ -54,11 +54,12 @@ public class AttackLogItem : MonoBehaviour
     }
 
     //---------------------------------------------------------------------------
-    // set to true to show the item flashing
-    public void SetFlashing (bool flashing) {
-      _flashingImage1.enabled = flashing;
-      _flashingImage2.enabled = flashing;
-      _flashingImage3.enabled = flashing;
+    // set to true to display this item as read
+    public void SetAsRead (bool isRead) {
+
+      _flashingImage1.enabled = !isRead;
+      _flashingImage2.enabled = !isRead;
+      _flashingImage3.enabled = !isRead;
 
     }
 }
