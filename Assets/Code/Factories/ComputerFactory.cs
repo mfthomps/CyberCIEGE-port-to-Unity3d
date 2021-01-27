@@ -147,6 +147,7 @@ namespace Code.Factories {
               case "HW":
                 data.hw_name = value;
                 data.hw = value;
+                data.isServer = hardwareCatalog.Value.GetHardwareType(value) == HardwareType.Servers;
                 break;
             }
         } while (value != null);
