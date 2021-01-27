@@ -61,7 +61,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackLogItem: {fileID: 7800955520272913371, guid: e70fc036f7645654c8ed9d6ba2f72562,
     type: 3}
-  closeButton: {fileID: 7579735016990225177}
+  closeButton: {fileID: 0}
   scrollviewContentArea: {fileID: 233859837933315408}
 --- !u!1 &233859837933315411
 GameObject:
@@ -480,6 +480,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 233859837786868464}
     m_Modifications:
+    - target: {fileID: 5345498409256208276, guid: 366e05cedb1176e428c15afbc647e52a,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5345498409256208276, guid: 366e05cedb1176e428c15afbc647e52a,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 11400000, guid: b68150742ca18b94aa99d21e9bad0e86,
+        type: 2}
+    - target: {fileID: 5345498409256208276, guid: 366e05cedb1176e428c15afbc647e52a,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Raise
+      objectReference: {fileID: 0}
     - target: {fileID: 7031985256833139628, guid: 366e05cedb1176e428c15afbc647e52a,
         type: 3}
       propertyPath: m_Pivot.x
@@ -613,18 +629,6 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 6720385815267186303}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7579735016990225177 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3779430054633252198, guid: 366e05cedb1176e428c15afbc647e52a,
-    type: 3}
-  m_PrefabInstance: {fileID: 6720385815267186303}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &8735356116748766947
 PrefabInstance:
   m_ObjectHideFlags: 0
