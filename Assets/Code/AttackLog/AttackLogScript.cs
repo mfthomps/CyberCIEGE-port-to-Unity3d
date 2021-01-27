@@ -3,6 +3,7 @@ using UnityEngine;
 
 //Manager of the attack log and when it gets displayed.
 namespace Code.AttackLog {
+  // Logic class for handling attack logs
   public class AttackLogScript : MonoBehaviour {
     [Tooltip("The AttackLogDisplay component used to display the attack logs")]
     [SerializeField] private AttackLogDisplay attackLogPanel;
@@ -35,14 +36,6 @@ namespace Code.AttackLog {
     }
     
     //----------------------------------------------------------------------------
-    private void AttackLogChanged() {
-      //update the look of the attack log button to indicate there are new logs
-      if (attackLogButton) {
-        attackLogButton.SetHasNewLogs(true);
-      }
-    }
-
-    //----------------------------------------------------------------------------
     private void OnDestroy() {
       if (attackLogPanel) {
         attackLogPanel.OnDialogClosed -= OnDialogClosed;
@@ -54,10 +47,21 @@ namespace Code.AttackLog {
     }
 
     //----------------------------------------------------------------------------
+    private void AttackLogChanged() {
+      if (attackLogPanel) {
+        attackLogPanel.SetLogItems(attackLogVariable.Value);
+      }
+      //update the look of the attack log button to indicate there are new logs
+      if (attackLogButton) {
+        attackLogButton.SetHasNewLogs(true);
+      }
+    }
+
+    //----------------------------------------------------------------------------
     private void ShowDialog() {
       menus.ActiveScreen("AttackLog");
       if (attackLogPanel) {
-        attackLogPanel.ShowDialog(attackLogVariable.Value);
+        attackLogPanel.ShowDialog();
       }
     }
 

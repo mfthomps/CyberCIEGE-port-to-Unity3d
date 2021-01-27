@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 //Responsible for rendering the actual attack logs in the UI
 namespace Code.AttackLog {
-  // public class ItemClickedEvent : UnityEvent<ComponentListItem> {}
-
+  // Main UI class for the AttackLog Dialog
   public class AttackLogDisplay : MonoBehaviour {
     [Tooltip("Text text UI to display the logs")]
     // [SerializeField] private TMP_Text textField;
@@ -36,16 +34,13 @@ namespace Code.AttackLog {
     }
 
     //---------------------------------------------------------------------------
+    public void SetLogItems(List<string> logs) {
+      _attackLogList.AddUniqueItems(logs);
+    }
+
+    //---------------------------------------------------------------------------
     //Show the Attack Log dialog on the screen and render the supplied logs
-    public void ShowDialog(IEnumerable<string> logs) {
-
-      // foreach(string log in logs) {
-      //   var currentItem = Instantiate(attackLogItem.gameObject,scrollviewContentArea);
-      //   AttackLogItem currentAttackLogItem = currentItem.GetComponent<AttackLogItem>();
-      //   currentAttackLogItem.MessageField = log;
-      // }
-      // _attackLogList.SetItems(logs as List<string>);
-
+    public void ShowDialog() {
       gameObject.SetActive(true);
     }
 
