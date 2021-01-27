@@ -35,10 +35,7 @@ namespace Code.AttackLog {
     //---------------------------------------------------------------------------
     //Show the Attack Log dialog on the screen and render the supplied logs
     public void ShowDialog(IEnumerable<string> logs) {
-      // if (textField) {
-      //   textField.text = string.Join("\n", logs);
-      // }
-      //  attackLogItem.gameObject;
+
       foreach(string log in logs) {
         var currentItem = Instantiate(attackLogItem.gameObject,scrollviewContentArea);
         AttackLogItem currentAttackLogItem = currentItem.GetComponent<AttackLogItem>();

@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -30,6 +30,8 @@ public class AttackLogItem : MonoBehaviour
       SetFlashing(false);
     }
 
+    //---------------------------------------------------------------------------
+    // use this public field to change the message text
     public string MessageField {
       get {
         return _messageText;
@@ -39,7 +41,8 @@ public class AttackLogItem : MonoBehaviour
         messageField.text = _messageText;
       }
     }
-
+    //---------------------------------------------------------------------------
+    // use this public field to change the time text
     public string TimeField {
       get {
         return _timeText;
@@ -50,6 +53,8 @@ public class AttackLogItem : MonoBehaviour
       }
     }
 
+    //---------------------------------------------------------------------------
+    // set to true to show the item flashing
     public void SetFlashing (bool flashing) {
       _flashingImage1.enabled = flashing;
       _flashingImage2.enabled = flashing;
