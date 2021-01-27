@@ -29,6 +29,8 @@ namespace Code.AttackLog {
         
       //-------------------------------------------------------------------------
       public override void SetItem(string item) {
+
+        // split the time and message into two separate strings
         int startIndex = item.IndexOf("-- ");
         string message = "";
         string time = "";
