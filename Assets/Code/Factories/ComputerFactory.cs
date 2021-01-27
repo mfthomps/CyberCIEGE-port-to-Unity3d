@@ -19,6 +19,9 @@ namespace Code.Factories {
     
     [Tooltip("The variable containing the list of all the Policies available to apply to Computers")]
     [SerializeField] private PolicyListVariable computerPolicyListVariable;
+
+    [Tooltip("The list of all the currently loaded workspaces")]
+    [SerializeField] private WorkSpaceListVariable _workSpaceListVariable;
     
     private static readonly string COMPUTERS = "computers";
 
@@ -73,7 +76,7 @@ namespace Code.Factories {
         Debug.Log("LoadOneComputer got invalid pos for " + newComputer.Data.component_name);
       }
 
-      WorkSpace ws = WorkspaceFactory.GetWorkSpace(pos);
+      WorkSpace ws = _workSpaceListVariable.GetWorkSpace(pos);
       int slot = ws.AddComputer(newComputer.Data.component_name);
       float xf, zf;
       ccUtils.GridTo3dPos(ws.x, ws.y, out xf, out zf);
