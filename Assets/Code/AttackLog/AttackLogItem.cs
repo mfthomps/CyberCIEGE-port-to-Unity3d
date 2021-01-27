@@ -29,7 +29,24 @@ namespace Code.AttackLog {
         
       //-------------------------------------------------------------------------
       public override void SetItem(string item) {
-        messageField.text = item;
+        int startIndex = item.IndexOf("-- ");
+        string message = "";
+        string time = "";
+        
+        if (startIndex >= 0) {
+          message = item.Substring(startIndex + 3);
+          message = message.Trim();
+
+          for(int i = 0; i < startIndex; ++i) {
+            time += item[i];
+          }
+          time = time.Trim();
+
+        }
+
+        messageField.text = message;
+        timeField.text = time;
+
         SetAsRead(false);
       }
 
