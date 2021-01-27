@@ -217,16 +217,17 @@ namespace Code.Factories {
     
     //--------------------------------------------------------------------------
     //instantiate and position the stuff that goes in a server room WorkSpace
-    private static void PopulateServerRoom(WorkSpaceScript workSpace, WorkSpaceFurniture furniture) {
+    private void PopulateServerRoom(WorkSpaceScript workSpace, WorkSpaceFurniture furniture) {
       //create table
-      var table = Instantiate(furniture._workSpaceWorkServerDeskPrefab, workSpace.transform);
+      var table = Instantiate(furniture._serverRoomDeskPrefab, workSpace.transform);
       //create server rack
-      var rack = Instantiate(furniture._workSpaceWorkServerRackPrefab, workSpace.transform);
+      var rack = Instantiate(furniture._serverRoomServerRackPrefab, workSpace.transform);
       
-      //TODO Add in the lamp
-      // if (Enterprise.themeSetting != AIRFORCE_SETTING) {
-      //   WORLD_CreateSimpleOfficeObject(SHAPE_LAMP,xpos+cornerOffset[oppindex][0],ypos+cornerOffset[oppindex][1],&Orien,0.0f );
-      // }
+      //Add in the lamp if appropriate
+      if (furniture._serverRoomLampPrefab) {
+        var lamp = Instantiate(furniture._serverRoomLampPrefab, workSpace.transform);
+      }
+      
     }
   }
 }
