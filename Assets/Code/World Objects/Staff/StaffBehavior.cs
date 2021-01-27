@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Code {
+namespace Code.World_Objects.Staff {
   //Represents a single Staff member
   public class StaffBehavior : MonoBehaviour {
     [SerializeField] private StaffDataObject _data;
@@ -10,5 +10,10 @@ namespace Code {
       set => _data = value;
     }
 
+    // ------------------------------------------------------------------------
+    public void SetHired(bool isHired) {
+      Data.SetHired(isHired);
+      gameObject.SetActive(isHired);
+    }
   }
 }

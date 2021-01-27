@@ -1,13 +1,16 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Code {
+namespace Code.World_Objects.Staff {
   //Data relating to one StaffBehavior instance
   [Serializable]
   public class StaffDataObject {
+    public delegate void ValueChangeHandler();
+    public event ValueChangeHandler OnValueChanged;
+
     public string user_name;
     public int position = -1;
-    public string department;
+    public StaffType type;
     public string current_thought = "";
     public int skill;
     public int hw_skill;
@@ -33,6 +36,7 @@ namespace Code {
     //--------------------------------------------------------------------------
     public void SetHired(bool hired) {
       daysTillAvailable = hired ? -1 : 0;
+      OnValueChanged?.Invoke();
     }
   }
 }
