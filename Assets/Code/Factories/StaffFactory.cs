@@ -1,26 +1,31 @@
 ﻿using System;
 using System.IO;
 using System.Text;
-using System.Xml.Linq;
-using Code.Scriptable_Variables;
-using Shared.ScriptableVariables;
 using UnityEngine;
+using Code.Scriptable_Variables;
+using Code.World_Objects.Staff;
 
 namespace Code.Factories {
   //Factory that create Staff GameObjects.
   //Call HireStaff() to hire an unemployed staff member.
   public class StaffFactory : MonoBehaviour, iFactory {
+    [Header("Input Variables")]
     [Tooltip("The scriptable variable to store all the current Staff instances.")]
     [SerializeField] private StaffListVariable _staffListVariable;
+    [Tooltip("The list of all the currently loaded workspaces")]
+    [SerializeField] private WorkSpaceListVariable _workSpaceListVariable;
 
-    //TODO This is temporarily called from our own content menu. Once that context menu is removed,
-    //this field can be removed (assuming it will be triggered from somewhere else).
-    [SerializeField] private StringGameEvent _hireStaffEvent;
-    
     private static readonly string STAFF = "staff";
+    private const string STAFF_TYPE_TECH = "Tech";
+    private const string STAFF_TYPE_SECURITY = "Security";
     
     [Tooltip("Mapping of magic department string to StaffBehavior prefab")]
-    [SerializeField] private StringToStaffBehaviorMappingObject _prefabMapping;
+    [SerializeField] private StaffTypeBehaviorMappingObject _prefabMapping;
+
+    //--------------------------------------------------------------------------
+    void OnDestroy() {
+      _staffListVariable.Clear();
+    }
 
     //--------------------------------------------------------------------------
     public void Create(string filename, Transform parent = null) {
@@ -30,34 +35,6 @@ namespace Code.Factories {
     //--------------------------------------------------------------------------
     public void CreateAll(string path, Transform parent = null) {
       LoadStaffFromFile(path, parent);
-    }
-
-    //--------------------------------------------------------------------------
-    //Hire a staff member using their scenario name, if they are currently available
-    //to be hired.
-    public void HireStaff(string staffUserName) {
-      var staff = _staffListVariable.Value.Find(x => x.Data.user_name == staffUserName);
-      
-      if (staff && staff.Data.CanBeHiredNow()) {
-        //activate the object
-        staff.Data.SetHired(true);
-        staff.gameObject.SetActive(true);
-        
-        //TODO position the GameObject
-        
-        XElement xml = new XElement("userEvent",
-          new XElement("hire",
-            new XElement("name", staff.Data.user_name),
-            new XElement("salary", staff.Data.cost)),
-          new XElement("cost", staff.Data.cost));
-          
-        Debug.Log($"Hired Staff: {staff.Data.user_name}");
-        IPCManagerScript.SendRequest(xml.ToString());
-        menus.clicked = "";        
-      }
-      else {
-        Debug.LogError($"Can't hire {staffUserName}");
-      }
     }
 
     //--------------------------------------------------------------------------
@@ -88,7 +65,7 @@ namespace Code.Factories {
         return null;
       }
 
-      StaffBehavior prefab = _prefabMapping.GetPrefabByKey(data.department);
+      StaffBehavior prefab = _prefabMapping.GetPrefabByKey(data.type);
       if (!prefab) {
         return null;
       }
@@ -102,7 +79,7 @@ namespace Code.Factories {
     }
     
     //--------------------------------------------------------------------------
-    private static StaffDataObject LoadStaffData(string filePath) {
+    private StaffDataObject LoadStaffData(string filePath) {
       var data = new StaffDataObject();
       try {
         StreamReader reader = new StreamReader(filePath, Encoding.Default);
@@ -130,7 +107,7 @@ namespace Code.Factories {
                 }
                 break;
               case "Dept":
-                data.department = value;
+                data.type = GetStaffType(value);
                 break;
               case "Cost":
                 if (!int.TryParse(value, out data.cost)) {
@@ -171,9 +148,9 @@ namespace Code.Factories {
     }
     
     //--------------------------------------------------------------------------
-    private static void UpdateGameObject(StaffBehavior staff) {
+    private void UpdateGameObject(StaffBehavior staff) {
       //Position the new Staff based on their "position", read from the .sdf file.
-      WorkSpace ws = WorkspaceFactory.GetWorkSpace(staff.Data.position);
+      WorkSpace ws = _workSpaceListVariable.GetWorkSpace(staff.Data.position);
       if (ws == null) {
         Debug.Log($"Can't find a position to place {staff.Data.user_name} with position {staff.Data.position}");
       }
@@ -185,29 +162,18 @@ namespace Code.Factories {
       
       //activate and rename
       staff.gameObject.SetActive(staff.Data.IsCurrentlyHired());
-      staff.gameObject.name = $"Staff-{staff.Data.department}--{staff.Data.user_name}";
+      staff.gameObject.name = $"Staff-{staff.Data.type}--{staff.Data.user_name}";
     }
     
     //--------------------------------------------------------------------------
-    //TODO - Temp context menu
-    private static Rect WindowRect = new Rect(10, 10, 250, 300);
-    
-    //--------------------------------------------------------------------------
-    //TODO - Temp menu
-    public void doItems() {
-      WindowRect = GUI.Window(1, WindowRect, HireMenu, "Hire IT/Security");
-    }
-
-    //--------------------------------------------------------------------------
-    //TODO - Temp menu
-    private void HireMenu(int id) {
-      var canBeHiredList = _staffListVariable.Value.FindAll(x => x.Data.CanBeHiredNow());
-      foreach (var staff in canBeHiredList) {
-        if (GUILayout.Button(staff.Data.user_name)) {
-          _hireStaffEvent?.Raise(staff.Data.user_name);
-        }
+    private StaffType GetStaffType(string department) {
+      switch (department) {
+        case STAFF_TYPE_TECH:
+          return StaffType.Tech;
+        case STAFF_TYPE_SECURITY:
+          return StaffType.Security;
       }
+      return StaffType.Invalid;
     }
-
   }
 }

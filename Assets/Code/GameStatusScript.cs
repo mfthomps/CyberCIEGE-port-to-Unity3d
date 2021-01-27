@@ -24,6 +24,10 @@ public class GameStatusScript : MonoBehaviour {
   public StringVariable currentTime;
   [Tooltip("Current user message")]
   public StringVariable currentMessage;
+  [Tooltip("List of staff in the given scenario")]
+  public IntVariable techCapacityVariable;
+  [Tooltip("List of staff in the given scenario")]
+  public IntVariable securityCapacityVariable;
 
   // --------------------------------------------------------------------------
   void OnDestroy() {
@@ -33,6 +37,8 @@ public class GameStatusScript : MonoBehaviour {
     currentDate.Reset();
     currentTime.Reset();
     currentMessage.Reset();
+    techCapacityVariable.Reset();
+    securityCapacityVariable.Reset();
   }
 
   // --------------------------------------------------------------------------
@@ -75,7 +81,15 @@ public class GameStatusScript : MonoBehaviour {
     var hour = Convert.ToInt32(clockNode["hour"].InnerText);
     var minute = Convert.ToInt32(clockNode["minute"].InnerText);
     var isAM = Convert.ToBoolean(clockNode["AM"].InnerText);
-    var dateTime = new DateTime(1, month, day, isAM ? hour : hour + 12, minute, 0);
+    // Special case treatment of hour for AM/PM
+    if (hour == 12) {
+      hour = isAM ? 0 : 12;
+    }
+    // PM hours should be values 13-23
+    else if (!isAM) {
+      hour += 12;
+    }
+    var dateTime = new DateTime(1, month, day, hour, minute, 0);
     currentDate.Value = dateTime.ToString("MMMM dd");
     currentTime.Value = dateTime.ToString("hh:mm tt");
 
@@ -87,7 +101,7 @@ public class GameStatusScript : MonoBehaviour {
     var bonusNode = xmlDoc.SelectSingleNode("//status/bonus");
     var bonusString = bonusNode.InnerText;
     var penaltyNode = xmlDoc.SelectSingleNode("//status/asset_penalty");
-    string penaltyString = penaltyNode.InnerText;
+    var penaltyString = penaltyNode.InnerText;
     int HOURS_PER_MONTH = 720;
     var bonusval = -1;
     if (!int.TryParse(bonusString, out bonusval)) Debug.Log("Error: UpdatateStatus parse bonus " + bonusString);
@@ -95,6 +109,24 @@ public class GameStatusScript : MonoBehaviour {
     if (!int.TryParse(penaltyString, out penaltyval)) Debug.Log("Error: UpdatateStatus parse penalty " + penaltyString);
     var total = bonusval + penaltyval / HOURS_PER_MONTH;
     currentBonus.Value = total;
+
+    // Tech staff capacity
+    var techStaffCapacity = 0;
+    var techStaffNode = xmlDoc.SelectSingleNode("//status/itstaff");
+    if (techStaffNode != null) {
+      var techStaffString = techStaffNode.InnerText;
+      if (!int.TryParse(techStaffString, out techStaffCapacity)) Debug.Log("Error: UpdatateStatus parse tech staff capacity " + techStaffString);
+    }
+    techCapacityVariable.Value = techStaffCapacity;
+
+    // Security staff capacity
+    var securityStaffCapacity = 0;
+    var securityStaffNode = xmlDoc.SelectSingleNode("//status/securityStaff");
+    if (securityStaffNode != null) {
+      var securityStaffString = securityStaffNode.InnerText;
+      if (!int.TryParse(securityStaffString, out securityStaffCapacity)) Debug.Log("Error: UpdatateStatus parse security staff capacity " + securityStaffString);
+    }
+    securityCapacityVariable.Value = securityStaffCapacity;
 
     reader.Close();
   }

@@ -10,9 +10,6 @@ using Code.World_Objects.Network;
 
 namespace Code.Test {
   public class TestNetworkUI : MonoBehaviour {
-    [Header("Input Variables")]
-    [Tooltip("List of computers to select")]
-    public ComputerListVariable computerListVariable;
     [Header("Output Variables")]
     [Tooltip("Variable containing all hardware (computers, servers, routers, etc) information for game")]
     public HardwareCatalogVariable hardwareCatalog;
@@ -71,8 +68,6 @@ namespace Code.Test {
         else {
           component.Data.DisconnectFromNetwork(network.Data.name);
         }
-        selectedObject.Value = null;
-        selectedObject.Value = component.gameObject;
       }
       else {
         Debug.LogError("Network toggled on non-component selection!");

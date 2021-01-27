@@ -31,7 +31,10 @@ namespace Code.Factories {
         string value = null;
         do {
           value = ccUtils.SDTNext(reader, out tag);
-          if ((value == null) || (tag == null)) continue;
+          if ((value == null) || (tag == null)) {
+            continue;
+          }
+
           organization.SetValue(tag, value);
         } while (value != null);
       }

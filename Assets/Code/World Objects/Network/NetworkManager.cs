@@ -1,9 +1,8 @@
 ﻿using System.Xml.Linq;
 using UnityEngine;
 using Shared.ScriptableVariables;
-using Code.World_Objects.Network;
 
-namespace Code.User_Interface.Network {
+namespace Code.World_Objects.Network {
   public class NetworkManager : MonoBehaviour {
     [Header("Input Variables")]
     [Tooltip("Currently selected object in game to show properties for")]
@@ -19,10 +18,6 @@ namespace Code.User_Interface.Network {
         else {
           DisconnectToNetwork(selectedComponent, network);
         }
-
-        // Reselect our component to force the UI to update
-        selectedObject.Value = null;
-        selectedObject.Value = selectedComponent.gameObject;
       }
     }
 
@@ -31,9 +26,8 @@ namespace Code.User_Interface.Network {
       XElement xml = new XElement("componentEvent",
         new XElement("name", component.Data.component_name),
         new XElement("networkConnect", network.Data.name));
-
-      component.Data.ConnectToNetwork(network.Data.name);
       IPCManagerScript.SendRequest(xml.ToString());
+      component.Data.ConnectToNetwork(network.Data.name);
     }
 
     // ------------------------------------------------------------------------
@@ -41,9 +35,8 @@ namespace Code.User_Interface.Network {
       XElement xml = new XElement("componentEvent",
         new XElement("name", component.Data.component_name),
         new XElement("networkDisconnect", network.Data.name));
-
-      component.Data.DisconnectFromNetwork(network.Data.name);
       IPCManagerScript.SendRequest(xml.ToString());
+      component.Data.DisconnectFromNetwork(network.Data.name);
     }
   }
 }
