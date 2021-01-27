@@ -190,25 +190,38 @@ namespace Code.Factories {
       }
       
       if (workSpace.Data.GetWorkSpaceType() == WorkSpace.WorkSpaceType.Regular) {
-        //regular WorkSpaces get a chair and a desk
-        GameObject chairPrefab = furniture.GetWorkSpaceChair(index);
-        if (chairPrefab) {
-          Instantiate(chairPrefab, workSpace.transform);
-        }
-
-        GameObject deskPrefab = furniture.GetWorkSpaceDesk(index);
-        if (deskPrefab) {
-          Instantiate(deskPrefab, workSpace.transform);
-        }
-        //TODO add in the random office stuff using the random lists of objects 
-        //and the scenario-define random number (random number range?)
+        PopulateRegularWorkspace(workSpace, index, furniture);
       }
       else if (workSpace.Data.GetWorkSpaceType() == WorkSpace.WorkSpaceType.Server) {
-        // //create table
-        // var table = Instantiate(_workSpaceWorkServerDeskPrefab, workSpace.transform);
-        // //create server rack
-        // var rack = Instantiate(_workSpaceWorkServerRackPrefab, workSpace.transform);
+        PopulateServerRoom(workSpace, furniture);
       }
+    }
+
+    //-------------------------------------------------------------------------
+    //instantiate and position the stuff that goes in a regular WorkSpace
+    private static void PopulateRegularWorkspace(WorkSpaceScript workSpace, int index, WorkSpaceFurniture furniture) {
+      //regular WorkSpaces get a chair and a desk
+      GameObject chairPrefab = furniture.GetWorkSpaceChair(index);
+      if (chairPrefab) {
+        Instantiate(chairPrefab, workSpace.transform);
+      }
+
+      GameObject deskPrefab = furniture.GetWorkSpaceDesk(index);
+      if (deskPrefab) {
+        Instantiate(deskPrefab, workSpace.transform);
+      }
+
+      //TODO add in the random office stuff using the random lists of objects 
+      //and the scenario-define random number (random number range?)
+    }
+    
+    //--------------------------------------------------------------------------
+    //instantiate and position the stuff that goes in a server room WorkSpace
+    private static void PopulateServerRoom(WorkSpaceScript workSpace, WorkSpaceFurniture furniture) {
+      //create table
+      var table = Instantiate(furniture._workSpaceWorkServerDeskPrefab, workSpace.transform);
+      //create server rack
+      var rack = Instantiate(furniture._workSpaceWorkServerRackPrefab, workSpace.transform);
     }
   }
 }
