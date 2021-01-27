@@ -240,7 +240,13 @@ namespace Code.MainMenu {
       // If the player already won, then don't bother processing because that's the farthest they got
       if (currentStatus != SCENARIO_STATUS_WON) {
         var logDocument = new XmlDocument();
-        logDocument.Load(logFilepath);
+        try {
+          logDocument.Load(logFilepath);
+        }
+        catch (Exception e) {
+          Debug.LogError($"Exception reading Log file {logFilepath}: {e.ToString()} ");
+          return "";
+        }
 
         foreach (XmlNode logEvent in logDocument.SelectSingleNode("//CyberCIEGEeventLog").ChildNodes) {
           // Game event log
