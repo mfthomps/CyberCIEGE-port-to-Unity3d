@@ -84,7 +84,7 @@ namespace Code.MainMenu {
               points = int.Parse(pointsText);
             }
             catch (Exception e) {
-              Debug.Log($"Campaign {campaign}, Scenario {scenarioName} has points node with non-integer value: {pointsText}.");
+              Debug.LogError($"Campaign {campaign}, Scenario {scenarioName} has points node with non-integer value: {pointsText}.\n{e}");
             }
           }
           // If the scenario has a prerequisite, try to get its index
@@ -95,7 +95,7 @@ namespace Code.MainMenu {
                 prerequisiteScenarioIndex = int.Parse(prerequisiteText) - 1;
               }
               catch (Exception e) {
-                Debug.Log($"Campaign {campaign}, Scenario {scenarioName} has prereq node with non-integer value : {prerequisiteText}.");
+                Debug.Log($"Campaign {campaign}, Scenario {scenarioName} has prereq node with non-integer value : {prerequisiteText}.\n{e}");
               }
             }
           }

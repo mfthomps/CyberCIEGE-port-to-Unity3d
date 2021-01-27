@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 namespace Code.Scriptable_Variables {
-  [CreateAssetMenu(menuName = "Scriptable Objects/Variables/CC/Component List")]
+  [CreateAssetMenu(menuName = "Scriptable Objects/Variables/CC/Computer List")]
   public class ComputerListVariable : ListVariable<ComputerBehavior> {
     //---------------------------------------------------------------------------
     [ContextMenu("Reset To Default Value")]
