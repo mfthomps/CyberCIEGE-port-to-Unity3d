@@ -10,6 +10,10 @@ namespace Code.Test {
     [Header("Output Variables")]
     [Tooltip("Currently selected object in game to show properties for")]
     public GameObjectVariable selectedObject;
+    [Tooltip("List of staff in the given scenario")]
+    public IntVariable techCapacityVariable;
+    [Tooltip("List of staff in the given scenario")]
+    public IntVariable securityCapacityVariable;
 
     [Header("Factories")]
     [Tooltip("The factory to use for creating Organizations")]
@@ -26,11 +30,16 @@ namespace Code.Test {
       _organizationFactory.CreateAll(user_app_path);
       _workspaceFactory.CreateAll(user_app_path);
       _staffFactory.CreateAll(user_app_path);
+
+      techCapacityVariable.Value = 50;
+      securityCapacityVariable.Value = 100;
     }
 
     // ------------------------------------------------------------------------
     void OnDestroy() {
       selectedObject.Reset();
+      techCapacityVariable.Reset();
+      securityCapacityVariable.Reset();
     }
 
     // ------------------------------------------------------------------------

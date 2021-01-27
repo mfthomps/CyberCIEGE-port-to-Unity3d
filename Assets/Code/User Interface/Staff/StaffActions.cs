@@ -39,7 +39,7 @@ namespace Code.User_Interface.Staff {
       bool canHire = false, canFire = false;
       if (selectedObject.Value != null) {
         var selectedStaff = selectedObject.Value.GetComponent<StaffBehavior>();
-        canHire = selectedStaff != null && !selectedStaff.Data.IsCurrentlyHired();
+        canHire = selectedStaff != null && !selectedStaff.Data.IsCurrentlyHired() && selectedStaff.Data.daysTillAvailable == 0;
         canFire = selectedStaff != null && selectedStaff.Data.IsCurrentlyHired();
       }
       hireButton.interactable = canHire;

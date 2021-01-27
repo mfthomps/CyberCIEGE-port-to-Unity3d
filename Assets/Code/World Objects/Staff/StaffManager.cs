@@ -26,9 +26,8 @@ namespace Code.World_Objects.Staff {
       XElement xml = new XElement("userEvent",
         new XElement("hire",
           new XElement("name", staff.Data.user_name),
-          new XElement("salary", staff.Data.cost)
-        ),
-        new XElement("cost", staff.Data.cost)
+          new XElement("salary", staff.Data.salary)
+        )
       );
       IPCManagerScript.SendRequest(xml.ToString());
       staff.SetHired(true);
@@ -38,7 +37,8 @@ namespace Code.World_Objects.Staff {
     private void FireStaff(StaffBehavior staff) {
       XElement xml = new XElement("userEvent",
         new XElement("fire",
-          new XElement("name", staff.Data.user_name)
+          new XElement("name", staff.Data.user_name),
+          new XElement("salary", staff.Data.salary)
         )
       );
       IPCManagerScript.SendRequest(xml.ToString());
