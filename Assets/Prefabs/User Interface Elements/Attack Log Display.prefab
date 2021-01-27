@@ -61,8 +61,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackLogItem: {fileID: 7800955520272913371, guid: e70fc036f7645654c8ed9d6ba2f72562,
     type: 3}
-  closeButton: {fileID: 0}
+  closeButton: {fileID: 1687896797352219115}
   scrollviewContentArea: {fileID: 233859837933315408}
+  _attackLogList: {fileID: 8435547923464234062}
 --- !u!1 &233859837933315411
 GameObject:
   m_ObjectHideFlags: 0
@@ -225,6 +226,7 @@ GameObject:
   - component: {fileID: 233859838555605335}
   - component: {fileID: 233859838555605334}
   - component: {fileID: 233859838555605329}
+  - component: {fileID: 8435547923464234062}
   m_Layer: 5
   m_Name: Scroll View
   m_TagString: Untagged
@@ -321,6 +323,20 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &8435547923464234062
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 233859838555605331}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b395d904e7ebb774fb9b8db664923cf3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 7800955520272913371, guid: e70fc036f7645654c8ed9d6ba2f72562, type: 3}
+  contentArea: {fileID: 233859837933315408}
 --- !u!1001 &6340531132919028982
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -629,6 +645,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 6720385815267186303}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1687896797352219115 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5345498409256208276, guid: 366e05cedb1176e428c15afbc647e52a,
+    type: 3}
+  m_PrefabInstance: {fileID: 6720385815267186303}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8735356116748766947
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 //Responsible for rendering the actual attack logs in the UI
 namespace Code.AttackLog {
+  // public class ItemClickedEvent : UnityEvent<ComponentListItem> {}
+
   public class AttackLogDisplay : MonoBehaviour {
     [Tooltip("Text text UI to display the logs")]
     // [SerializeField] private TMP_Text textField;
@@ -13,6 +15,7 @@ namespace Code.AttackLog {
     [Tooltip("The close button that should close the dialog.")]
     [SerializeField] private Button closeButton;
     [SerializeField] private Transform scrollviewContentArea;
+    [SerializeField] private AttackLogList _attackLogList;
 
     public delegate void OnClosed();
     //Fired when the dialog has been closed
@@ -36,11 +39,12 @@ namespace Code.AttackLog {
     //Show the Attack Log dialog on the screen and render the supplied logs
     public void ShowDialog(IEnumerable<string> logs) {
 
-      foreach(string log in logs) {
-        var currentItem = Instantiate(attackLogItem.gameObject,scrollviewContentArea);
-        AttackLogItem currentAttackLogItem = currentItem.GetComponent<AttackLogItem>();
-        currentAttackLogItem.MessageField = log;
-      }
+      // foreach(string log in logs) {
+      //   var currentItem = Instantiate(attackLogItem.gameObject,scrollviewContentArea);
+      //   AttackLogItem currentAttackLogItem = currentItem.GetComponent<AttackLogItem>();
+      //   currentAttackLogItem.MessageField = log;
+      // }
+      // _attackLogList.SetItems(logs as List<string>);
 
       gameObject.SetActive(true);
     }
@@ -51,6 +55,7 @@ namespace Code.AttackLog {
         OnDialogClosed?.Invoke();
         gameObject.SetActive(false);        
       }
+      _attackLogList.SetAllAsRead();
     }
   }
 }
