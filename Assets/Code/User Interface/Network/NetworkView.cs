@@ -1,13 +1,17 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using Shared.ScriptableVariables;
+using Code.Game_Events;
 using Code.Scriptable_Variables;
+using Code.World_Objects.Network;
 
 namespace Code.User_Interface.Network {
-  public class NetworkViewRoot : MonoBehaviour {
+  public class NetworkView : MonoBehaviour {
     [Header("Output Variables")]
     [Tooltip("Currently selected object in game to show properties for")]
     public GameObjectVariable selectedObject;
+    [Tooltip("Toggles the network connection for the currently selected component")]
+    public NetworkBehaviorGameEvent toggleNetworkConnection;
     [Header("Input Variables")]
     [Tooltip("List of computers to select")]
     public ComputerListVariable computerListVariable;
@@ -40,8 +44,14 @@ namespace Code.User_Interface.Network {
     }
 
     // ------------------------------------------------------------------------
-    public void NetworkableItemClicked(ComponentListItem componentListItem) {
-      selectedObject.Value = componentListItem.GetItem().gameObject;
+    public void NetworkableItemClicked(ComponentBehavior selectedComponent) {
+      selectedObject.Value = selectedComponent.gameObject;
+    }
+
+    // ------------------------------------------------------------------------
+    public void NetworkItemClicked(NetworkBehavior network) {
+      toggleNetworkConnection?.Raise(network);
+      UpdateSelection();
     }
 
     // ------------------------------------------------------------------------

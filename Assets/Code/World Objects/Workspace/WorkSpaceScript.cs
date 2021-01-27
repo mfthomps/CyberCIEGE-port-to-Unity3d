@@ -1,4 +1,12 @@
 ﻿using UnityEngine;
 
-public class WorkSpaceScript : MonoBehaviour {
+namespace Code.World_Objects.Workspace {
+  public class WorkSpaceScript : MonoBehaviour {
+    [SerializeField] private WorkSpace _data;
+
+    public WorkSpace Data {
+      get => _data;
+      set => _data = value;
+    }
+  }
 }

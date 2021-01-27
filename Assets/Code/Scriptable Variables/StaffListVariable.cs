@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Code.World_Objects.Staff;
 
 namespace Code.Scriptable_Variables {
   [CreateAssetMenu(menuName = "Scriptable Objects/Variables/CC/Staff List")]
@@ -9,8 +10,7 @@ namespace Code.Scriptable_Variables {
       Reset();
     }
   }
-  
-    
+
 #if UNITY_EDITOR
 //-----------------------------------------------------------------------------
   [UnityEditor.CustomEditor(typeof(StaffListVariable))]

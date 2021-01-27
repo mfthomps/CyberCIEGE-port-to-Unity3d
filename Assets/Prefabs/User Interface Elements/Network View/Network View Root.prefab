@@ -92,7 +92,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
+  m_fontSize: 22.15
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -185,6 +185,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectedObject: {fileID: 11400000, guid: 357d0fa733a03e24f82c4b882d71dea0, type: 2}
+  toggleNetworkConnection: {fileID: 11400000, guid: 871b5003b6cdb2144bb9da0ab61a7780,
+    type: 2}
   computerListVariable: {fileID: 11400000, guid: 8380099111649e944adcc17e9f804d36,
     type: 2}
   deviceListVariable: {fileID: 11400000, guid: 325065c17ecc5144faa9016c6f5e5ede, type: 2}
@@ -457,7 +459,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 7352396213457836769, guid: 10ca79dd28b06324dac0ac5579ba8818, type: 3}
   contentArea: {fileID: 4553008914898602049}
-  ItemClicked:
+  onItemClicked:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 8721875137060598644}
@@ -638,7 +640,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
+  m_fontSize: 22.15
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -732,11 +734,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 4956383690883839262, guid: a8c32af625631cb47a7208db09f7502e, type: 3}
   contentArea: {fileID: 4553008914601229305}
-  toggleNetwork:
+  onItemClicked:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11400000, guid: 871b5003b6cdb2144bb9da0ab61a7780, type: 2}
-        m_MethodName: Raise
+      - m_Target: {fileID: 8721875137060598644}
+        m_MethodName: NetworkItemClicked
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1228,7 +1230,7 @@ PrefabInstance:
     - target: {fileID: 7031985257705313510, guid: 366e05cedb1176e428c15afbc647e52a,
         type: 3}
       propertyPath: m_fontSize
-      value: 21.15
+      value: 30.9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 366e05cedb1176e428c15afbc647e52a, type: 3}

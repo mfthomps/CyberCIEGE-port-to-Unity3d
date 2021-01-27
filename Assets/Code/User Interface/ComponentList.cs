@@ -1,33 +1,19 @@
-﻿using Shared.SEUI;
-using UnityEngine.Events;
+﻿using UnityEngine.Events;
 
 namespace Code.User_Interface {
-  [System.Serializable]
-  public class ItemClickedEvent : UnityEvent<ComponentListItem> {}
-  
   //Represents the list of Components in the computer configure UI screen.
-  public class ComponentList : DynamicList<ComponentListItem, ComponentBehavior> {
-    //Called when an Item in the list has been selected
-    public ItemClickedEvent ItemClicked;
+  public class ComponentList : WorldObjectBehaviorList<ComponentListItem, ComponentBehavior> {
+    [System.Serializable]
+    public class ItemClickedEvent : UnityEvent<ComponentBehavior> {}
 
-    //-------------------------------------------------------------------------
-    public void SetSelected(ComponentBehavior item, bool isSelected) {
-      if (listItems.ContainsKey(item)) {
-        listItems[item].SetSelected(isSelected);
-      }
-    }
+    //Called when an Item in the list has been selected
+    public ItemClickedEvent onItemClicked;
 
     //-------------------------------------------------------------------------
     protected override void OnItemAdded(ComponentBehavior item, ComponentListItem itemUI) {
       base.OnItemAdded(item, itemUI);
       
-      itemUI.SetLabel(item.Data.component_name);
-      itemUI.OnClicked += OnItemClicked;
-    }
-    
-    //-------------------------------------------------------------------------
-    private void OnItemClicked(ComponentListItem componentListItem) {
-      ItemClicked?.Invoke(componentListItem);
+      itemUI.onClicked += () => onItemClicked?.Invoke(item);
     }
   }
 }

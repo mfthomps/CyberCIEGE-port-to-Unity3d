@@ -1,8 +1,26 @@
-﻿public class WorkSpace {
+﻿using System;
+
+[Serializable]
+public class WorkSpace {
+  
+  [Serializable]
+  public enum WorkSpaceType {
+    Regular,
+    Server, 
+    Inactive
+  }
+  
+  public enum WorkSpaceDirection {
+    North,
+    East,
+    South,
+    West
+  }
+  
   public string[] computer_slots;
   public string[] device_slots;
   public char direction;
-  public char usage;
+  public char usage; //I = inactive, A = Active, S = Server
   public string user;
   public int x;
   public int y;
@@ -14,7 +32,9 @@
     this.usage = usage;
     int num_computers = 1;
     int num_devices = 2;
-    if (usage == 'S') num_computers = 6;
+    if (usage == 'S') {
+      num_computers = 6;
+    }
 
     //this.computer_slots = (int[])Enumerable.Repeat(-1, num_computers);
     //this.device_slots = (int[])Enumerable.Repeat(-1, num_devices);
@@ -91,5 +111,27 @@
 
   public void ClearUser() {
     user = null;
+  }
+
+  
+  //---------------------------------------------------------------------------
+  public WorkSpaceDirection GetDirection() {
+    switch (direction) {
+      case 'N' : return WorkSpaceDirection.North;
+      case 'E' : return WorkSpaceDirection.East;
+      case 'S' : return WorkSpaceDirection.South;
+      case 'W' : return WorkSpaceDirection.West;
+      default: return WorkSpaceDirection.North;
+    }
+  }
+
+  //---------------------------------------------------------------------------
+  public WorkSpaceType GetWorkSpaceType() {
+    switch (usage) {
+      case 'A' : return WorkSpaceType.Regular;
+      case 'I' : return WorkSpaceType.Inactive;
+      case 'S' : return WorkSpaceType.Server;
+      default: return WorkSpaceType.Inactive;
+    }
   }
 }

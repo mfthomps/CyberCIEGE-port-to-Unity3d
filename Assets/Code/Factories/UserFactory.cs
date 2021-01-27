@@ -1,13 +1,18 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Code.Scriptable_Variables;
 using UnityEngine;
 
 namespace Code.Factories {
   //A factory that creates User GameObjects
   public class UserFactory : MonoBehaviour, iFactory {
     [SerializeField] private UserBehavior _prefab;
-    
+
+    [Header("Input Variables")]
+    [Tooltip("The list of all the currently loaded workspaces")]
+    [SerializeField] private WorkSpaceListVariable _workSpaceListVariable;
+
     public static Dictionary<string, UserBehavior> user_dict = new Dictionary<string, UserBehavior>();
     
     private static readonly string USERS = "users";
@@ -37,7 +42,7 @@ namespace Code.Factories {
             continue;
           }
           
-          WorkSpace ws = WorkspaceFactory.GetWorkSpace(pos);
+          WorkSpace ws = _workSpaceListVariable.GetWorkSpace(pos);
           if (ws == null) {
             Debug.Log("UserBehavior got null workspace for pos" + pos);
           }
