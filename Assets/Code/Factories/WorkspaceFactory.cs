@@ -222,6 +222,11 @@ namespace Code.Factories {
       var table = Instantiate(furniture._workSpaceWorkServerDeskPrefab, workSpace.transform);
       //create server rack
       var rack = Instantiate(furniture._workSpaceWorkServerRackPrefab, workSpace.transform);
+      
+      //TODO Add in the lamp
+      // if (Enterprise.themeSetting != AIRFORCE_SETTING) {
+      //   WORLD_CreateSimpleOfficeObject(SHAPE_LAMP,xpos+cornerOffset[oppindex][0],ypos+cornerOffset[oppindex][1],&Orien,0.0f );
+      // }
     }
   }
 }
