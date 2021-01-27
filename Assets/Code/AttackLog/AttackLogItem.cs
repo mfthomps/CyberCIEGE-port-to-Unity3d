@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,9 +6,6 @@ using Shared.SEUI;
 
 namespace Code.AttackLog {
   public class AttackLogItem : DynamicListItem<string> {
-  
-      // Start is called before the first frame update
-
       [SerializeField]
       private TMP_Text timeField;
 

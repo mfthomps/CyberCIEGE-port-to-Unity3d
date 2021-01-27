@@ -6,9 +6,6 @@ using UnityEngine.UI;
 namespace Code.AttackLog {
   // Main UI class for the AttackLog Dialog
   public class AttackLogDisplay : MonoBehaviour {
-    [Tooltip("Text text UI to display the logs")]
-    // [SerializeField] private TMP_Text textField;
-
     [SerializeField] private AttackLogItem attackLogItem;
     [Tooltip("The close button that should close the dialog.")]
     [SerializeField] private Button closeButton;
