@@ -3,7 +3,7 @@ using TMPro;
 
 namespace Code.User_Interface {
   //Represents one selectable Component item in the Component List UI screen
-  public class ComponentListItem : WorldObjectBehaviorListItem<ComponentBehavior> {
+  public class ComponentListItem : SelectableListItem<ComponentBehavior> {
     [Tooltip("The element that should display the item's label string.")]
     [SerializeField]
     private TMP_Text labelUI;

@@ -2,6 +2,7 @@
 using Code.Scriptable_Variables;
 using UnityEngine;
 using UnityEngine.UI;
+using Code.Policies;
 
 /*
  * Represents computer attributes, inheriting from ComponentBehavior.
@@ -70,7 +71,7 @@ namespace Code {
   
     //----------------------------------------------------------------------------
     //Call this when the computer should change the value of a Policy.
-    public void PolicyValueChanged(Policy.Policy policy, bool isOn) {
+    public void PolicyValueChanged(Policy policy, bool isOn) {
       _data.config_settings.ProceduralPolicyChanged(policy, isOn);
     }
 

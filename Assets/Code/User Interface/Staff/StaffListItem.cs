@@ -5,7 +5,7 @@ using Code.World_Objects.Staff;
 
 namespace Code.User_Interface {
   //Represents one selectable Staff item in the Staff List UI screen
-  public class StaffListItem : WorldObjectBehaviorListItem<StaffBehavior> {
+  public class StaffListItem : SelectableListItem<StaffBehavior> {
     [Tooltip("The element that should display the item's label string.")]
     public TMP_Text label;
     [Tooltip("The element that should display whether the staff is hired or not.")]

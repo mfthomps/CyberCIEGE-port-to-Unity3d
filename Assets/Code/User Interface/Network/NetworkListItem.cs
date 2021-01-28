@@ -5,7 +5,7 @@ using Code.World_Objects.Network;
 
 namespace Code.User_Interface.Network {
   //Represents one selectable Network item in the Network List UI screen
-  public class NetworkListItem : WorldObjectBehaviorListItem<NetworkBehavior> {
+  public class NetworkListItem : SelectableListItem<NetworkBehavior> {
     [Tooltip("Display the item's name")]
     public TMP_Text label;
     [Tooltip("Displays the network's color")]

@@ -17,9 +17,6 @@ namespace Code.Factories {
     [Tooltip("The variable containing the list of all the Computers currently in the scenario.")]
     [SerializeField] private ComputerListVariable computerListVariable;
     
-    [Tooltip("The variable containing the list of all the Policies available to apply to Computers")]
-    [SerializeField] private PolicyListVariable computerPolicyListVariable;
-
     [Tooltip("The list of all the currently loaded workspaces")]
     [SerializeField] private WorkSpaceListVariable _workSpaceListVariable;
     
@@ -104,7 +101,7 @@ namespace Code.Factories {
 
     //-------------------------------------------------------------------------
     private void LoadComputerInfoFromFile(string filePath, ComputerBehavior computer, ref ComputerDataObject data) {
-      data.config_settings = new ConfigurationSettings(true, data.component_name, computerPolicyListVariable.Value);
+      data.config_settings = new ConfigurationSettings(true, data.component_name, new List<Policies.Policy>());
 
       StreamReader reader = new StreamReader(filePath, Encoding.Default);
       using (reader) {
@@ -118,20 +115,20 @@ namespace Code.Factories {
           if (!data.config_settings.HandleConfigurationSetting(tag, value))
             switch (tag) {
               case "ComponentProceduralSettings":
-                //special case to process all of the sub-elements
-                using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(value ?? ""))) {
-                  using (var substream = new StreamReader(stream)) {
-                    string v = null;
-                    do {
-                      v = ccUtils.SDTNext(substream, out string t);
-                      if (string.IsNullOrEmpty(v)) {
-                        continue;
-                      }
+                // //special case to process all of the sub-elements
+                // using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(value ?? ""))) {
+                //   using (var substream = new StreamReader(stream)) {
+                //     string v = null;
+                //     do {
+                //       v = ccUtils.SDTNext(substream, out string t);
+                //       if (string.IsNullOrEmpty(v)) {
+                //         continue;
+                //       }
 
-                      data.config_settings.HandleConfigurationSetting(t, v);
-                    } while (v != null);
-                  }
-                }
+                //       data.config_settings.HandleConfigurationSetting(t, v);
+                //     } while (v != null);
+                //   }
+                // }
 
                 break;
               case "Assets":

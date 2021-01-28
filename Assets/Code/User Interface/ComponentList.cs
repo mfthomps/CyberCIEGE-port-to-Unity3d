@@ -2,7 +2,7 @@
 
 namespace Code.User_Interface {
   //Represents the list of Components in the computer configure UI screen.
-  public class ComponentList : WorldObjectBehaviorList<ComponentListItem, ComponentBehavior> {
+  public class ComponentList : SelectableList<ComponentListItem, ComponentBehavior> {
     [System.Serializable]
     public class ItemClickedEvent : UnityEvent<ComponentBehavior> {}
 

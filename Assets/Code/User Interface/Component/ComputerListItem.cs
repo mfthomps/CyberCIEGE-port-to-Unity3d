@@ -4,7 +4,7 @@ using TMPro;
 
 namespace Code.User_Interface.Components {
   //Represents one selectable Computer item in the Computer List UI screen
-  public class ComputerListItem : WorldObjectBehaviorListItem<ComputerBehavior> {
+  public class ComputerListItem : SelectableListItem<ComputerBehavior> {
     [Tooltip("The icon for a workstation computer.")]
     [SerializeField]
     private Image workstationIcon;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Code;
 using Code.Factories;
-using Code.Policy;
+using Code.Policies;
 using Code.User_Interface;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,10 +16,6 @@ public class ComputerConfigure : MonoBehaviour {
 
   [Tooltip("The variable to contain the list of active computers.")]
   [SerializeField] private ComponentList _computerListUI;
-  [Tooltip("The list of Policies to apply to the Computer Procedural settings.")]
-  [SerializeField] private PolicyList _proceduralPolicyList;
-  [Tooltip("The list of Policies to apply to the Computer Configuration settings.")]
-  [SerializeField] private PolicyList _configurationPolicyList;
   
   public GameObject myTextPrefab;
   public RectTransform procPanel;
@@ -119,29 +115,6 @@ public class ComputerConfigure : MonoBehaviour {
   //The supplied list of Policies and values should be displayed for the supplied computer.
   public void SetProc(Dictionary<Policy, bool> dict, ComputerBehavior computer) {
     _selectedComputer = computer;
-    
-    //remove old items
-    _proceduralPolicyList.ClearItems();
-    _configurationPolicyList.ClearItems();
-
-    foreach (var item in dict) {
-      switch (item.Key.PolicyType) {
-        case PolicyType.None:
-          break;
-        case PolicyType.ProceduralSecurity:
-          _proceduralPolicyList.AddItem((item.Key, item.Value));
-          break;
-        case PolicyType.Configuration:
-          _configurationPolicyList.AddItem((item.Key, item.Value));
-          break;
-        case PolicyType.ProceduralOther:
-          break;
-        case PolicyType.PhysicalSecurity:
-          break;
-        default:
-          throw new ArgumentOutOfRangeException();
-      }
-    }
   }
 
   //---------------------------------------------------------------------------
