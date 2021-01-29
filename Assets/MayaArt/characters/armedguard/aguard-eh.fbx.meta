@@ -34,11 +34,7 @@ ModelImporter:
     rigImportErrors: 
     rigImportWarnings: 
     animationImportErrors: 
-    animationImportWarnings: "\nClip 'Take 001' has import animation warnings that
-      might lower retargeting quality:\nNote: Activate translation DOF on avatar
-      to improve retargeting quality.\n\t'spine_2' is inbetween humanoid transforms
-      and has rotation animation that will be discarded.\n\t'chest 1' is inbetween
-      humanoid transforms and has rotation animation that will be discarded.\n"
+    animationImportWarnings: 
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
@@ -392,13 +388,13 @@ ModelImporter:
         length: 0
         modified: 0
     skeleton:
-    - name: aguard-eh(Clone)
+    - name: camoguard(Clone)
       parentName: 
       position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: armedguard
-      parentName: aguard-eh(Clone)
+      parentName: camoguard(Clone)
       position: {x: -0, y: 0, z: 0.06711094}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
@@ -487,24 +483,9 @@ ModelImporter:
       position: {x: -0, y: 0, z: -0.06711094}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-    - name: shotgun
+    - name: rifle
       parentName: armedguard
       position: {x: -0, y: 0, z: -0.06711094}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
-    - name: laserend_EMIT
-      parentName: shotgun
-      position: {x: -0, y: 0, z: 0}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
-    - name: laserstart_EMIT
-      parentName: shotgun
-      position: {x: -0, y: 0, z: 0}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
-    - name: lightbeam_PASS1
-      parentName: shotgun
-      position: {x: -0, y: 0, z: 0}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: thumb_left
@@ -528,12 +509,12 @@ ModelImporter:
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: defaultLight
-      parentName: aguard-eh(Clone)
+      parentName: camoguard(Clone)
       position: {x: -0, y: 0, z: 0}
       rotation: {x: 0.90598154, y: 0, z: -0.41766304, w: 0.06895682}
       scale: {x: 1, y: 1, z: 1}
     - name: god_joint
-      parentName: aguard-eh(Clone)
+      parentName: camoguard(Clone)
       position: {x: -0, y: 0.9810787, z: -0.037887912}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
@@ -770,11 +751,12 @@ ModelImporter:
     hasTranslationDoF: 0
     hasExtraRoot: 1
     skeletonHasParents: 1
-  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 2688ade5654c7dc4399e65398a6d9dad,
+    type: 3}
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 3
   humanoidOversampling: 1
-  avatarSetup: 1
+  avatarSetup: 2
   additionalBone: 0
   userData: 
   assetBundleName: 
