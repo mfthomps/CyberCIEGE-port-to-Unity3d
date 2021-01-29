@@ -106,8 +106,6 @@ namespace Code.Factories {
 
     //-------------------------------------------------------------------------
     private void LoadComputerInfoFromFile(string filePath, ComputerBehavior computer, ref ComputerDataObject data) {
-      data.config_settings = new ConfigurationSettings(true, data.component_name, new List<Policies.Policy>());
-
       StreamReader reader = new StreamReader(filePath, Encoding.Default);
       using (reader) {
         ccUtils.PositionAfter(reader, "Component");
@@ -137,8 +135,10 @@ namespace Code.Factories {
                 break;
               case "User":
                 break;
-              case "HW":
+              case "hwName":
                 data.hw_name = value;
+                break;
+              case "HW":
                 data.hw = value;
                 data.isServer = hardwareCatalog.Value.GetHardwareType(value) == HardwareType.Servers;
                 break;

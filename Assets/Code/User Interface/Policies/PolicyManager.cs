@@ -47,7 +47,8 @@ namespace Code.Policies {
         new XElement("name", objectName),
         new XElement(settingField,
           new XElement("field", policy.GetName()),
-          new XElement("value", isOn)));
+          new XElement("value", isOn)),
+        new XElement("cost", isOn ? policy.cost : policy.cost / 2));
 
       IPCManagerScript.SendRequest(xml.ToString());
     }

@@ -57,13 +57,6 @@ namespace Code {
       the_name = name;
     }
 
-    public void ConfigureCanvas(ComputerBehavior computer, ComputerConfigure computer_config_script) {
-      computer_config_script.SetProc(proc_dict, computer);
-      computer_config_script.SetPassword(PWD_LEN, pw_len_dict, computer);
-      computer_config_script.SetPassword(PWD_CHANGE, pw_change_dict, computer);
-      computer_config_script.SetPassword(PWD_COMPLEX, pw_complex_dict, computer);
-    }
-
     public void ConfigureCanvas(ZoneBehavior zone, ZoneConfigure zone_config_script) {
       zone_config_script.SetProc(proc_dict, zone);
       zone_config_script.SetPassword(PWD_LEN, pw_len_dict, zone);

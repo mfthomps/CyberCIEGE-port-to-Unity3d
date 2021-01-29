@@ -14,7 +14,7 @@ namespace Code.User_Interface {
     public OnClickedDelegate onClicked;
 
     //-------------------------------------------------------------------------
-    public void SetSelected(bool isSelected) {
+    public virtual void SetSelected(bool isSelected) {
       if (selectionToggle != null) {
         selectionToggle.isOn = isSelected;
       }
@@ -25,6 +25,11 @@ namespace Code.User_Interface {
     //on a button or toggle.
     public void Click() {
       onClicked?.Invoke();
+    }
+
+    //-------------------------------------------------------------------------
+    protected bool IsSelected() {
+      return selectionToggle.isOn;
     }
   }
 }

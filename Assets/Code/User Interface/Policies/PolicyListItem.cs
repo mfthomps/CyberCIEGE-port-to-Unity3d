@@ -13,21 +13,36 @@ namespace Code.User_Interface.Policies {
     [Tooltip("The button that allows selecting this policy item.")]
     [SerializeField] private Button selectionButton;
 
+    private int _cost = 0;
+
     //-------------------------------------------------------------------------
     public override void SetItem(Policy policy) {
       name = policy.displayName;
       nameLabel.text = policy.displayName;
-      if (policy.cost > 0) {
-        costLabel.text = string.Format("{0:C}", policy.cost);
-      }
-      else {
-        costLabel.text = "";
-      }
+      _cost = policy.cost;
+      UpdateCostLabel();
+    }
+
+    //-------------------------------------------------------------------------
+    public override void SetSelected(bool isSelected) {
+      base.SetSelected(isSelected);
+      UpdateCostLabel();
     }
 
     //-------------------------------------------------------------------------
     public void SetInteractable(bool interactable) {
       selectionButton.interactable = interactable;
+    }
+
+    //-------------------------------------------------------------------------
+    private void UpdateCostLabel() {
+      if (_cost > 0) {
+        // Our cost is halved if the policy is enabled
+        costLabel.text = string.Format("{0:C}", IsSelected() ? _cost / 2 : _cost);
+      }
+      else {
+        costLabel.text = "";
+      }
     }
   }
 }

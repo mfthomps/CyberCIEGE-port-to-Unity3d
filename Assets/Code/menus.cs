@@ -21,8 +21,6 @@ public class menus : MonoBehaviour {
   [SerializeField] private CameraController _cameraController;
   [SerializeField] private GUISkin guiSkin;
 
-  [SerializeField] private GameObject _aclPanel;
-  [SerializeField] private GameObject _computerPanel;
   [SerializeField] private GameObject _zonePanel;
   
   [Tag]
@@ -84,13 +82,6 @@ public class menus : MonoBehaviour {
 
     /* create dictionary of menu/gui panels so they can be deactivated and yet 
      * still found by the menus script and whatever else may need to name them. */
-    menu_panels["ACLPanel"] = _aclPanel;
-    _aclPanel.SetActive(false);
-
-    //GameObject computer_panel = GameObject.Find("ComputerPanel");
-    menu_panels["ComputerPanel"] = _computerPanel;
-    _computerPanel.SetActive(false);
-
     menu_panels["ZonePanel"] = _zonePanel;
     _zonePanel.SetActive(false);
 
@@ -155,10 +146,6 @@ public class menus : MonoBehaviour {
     else if (clicked == "Save") {
       string fname = Path.Combine(GameLoadBehavior.user_app_path, "debug_save.sdf");
       IPCManagerScript.SendRequest("save:" + fname);
-    }
-    //else if (clicked == "Servers" || clicked == "Workstations" || clicked == "Devices" ||clicked == "Buying")
-    else if (clicked.StartsWith("Component:")) {
-      ComponentBehavior.doItems();
     }
     else if (clicked.StartsWith("User:")) {
       UserBehavior.doItems();
