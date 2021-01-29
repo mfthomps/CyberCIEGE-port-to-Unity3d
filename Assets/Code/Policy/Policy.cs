@@ -11,6 +11,8 @@ namespace Code.Policies {
     public string displayName;
     [Tooltip("How much it costs to enforce this policy")]
     public int cost;
+    [Tooltip("Can this policy be toggled off by clicking on it?")]
+    public bool canToggleOff = true;
 
     // ------------------------------------------------------------------------
     public string GetName() {

@@ -47,6 +47,5 @@ namespace Code.User_Interface.Components {
         }
       }
     }
-
   }
 }

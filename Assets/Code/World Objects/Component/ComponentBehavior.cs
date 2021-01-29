@@ -5,6 +5,7 @@ using Code.Scriptable_Variables;
 using UnityEngine;
 
 public class ComponentBehavior : MonoBehaviour {
+  [Header("Input Variables")]
   [SerializeField] private StringStringVariable _organizationDict;
   [Tooltip("The variable containing the list of all the Networks currently in the scenario.")]
   [SerializeField] private NetworkListVariable networkListVariable;

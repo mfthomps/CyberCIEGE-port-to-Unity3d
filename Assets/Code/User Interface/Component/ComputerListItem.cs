@@ -17,8 +17,8 @@ namespace Code.User_Interface.Components {
 
     //-------------------------------------------------------------------------
     public override void SetItem(ComputerBehavior item) {
-      labelUI.text = item.Data.component_name;
       this.name = item.Data.component_name;
+      labelUI.text = item.Data.component_name;
       workstationIcon.gameObject.SetActive(!(item.Data as ComputerDataObject).isServer);
       serverIcon.gameObject.SetActive((item.Data as ComputerDataObject).isServer);
     }

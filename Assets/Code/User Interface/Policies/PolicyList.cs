@@ -1,20 +1,21 @@
 ﻿using System.Collections.Generic;
-using UnityEngine.Events;
 using UnityEngine;
+using Shared.ScriptableVariables;
+using Code.Game_Events;
 using Code.Policies;
 using Code.Scriptable_Variables;
 
 namespace Code.User_Interface.Policies {
   //Represents a UI List of Policy Items
   public class PolicyList : SelectableList<PolicyListItem, Policy> {
-    [System.Serializable]
-    public class ItemClickedEvent : UnityEvent<Policy> {}
-
-    //Called when an Item in the list has been selected
-    public ItemClickedEvent onItemClicked;
-
     [Tooltip("Prefab for creating policy groups")]
     public RectTransform policyGroupPrefab;
+    [Header("Input Variables")]
+    [Tooltip("Currently selected GameObject")]
+    public GameObjectVariable selectedObject;
+    [Header("Output Events")]
+    [Tooltip("Policy clicked event")]
+    public PolicyGameEvent policyClicked;
     [Header("Customization")]
     [Tooltip("List of policies to display")]
     public PolicyListVariable policyList;
@@ -29,10 +30,24 @@ namespace Code.User_Interface.Policies {
     }
 
     //--------------------------------------------------------------------------
+    void OnEnable() {
+      selectedObject.OnValueChanged += UpdatePolicies;
+      UpdatePolicies();
+    }
+
+    //--------------------------------------------------------------------------
+    void OnDisable() {
+      selectedObject.OnValueChanged -= UpdatePolicies;
+    }
+
+    //--------------------------------------------------------------------------
     protected override void OnItemAdded(Policy item, PolicyListItem itemUI) {
       base.OnItemAdded(item, itemUI);
 
-      itemUI.onClicked += () => onItemClicked?.Invoke(item);
+      itemUI.onClicked += () => {
+        policyClicked?.Raise(item);
+        UpdatePolicies();
+      };
 
       // If this policy is part of a group, then move the UI into the group UI
       var policyGroup = mutuallyExclusivePolicyGroups.GetContainingPolicyGroup(item);
@@ -44,5 +59,24 @@ namespace Code.User_Interface.Policies {
         itemUI.transform.SetParent(_policyGroupUIs[policyGroup]);
       }
     }
-  }
+
+    //--------------------------------------------------------------------------
+    private void UpdatePolicies() {
+      // Get the list of policies that are enabled
+      var enabledPolicies = new HashSet<string>();
+      if (selectedObject.Value != null) {
+        var computerBehavior = selectedObject.Value.GetComponent<ComputerBehavior>();
+        if (computerBehavior != null) {
+          enabledPolicies = computerBehavior.GetEnabledPolicies();
+        }
+      }
+
+      // Run through and select the UI for each enabled policy
+      foreach (var policy in policyList.Value) {
+        var policyListItem = listItems[policy];
+        policyListItem.SetInteractable(enabledPolicies.Count > 0);
+        policyListItem.SetSelected(enabledPolicies.Contains(policy.GetName()));
+      }
+    }
+ }
 }

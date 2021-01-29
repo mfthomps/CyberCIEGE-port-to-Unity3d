@@ -12,6 +12,17 @@ namespace Code.Scriptable_Variables {
       Reset();
     }
     
+    //---------------------------------------------------------------------------
+    public Policy GetPolicy(string tag, string subTag) {
+      foreach (var policy in Value) {
+        // If the tags match and either the policy has no subTag and the incoming subTag is "true"
+        // or if the subTags match, then this is the policy we want
+        if (policy.tag == tag && ((string.IsNullOrEmpty(policy.subTag) && bool.Parse(subTag)) || policy.subTag == subTag)) {
+          return policy;
+        }
+      }
+      return null;
+    }
   }
   
 #if UNITY_EDITOR

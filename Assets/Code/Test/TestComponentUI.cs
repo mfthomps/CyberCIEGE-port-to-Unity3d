@@ -5,6 +5,7 @@ using UnityEngine;
 using Shared.ScriptableVariables;
 using Code.Factories;
 using Code.Hardware;
+using Code.Policies;
 
 namespace Code.Test {
   public class TestComponentUI : MonoBehaviour {
@@ -54,6 +55,36 @@ namespace Code.Test {
     void OnDestroy() {
       hardwareCatalog.Reset();
       selectedObject.Reset();
+    }
+
+    // ------------------------------------------------------------------------
+    public void TogglePolicy(Policy policy) {
+      if (selectedObject.Value != null) {
+        var computerBehavior = selectedObject.Value.GetComponent<ComputerBehavior>();
+        if (computerBehavior != null) {
+          computerBehavior.TogglePolicy(policy);
+        }
+      }
+    }
+
+    // ------------------------------------------------------------------------
+    public void OnComputerPolicyEnabled(Policy policy) {
+      if (selectedObject.Value != null) {
+        var computerBehavior = selectedObject.Value.GetComponent<ComputerBehavior>();
+        if (computerBehavior != null) {
+          Debug.Log($"Policy {policy.GetName()} enabled for {computerBehavior.Data.component_name}");
+        }
+      }
+    }
+
+    // ------------------------------------------------------------------------
+    public void OnComputerPolicyDisabled(Policy policy) {
+      if (selectedObject.Value != null) {
+        var computerBehavior = selectedObject.Value.GetComponent<ComputerBehavior>();
+        if (computerBehavior != null) {
+          Debug.Log($"Policy {policy.GetName()} disabled for {computerBehavior.Data.component_name}");
+        }
+      }
     }
   }
 }

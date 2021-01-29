@@ -21,7 +21,9 @@ public class menus : MonoBehaviour {
   [SerializeField] private CameraController _cameraController;
   [SerializeField] private GUISkin guiSkin;
 
+  [SerializeField] private GameObject _aclPanel;
   [SerializeField] private GameObject _computerPanel;
+  [SerializeField] private GameObject _zonePanel;
   
   [Tag]
   [Tooltip("The Tag of User GameObjects. Used to click on Users")]
@@ -82,17 +84,15 @@ public class menus : MonoBehaviour {
 
     /* create dictionary of menu/gui panels so they can be deactivated and yet 
      * still found by the menus script and whatever else may need to name them. */
-    GameObject acl_panel = GameObject.Find("ACLPanel");
-    menu_panels["ACLPanel"] = acl_panel;
-    acl_panel.SetActive(false);
+    menu_panels["ACLPanel"] = _aclPanel;
+    _aclPanel.SetActive(false);
 
     //GameObject computer_panel = GameObject.Find("ComputerPanel");
     menu_panels["ComputerPanel"] = _computerPanel;
     _computerPanel.SetActive(false);
 
-    GameObject zone_panel = GameObject.Find("ZonePanel");
-    menu_panels["ZonePanel"] = zone_panel;
-    zone_panel.SetActive(false);
+    menu_panels["ZonePanel"] = _zonePanel;
+    _zonePanel.SetActive(false);
 
     GameObject user_panel = GameObject.Find("UserPanel");
     menu_panels["UserPanel"] = user_panel;
