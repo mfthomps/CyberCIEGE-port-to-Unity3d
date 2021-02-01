@@ -47,6 +47,7 @@ namespace Code.Factories {
               data.background = ccUtils.SDTNext(reader, out tag);
               CreateGameObject(data, parent);
             }
+            value = ccUtils.SDTNext(reader, out tag);
           }
         }
       }

@@ -1,5 +1,64 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5342453103935990833
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7315142820410081707}
+  - component: {fileID: 2351774540732249725}
+  m_Layer: 0
+  m_Name: Update User Status
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7315142820410081707
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5342453103935990833}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2073182798043134062}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2351774540732249725
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5342453103935990833}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ace966faabda0734887c2cb816d27c30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delay: 0
+  eventToListenTo: {fileID: 11400000, guid: 3668cb05f285f9748aa856fa7d5de145, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1782108855848456436}
+        m_MethodName: UpdateStatus
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5882195145636872645
 GameObject:
   m_ObjectHideFlags: 0
@@ -32,6 +91,7 @@ Transform:
   - {fileID: 3781623114894535911}
   - {fileID: 5164614468491020253}
   - {fileID: 766477704636853287}
+  - {fileID: 7315142820410081707}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -50,12 +110,14 @@ MonoBehaviour:
   _maleChildGameObject: {fileID: 5164614468491020250}
   _femaleChildGameObject: {fileID: 3781623114894535904}
   _techChildGameObject: {fileID: 766477704636853280}
-  user_name: 
-  position: -1
-  department: 
-  current_thought: 
-  training: 0
-  failed_goals: []
+  _data:
+    user_name: 
+    gender: 
+    position: -1
+    department: 
+    current_thought: 
+    training: 0
+    failed_goals: []
 --- !u!136 &2672857406115281387
 CapsuleCollider:
   m_ObjectHideFlags: 0
