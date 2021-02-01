@@ -9,7 +9,7 @@ namespace Code.User_Interface.Objectives {
     public ObjectivesView objectivesView;
 
     // ------------------------------------------------------------------------
-    void Awake() {
+    public void LoadObjectives() {
       objectivesView.Init();
     }
 

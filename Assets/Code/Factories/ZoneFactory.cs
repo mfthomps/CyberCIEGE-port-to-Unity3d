@@ -11,13 +11,6 @@ namespace Code.Factories {
     [Tooltip("The prefab to use when creating new Zones")] [SerializeField]
     private ZoneBehavior _prefab;
 
-    [Tooltip("The variable containing the game's list of policies available to the Computers.")] [SerializeField]
-    private PolicyListVariable computerPolicyListVariable;
-
-    [Tooltip("The variable containing the game's list of physical security policies available to the Zones.")]
-    [SerializeField]
-    private PolicyListVariable physicalPolicyListVariable;
-
     [SerializeField] private ZoneListVariable _zoneListVariable;
 
     //-------------------------------------------------------------------------
@@ -90,8 +83,8 @@ namespace Code.Factories {
     //-------------------------------------------------------------------------
     private ZoneDataObject CreateDataObject(string zoneFile) {
       ZoneDataObject data = new ZoneDataObject {
-        ConfigSettings = new ConfigurationSettings(false, "", computerPolicyListVariable.Value),
-        PhysSettings = new PhysicalSettings(physicalPolicyListVariable.Value)
+        ConfigSettings = new ConfigurationSettings(false, "", new List<Policies.Policy>()),
+        PhysSettings = new PhysicalSettings(new List<Policies.Policy>())
       };
 
       StreamReader reader = new StreamReader(zoneFile, Encoding.Default);

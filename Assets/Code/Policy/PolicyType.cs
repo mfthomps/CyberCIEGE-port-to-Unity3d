@@ -1,4 +1,4 @@
-﻿namespace Code.Policy {
+﻿namespace Code.Policies {
   //What flavor of Policy -- what it applies to.
   public enum PolicyType {
     None = 0,
