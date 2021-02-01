@@ -13,6 +13,8 @@ namespace Code.Test {
     public GameObjectVariable selectedObject;
 
     [Header("Factories")]
+    [Tooltip("The factory to use for creating AccessControlGroups")]
+    [SerializeField] private AccessControlGroupFactory _accessControlGroupFactory;
     [Tooltip("The factory to use for creating Zones")]
     [SerializeField] private ZoneFactory _zoneFactory;
 
@@ -20,6 +22,7 @@ namespace Code.Test {
     void Start() {
       var user_app_path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "CyberCIEGE");
 
+      _accessControlGroupFactory.CreateAll(user_app_path);
       _zoneFactory.CreateAll(user_app_path);
     }
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using Code.Factories;
@@ -17,8 +16,6 @@ public class GameLoadBehavior : MonoBehaviour {
 
   public static GameObject main_floor;
 
-  public static DACGroups dac_groups;
-  
   [Tooltip("The Camera Controller to use when jumping between items in the scenario.")]
   [SerializeField] private CameraController cameraController;
 
@@ -27,6 +24,9 @@ public class GameLoadBehavior : MonoBehaviour {
   public HardwareCatalogVariable hardwareCatalog;
 
   [Header("Factories")]
+  [Tooltip("The factory to use for creating AccessControlGroups")]
+  [SerializeField] private AccessControlGroupFactory _accessControlGroupFactory;
+
   [Tooltip("The factory to use for creating Assets")]
   [SerializeField] private AssetFactory _assetFactory;
 
@@ -90,10 +90,10 @@ public class GameLoadBehavior : MonoBehaviour {
   // --------------------------------------------------------------------------
   private void LoadItems() {
     InitializeHardwareCatalog();
+    _accessControlGroupFactory.CreateAll(user_app_path);
     _organizationFactory.CreateAll(user_app_path);
     _networkFactory.CreateAll(user_app_path);
     _workspaceFactory.CreateAll(user_app_path);
-    dac_groups = new DACGroups();
     _userFactory.CreateAll(user_app_path);
     _assetFactory.CreateAll(user_app_path);
     _computerFactory.CreateAll(user_app_path);
@@ -105,19 +105,6 @@ public class GameLoadBehavior : MonoBehaviour {
   // --------------------------------------------------------------------------
   public void AfterServerReady() {
     LoadItems();
-    
-    //TODO Where should the camera start from?
-    //This will auto slave the camera target to the first user. If none, try the first component.
-    UserBehavior ub = UserBehavior.GetNextUser();
-    if (ub != null) {
-      cameraController.targetObject = ub.transform;  
-    }
-    else {
-      var component = ComponentBehavior.GetNextComponent();
-      if (component != null) {
-        cameraController.targetObject = component.transform;
-      }
-    }
   }
 
   // --------------------------------------------------------------------------

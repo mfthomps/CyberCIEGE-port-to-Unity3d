@@ -26,6 +26,8 @@ public class IPCManagerScript : MonoBehaviour {
   public StringGameEvent phaseCompleted;
   [Tooltip("Event to fire when an objective is updated")]
   public StringGameEvent objectiveUpdated;
+  [Tooltip("Event to fire when user message changes")]
+  public StringGameEvent userMessageChanged;
 
   private static NetworkStream serverStream;
 
@@ -80,7 +82,7 @@ public class IPCManagerScript : MonoBehaviour {
           _deviceFactory.Create(message + ".sdf");
           break;
         case "user_status":
-          UserBehavior.UpdateStatus(message);
+          userMessageChanged?.Raise(message);
           break;
         case "ticker":
           currentMessageChanged?.Raise(message);

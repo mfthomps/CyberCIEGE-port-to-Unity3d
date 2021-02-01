@@ -12,8 +12,12 @@ namespace Code.Test {
     [Header("Input Variables")]
     [Tooltip("List of computers to select")]
     public ComputerListVariable computerListVariable;
+    [Tooltip("List of computers to select")]
+    public DeviceListVariable deviceListVariable;
     [Tooltip("List of staff to select")]
     public StaffListVariable staffListVariable;
+    [Tooltip("List of users to select")]
+    public UserListVariable userListVariable;
     [Tooltip("List of zones to select")]
     public ZoneListVariable zoneListVariable;
     [Header("Output Variables")]
@@ -84,7 +88,7 @@ namespace Code.Test {
     // ------------------------------------------------------------------------
     [ContextMenu("Select Device")]
     public void SelectDevice() {
-      selectedObject.Value = FindObjectOfType<DeviceBehavior>()?.gameObject;
+      selectedObject.Value = deviceListVariable.Value[0].gameObject;
     }
 
     // ------------------------------------------------------------------------
@@ -96,7 +100,7 @@ namespace Code.Test {
     // ------------------------------------------------------------------------
     [ContextMenu("Select User")]
     public void SelectUser() {
-      selectedObject.Value = FindObjectOfType<UserBehavior>()?.gameObject;
+      selectedObject.Value = userListVariable.Value[0].gameObject;
     }
 
     // ------------------------------------------------------------------------

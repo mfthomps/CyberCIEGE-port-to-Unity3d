@@ -12,6 +12,9 @@ public class menus : MonoBehaviour {
   [Tooltip("The factory/manager that deals with all Staff")]
   [SerializeField] private StaffFactory _staffFactory;
 
+  [Tooltip("The factory/manager that deals with all Users")]
+  [SerializeField] private UserFactory _userFactory;
+
   [Tooltip("The Camera controller to use when jumping between items in the scenario")]
   [SerializeField] private CameraController _cameraController;
   [SerializeField] private GUISkin guiSkin;
@@ -135,7 +138,7 @@ public class menus : MonoBehaviour {
       IPCManagerScript.SendRequest("save:" + fname);
     }
     else if (clicked.StartsWith("User:")) {
-      UserBehavior.doItems();
+      _userFactory.doItems();
     }
   }
 

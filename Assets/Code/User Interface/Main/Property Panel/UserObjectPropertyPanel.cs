@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using TMPro;
+using Code.World_Objects.User;
 
 namespace Code.User_Interface.Main {
   public class UserObjectPropertyPanel : GenericObjectPropertyPanel<UserBehavior> {

@@ -69,9 +69,7 @@ namespace Code.Factories {
       newZone.Data = data;
 
       //add ourself to the zone list variable.
-      var zoneList = _zoneListVariable.Value;
-      zoneList.Add(newZone);
-      _zoneListVariable.Value = new List<ZoneBehavior>(zoneList);
+      _zoneListVariable.Add(newZone);
 
       DoPosition(newZone);
     }
