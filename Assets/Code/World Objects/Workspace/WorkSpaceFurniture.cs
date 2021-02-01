@@ -23,12 +23,18 @@ namespace Code.World_Objects.Workspace {
     [Header("Server Room")]
     [Tooltip("The lamp to use in the server room")]
     public GameObject _serverRoomLampPrefab;
-    [FormerlySerializedAs("_workSpaceWorkServerDeskPrefab")]
+    [Tooltip("The lamp offset from the WorkSpace, in local coordinate system")]
+    public Vector3 _serverRoomLampOffset = new Vector3(0,0,-2);
+    
     [Tooltip("The desk prefab to use in the server room")]
     public GameObject _serverRoomDeskPrefab;
-    [FormerlySerializedAs("_workSpaceWorkServerRackPrefab")]
+    [Tooltip("The table offset from the WorkSpace, in local coordinate system")]
+    public Vector3 _serverRoomDeskOffset = new Vector3(0,0,0);
+    
     [Tooltip("The server rack prefab to use in the server room")]
     public GameObject _serverRoomServerRackPrefab;
+    [Tooltip("The rack offset from the WorkSpace, in local coordinate system")]
+    public Vector3 _serverRoomRackOffset = new Vector3(-2,0,1);
 
     [Header("Misc")]
     [Tooltip("The WorkSpace index values that should *not* provide workspace desks (inclusive)")]

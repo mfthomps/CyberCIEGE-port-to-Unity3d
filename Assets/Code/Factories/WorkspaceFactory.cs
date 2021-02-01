@@ -217,15 +217,23 @@ namespace Code.Factories {
     
     //--------------------------------------------------------------------------
     //instantiate and position the stuff that goes in a server room WorkSpace
-    private void PopulateServerRoom(WorkSpaceScript workSpace, WorkSpaceFurniture furniture) {
+    private static void PopulateServerRoom(WorkSpaceScript workSpace, WorkSpaceFurniture furniture) {
       //create table
-      var table = Instantiate(furniture._serverRoomDeskPrefab, workSpace.transform);
+      if (furniture._serverRoomDeskPrefab) {
+        var table = Instantiate(furniture._serverRoomDeskPrefab, workSpace.transform);
+        table.transform.Translate(furniture._serverRoomDeskOffset, Space.Self);
+      }
+
       //create server rack
-      var rack = Instantiate(furniture._serverRoomServerRackPrefab, workSpace.transform);
-      
-      //Add in the lamp if appropriate
+      if (furniture._serverRoomServerRackPrefab) {
+        var rack = Instantiate(furniture._serverRoomServerRackPrefab, workSpace.transform);
+        rack.transform.Translate(furniture._serverRoomRackOffset, Space.Self);
+      }
+
+      //Add in the lamp
       if (furniture._serverRoomLampPrefab) {
         var lamp = Instantiate(furniture._serverRoomLampPrefab, workSpace.transform);
+        lamp.transform.Translate(furniture._serverRoomLampOffset, Space.Self);
       }
       
     }
