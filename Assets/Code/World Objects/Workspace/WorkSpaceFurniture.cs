@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
-using UnityEngine.Serialization;
-using UnityUtilities;
 
 namespace Code.World_Objects.Workspace {
   
@@ -16,19 +13,23 @@ namespace Code.World_Objects.Workspace {
     [Header("Regular Room")]
     [Tooltip("The chair prefab to use in a regular work space")]
     public GameObject _workSpaceChairPrefab;
+
     [Tooltip("The offset from the WorkSpace to use for the chair in local coordinate system")]
-    public Vector3 _chairOffset = new Vector3(0,0,-1);
+    public WorkSpaceFurnitureOffset ChairOffset;
 
     [Tooltip("The work station prefab to use in a regular work space")]
     public GameObject _workSpaceWorkDeskPrefab;
+    [Tooltip("The offset from the WorkSpace to use for the chair in local coordinate system")]
+    public WorkSpaceFurnitureOffset DeskOffset;
+    
     public List<GameObject> _random1List = new List<GameObject>();
     [Tooltip("The offset from the WorkSpace to use for the first random item, in local coordinate system")]
-    public Vector3 _random1Offset = new Vector3(-2,0,2);
+    public WorkSpaceFurnitureOffset Random1Offset;
 
     public List<GameObject> _random2List = new List<GameObject>();
     [Tooltip("The offset from the WorkSpace to use for the second random item, in local coordinate system")]
-    public Vector3 _random2Offset = new Vector3(2,0,-2);
-
+    public WorkSpaceFurnitureOffset Random2Offset;
+    
     [Header("Server Room")]
     [Tooltip("The lamp to use in the server room")]
     public GameObject _serverRoomLampPrefab;

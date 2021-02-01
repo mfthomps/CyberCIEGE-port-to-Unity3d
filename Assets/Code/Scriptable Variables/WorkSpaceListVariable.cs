@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Code.World_Objects.Workspace;
+using UnityEngine;
 
 namespace Code.Scriptable_Variables {
   //A ScriptableVariable that contains a list of WorkSpace data objects

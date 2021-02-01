@@ -16,11 +16,21 @@ MonoBehaviour:
     the server rooms in this office!
   value:
     _associatedOfficeMagicString: MS3B
-    _workSpaceChairPrefab: {fileID: 919132149155446097, guid: 3a020e9b00c923540a103ce5253633bb,
+    _workSpaceChairPrefab: {fileID: 3828221866648098590, guid: a1492afd2f7976d43a092dc448a6f8ae,
       type: 3}
-    _chairOffset: {x: 0, y: 0, z: -1}
-    _workSpaceWorkDeskPrefab: {fileID: 919132149155446097, guid: 93885257f28900a45a82e082276d24e1,
+    ChairOffset:
+      NorthRelativeOffset: {x: 0, y: 0, z: 1}
+      EastRelativeOffset: {x: 1, y: 0, z: 1}
+      SouthRelativeOffset: {x: 1, y: 0, z: 0}
+      WestRelativeOffset: {x: 0, y: 0, z: 0}
+    _workSpaceWorkDeskPrefab: {fileID: 8008085451927906272, guid: 7bca17a872caec84a91638335c1cd45c,
       type: 3}
+    _deskOffset: {x: 0, y: 0, z: 0}
+    DeskOffset:
+      NorthRelativeOffset: {x: 0, y: 0, z: 2}
+      EastRelativeOffset: {x: 1, y: 0, z: 2}
+      SouthRelativeOffset: {x: 0, y: 0, z: 0}
+      WestRelativeOffset: {x: 0, y: 0, z: 1}
     _random1List:
     - {fileID: 5376013956075579131, guid: f61905ca33ed6c145a723582e1faf688, type: 3}
     - {fileID: 8251830521167055863, guid: ad5a02c8bd1857c45890c31604189640, type: 3}
@@ -43,8 +53,18 @@ MonoBehaviour:
   defaultValue:
     _associatedOfficeMagicString: 
     _workSpaceChairPrefab: {fileID: 0}
-    _chairOffset: {x: 0, y: 0, z: -1}
+    ChairOffset:
+      NorthRelativeOffset: {x: 0, y: 0, z: 0}
+      EastRelativeOffset: {x: 0, y: 0, z: 0}
+      SouthRelativeOffset: {x: 0, y: 0, z: 0}
+      WestRelativeOffset: {x: 0, y: 0, z: 0}
     _workSpaceWorkDeskPrefab: {fileID: 0}
+    _deskOffset: {x: 0, y: 0, z: 0}
+    DeskOffset:
+      NorthRelativeOffset: {x: 0, y: 0, z: 0}
+      EastRelativeOffset: {x: 0, y: 0, z: 0}
+      SouthRelativeOffset: {x: 0, y: 0, z: 0}
+      WestRelativeOffset: {x: 0, y: 0, z: 0}
     _random1List: []
     _random1Offset: {x: -2, y: 0, z: 2}
     _random2List: []

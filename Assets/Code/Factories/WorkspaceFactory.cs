@@ -161,12 +161,12 @@ namespace Code.Factories {
     }
 
     //-------------------------------------------------------------------------
-    private static Quaternion GetRotation(WorkSpace.WorkSpaceDirection direction) {
+    private static Quaternion GetRotation(Direction direction) {
       switch (direction) {
-        case WorkSpace.WorkSpaceDirection.North: return Quaternion.Euler(0, -90, 0);
-        case WorkSpace.WorkSpaceDirection.East: return Quaternion.Euler(0, -180, 0);
-        case WorkSpace.WorkSpaceDirection.South: return Quaternion.Euler(0, 90, 0);
-        case WorkSpace.WorkSpaceDirection.West: return Quaternion.Euler(0, 0, 0);
+        case Direction.North: return Quaternion.Euler(0, -90, 0);
+        case Direction.East: return Quaternion.Euler(0, -180, 0);
+        case Direction.South: return Quaternion.Euler(0, 90, 0);
+        case Direction.West: return Quaternion.Euler(0, 0, 0);
         default:
           return Quaternion.identity;
       }
@@ -202,14 +202,17 @@ namespace Code.Factories {
     private static void PopulateRegularWorkspace(WorkSpaceScript workSpace,WorkSpaceData supplementalData, int workSpaceIndex, WorkSpaceFurniture furniture) {
       //regular WorkSpaces get a chair and a desk
       GameObject chairPrefab = furniture.GetWorkSpaceChair(workSpaceIndex);
+      Direction direction = workSpace.Data.GetDirection();
+      
       if (chairPrefab) {
         var item = Instantiate(chairPrefab, workSpace.transform);
-        item.transform.Translate(furniture._chairOffset, Space.Self);
+        item.transform.Translate(furniture.ChairOffset.GetOffset(direction), Space.Self);
       }
 
       GameObject deskPrefab = furniture.GetWorkSpaceDesk(workSpaceIndex);
       if (deskPrefab) {
-        Instantiate(deskPrefab, workSpace.transform);
+        var item = Instantiate(deskPrefab, workSpace.transform);
+        item.transform.Translate(furniture.DeskOffset.GetOffset(direction), Space.Self);
       }
 
       //add in the random office stuff using the random lists of objects 
@@ -217,13 +220,13 @@ namespace Code.Factories {
       var firstItemPrefab = furniture.GetRandomItem1(supplementalData.Random1, workSpaceIndex);
       if (firstItemPrefab) {
         var item = Instantiate(firstItemPrefab, workSpace.transform);
-        item.transform.Translate(furniture._random1Offset, Space.Self);
+        item.transform.Translate(furniture.Random1Offset.GetOffset(direction), Space.Self);
       }
       
       var secondItemPrefab = furniture.GetRandomItem2(supplementalData.Random2, workSpaceIndex);
       if (secondItemPrefab) {
         var item = Instantiate(secondItemPrefab, workSpace.transform);
-        item.transform.Translate(furniture._random2Offset, Space.Self);
+        item.transform.Translate(furniture.Random2Offset.GetOffset(direction), Space.Self);
       }
     }
 

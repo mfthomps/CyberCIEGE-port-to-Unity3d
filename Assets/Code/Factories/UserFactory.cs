@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using Code.Scriptable_Variables;
+using Code.World_Objects.Workspace;
 using UnityEngine;
 
 namespace Code.Factories {
