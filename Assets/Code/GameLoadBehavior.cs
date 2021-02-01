@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using Code.Factories;
-using UltimateCameraController.Cameras.Controllers;
 using UnityEngine;
-using Code.Hardware;
 using UnityEngine.Serialization;
+using UltimateCameraController.Cameras.Controllers;
+using Shared.ScriptableVariables;
+using Code.Factories;
+using Code.Hardware;
 
 public class GameLoadBehavior : MonoBehaviour {
   //public static string user_app_path = "C:\\Documents and Settings\\mfthomps\\Application Data\\CyberCIEGE";
@@ -22,9 +22,11 @@ public class GameLoadBehavior : MonoBehaviour {
   [Tooltip("The Camera Controller to use when jumping between items in the scenario.")]
   [SerializeField] private CameraController cameraController;
 
-  [Header("Output Variables")]
+  [Header("Output Events/Variables")]
   [Tooltip("Variable containing all hardware (computers, servers, routers, etc) information for game")]
   public HardwareCatalogVariable hardwareCatalog;
+  [Tooltip("Variable containing all hardware (computers, servers, routers, etc) information for game")]
+  public GameEvent gameInitialized;
 
   [Header("Factories")]
   [Tooltip("The factory to use for creating Assets")]
@@ -118,6 +120,8 @@ public class GameLoadBehavior : MonoBehaviour {
         cameraController.targetObject = component.transform;
       }
     }
+
+    gameInitialized?.Raise();
   }
 
   // --------------------------------------------------------------------------
