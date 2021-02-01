@@ -1,55 +1,66 @@
 ﻿using System.Collections.Generic;
-using Code;
-using Code.Policies;
 using UnityEngine;
-using UnityEngine.UI;
+using Code.Game_Events;
+using Code.Policies;
+using Code.Scriptable_Variables;
 
-public class ZoneBehavior : MonoBehaviour {
-  private static Rect WindowRect = new Rect(10, 10, 250, 300);
+namespace Code.World_Objects.Zone {
+  public class ZoneBehavior : MonoBehaviour {
+    [Tooltip("List of policy groups for organizing mutually exclusive policies")]
+    public PolicyGroupListVariable mutuallyExclusivePolicyGroups;
+    [Header("Output Events")]
+    [Tooltip("A policy was toggled on")]
+    public PolicyGameEvent policyEnabled;
+    [Tooltip("A policy was toggled off")]
+    public PolicyGameEvent policyDisabled;
 
-  private ZoneConfigure zone_config_script; /* menu of current configuration values shared between instances TBC static?*/
-  
-  [Tooltip("The data related to this Zone.")]
-  [SerializeField] private ZoneDataObject _data;
+    [Tooltip("The data related to this Zone.")]
+    [SerializeField] private ZoneDataObject _data;
 
-  public ZoneDataObject Data {
-    get => _data;
-    set => _data = value;
-  }
+    public ZoneDataObject Data {
+      get => _data;
+      set => _data = value;
+    }
+    
+    //----------------------------------------------------------------------------
+    public HashSet<string> GetEnabledPolicies() {
+      return _data.enabledPolicies;
+    }
 
-  public static void doItems(IEnumerable<ZoneBehavior> zoneBehaviors) {
-    WindowRect = GUI.Window(1, WindowRect, func: delegate(int i) {
-      foreach (var zone in zoneBehaviors)
-        if (GUILayout.Button(zone.Data.ZoneName)) {
-          menus.clicked = "";
-          zone.ConfigureCanvas();
+    //----------------------------------------------------------------------------
+    public bool IsPolicyEnabled(Policy policy) {
+      return _data.enabledPolicies.Contains(policy.GetName());
+    }
+
+    //----------------------------------------------------------------------------
+    public void TogglePolicy(Policy policy) {
+      // If this policy wasn't enabled before, then enable it now
+      if (!IsPolicyEnabled(policy)) {
+        // If this policy is part of a group, disable all the group policies
+        var policyGroup = mutuallyExclusivePolicyGroups.GetContainingPolicyGroup(policy);
+        if (policyGroup != null) {
+          foreach (var groupPolicy in policyGroup.policies) {
+            DisablePolicy(groupPolicy);
+          }
         }
-    }, text: "Zones");
-  }
-  
-  private void ConfigureCanvas() {
-    GameObject zone_panel = menus.menu_panels["ZonePanel"];
-    menus.ActiveScreen(zone_panel.name);
+        EnablePolicy(policy);
+      }
+      // Otherwise, disable it if we're allowed to
+      else if (policy.canToggleOff) {
+        DisablePolicy(policy);
+      }
+    }
 
-    zone_config_script = (ZoneConfigure) zone_panel.GetComponent(typeof(ZoneConfigure));
-    Data.ConfigSettings.ConfigureCanvas(this, zone_config_script);
-    Data.PhysSettings.ConfigureCanvas(this, zone_config_script);
-    zone_panel.SetActive(true);
-  }
- 
-  public void PolicyValueChanged(Policy policy, bool isOn) {
-    Data.ConfigSettings.ProceduralPolicyChanged(policy, isOn);
-  }
+    //----------------------------------------------------------------------------
+    private void EnablePolicy(Policy policy) {
+      _data.enabledPolicies.Add(policy.GetName());
+      policyEnabled?.Raise(policy);
+    }
 
-  public void PhysChanged(Toggle toggle) {
-    Data.PhysSettings.PhysChanged(toggle);
-  }
-
-  public void PasswordChanged(string group_name, Toggle toggle) {
-    Data.ConfigSettings.PasswordChanged(group_name, toggle);
-  }
-
-  public void AccessChanged(Toggle toggle) {
-    Data.PhysSettings.AccessChanged(toggle);
+    //----------------------------------------------------------------------------
+    private void DisablePolicy(Policy policy) {
+      _data.enabledPolicies.Remove(policy.GetName());
+      policyDisabled?.Raise(policy);
+    }
   }
 }

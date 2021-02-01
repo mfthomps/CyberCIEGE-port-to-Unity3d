@@ -4,15 +4,10 @@ using UnityEngine;
 using NaughtyAttributes;
 using UltimateCameraController.Cameras.Controllers;
 using Code.Factories;
-using Code.Scriptable_Variables;
 
 public class menus : MonoBehaviour {
   private static readonly GUIStyle labelStyle = new GUIStyle();
   public static string clicked = "";
-  
-  [Tooltip("The scriptable variable that contains a list of the current" +
-           " Zones in the scenario.")]
-  [SerializeField] private ZoneListVariable _zoneListVariable;
 
   [Tooltip("The factory/manager that deals with all Staff")]
   [SerializeField] private StaffFactory _staffFactory;
@@ -20,8 +15,6 @@ public class menus : MonoBehaviour {
   [Tooltip("The Camera controller to use when jumping between items in the scenario")]
   [SerializeField] private CameraController _cameraController;
   [SerializeField] private GUISkin guiSkin;
-
-  [SerializeField] private GameObject _zonePanel;
   
   [Tag]
   [Tooltip("The Tag of User GameObjects. Used to click on Users")]
@@ -82,9 +75,6 @@ public class menus : MonoBehaviour {
 
     /* create dictionary of menu/gui panels so they can be deactivated and yet 
      * still found by the menus script and whatever else may need to name them. */
-    menu_panels["ZonePanel"] = _zonePanel;
-    _zonePanel.SetActive(false);
-
     GameObject user_panel = GameObject.Find("UserPanel");
     menu_panels["UserPanel"] = user_panel;
     user_panel.SetActive(false);
@@ -140,9 +130,6 @@ public class menus : MonoBehaviour {
       //Application.OpenURL("file://" + startup.helpHome + "/README.html");
       clicked = "";
     }
-    else if (clicked == "Zones") {
-      ZoneBehavior.doItems(_zoneListVariable.Value);
-    }
     else if (clicked == "Save") {
       string fname = Path.Combine(GameLoadBehavior.user_app_path, "debug_save.sdf");
       IPCManagerScript.SendRequest("save:" + fname);
@@ -155,9 +142,6 @@ public class menus : MonoBehaviour {
   private void MenuItemsFunc(int id) {
     if (GUILayout.Button("Help")) {
       clicked = "help";
-    }
-    else if (GUILayout.Button("Zones")) {
-      clicked = "Zones";
     }
     else if (GUILayout.Button("Save")) {
       clicked = "Save";
