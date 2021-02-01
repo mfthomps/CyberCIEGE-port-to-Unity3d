@@ -143,10 +143,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _prefab: {fileID: 6240403857814981039, guid: 2f9e021de4421b8408c4b1fc782cd857, type: 3}
-  computerPolicyListVariable: {fileID: 11400000, guid: 6947a957c41ad5e4bb5512db7594b65b,
-    type: 2}
-  physicalPolicyListVariable: {fileID: 11400000, guid: 2f97a60dfbe1c194f917cf45d2cce227,
-    type: 2}
+  computerPolicyListVariable: {fileID: 0}
+  physicalPolicyListVariable: {fileID: 0}
   _zoneListVariable: {fileID: 11400000, guid: 7b9705be4efa88f4f83f6bcaf84ee5bd, type: 2}
 --- !u!1 &7300660531491029805
 GameObject:
@@ -459,11 +457,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _prefab: {fileID: 4764116108447556386, guid: b6da94b1dae568f4abc28a8d7f1ad2d6, type: 3}
   hardwareCatalog: {fileID: 11400000, guid: 4a97168858329c24db6d4a0d5fa69553, type: 2}
-  computerListVariable: {fileID: 11400000, guid: 8380099111649e944adcc17e9f804d36,
-    type: 2}
-  computerPolicyListVariable: {fileID: 11400000, guid: 6947a957c41ad5e4bb5512db7594b65b,
-    type: 2}
   _workSpaceListVariable: {fileID: 11400000, guid: d58ae4d2fe18c644789dbe0b0007d8d3,
+    type: 2}
+  policies:
+  - {fileID: 11400000, guid: 65295140024a4c045b4a30771a25868a, type: 2}
+  - {fileID: 11400000, guid: 895b2b519930b6c40954f19a208a1dcb, type: 2}
+  - {fileID: 11400000, guid: 1210e1f9343bfb54b9b0fc96f306ac00, type: 2}
+  - {fileID: 11400000, guid: a844c63e7406e99418c6ef8d041057b6, type: 2}
+  - {fileID: 11400000, guid: 816d7d7687f22e943a7b02c5ae93bad4, type: 2}
+  - {fileID: 11400000, guid: 592fa830322d5f54db48408ebdb3979c, type: 2}
+  - {fileID: 11400000, guid: 9b00c609bea7ce94ab448ad9a5df3845, type: 2}
+  computerListVariable: {fileID: 11400000, guid: 8380099111649e944adcc17e9f804d36,
     type: 2}
 --- !u!1 &7300660532797560254
 GameObject:
@@ -511,5 +515,4 @@ MonoBehaviour:
   _staffListVariable: {fileID: 11400000, guid: bb81c43d222433549a0af763cf35c0be, type: 2}
   _workSpaceListVariable: {fileID: 11400000, guid: d58ae4d2fe18c644789dbe0b0007d8d3,
     type: 2}
-  _hireStaffEvent: {fileID: 11400000, guid: 854db83451cff0f45a020554cd67f84b, type: 2}
   _prefabMapping: {fileID: 11400000, guid: 00d8e0ec77f2295499dac3b15a7de8f5, type: 2}

@@ -8,14 +8,14 @@ using Code.World_Objects.Staff;
 namespace Code.User_Interface.Staff {
   public class StaffView : MonoBehaviour {
     [Header("Input Variables")]
-    [Tooltip("List of staff in the given scenario")]
+    [Tooltip("Workload capactiy of tech staff")]
     public IntVariable techCapacityVariable;
-    [Tooltip("List of staff in the given scenario")]
+    [Tooltip("Workload capactiy of security staff")]
     public IntVariable securityCapacityVariable;
     [Tooltip("List of staff in the given scenario")]
     public StaffListVariable staffListVariable;
     [Header("Output Variables")]
-    [Tooltip("List of staff in the given scenario")]
+    [Tooltip("Currently selected GameObject")]
     public GameObjectVariable selectedObject;
     [Header("UI Elements")]
     [Tooltip("List of staff types to display")]

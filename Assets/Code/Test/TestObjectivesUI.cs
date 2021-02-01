@@ -8,6 +8,11 @@ namespace Code.Test {
     public ObjectivesView objectivesView;
 
     // ------------------------------------------------------------------------
+    void Awake() {
+      objectivesView.Init();
+    }
+
+    // ------------------------------------------------------------------------
     public void SetPhaseDone(string phaseName) {
       objectivesView.SetPhaseDone(phaseName);
     }

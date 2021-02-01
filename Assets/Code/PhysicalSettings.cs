@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Xml.Linq;
 using Code.Factories;
-using Code.Policy;
+using Code.Policies;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,7 +15,7 @@ public class PhysicalSettings {
 
   public PhysicalSettings(List<Policy> physicalSecurityPolicies) {
     foreach (var key in physicalSecurityPolicies) {
-      phys_dict[key.Name] = false;
+      phys_dict[key.GetName()] = false;
     }
 
     //Debug.Log("LoadComputer proc key " + key);

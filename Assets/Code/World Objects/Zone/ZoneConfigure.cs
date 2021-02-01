@@ -1,16 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Code.Policy;
+using Code.Policies;
 using Code.User_Interface;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ZoneConfigure : MonoBehaviour {
-  [Tooltip("The list of Policies to apply to the Zone Procedural settings.")]
-  [SerializeField] private PolicyList _proceduralPolicyList;
-  [Tooltip("The list of Policies to apply to the Zone Configuration settings.")]
-  [SerializeField] private PolicyList _configurationPolicyList;
-  
   private static GUIStyle label_style = new GUIStyle();
   public GameObject myTextPrefab;
 
@@ -79,29 +74,6 @@ public class ZoneConfigure : MonoBehaviour {
   //TODO Duplicate of ComputerConfigure.SetProc()
   public void SetProc(Dictionary<Policy, bool> dict, ZoneBehavior zone) {
     _selectedZone = zone;
-    
-    //remove old items
-    _proceduralPolicyList.ClearItems();
-    _configurationPolicyList.ClearItems();
-    
-    foreach (var item in dict) {
-      switch (item.Key.PolicyType) {
-        case PolicyType.None:
-          break;
-        case PolicyType.ProceduralSecurity:
-          _proceduralPolicyList.AddItem((item.Key, item.Value));
-          break;
-        case PolicyType.Configuration:
-          _configurationPolicyList.AddItem((item.Key, item.Value));
-          break;
-        case PolicyType.ProceduralOther:
-          break;
-        case PolicyType.PhysicalSecurity:
-          break;
-        default:
-          throw new ArgumentOutOfRangeException();
-      }
-    }
   }
 
   public void SetPhys(Dictionary<string, bool> dict, ZoneBehavior zone) {
