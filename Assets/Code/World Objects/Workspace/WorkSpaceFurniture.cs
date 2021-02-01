@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityUtilities;
@@ -15,11 +16,19 @@ namespace Code.World_Objects.Workspace {
     [Header("Regular Room")]
     [Tooltip("The chair prefab to use in a regular work space")]
     public GameObject _workSpaceChairPrefab;
+    [Tooltip("The offset from the WorkSpace to use for the chair in local coordinate system")]
+    public Vector3 _chairOffset = new Vector3(0,0,-1);
+
     [Tooltip("The work station prefab to use in a regular work space")]
     public GameObject _workSpaceWorkDeskPrefab;
     public List<GameObject> _random1List = new List<GameObject>();
+    [Tooltip("The offset from the WorkSpace to use for the first random item, in local coordinate system")]
+    public Vector3 _random1Offset = new Vector3(-2,0,2);
+
     public List<GameObject> _random2List = new List<GameObject>();
-    
+    [Tooltip("The offset from the WorkSpace to use for the second random item, in local coordinate system")]
+    public Vector3 _random2Offset = new Vector3(2,0,-2);
+
     [Header("Server Room")]
     [Tooltip("The lamp to use in the server room")]
     public GameObject _serverRoomLampPrefab;
@@ -47,11 +56,30 @@ namespace Code.World_Objects.Workspace {
 
     //-------------------------------------------------------------------------
     public GameObject GetWorkSpaceDesk(int workSpaceIndex) {
-      return ShouldHaveADesk(workSpaceIndex) ? _workSpaceWorkDeskPrefab : null;
+      return IsApplicableWorkSpaceIndex(workSpaceIndex) ? _workSpaceWorkDeskPrefab : null;
     }
 
     //-------------------------------------------------------------------------
-    private bool ShouldHaveADesk(int workSpaceIndex) {
+    public GameObject GetRandomItem1(int randomIndex, int workSpaceIndex) {
+      return GetItemFromList(randomIndex, workSpaceIndex, _random1List);
+    }
+
+    //-------------------------------------------------------------------------
+    public GameObject GetRandomItem2(int randomIndex, int workSpaceIndex) {
+      return GetItemFromList(randomIndex, workSpaceIndex, _random2List);
+    }
+
+    //-------------------------------------------------------------------------
+    private GameObject GetItemFromList(int randomIndex, int workSpaceIndex, IReadOnlyList<GameObject> items) {
+      if (randomIndex < items.Count) {
+        return IsApplicableWorkSpaceIndex(workSpaceIndex) ? items[randomIndex] : null;
+      }
+
+      return null;
+    }
+
+    //-------------------------------------------------------------------------
+    private bool IsApplicableWorkSpaceIndex(int workSpaceIndex) {
       if (_invalidIndexRange.From < 0 || _invalidIndexRange.To < 0) {
         return true;
       }
