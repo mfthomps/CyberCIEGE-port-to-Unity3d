@@ -1,14 +1,30 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using Shared.ScriptableVariables;
 using Code.Game_Events;
+using Code.AccessControlGroup;
+using Code.Clearance;
 using Code.Policies;
 using Code.Scriptable_Variables;
+using Code.World_Objects.User;
 
 namespace Code.World_Objects.Zone {
   public class ZoneBehavior : MonoBehaviour {
     [Tooltip("List of policy groups for organizing mutually exclusive policies")]
     public PolicyGroupListVariable mutuallyExclusivePolicyGroups;
     [Header("Output Events")]
+    [Tooltip("A user was added to the access list")]
+    public StringGameEvent accessAddedUser;
+    [Tooltip("A user was removed from the access list")]
+    public StringGameEvent accessRemovedUser;
+    [Tooltip("A group was added to the access list")]
+    public StringGameEvent accessAddedGroup;
+    [Tooltip("A group was removed from the access list")]
+    public StringGameEvent accessRemovedGroup;
+    [Tooltip("A clearance was added to the access list")]
+    public StringGameEvent accessAddedClearance;
+    [Tooltip("A clearance was removed from the access list")]
+    public StringGameEvent accessRemovedClearance;
     [Tooltip("A policy was toggled on")]
     public PolicyGameEvent policyEnabled;
     [Tooltip("A policy was toggled off")]
@@ -49,6 +65,52 @@ namespace Code.World_Objects.Zone {
       else if (policy.canToggleOff) {
         DisablePolicy(policy);
       }
+    }
+
+    //----------------------------------------------------------------------------
+    public void ToggleUserAccess(UserBehavior user) {
+      if (!Data.permittedUsers.Contains(user.Data.user_name)) {
+        Data.permittedUsers.Add(user.Data.user_name);
+        accessAddedUser?.Raise(user.Data.user_name);
+      }
+      else {
+        Data.permittedUsers.Remove(user.Data.user_name);
+        accessRemovedUser?.Raise(user.Data.user_name);
+      }
+    }
+
+    //----------------------------------------------------------------------------
+    public void ToggleGroupAccess(AccessControlGroupBehavior group) {
+      var groupName = $"*.{group.Data.name}";
+      if (!Data.permittedUsers.Contains(groupName)) {
+        Data.permittedUsers.Add(groupName);
+        accessAddedGroup?.Raise(group.Data.name);
+      }
+      else {
+        Data.permittedUsers.Remove(groupName);
+        accessRemovedGroup?.Raise(group.Data.name);
+      }
+    }
+
+    //----------------------------------------------------------------------------
+    public void SetMinimumClearance(ClearanceBehavior clearance) {
+      switch (clearance.Data.type) {
+        case ClearanceDataObject.ClearanceType.Secrecy:
+          // Make sure we tell the server to remove the previous minimum secrecy if we had one
+          if (!string.IsNullOrEmpty(Data.secrecy)) {
+            accessRemovedClearance?.Raise(Data.secrecy);
+          }
+          Data.secrecy = clearance.Data.name;
+          break;
+        case ClearanceDataObject.ClearanceType.Integrity:
+          // Make sure we tell the server to remove the previous minimum integrity if we had one
+          if (!string.IsNullOrEmpty(Data.integrity)) {
+            accessRemovedClearance?.Raise(Data.integrity);
+          }
+          Data.integrity = clearance.Data.name;
+          break;
+      }
+      accessAddedClearance?.Raise(clearance.Data.name);
     }
 
     //----------------------------------------------------------------------------

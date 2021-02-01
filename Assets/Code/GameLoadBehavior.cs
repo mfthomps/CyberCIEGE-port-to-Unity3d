@@ -30,6 +30,9 @@ public class GameLoadBehavior : MonoBehaviour {
   [Tooltip("The factory to use for creating AccessControlGroups")]
   [SerializeField] private AccessControlGroupFactory _accessControlGroupFactory;
 
+  [Tooltip("The factory to use for creating Clearances")]
+  [SerializeField] private ClearanceFactory _clearanceFactory;
+
   [Tooltip("The factory to use for creating Assets")]
   [SerializeField] private AssetFactory _assetFactory;
 
@@ -94,6 +97,7 @@ public class GameLoadBehavior : MonoBehaviour {
   private void LoadItems() {
     InitializeHardwareCatalog();
     _accessControlGroupFactory.CreateAll(user_app_path);
+    _clearanceFactory.CreateAll(user_app_path);
     _organizationFactory.CreateAll(user_app_path);
     _networkFactory.CreateAll(user_app_path);
     _workspaceFactory.CreateAll(user_app_path);

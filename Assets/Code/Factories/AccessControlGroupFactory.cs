@@ -31,6 +31,11 @@ namespace Code.Factories {
     public void CreateAll(string path, Transform parent = null) {
       accessControlGroupListVariable.Clear();
 
+      // Add a group for the public
+      var publicData = new AccessControlGroupDataObject();
+      publicData.name = "Public";
+      CreateGameObject(publicData, parent);
+
       string filePath = Path.Combine(path, GROUPS);
       try {
         StreamReader reader = new StreamReader(filePath, Encoding.ASCII);

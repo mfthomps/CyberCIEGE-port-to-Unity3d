@@ -14,5 +14,8 @@ namespace Code.World_Objects.Zone {
     public string RootZoneName;
 
     public HashSet<string> enabledPolicies = new HashSet<string>();
+    public HashSet<string> permittedUsers = new HashSet<string>();
+    public string secrecy;
+    public string integrity;
   }
 }

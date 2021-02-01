@@ -134,6 +134,15 @@ namespace Code.Factories {
               }
 
               break;
+            case "PermittedUsers":
+              data.permittedUsers.Add(value);
+              break;
+            case "Secrecy":
+              data.secrecy = value;
+              break;
+            case "Integrity":
+              data.integrity = value;
+              break;
             default:
               AddEnabledPolicy(data, tag, value);
               break;

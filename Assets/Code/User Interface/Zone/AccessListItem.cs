@@ -9,6 +9,7 @@ namespace Code.User_Interface.Zone {
 
     // ------------------------------------------------------------------------
     public override void SetItem(string item) {
+      name = item;
       label.text = item;
     }
   }
