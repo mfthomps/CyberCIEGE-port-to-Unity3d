@@ -4,7 +4,7 @@ using Code.World_Objects.Network;
 
 namespace Code.User_Interface.Network {
   //Represents the list of Networks in the computer configure UI screen.
-  public class NetworkList : WorldObjectBehaviorList<NetworkListItem, NetworkBehavior> {
+  public class NetworkList : SelectableList<NetworkListItem, NetworkBehavior> {
     [System.Serializable]
     public class ItemClickedEvent : UnityEvent<NetworkBehavior> {}
 

@@ -14,15 +14,17 @@ namespace Code.Factories {
     [Tooltip("Variable containing all hardware (computers, servers, routers, etc) information for game")]
     public HardwareCatalogVariable hardwareCatalog;
 
+    [Tooltip("The list of all the currently loaded workspaces")]
+    [SerializeField] private WorkSpaceListVariable _workSpaceListVariable;
+
+    [Tooltip("List of policy lists that computers care about")]
+    public List<PolicyListVariable> policies = new List<PolicyListVariable>();
+
+    [Header("Output Variables")]
     [Tooltip("The variable containing the list of all the Computers currently in the scenario.")]
     [SerializeField] private ComputerListVariable computerListVariable;
     
-    [Tooltip("The variable containing the list of all the Policies available to apply to Computers")]
-    [SerializeField] private PolicyListVariable computerPolicyListVariable;
-
-    [Tooltip("The list of all the currently loaded workspaces")]
-    [SerializeField] private WorkSpaceListVariable _workSpaceListVariable;
-    
+   
     private static readonly string COMPUTERS = "computers";
 
     //-------------------------------------------------------------------------
@@ -104,35 +106,24 @@ namespace Code.Factories {
 
     //-------------------------------------------------------------------------
     private void LoadComputerInfoFromFile(string filePath, ComputerBehavior computer, ref ComputerDataObject data) {
-      data.config_settings = new ConfigurationSettings(true, data.component_name, computerPolicyListVariable.Value);
-
       StreamReader reader = new StreamReader(filePath, Encoding.Default);
       using (reader) {
-        string tag;
         ccUtils.PositionAfter(reader, "Component");
-        string value = null;
-        do {
-          value = ccUtils.SDTNext(reader, out tag);
-          if ((value == null) || (tag == null))
-            continue;
-          if (!data.config_settings.HandleConfigurationSetting(tag, value))
+        string value = ccUtils.SDTNext(reader, out string tag);
+        while (value != null) {
+          if (tag != null) {
             switch (tag) {
               case "ComponentProceduralSettings":
-                //special case to process all of the sub-elements
+                // Special case to process all of the sub-elements
                 using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(value ?? ""))) {
                   using (var substream = new StreamReader(stream)) {
-                    string v = null;
-                    do {
-                      v = ccUtils.SDTNext(substream, out string t);
-                      if (string.IsNullOrEmpty(v)) {
-                        continue;
-                      }
-
-                      data.config_settings.HandleConfigurationSetting(t, v);
-                    } while (v != null);
+                    string v = ccUtils.SDTNext(substream, out string t);
+                    while (v != null) {
+                      AddEnabledPolicy(data, t, v);
+                      v = ccUtils.SDTNext(substream, out t);
+                    };
                   }
                 }
-
                 break;
               case "Assets":
                 data.asset_list.Add(value);
@@ -144,15 +135,32 @@ namespace Code.Factories {
                 break;
               case "User":
                 break;
-              case "HW":
+              case "hwName":
                 data.hw_name = value;
+                break;
+              case "HW":
                 data.hw = value;
+                data.isServer = hardwareCatalog.Value.GetHardwareType(value) == HardwareType.Servers;
+                break;
+              default:
+                // Check our policies to see if this is one of them
+                AddEnabledPolicy(data, tag, value);
                 break;
             }
-        } while (value != null);
+          }
+          value = ccUtils.SDTNext(reader, out tag);
+        };
       }
+    }
 
-
+    // ------------------------------------------------------------------------
+    private void AddEnabledPolicy(ComputerDataObject computerData, string policyTag, string policySubTag) {
+      foreach (var policy in policies) {
+        var enabledPolicy = policy.GetPolicy(policyTag, policySubTag);
+        if (enabledPolicy != null) {
+          computerData.enabledPolicies.Add(enabledPolicy.GetName());
+        }
+      }
     }
   }
 }

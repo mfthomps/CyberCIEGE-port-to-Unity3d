@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using Code.Policies;
 
 namespace Code {
   [Serializable]
@@ -17,13 +18,13 @@ namespace Code {
     private Dictionary<string, string> group_value = new Dictionary<string, string>();
 
     /* instance-specific data */
-    private Dictionary<Policy.Policy, bool> proc_dict = new Dictionary<Policy.Policy, bool>();
+    private Dictionary<Policy, bool> proc_dict = new Dictionary<Policy, bool>();
     private Dictionary<string, bool> pw_change_dict = new Dictionary<string, bool>();
     private Dictionary<string, bool> pw_complex_dict = new Dictionary<string, bool>();
     private Dictionary<string, bool> pw_len_dict = new Dictionary<string, bool>();
     private string the_name = "";
 
-    public ConfigurationSettings(bool is_computer, string the_name, List<Policy.Policy> computerPolicies) {
+    public ConfigurationSettings(bool is_computer, string the_name, List<Policy> computerPolicies) {
       this.the_name = the_name;
       if (!is_computer) event_type = "zoneEvent";
 
@@ -56,13 +57,6 @@ namespace Code {
       the_name = name;
     }
 
-    public void ConfigureCanvas(ComputerBehavior computer, ComputerConfigure computer_config_script) {
-      computer_config_script.SetProc(proc_dict, computer);
-      computer_config_script.SetPassword(PWD_LEN, pw_len_dict, computer);
-      computer_config_script.SetPassword(PWD_CHANGE, pw_change_dict, computer);
-      computer_config_script.SetPassword(PWD_COMPLEX, pw_complex_dict, computer);
-    }
-
     public void ConfigureCanvas(ZoneBehavior zone, ZoneConfigure zone_config_script) {
       zone_config_script.SetProc(proc_dict, zone);
       zone_config_script.SetPassword(PWD_LEN, pw_len_dict, zone);
@@ -70,14 +64,14 @@ namespace Code {
       zone_config_script.SetPassword(PWD_COMPLEX, pw_complex_dict, zone);
     }
 
-    private (Policy.Policy, bool) FindPolicyByName(string name) {
-      foreach (Policy.Policy policy in proc_dict.Keys) {
-        if (policy.Name == name) {
+    private (Policy, bool) FindPolicyByName(string name) {
+      foreach (Policy policy in proc_dict.Keys) {
+        if (policy.GetName() == name) {
           return (policy, true);
         }
       }
 
-      return (new Policy.Policy(), false);
+      return (new Policy(), false);
     }
 
     public bool HandleConfigurationSetting(string tag, string value) {
@@ -85,22 +79,22 @@ namespace Code {
         return false;
       }
       bool retval = true;
-      (Policy.Policy policy, bool policyFound) = FindPolicyByName(tag);
+      // (Policy policy, bool policyFound) = FindPolicyByName(tag);
     
-      if (policyFound) {
-        bool result = false;
-        if (!bool.TryParse(value, out result)) {
-          Debug.LogError($"Error parsing tag '{tag}' value '{value}'");
-        }
+      // if (policyFound) {
+      //   bool result = false;
+      //   if (!bool.TryParse(value, out result)) {
+      //     Debug.LogError($"Error parsing tag '{tag}' value '{value}'");
+      //   }
 
-        proc_dict[policy] = result;
-      }
-      else if (group_value.ContainsKey(tag)) {
-        group_value[tag] = value;
-      }
-      else {
+      //   proc_dict[policy] = result;
+      // }
+      // else if (group_value.ContainsKey(tag)) {
+      //   group_value[tag] = value;
+      // }
+      // else {
         retval = false;
-      }
+      // }
 
       return retval;
     }
@@ -140,13 +134,13 @@ namespace Code {
     }
   
     //----------------------------------------------------------------------------
-    public void ProceduralPolicyChanged(Policy.Policy policy, bool isOn) {
-      Debug.Log($"Item {the_name} changed {policy.Name}  to {isOn}");
+    public void ProceduralPolicyChanged(Policy policy, bool isOn) {
+      Debug.Log($"Item {the_name} changed {policy.GetName()}  to {isOn}");
       proc_dict[policy] = isOn;
       XElement xml = new XElement(event_type,
         new XElement("name", the_name),
         new XElement("procSetting",
-          new XElement("field", policy.Name + ":"),
+          new XElement("field", policy.GetName() + ":"),
           new XElement("value", isOn)));
 
       IPCManagerScript.SendRequest(xml.ToString());
