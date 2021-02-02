@@ -71,7 +71,7 @@ namespace UltimateCameraController.Cameras.Controllers
 		public void OrbitCamera(Vector2 delta)
 		{
 			//If the player holds the selected mouse button
-			if (orbitAroundTarget)
+			if (orbitAroundTarget && targetObject != null)
 			{
 				//We cache the mouse rotation values multiplied by the rotation speed
 				float y_rotate = delta.x * rotationSpeed;

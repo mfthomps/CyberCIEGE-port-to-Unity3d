@@ -12,5 +12,10 @@ namespace Code.World_Objects.User {
     public string current_thought = "";
     public int training;
     public List<string> failed_goals = new List<string>();
+    public string description;
+    public string secrecyClearance;
+    public string integrityClearance;
+    public List<string> groups = new List<string>();
+    public List<string> assetGoals = new List<string>();
   }
 }

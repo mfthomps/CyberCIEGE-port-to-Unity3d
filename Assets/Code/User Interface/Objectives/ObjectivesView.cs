@@ -22,8 +22,8 @@ namespace Code.User_Interface.Objectives {
     private string _activePhase;
 
     // ------------------------------------------------------------------------
-    public void Init() {
-      var objectiveParser = new ObjectiveParser(GameLoadBehavior.user_app_path);
+    public void Init(string userAppPath) {
+      var objectiveParser = new ObjectiveParser(userAppPath);
       foreach (var phase in objectiveParser.phases) {
         _phaseUI.Add(phase.name, AddPhaseUI(phase));
       }

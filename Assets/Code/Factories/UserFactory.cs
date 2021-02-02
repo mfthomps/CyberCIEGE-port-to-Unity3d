@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Text;
 using Code.Scriptable_Variables;
 using Code.World_Objects.Workspace;
@@ -21,8 +20,6 @@ namespace Code.Factories {
     
     private static readonly string USERS = "users";
 
-    private static Rect WindowRect = new Rect(10, 10, 250, 300);
-
     //-------------------------------------------------------------------------
     void OnDestroy() {
       _userListVariable.Clear();
@@ -38,60 +35,11 @@ namespace Code.Factories {
       LoadUsers(path, parent);
     }
 
-    //---------------------------------------------------------------------------
-    public void doItems() {
-      /* find the user that brought up a menu, and call its menuItems method */
-      string user_name = menus.MenuLevel(1);
-      //Debug.Log("look in dict for " + component_name);
-      UserBehavior script = _userListVariable.Value.Find(user => user.Data.user_name == user_name);
-      int level = ccUtils.SubstringCount(menus.clicked, ":");
-      if (level == 1) {
-        WindowRect = GUI.Window(1, WindowRect, MenuItems, "Item");
-      }
-      else {
-        string submenu = menus.MenuLevel(2);
-        switch (submenu) {
-          case "Configure":
-            Configure(script);
-            break;
-        }
-      }
-    }
-
-    //---------------------------------------------------------------------------
-    private void MenuItems(int id) {
-      if (GUILayout.Button("Help"))
-        menus.clicked = "help";
-
-      else if (GUILayout.Button("Configure"))
-        menus.clicked += ":Configure";
-      else if (GUILayout.Button("Close menu")) menus.clicked = "";
-    }
-
-    //---------------------------------------------------------------------------
-    private void Configure(UserBehavior user) {
-      if (menus.clicked.EndsWith("Configure")) {
-        menus.clicked = "";
-        ConfigureCanvas(user);
-      }
-    }
-
-    //---------------------------------------------------------------------------
-    private void ConfigureCanvas(UserBehavior user) {
-      //Debug.Log("ConfigureCanvas");
-
-      GameObject user_panel = menus.menu_panels["UserPanel"];
-      UserConfigure user_config_script = (UserConfigure) user_panel.GetComponent(typeof(UserConfigure));
-      user_config_script.SetUser(user);
-      user_panel.SetActive(true);
-      menus.ActiveScreen(user_panel.name);
-    }
-
     //-------------------------------------------------------------------------
     private void LoadUsers(string path, Transform parent = null) {
       _userListVariable.Clear();
 
-      string user_dir = Path.Combine(GameLoadBehavior.user_app_path, USERS);
+      string user_dir = Path.Combine(path, USERS);
       string[] clist = Directory.GetFiles(user_dir);
       foreach (string user_file in clist) {
         if (user_file.EndsWith(".sdf")) {
@@ -128,45 +76,69 @@ namespace Code.Factories {
 
     //---------------------------------------------------------------------------
     private UserDataObject LoadOneUser(string user_file) {
-      UserDataObject data = new UserDataObject();
-      string cfile = Path.Combine(GameLoadBehavior.user_app_path, user_file);
-      var this_user_info = new Dictionary<string, string>();
+      var data = new UserDataObject();
 
-      LoadUser(cfile, ref this_user_info);
-
-      data.gender =  this_user_info.ContainsKey("Gender") ? this_user_info["Gender"] : "";
-      data.user_name = this_user_info.ContainsKey("Name") ? this_user_info["Name"]   : "";
-      data.department = this_user_info.ContainsKey("Dept")? this_user_info["Dept"]   : "";
-      
-      if (!int.TryParse(this_user_info["PosIndex"], out data.position)) {
-        Debug.Log("Error: LoadUser parsing position" + this_user_info["PosIndex"]);
-      }
-
-      if (!int.TryParse(this_user_info["InitialTraining"], out data.training)) {
-        Debug.Log("Error: LoadUser parsing training" + this_user_info["InitialTraining"]);
-      }
-      
-      return data;
-    }
-    
-    //-------------------------------------------------------------------------
-    private static void LoadUser(string thisFilePath, ref Dictionary<string, string> this_user_info) {
-      StreamReader reader = new StreamReader(thisFilePath, Encoding.Default);
+      StreamReader reader = new StreamReader(user_file, Encoding.Default);
       using (reader) {
-        string tag;
         ccUtils.PositionAfter(reader, "User");
-        string value = null;
-        do {
-          value = ccUtils.SDTNext(reader, out tag);
-          if (value == null || tag == null) {
-            continue;
+        var value = ccUtils.SDTNext(reader, out string tag);
+        while (value != null) {
+          switch (tag) {
+            case "Name":
+              data.user_name = value;
+              break;
+            case "Dept":
+              data.department = value;
+              break;
+            case "SecrecyClearance":
+              data.secrecyClearance = value;
+              break;
+            case "IntegrityClearance":
+              data.integrityClearance = value;
+              break;
+            case "DACGroups":
+              var groups = value.Split('\n');
+              foreach (var group in groups) {
+                data.groups.Add(group);
+              }
+              break;
+            case "AssetGoal":
+              using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(value ?? ""))) {
+                using (var substream = new StreamReader(stream)) {
+                  var v = ccUtils.SDTNext(substream, out string t);
+                  while (v != null) {
+                    switch (t) {
+                      case "AssetGoalName":
+                        data.assetGoals.Add(v);
+                        break;
+                    }
+                    v = ccUtils.SDTNext(substream, out t);
+                  };
+                }
+              }
+              break;
+            case "InitialTraining":
+              if (!int.TryParse(value, out data.training)) {
+                Debug.Log("Error: LoadUser parsing training" + value);
+              }
+              break;
+            case "PosIndex":
+              if (!int.TryParse(value, out data.position)) {
+                Debug.Log("Error: LoadUser parsing position" + value);
+              }
+              break;
+            case "Gender":
+              data.gender = value;
+              break;
+            case "UserDescription":
+              data.description = value;
+              break;
           }
-
-          this_user_info[tag] = value;
-
-        } while (value != null);
+          value = ccUtils.SDTNext(reader, out tag);
+        }
       }
 
+      return data;
     }
   }
 }

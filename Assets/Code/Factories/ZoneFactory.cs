@@ -56,14 +56,12 @@ namespace Code.Factories {
 
     //-------------------------------------------------------------------------
     private void LoadOneZone(string zone_file, Color color) {
-      string cfile = Path.Combine(GameLoadBehavior.user_app_path, zone_file);
-
       ZoneBehavior newZone = Instantiate(_prefab, new Vector3(1.0F, 0, 0), Quaternion.identity);
 
       newZone.gameObject.GetComponent<Renderer>().material.color = color;
       newZone.gameObject.SetActive(true);
       
-      var data = CreateDataObject(cfile);
+      var data = CreateDataObject(zone_file);
       newZone.gameObject.name = $"Zone--{data.ZoneName}";
       
       newZone.Data = data;

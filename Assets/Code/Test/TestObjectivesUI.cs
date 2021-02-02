@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using System.IO;
+using UnityEngine;
 using Code.User_Interface.Objectives;
 
 namespace Code.Test {
@@ -9,7 +11,8 @@ namespace Code.Test {
 
     // ------------------------------------------------------------------------
     void Awake() {
-      objectivesView.Init();
+      var userAppPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "CyberCIEGE");
+      objectivesView.Init(userAppPath);
     }
 
     // ------------------------------------------------------------------------

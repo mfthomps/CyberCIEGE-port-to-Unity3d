@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Net.Sockets;
 using System.Text;
 using Code;
@@ -36,6 +36,16 @@ public class IPCManagerScript : MonoBehaviour {
 
   public static bool server_ready; /* ignore server messages until we receive the ready message */
   private static float elapsed_since_receive;
+
+  // --------------------------------------------------------------------------
+  void Start() {
+    ConnectServer();
+  }
+
+  // --------------------------------------------------------------------------
+  void OnDestroy() {
+    attackLogVariable.Clear();
+  }
 
   // --------------------------------------------------------------------------
   private void Update() {
@@ -201,7 +211,8 @@ public class IPCManagerScript : MonoBehaviour {
       SendRequest("dialog_closed:" + message);
   }
 
-  public static void ConnectServer() {
+  // --------------------------------------------------------------------------
+  private void ConnectServer() {
     Debug.Log("IPCManager connect to server");
     /* Connect to the server.  The waiting happens in Update, which handles all receives */
     TcpClient clientSocket = new TcpClient();
