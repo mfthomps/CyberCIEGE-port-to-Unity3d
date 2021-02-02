@@ -1,6 +1,7 @@
 ﻿using System.Xml.Linq;
 using UnityEngine;
 using Shared.ScriptableVariables;
+using Code.World_Objects.Zone;
 
 namespace Code.Policies {
   public class PolicyManager : MonoBehaviour {
@@ -10,13 +11,21 @@ namespace Code.Policies {
 
     private static readonly string COMPONENT_EVENT = "componentEvent";
     private static readonly string COMPONENT_SETTING_FIELD = "procSetting";
+    private static readonly string ZONE_EVENT = "zoneEvent";
+    private static readonly string ZONE_SETTING_FIELD = "setting";
 
     // ------------------------------------------------------------------------
-    public void ToggleComputerPolicy(Policy policy) {
+    public void TogglePolicy(Policy policy) {
       if (selectedObject.Value != null) {
         var computerBehavior = selectedObject.Value.GetComponent<ComputerBehavior>();
         if (computerBehavior != null) {
           computerBehavior.TogglePolicy(policy);
+        }
+        else {
+          var zoneBehavior = selectedObject.Value.GetComponent<ZoneBehavior>();
+          if (zoneBehavior != null) {
+            zoneBehavior.TogglePolicy(policy);
+          }
         }
       }
     }
@@ -37,6 +46,26 @@ namespace Code.Policies {
         var computerBehavior = selectedObject.Value.GetComponent<ComputerBehavior>();
         if (computerBehavior != null) {
           SendPolicyUpdateServerMessage(COMPONENT_EVENT, COMPONENT_SETTING_FIELD, computerBehavior.Data.component_name, policy, false);
+        }
+      }
+    }
+
+    // ------------------------------------------------------------------------
+    public void OnZonePolicyEnabled(Policy policy) {
+      if (selectedObject.Value != null) {
+        var zoneBehavior = selectedObject.Value.GetComponent<ZoneBehavior>();
+        if (zoneBehavior != null) {
+          SendPolicyUpdateServerMessage(ZONE_EVENT, ZONE_SETTING_FIELD, zoneBehavior.Data.ZoneName, policy, true);
+        }
+      }
+    }
+
+    // ------------------------------------------------------------------------
+    public void OnZonePolicyDisabled(Policy policy) {
+      if (selectedObject.Value != null) {
+        var zoneBehavior = selectedObject.Value.GetComponent<ZoneBehavior>();
+        if (zoneBehavior != null) {
+          SendPolicyUpdateServerMessage(ZONE_EVENT, ZONE_SETTING_FIELD, zoneBehavior.Data.ZoneName, policy, false);
         }
       }
     }

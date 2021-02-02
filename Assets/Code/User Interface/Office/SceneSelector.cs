@@ -4,6 +4,7 @@ using NaughtyAttributes;
 using Shared.ScriptableVariables;
 using Code.Hardware;
 using Code.Scriptable_Variables;
+using Code.World_Objects.User;
 
 namespace Code.User_Interface.Office {
   public class SceneSelector : MonoBehaviour {

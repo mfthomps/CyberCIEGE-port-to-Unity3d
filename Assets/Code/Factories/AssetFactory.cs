@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using UnityEngine;
+using Code.Scriptable_Variables;
 
 namespace Code.Factories {
   //A factory that creates Asset instances
@@ -12,6 +13,9 @@ namespace Code.Factories {
     [Tooltip("The prefab to instantiate for new Assets")]
     [SerializeField] private AssetBehavior _prefab;
     
+    [Tooltip("The list of users in the scenario")]
+    [SerializeField] private UserListVariable _userList;
+
     private static readonly string ASSETS = "assets";
     
     //--------------------------------------------------------------------------
@@ -47,8 +51,8 @@ namespace Code.Factories {
     }
 
     //----------------------------------------------------------------------------
-    private static AssetDataObject LoadAsset(string filePath, AssetBehavior newAsset) {
-      AssetDataObject data = new AssetDataObject();;
+    private AssetDataObject LoadAsset(string filePath, AssetBehavior newAsset) {
+      AssetDataObject data = new AssetDataObject();
       try {
         StreamReader reader = new StreamReader(filePath, Encoding.Default);
         using (reader) {
@@ -66,7 +70,7 @@ namespace Code.Factories {
                 asset_dict.Add(data.AssetName, newAsset);
                 break;
               case "ActualAccessList":
-                data.DACAccess = new DACAccess(value, newAsset);
+                data.DACAccess = new DACAccess(value, newAsset, _userList);
                 break;
             }
           } while (value != null);

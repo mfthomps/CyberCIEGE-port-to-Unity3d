@@ -4,6 +4,7 @@ using Shared.ScriptableVariables;
 using Code.Game_Events;
 using Code.Policies;
 using Code.Scriptable_Variables;
+using Code.World_Objects.Zone;
 
 namespace Code.User_Interface.Policies {
   //Represents a UI List of Policy Items
@@ -68,6 +69,12 @@ namespace Code.User_Interface.Policies {
         var computerBehavior = selectedObject.Value.GetComponent<ComputerBehavior>();
         if (computerBehavior != null) {
           enabledPolicies = computerBehavior.GetEnabledPolicies();
+        }
+        else {
+          var zoneBehavior = selectedObject.Value.GetComponent<ZoneBehavior>();
+          if (zoneBehavior != null) {
+            enabledPolicies = zoneBehavior.GetEnabledPolicies();
+          }
         }
       }
 
