@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Code {
- 
+namespace Code.World_Objects.User {
   [Serializable]
   //Data related to a single User instance
   public class UserDataObject {

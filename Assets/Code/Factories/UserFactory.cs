@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using Code.Scriptable_Variables;
 using UnityEngine;
+using Code.Scriptable_Variables;
+using Code.World_Objects.User;
 
 namespace Code.Factories {
   //A factory that creates User GameObjects
@@ -13,9 +14,18 @@ namespace Code.Factories {
     [Tooltip("The list of all the currently loaded workspaces")]
     [SerializeField] private WorkSpaceListVariable _workSpaceListVariable;
 
-    public static Dictionary<string, UserBehavior> user_dict = new Dictionary<string, UserBehavior>();
+    [Header("Output Variables")]
+    [Tooltip("The variable containing the list of all the Users currently in the scenario.")]
+    [SerializeField] private UserListVariable _userListVariable;
     
     private static readonly string USERS = "users";
+
+    private static Rect WindowRect = new Rect(10, 10, 250, 300);
+
+    //-------------------------------------------------------------------------
+    void OnDestroy() {
+      _userListVariable.Clear();
+    }
 
     //-------------------------------------------------------------------------
     public void Create(string filename, Transform parent = null) {
@@ -27,8 +37,59 @@ namespace Code.Factories {
       LoadUsers(path, parent);
     }
 
+    //---------------------------------------------------------------------------
+    public void doItems() {
+      /* find the user that brought up a menu, and call its menuItems method */
+      string user_name = menus.MenuLevel(1);
+      //Debug.Log("look in dict for " + component_name);
+      UserBehavior script = _userListVariable.Value.Find(user => user.Data.user_name == user_name);
+      int level = ccUtils.SubstringCount(menus.clicked, ":");
+      if (level == 1) {
+        WindowRect = GUI.Window(1, WindowRect, MenuItems, "Item");
+      }
+      else {
+        string submenu = menus.MenuLevel(2);
+        switch (submenu) {
+          case "Configure":
+            Configure(script);
+            break;
+        }
+      }
+    }
+
+    //---------------------------------------------------------------------------
+    private void MenuItems(int id) {
+      if (GUILayout.Button("Help"))
+        menus.clicked = "help";
+
+      else if (GUILayout.Button("Configure"))
+        menus.clicked += ":Configure";
+      else if (GUILayout.Button("Close menu")) menus.clicked = "";
+    }
+
+    //---------------------------------------------------------------------------
+    private void Configure(UserBehavior user) {
+      if (menus.clicked.EndsWith("Configure")) {
+        menus.clicked = "";
+        ConfigureCanvas(user);
+      }
+    }
+
+    //---------------------------------------------------------------------------
+    private void ConfigureCanvas(UserBehavior user) {
+      //Debug.Log("ConfigureCanvas");
+
+      GameObject user_panel = menus.menu_panels["UserPanel"];
+      UserConfigure user_config_script = (UserConfigure) user_panel.GetComponent(typeof(UserConfigure));
+      user_config_script.SetUser(user);
+      user_panel.SetActive(true);
+      menus.ActiveScreen(user_panel.name);
+    }
+
     //-------------------------------------------------------------------------
     private void LoadUsers(string path, Transform parent = null) {
+      _userListVariable.Clear();
+
       string user_dir = Path.Combine(GameLoadBehavior.user_app_path, USERS);
       string[] clist = Directory.GetFiles(user_dir);
       foreach (string user_file in clist) {
@@ -59,7 +120,7 @@ namespace Code.Factories {
           newUser.gameObject.SetActive(true);
           newUser.gameObject.name = $"User--{data.user_name}";
           newUser.Data = data;
-          user_dict.Add(newUser.Data.user_name, newUser);
+          _userListVariable.Add(newUser);
         }
       }
     }
