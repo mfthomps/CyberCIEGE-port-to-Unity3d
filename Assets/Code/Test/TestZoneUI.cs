@@ -1,8 +1,5 @@
-﻿using System;
-using System.IO;
-using UnityEngine;
+﻿using UnityEngine;
 using Shared.ScriptableVariables;
-using Code.Factories;
 using Code.Policies;
 using Code.Scriptable_Variables;
 using Code.World_Objects.Zone;
@@ -19,32 +16,6 @@ namespace Code.Test {
     [Header("Output Variables")]
     [Tooltip("Currently selected object in game to show properties for")]
     public GameObjectVariable selectedObject;
-
-    [Header("Factories")]
-    [Tooltip("The factory to use for creating AccessControlGroups")]
-    [SerializeField] private AccessControlGroupFactory _accessControlGroupFactory;
-    [Tooltip("The factory to use for creating Clearances")]
-    [SerializeField] private ClearanceFactory _clearanceFactory;
-    [Tooltip("The factory to use for creating Organizations")]
-    [SerializeField] private OrganizationFactory _organizationFactory;
-    [Tooltip("The factory to use for creating Users")]
-    [SerializeField] private UserFactory _userFactory;
-    [Tooltip("The factory to use for creating Workspaces")]
-    [SerializeField] private WorkspaceFactory _workspaceFactory;
-    [Tooltip("The factory to use for creating Zones")]
-    [SerializeField] private ZoneFactory _zoneFactory;
-
-    // ------------------------------------------------------------------------
-    void Start() {
-      var user_app_path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "CyberCIEGE");
-
-      _accessControlGroupFactory.CreateAll(user_app_path);
-      _clearanceFactory.CreateAll(user_app_path);
-      _organizationFactory.CreateAll(user_app_path);
-      _workspaceFactory.CreateAll(user_app_path);
-      _userFactory.CreateAll(user_app_path);
-      _zoneFactory.CreateAll(user_app_path);
-    }
 
     // ------------------------------------------------------------------------
     void OnDestroy() {

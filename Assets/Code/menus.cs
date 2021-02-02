@@ -1,28 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-using NaughtyAttributes;
-using UltimateCameraController.Cameras.Controllers;
-using Code.Factories;
 
 public class menus : MonoBehaviour {
   private static readonly GUIStyle labelStyle = new GUIStyle();
   public static string clicked = "";
 
-  [Tooltip("The factory/manager that deals with all Staff")]
-  [SerializeField] private StaffFactory _staffFactory;
-
-  [Tooltip("The factory/manager that deals with all Users")]
-  [SerializeField] private UserFactory _userFactory;
-
-  [Tooltip("The Camera controller to use when jumping between items in the scenario")]
-  [SerializeField] private CameraController _cameraController;
   [SerializeField] private GUISkin guiSkin;
   
-  [Tag]
-  [Tooltip("The Tag of User GameObjects. Used to click on Users")]
-  [SerializeField] private string _userTag;
-
   private static string clicked_was = "";
 
   public static Dictionary<string, GameObject> menu_panels = new Dictionary<string, GameObject>();
@@ -78,10 +63,6 @@ public class menus : MonoBehaviour {
 
     /* create dictionary of menu/gui panels so they can be deactivated and yet 
      * still found by the menus script and whatever else may need to name them. */
-    GameObject user_panel = GameObject.Find("UserPanel");
-    menu_panels["UserPanel"] = user_panel;
-    user_panel.SetActive(false);
-
     GameObject message_panel = GameObject.Find("MessagePanel");
     menu_panels["MessagePanel"] = message_panel;
     message_panel.SetActive(false);
@@ -136,9 +117,6 @@ public class menus : MonoBehaviour {
     else if (clicked == "Save") {
       string fname = Path.Combine(GameLoadBehavior.user_app_path, "debug_save.sdf");
       IPCManagerScript.SendRequest("save:" + fname);
-    }
-    else if (clicked.StartsWith("User:")) {
-      _userFactory.doItems();
     }
   }
 

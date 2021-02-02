@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using Code.Scriptable_Variables;
 using UnityEngine;
+using Shared.ScriptableVariables;
 using Code.Hardware;
+using Code.Scriptable_Variables;
 
 namespace Code.Factories {
   //Factory that creates Computers
@@ -11,19 +12,18 @@ namespace Code.Factories {
     [SerializeField] private ComputerBehavior _prefab;
 
     [Header("Input Variables")]
+    [Tooltip("Path to the user's AppData folder")]
+    public StringVariable userAppPath;
     [Tooltip("Variable containing all hardware (computers, servers, routers, etc) information for game")]
     public HardwareCatalogVariable hardwareCatalog;
-
     [Tooltip("The list of all the currently loaded workspaces")]
     [SerializeField] private WorkSpaceListVariable _workSpaceListVariable;
-
     [Tooltip("List of policy lists that computers care about")]
     public List<PolicyListVariable> policies = new List<PolicyListVariable>();
 
     [Header("Output Variables")]
     [Tooltip("The variable containing the list of all the Computers currently in the scenario.")]
     [SerializeField] private ComputerListVariable computerListVariable;
-    
    
     private static readonly string COMPUTERS = "computers";
 
@@ -35,7 +35,7 @@ namespace Code.Factories {
     //-------------------------------------------------------------------------
     public void Create(string filename, Transform parent = null) {
       ComputerBehavior item = Instantiate(_prefab, parent);
-      item.Data = LoadOneComputer(filename, item);
+      item.Data = LoadOneComputer(Path.Combine(userAppPath.Value, COMPUTERS, filename), item);
       UpdateGameObject(item);
     }
 
@@ -95,12 +95,9 @@ namespace Code.Factories {
     //-------------------------------------------------------------------------
     private ComputerDataObject LoadOneComputer(string computer_file, ComputerBehavior computer) {
       ComputerDataObject data = new ComputerDataObject();
-      string cdir = Path.Combine(GameLoadBehavior.user_app_path, COMPUTERS);
-      string cfile = Path.Combine(cdir, computer_file);
-
       var componentData = (ComponentDataObject) data;
-      LoadComponent(cfile, computer, ref componentData);
-      LoadComputerInfoFromFile(cfile, computer, ref data);
+      LoadComponent(computer_file, computer, ref componentData);
+      LoadComputerInfoFromFile(computer_file, computer, ref data);
       return data;
     }
 

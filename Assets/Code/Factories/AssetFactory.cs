@@ -40,12 +40,10 @@ namespace Code.Factories {
     
     //--------------------------------------------------------------------------
     private void LoadOneAsset(string assetFile, Transform parent = null) {
-      string cfile = Path.Combine(GameLoadBehavior.user_app_path, assetFile);
-
       AssetBehavior asset = Instantiate(_prefab, parent);
       asset.gameObject.SetActive(true);
       
-      var data = LoadAsset(cfile, asset);
+      var data = LoadAsset(assetFile, asset);
       asset.Data = data;
       asset.gameObject.name = $"Asset--{asset.Data.AssetName}";
     }

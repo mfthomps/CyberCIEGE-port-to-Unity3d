@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Text;
 using UnityEngine;
+using Shared.ScriptableVariables;
 using Code.Hardware;
 using Code.Scriptable_Variables;
 
@@ -10,15 +11,14 @@ namespace Code.Factories {
     [SerializeField] private DeviceBehavior _prefab;
 
     [Header("Input Variables")]
+    [Tooltip("Path to the user's AppData folder")]
+    public StringVariable userAppPath;
     [Tooltip("Variable containing all hardware (computers, servers, routers, etc) information for game")]
     public HardwareCatalogVariable hardwareCatalog;
     [Tooltip("The variable containing the list of all the Devices currently in the scenario.")]
     [SerializeField] private DeviceListVariable deviceListVariable;
-
     [Tooltip("The list of all the currently loaded workspaces")]
     [SerializeField] private WorkSpaceListVariable _workSpaceListVariable;
-
-    private string user_app_path;
     
     private readonly string DEVICES = "devices";
 
@@ -30,7 +30,7 @@ namespace Code.Factories {
     //-------------------------------------------------------------------------
     public void Create(string filename, Transform parent = null) {
       DeviceBehavior item = Instantiate(_prefab, parent);
-      item.Data = LoadOneDevice(filename, item);
+      item.Data = LoadOneDevice(Path.Combine(userAppPath.Value, DEVICES, filename), item);
       UpdateGameObject(item);
     }
 
@@ -55,13 +55,10 @@ namespace Code.Factories {
     private DeviceDataObject LoadOneDevice(string device_file, DeviceBehavior newDevice) {
       var data = new DeviceDataObject();
       
-      string cdir = Path.Combine(GameLoadBehavior.user_app_path, DEVICES);
-      string cfile = Path.Combine(cdir, device_file);
-      
       // gameObject.SetActive(true);
       var componentData = (ComponentDataObject) data;
-      LoadComponent(cfile, newDevice, ref componentData);
-      LoadDevice(cfile, ref data);
+      LoadComponent(device_file, newDevice, ref componentData);
+      LoadDevice(device_file, ref data);
       
       return data;
     }

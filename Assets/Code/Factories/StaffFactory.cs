@@ -59,8 +59,7 @@ namespace Code.Factories {
     
     //--------------------------------------------------------------------------
     private StaffBehavior InstantiateStaffFromFile(string user_file, Transform parent=null) {
-      string cfile = Path.Combine(GameLoadBehavior.user_app_path, user_file);
-      StaffDataObject data = LoadStaffData(cfile);
+      StaffDataObject data = LoadStaffData(user_file);
       if (data == null) {
         return null;
       }
