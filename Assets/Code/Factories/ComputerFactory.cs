@@ -4,6 +4,7 @@ using System.Text;
 using Code.Scriptable_Variables;
 using UnityEngine;
 using Code.Hardware;
+using Code.World_Objects.Workspace;
 
 namespace Code.Factories {
   //Factory that creates Computers
