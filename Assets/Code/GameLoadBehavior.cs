@@ -27,10 +27,12 @@ public class GameLoadBehavior : MonoBehaviour {
   [Header("Factories")]
   [Tooltip("The factory to use for creating AccessControlGroups")]
   [SerializeField] private AccessControlGroupFactory _accessControlGroupFactory;
-  [Tooltip("The factory to use for creating Clearances")]
-  [SerializeField] private ClearanceFactory _clearanceFactory;
   [Tooltip("The factory to use for creating Assets")]
   [SerializeField] private AssetFactory _assetFactory;
+  [Tooltip("The factory to use for creating AssetGoals")]
+  [SerializeField] private AssetGoalFactory _assetGoalFactory;
+  [Tooltip("The factory to use for creating Clearances")]
+  [SerializeField] private ClearanceFactory _clearanceFactory;
   [Tooltip("The factory to use for creating Computers")]
   [SerializeField] private ComputerFactory _computerFactory;
   [Tooltip("The factory to use for creating Devices")]
@@ -44,7 +46,6 @@ public class GameLoadBehavior : MonoBehaviour {
   [SerializeField] private StaffFactory _staffFactory;
   [Tooltip("The factory to use for creating Users")]
   [SerializeField] private UserFactory _userFactory;
-
   [Tooltip("The factory to use for creating Workspaces")]
   [SerializeField] private WorkspaceFactory _workspaceFactory;
   [Tooltip("The factory to use for creating Zones")]
@@ -61,35 +62,11 @@ public class GameLoadBehavior : MonoBehaviour {
     userAppPath.Reset();
   }
 
-  // // --------------------------------------------------------------------------
-  // private void LoadMainOffice() {
-  //   string path = Path.Combine(userAppPath.Value, "mainoffice.txt");
-  //   StreamReader f = new StreamReader(path);
-  //   string line = f.ReadLine();
-  //   string[] parts = line.Split(new char[0], StringSplitOptions.RemoveEmptyEntries);
-  //   int top = -1;
-  //   if (!int.TryParse(parts[1], out top)) Debug.Log("Error LoadMainOffice parse " + parts[1]);
-
-  //   int left = -1;
-  //   if (!int.TryParse(parts[2], out left)) Debug.Log("Error LoadMainOffice parse " + parts[1]);
-
-  //   int bottom = -1;
-  //   if (!int.TryParse(parts[3], out bottom)) Debug.Log("Error LoadMainOffice parse " + parts[1]);
-
-  //   int right = -1;
-  //   if (!int.TryParse(parts[4], out right)) Debug.Log("Error LoadMainOffice parse " + parts[1]);
-
-  //   GameObject floor = GameObject.Find("Floor");
-  //   main_floor = Instantiate(floor, new Vector3(left * 1.0f, 0, top * 1.0f), Quaternion.identity);
-  //   FloorScript floor_script = (FloorScript) main_floor.GetComponent(typeof(FloorScript));
-  //   floor_script.DoPosition(top, left, bottom, right);
-  //   Debug.Log("main_floor instantiated, name is " + main_floor.name);
-  // }
-
   // --------------------------------------------------------------------------
   public void AfterServerReady() {
     InitializeHardwareCatalog(userAppPath.Value);
     _accessControlGroupFactory.CreateAll(userAppPath.Value);
+    _assetGoalFactory.CreateAll(userAppPath.Value);
     _clearanceFactory.CreateAll(userAppPath.Value);
     _organizationFactory.CreateAll(userAppPath.Value);
     _networkFactory.CreateAll(userAppPath.Value);
