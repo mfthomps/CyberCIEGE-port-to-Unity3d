@@ -198,8 +198,10 @@ public class ccUtils : MonoBehaviour {
   public static void GridTo3dPos(int xcoord, int ycoord, out float xout, out float yout) {
     //	*xout = (0.5f+ (float)xcoord) * GRID_SIZE; 
     //	*yout = (0.5f+ (float)ycoord) * GRID_SIZE;
-    xout = (0.48f + xcoord) * GRID_SIZE;
-    yout = (0.48f + ycoord) * GRID_SIZE;
+    // xout = (0.48f + xcoord) * GRID_SIZE;
+    // yout = (0.48f + ycoord) * GRID_SIZE;
+    xout = xcoord;
+    yout = ycoord;
   }
 
   public static void PosToGrid(out int xcoord, out int ycoord, float xin, float yin) {

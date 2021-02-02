@@ -4,6 +4,7 @@ using System.Text;
 using UnityEngine;
 using Code.Scriptable_Variables;
 using Code.World_Objects.Staff;
+using Code.World_Objects.Workspace;
 
 namespace Code.Factories {
   //Factory that create Staff GameObjects.

@@ -15,41 +15,90 @@ MonoBehaviour:
   description: Furniture to populate the WorkSpaces of the MS3A office
   value:
     _associatedOfficeMagicString: MS3A
-    _workSpaceChairPrefab: {fileID: 919132149155446097, guid: 3a020e9b00c923540a103ce5253633bb,
+    _workSpaceChairPrefab: {fileID: 3828221866648098590, guid: a1492afd2f7976d43a092dc448a6f8ae,
       type: 3}
-    _workSpaceWorkDeskPrefab: {fileID: 919132149155446097, guid: 202b90f849a39c94bae9dac8575f063e,
+    ChairOffset:
+      NorthRelativeOffset: {x: 0, y: 0, z: 1}
+      EastRelativeOffset: {x: 1, y: 0, z: 1}
+      SouthRelativeOffset: {x: 1, y: 0, z: 0}
+      WestRelativeOffset: {x: 0, y: 0, z: 0}
+    _workSpaceWorkDeskPrefab: {fileID: 5799979730755587653, guid: 35b2c4fc0057adf4f8a0a7a90a9228bf,
       type: 3}
-    _workSpaceWorkServerDeskPrefab: {fileID: 919132149155446097, guid: 93885257f28900a45a82e082276d24e1,
-      type: 3}
-    _workSpaceWorkServerRackPrefab: {fileID: 919132149155446097, guid: f882e2f6f8b4f1f40a0b2cf75f597d88,
-      type: 3}
+    DeskOffset:
+      NorthRelativeOffset: {x: 0, y: 0, z: 1}
+      EastRelativeOffset: {x: 1, y: 0, z: 1}
+      SouthRelativeOffset: {x: 1, y: 0, z: 0}
+      WestRelativeOffset: {x: 0, y: 0, z: 0}
     _random1List:
-    - {fileID: 919132149155446097, guid: c5f62da83dae7814198035129c535dbe, type: 3}
-    - {fileID: 919132149155446097, guid: ed6cd70f865592d498edf43eb0b23938, type: 3}
-    - {fileID: 919132149155446097, guid: 7c268901ff1dce94a88f7d196c17e3ec, type: 3}
-    - {fileID: 919132149155446097, guid: 52381666421a53543a71b5bb31342e7b, type: 3}
-    - {fileID: 919132149155446097, guid: 52381666421a53543a71b5bb31342e7b, type: 3}
-    - {fileID: 919132149155446097, guid: 52381666421a53543a71b5bb31342e7b, type: 3}
-    - {fileID: 919132149155446097, guid: 52381666421a53543a71b5bb31342e7b, type: 3}
-    - {fileID: 919132149155446097, guid: 52381666421a53543a71b5bb31342e7b, type: 3}
+    - {fileID: 8251830521167055863, guid: ad5a02c8bd1857c45890c31604189640, type: 3}
+    - {fileID: 491907102550278644, guid: 20fdfe73a48713d4c81b8b8eeef48e77, type: 3}
+    - {fileID: 5376013956075579131, guid: f61905ca33ed6c145a723582e1faf688, type: 3}
+    - {fileID: 4157949545016325361, guid: f182b6d1acdbe1d42a51bb2f317ce0d0, type: 3}
+    - {fileID: 4157949545016325361, guid: f182b6d1acdbe1d42a51bb2f317ce0d0, type: 3}
+    - {fileID: 4157949545016325361, guid: f182b6d1acdbe1d42a51bb2f317ce0d0, type: 3}
+    - {fileID: 4157949545016325361, guid: f182b6d1acdbe1d42a51bb2f317ce0d0, type: 3}
+    - {fileID: 4157949545016325361, guid: f182b6d1acdbe1d42a51bb2f317ce0d0, type: 3}
+    Random1Offset:
+      NorthRelativeOffset: {x: 1, y: 0, z: -1}
+      EastRelativeOffset: {x: 2, y: 0, z: -1}
+      SouthRelativeOffset: {x: -1, y: 0, z: 1}
+      WestRelativeOffset: {x: 1, y: 0, z: -2}
     _random2List:
-    - {fileID: 919132149155446097, guid: c5f62da83dae7814198035129c535dbe, type: 3}
-    - {fileID: 919132149155446097, guid: ed6cd70f865592d498edf43eb0b23938, type: 3}
-    - {fileID: 919132149155446097, guid: 7c268901ff1dce94a88f7d196c17e3ec, type: 3}
-    - {fileID: 919132149155446097, guid: 52381666421a53543a71b5bb31342e7b, type: 3}
-    - {fileID: 919132149155446097, guid: c5f62da83dae7814198035129c535dbe, type: 3}
-    - {fileID: 919132149155446097, guid: ed6cd70f865592d498edf43eb0b23938, type: 3}
+    - {fileID: 8251830521167055863, guid: ad5a02c8bd1857c45890c31604189640, type: 3}
+    - {fileID: 491907102550278644, guid: 20fdfe73a48713d4c81b8b8eeef48e77, type: 3}
+    - {fileID: 5376013956075579131, guid: f61905ca33ed6c145a723582e1faf688, type: 3}
+    - {fileID: 4157949545016325361, guid: f182b6d1acdbe1d42a51bb2f317ce0d0, type: 3}
+    - {fileID: 8251830521167055863, guid: ad5a02c8bd1857c45890c31604189640, type: 3}
+    - {fileID: 491907102550278644, guid: 20fdfe73a48713d4c81b8b8eeef48e77, type: 3}
+    Random2Offset:
+      NorthRelativeOffset: {x: -2, y: 0, z: 2}
+      EastRelativeOffset: {x: -1, y: 0, z: 2}
+      SouthRelativeOffset: {x: 2, y: 0, z: -2}
+      WestRelativeOffset: {x: -2, y: 0, z: 1}
+    _serverRoomLampPrefab: {fileID: 4157949545016325361, guid: f182b6d1acdbe1d42a51bb2f317ce0d0,
+      type: 3}
+    _serverRoomLampOffset: {x: 0, y: 0, z: -2}
+    _serverRoomDeskPrefab: {fileID: 5316926284663047571, guid: a8f074aaf45e16e46a9e0e1f2f80a618,
+      type: 3}
+    _serverRoomDeskOffset: {x: 0, y: 0, z: 0}
+    _serverRoomServerRackPrefab: {fileID: 2366271415470597347, guid: 9bb01cb380f77df4cbaa662dac547aa8,
+      type: 3}
+    _serverRoomRackOffset: {x: -2, y: 0, z: 1}
     _invalidIndexRange:
       from: -1
       to: -1
   defaultValue:
     _associatedOfficeMagicString: 
     _workSpaceChairPrefab: {fileID: 0}
+    ChairOffset:
+      NorthRelativeOffset: {x: 0, y: 0, z: 0}
+      EastRelativeOffset: {x: 0, y: 0, z: 0}
+      SouthRelativeOffset: {x: 0, y: 0, z: 0}
+      WestRelativeOffset: {x: 0, y: 0, z: 0}
     _workSpaceWorkDeskPrefab: {fileID: 0}
-    _workSpaceWorkServerDeskPrefab: {fileID: 0}
-    _workSpaceWorkServerRackPrefab: {fileID: 0}
+    DeskOffset:
+      NorthRelativeOffset: {x: 0, y: 0, z: 0}
+      EastRelativeOffset: {x: 0, y: 0, z: 0}
+      SouthRelativeOffset: {x: 0, y: 0, z: 0}
+      WestRelativeOffset: {x: 0, y: 0, z: 0}
     _random1List: []
+    Random1Offset:
+      NorthRelativeOffset: {x: 0, y: 0, z: 0}
+      EastRelativeOffset: {x: 0, y: 0, z: 0}
+      SouthRelativeOffset: {x: 0, y: 0, z: 0}
+      WestRelativeOffset: {x: 0, y: 0, z: 0}
     _random2List: []
+    Random2Offset:
+      NorthRelativeOffset: {x: 0, y: 0, z: 0}
+      EastRelativeOffset: {x: 0, y: 0, z: 0}
+      SouthRelativeOffset: {x: 0, y: 0, z: 0}
+      WestRelativeOffset: {x: 0, y: 0, z: 0}
+    _serverRoomLampPrefab: {fileID: 0}
+    _serverRoomLampOffset: {x: 0, y: 0, z: -2}
+    _serverRoomDeskPrefab: {fileID: 0}
+    _serverRoomDeskOffset: {x: 0, y: 0, z: 0}
+    _serverRoomServerRackPrefab: {fileID: 0}
+    _serverRoomRackOffset: {x: -2, y: 0, z: 1}
     _invalidIndexRange:
       from: 0
       to: 0
