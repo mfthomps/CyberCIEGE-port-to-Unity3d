@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Globalization;
+using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Code.Policies;
@@ -13,13 +14,13 @@ namespace Code.User_Interface.Policies {
     [Tooltip("The button that allows selecting this policy item.")]
     [SerializeField] private Button selectionButton;
 
-    private int _cost = 0;
+    private Policy _policy;
 
     //-------------------------------------------------------------------------
     public override void SetItem(Policy policy) {
       name = policy.displayName;
       nameLabel.text = policy.displayName;
-      _cost = policy.cost;
+      _policy = policy;
       UpdateCostLabel();
     }
 
@@ -36,9 +37,11 @@ namespace Code.User_Interface.Policies {
 
     //-------------------------------------------------------------------------
     private void UpdateCostLabel() {
-      if (_cost > 0) {
+      if (_policy.cost > 0) {
         // Our cost is halved if the policy is enabled
-        costLabel.text = string.Format("{0:C}", IsSelected() ? _cost / 2 : _cost);
+        CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
+        culture.NumberFormat.CurrencyNegativePattern = 1;
+        costLabel.text = string.Format(culture, "{0:C}", _policy.CostToToggle(!IsSelected()));
       }
       else {
         costLabel.text = "";

@@ -76,10 +76,21 @@ namespace Code.Policies {
         new XElement("name", objectName),
         new XElement(settingField,
           new XElement("field", policy.GetName()),
-          new XElement("value", isOn)),
-        new XElement("cost", isOn ? policy.cost : policy.cost / 2));
+          new XElement("value", isOn))
+      );
 
       IPCManagerScript.SendRequest(xml.ToString());
+
+      // TODO: Remove this once server handles policy refunds correctly
+      // If this policy can be refunded and we disabled it, we have to undo
+      // the cost from the server for disabling it AND for enabling it
+      if (policy.canGetRefund && !isOn) {
+        var costXML = new XElement("userEvent",
+          new XElement("cost", -policy.cost * 1.5)
+        );
+
+        IPCManagerScript.SendRequest(costXML.ToString());
+      }
     }
   }
 }
