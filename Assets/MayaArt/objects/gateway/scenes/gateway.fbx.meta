@@ -21,7 +21,17 @@ ModelImporter:
   - first:
       43: 4300000
     second: gateway
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: gateway
+    second: {fileID: 2100000, guid: 8309457bc30d14e41932ff52d297e354, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: gateway_mat.001
+    second: {fileID: 2100000, guid: c34d53641a9ad3d468bdcba828700d03, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0
@@ -99,7 +109,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 0.01
+    globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
@@ -111,5 +121,5 @@ ModelImporter:
   avatarSetup: 0
   additionalBone: 0
   userData: 
-  assetBundleName: 
+  assetBundleName: objects
   assetBundleVariant: 
