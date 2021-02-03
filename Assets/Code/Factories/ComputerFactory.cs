@@ -46,6 +46,22 @@ namespace Code.Factories {
     }
 
     //-------------------------------------------------------------------------
+    public void Remove(string itemName) {
+      var computer = computerListVariable.Value.Find(x => x.Data.component_name == itemName);
+      if (computer) {
+        computerListVariable.Remove(computer);
+        
+        //update the WorkSpace
+        WorkSpace ws = _workSpaceListVariable.GetWorkSpace(computer.Data.position);
+        ws?.RemoveComputer(computer);
+        Destroy(computer.gameObject);
+      }
+      else {
+        Debug.LogError($"Couldn't find a computer to remove with the name '{itemName}'");
+      }
+    }
+
+    //-------------------------------------------------------------------------
     private void LoadAllComputers(string path, Transform parent = null) {
       computerListVariable.Clear();
       
@@ -80,7 +96,7 @@ namespace Code.Factories {
       }
 
       WorkSpace ws = _workSpaceListVariable.GetWorkSpace(pos);
-      int slot = ws.AddComputer(newComputer.Data.component_name);
+      int slot = ws.AddComputer(newComputer);
       float xf, zf;
       ccUtils.GridTo3dPos(ws.x, ws.y, out xf, out zf);
 

@@ -15,32 +15,32 @@ public class ComponentBehavior : MonoBehaviour {
   private static ComponentBehavior current_component;
 
   // --------------------------------------------------------------------------
-  public static ComponentBehavior GetNextComponent() {
-    ComponentBehavior first_component = null;
-    bool gotit = false;
-    foreach (KeyValuePair<string, ComponentBehavior> entry in ComponentFactory.computer_dict) {
-      ComponentBehavior component = entry.Value;
-      if (!component.IsActiveComponent())
-        continue;
-      if (gotit) {
-        current_component = component;
-        return component;
-      }
-
-      if (first_component == null)
-        first_component = component;
-      if (current_component == null) {
-        current_component = component;
-        return component;
-      }
-
-      if (component == current_component)
-        gotit = true;
-    }
-    
-    current_component = first_component;
-    return first_component;
-  }
+  // public static ComponentBehavior GetNextComponent() {
+  //   ComponentBehavior first_component = null;
+  //   bool gotit = false;
+  //   foreach (KeyValuePair<string, ComponentBehavior> entry in ComponentFactory.computer_dict) {
+  //     ComponentBehavior component = entry.Value;
+  //     if (!component.IsActiveComponent())
+  //       continue;
+  //     if (gotit) {
+  //       current_component = component;
+  //       return component;
+  //     }
+  //
+  //     if (first_component == null)
+  //       first_component = component;
+  //     if (current_component == null) {
+  //       current_component = component;
+  //       return component;
+  //     }
+  //
+  //     if (component == current_component)
+  //       gotit = true;
+  //   }
+  //   
+  //   current_component = first_component;
+  //   return first_component;
+  // }
 
   // --------------------------------------------------------------------------
   public bool IsActiveComponent() {

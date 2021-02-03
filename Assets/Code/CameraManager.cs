@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UltimateCameraController.Cameras.Controllers;
 using Code.Scriptable_Variables;
 using Code.World_Objects;
@@ -35,20 +36,33 @@ namespace Code.Camera {
       Transform newTargetObject = null;
       switch (type) {
         case WorldObjectType.Component:
-          newTargetObject = ComponentBehavior.GetNextComponent().transform;
           break;
         case WorldObjectType.Computer:
-          newTargetObject = ComputerBehavior.GetNextComponent().transform;
+          //newTargetObject = ComputerBehavior.GetNextComponent().transform;
+          //TODO
           break;
         case WorldObjectType.Device:
-          newTargetObject = DeviceBehavior.GetNextComponent().transform;
+          //newTargetObject = DeviceBehavior.GetNextComponent().transform;
+          //TODO
           break;
         case WorldObjectType.User:
           newTargetObject = GetNextUser().transform;
           break;
+        case WorldObjectType.Asset:
+          break;
+        case WorldObjectType.Staff:
+          break;
+        case WorldObjectType.Workspace:
+          break;
+        case WorldObjectType.Zone:
+          break;
+        default:
+          throw new ArgumentOutOfRangeException(nameof(type), type, null);
       }
 
-      cameraController.targetObject = newTargetObject;
+      if (newTargetObject) {
+        cameraController.targetObject = newTargetObject;
+      }
     }
 
     // ------------------------------------------------------------------------
@@ -60,10 +74,11 @@ namespace Code.Camera {
         cameraController.targetObject = ub.transform;  
       }
       else {
-        var component = ComponentBehavior.GetNextComponent();
-        if (component != null) {
-          cameraController.targetObject = component.transform;
-        }
+        //TODO
+        // var component = ComponentBehavior.GetNextComponent();
+        // if (component != null) {
+        //   cameraController.targetObject = component.transform;
+        // }
       }
     }
 
