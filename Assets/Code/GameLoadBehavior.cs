@@ -8,15 +8,11 @@ using Code.Factories;
 using Code.Hardware;
 
 public class GameLoadBehavior : MonoBehaviour {
-  //public static string user_app_path = "C:\\Documents and Settings\\mfthomps\\Application Data\\CyberCIEGE";
-  public static string user_app_path =
-    Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "CyberCIEGE");
-
-  public static string ccInstallPath;
-
   public static GameObject main_floor;
 
   [Header("Output Events/Variables")]
+  [Tooltip("Path to the CyberCIEGE Install folder")]
+  public StringVariable ccInstallPath;
   [Tooltip("Path to the user's AppData folder")]
   public StringVariable userAppPath;
   [Tooltip("Variable containing all hardware (computers, servers, routers, etc) information for game")]
@@ -50,16 +46,27 @@ public class GameLoadBehavior : MonoBehaviour {
   [SerializeField] private WorkspaceFactory _workspaceFactory;
   [Tooltip("The factory to use for creating Zones")]
   [SerializeField] private ZoneFactory _zoneFactory;
+
+  private static string _ccInstallPath;
   
   // --------------------------------------------------------------------------
   void Awake() {
+    ccInstallPath.Value = _ccInstallPath;
     userAppPath.Value = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "CyberCIEGE");
   }
 
   // --------------------------------------------------------------------------
   void OnDestroy() {
-    hardwareCatalog.Reset();
+    ccInstallPath.Reset();
     userAppPath.Reset();
+    hardwareCatalog.Reset();
+  }
+
+  // --------------------------------------------------------------------------
+  public static void StoreCCInstallPath(string path) {
+    // We need to temporarily store this path in a static variable since
+    // ScriptableVariables don't handle scene changes very well
+    _ccInstallPath = path;
   }
 
   // --------------------------------------------------------------------------

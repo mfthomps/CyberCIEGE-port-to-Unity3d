@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace Code.Factories {
@@ -10,44 +7,38 @@ namespace Code.Factories {
     public static Dictionary<string, ComponentBehavior> computer_dict = new Dictionary<string, ComponentBehavior>();
     
     //--------------------------------------------------------------------------
-    protected void LoadComponent(string filePath, ComponentBehavior component, ref ComponentDataObject data) {
-      
-      try {
-        StreamReader reader = new StreamReader(filePath, Encoding.Default);
-        using (reader) {
-          string tag;
-      
-          ccUtils.PositionAfter(reader, "Component");
-          string value = null;
-          do {
-            value = ccUtils.SDTNext(reader, out tag);
-            if (value == null)
-              continue;
-      
-            switch (tag) {
-              case "Name":
-                data.component_name = value;
-                computer_dict.Add(data.component_name, component);
-                break;
-              case "PosIndex":
-                if (!int.TryParse(value, out data.position)) {
-                  Debug.Log("Error: LoadComponent position " + value);
-                }
+    protected void LoadComponent(string filePath, ComponentBehavior component, ComponentDataObject data) {
+      ccUtils.ParseSDFFile(filePath, (tag, value) => {
+        if (tag == "Component") {
+          ccUtils.ParseSDFFileSubElement(value, (subTag, subValue) => {
+            ProcessComponentProperty(component, data, subTag, subValue);
+          });
+        }
+      });
+    }
 
-                break;
-              case "Network":
-                MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(value ?? ""));
-                string network_name = ccUtils.SDTField(stream, "Name");
-                data.ConnectToNetwork(network_name);
+    //--------------------------------------------------------------------------
+    protected virtual void ProcessComponentProperty(ComponentBehavior component, ComponentDataObject data, string tag, string value) {
+      switch (tag) {
+        case "Name":
+          data.component_name = value;
+          computer_dict.Add(data.component_name, component);
+          break;
+        case "PosIndex":
+          if (!int.TryParse(value, out data.position)) {
+            Debug.Log($"Error: LoadComponent position {value}");
+          }
+          break;
+        case "Network":
+          ccUtils.ParseSDFFileSubElement(value, (subTag, subValue) => {
+            switch (subTag) {
+              case "Name":
+                data.ConnectToNetwork(subValue);
                 break;
             }
-          } while (value != null);
-        }
-      }
-      catch (Exception e) {
-        Debug.LogError(e.ToString());
+          });
+          break;
       }
     }
-    
   }
 }

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using UnityEngine;
 using Shared.ScriptableVariables;
 using Code.Hardware;
@@ -60,6 +59,49 @@ namespace Code.Factories {
         UpdateGameObject(newComputer);
       }
     }
+
+    //-------------------------------------------------------------------------
+    private ComputerDataObject LoadOneComputer(string computer_file, ComputerBehavior computer) {
+      ComputerDataObject data = new ComputerDataObject();
+      LoadComponent(computer_file, computer, data);
+      return data;
+    }
+
+    //--------------------------------------------------------------------------
+    protected override void ProcessComponentProperty(ComponentBehavior component, ComponentDataObject data, string tag, string value) {
+      base.ProcessComponentProperty(component, data, tag, value);
+      var computerComponent = component as ComputerBehavior;
+      var computerData = data as ComputerDataObject;
+
+      switch (tag) {
+        case "ComponentProceduralSettings":
+          ccUtils.ParseSDFFileSubElement(value, (subTag, subValue) => {
+            AddEnabledPolicy(computerData, subTag, subValue);
+          });
+          break;
+        case "Assets":
+          computerData.asset_list.Add(value);
+          AssetBehavior asset = AssetFactory.asset_dict[value];
+          asset.SetComputer(computerComponent);
+          break;
+        case "AccessListLocal":
+          computerData.user_list.Add(value);
+          break;
+        case "User":
+          break;
+        case "hwName":
+          computerData.hw_name = value;
+          break;
+        case "HW":
+          computerData.hw = value;
+          computerData.isServer = hardwareCatalog.Value.GetHardwareType(value) == HardwareType.Servers;
+          break;
+        default:
+          // Check our policies to see if this is one of them
+          AddEnabledPolicy(computerData, tag, value);
+          break;
+      }
+    }
     
     //-------------------------------------------------------------------------
     private void UpdateGameObject(ComputerBehavior newComputer) {
@@ -87,68 +129,10 @@ namespace Code.Factories {
       Vector3 v = new Vector3(xf, 0.5f, zf);
       newComputer.transform.position = v;
 
-      newComputer.gameObject.name = $"Computer--{newComputer.Data.component_name}";
+      newComputer.gameObject.name = $"Computer - {newComputer.Data.component_name}";
 
       //add it to the computer list.
       computerListVariable.Add(newComputer);
-    }
-
-    //-------------------------------------------------------------------------
-    private ComputerDataObject LoadOneComputer(string computer_file, ComputerBehavior computer) {
-      ComputerDataObject data = new ComputerDataObject();
-      var componentData = (ComponentDataObject) data;
-      LoadComponent(computer_file, computer, ref componentData);
-      LoadComputerInfoFromFile(computer_file, computer, ref data);
-      return data;
-    }
-
-    //-------------------------------------------------------------------------
-    private void LoadComputerInfoFromFile(string filePath, ComputerBehavior computer, ref ComputerDataObject data) {
-      StreamReader reader = new StreamReader(filePath, Encoding.Default);
-      using (reader) {
-        ccUtils.PositionAfter(reader, "Component");
-        string value = ccUtils.SDTNext(reader, out string tag);
-        while (value != null) {
-          if (tag != null) {
-            switch (tag) {
-              case "ComponentProceduralSettings":
-                // Special case to process all of the sub-elements
-                using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(value ?? ""))) {
-                  using (var substream = new StreamReader(stream)) {
-                    string v = ccUtils.SDTNext(substream, out string t);
-                    while (v != null) {
-                      AddEnabledPolicy(data, t, v);
-                      v = ccUtils.SDTNext(substream, out t);
-                    };
-                  }
-                }
-                break;
-              case "Assets":
-                data.asset_list.Add(value);
-                AssetBehavior asset = AssetFactory.asset_dict[value];
-                asset.SetComputer(computer);
-                break;
-              case "AccessListLocal":
-                data.user_list.Add(value);
-                break;
-              case "User":
-                break;
-              case "hwName":
-                data.hw_name = value;
-                break;
-              case "HW":
-                data.hw = value;
-                data.isServer = hardwareCatalog.Value.GetHardwareType(value) == HardwareType.Servers;
-                break;
-              default:
-                // Check our policies to see if this is one of them
-                AddEnabledPolicy(data, tag, value);
-                break;
-            }
-          }
-          value = ccUtils.SDTNext(reader, out tag);
-        };
-      }
     }
 
     // ------------------------------------------------------------------------

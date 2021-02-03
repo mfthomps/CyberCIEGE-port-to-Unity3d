@@ -318,7 +318,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 34.8
+  m_fontSize: 33.55
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -410,6 +410,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a201ea8715e841943845b06018ce33d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shortBriefing: {fileID: 11400000, guid: 2fb13fc6b45107a44b69df75939bcb17, type: 2}
+  briefing: {fileID: 11400000, guid: 68206fba93200874c911c702e95ff908, type: 2}
   phaseUIPrefab: {fileID: 6786049119197031227, guid: 9823a0ae1534d2e42b57e58f8a8c0619,
     type: 3}
   objectiveUIPrefab: {fileID: 2967354040076674449, guid: 689c1e103293767409d72152cea50aba,
@@ -584,7 +586,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 34.8
+  m_fontSize: 33.55
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1233,6 +1235,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_text
       value: objectives
+      objectReference: {fileID: 0}
+    - target: {fileID: 7031985257705313510, guid: 366e05cedb1176e428c15afbc647e52a,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 30.9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 366e05cedb1176e428c15afbc647e52a, type: 3}

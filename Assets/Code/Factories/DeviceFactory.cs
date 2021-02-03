@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.Text;
 using UnityEngine;
 using Shared.ScriptableVariables;
 using Code.Hardware;
@@ -55,15 +54,23 @@ namespace Code.Factories {
     //-------------------------------------------------------------------------
     private DeviceDataObject LoadOneDevice(string device_file, DeviceBehavior newDevice) {
       var data = new DeviceDataObject();
-      
-      // gameObject.SetActive(true);
-      var componentData = (ComponentDataObject) data;
-      LoadComponent(device_file, newDevice, ref componentData);
-      LoadDevice(device_file, ref data);
-      
+      LoadComponent(device_file, newDevice, data);
       return data;
     }
-    
+
+    //--------------------------------------------------------------------------
+    protected override void ProcessComponentProperty(ComponentBehavior component, ComponentDataObject data, string tag, string value) {
+      base.ProcessComponentProperty(component, data, tag, value);
+      var deviceComponent = component as DeviceBehavior;
+      var deviceData = data as DeviceDataObject;
+
+      switch (tag) {
+        case "HW":
+          deviceData.hw = value;
+          break;
+      }
+    }
+
     //-------------------------------------------------------------------------
     private void UpdateGameObject(DeviceBehavior device) {
       //This is the part that will hopefully load the correct assets from dict
@@ -89,30 +96,10 @@ namespace Code.Factories {
       Vector3 v = new Vector3(xf, 0.5f, zf);
       device.transform.position = v;
 
-      device.gameObject.name = $"Device--{device.Data.component_name}";
+      device.gameObject.name = $"Device - {device.Data.component_name}";
 
       //add it to the device list.
       deviceListVariable.Add(device);
-    }
-
-    //---------------------------------------------------------------------------
-    private void LoadDevice(string filePath, ref DeviceDataObject data) {
-      StreamReader reader = new StreamReader(filePath, Encoding.Default);
-      using (reader) {
-        string tag;
-        ccUtils.PositionAfter(reader, "Component");
-        string value = null;
-        do {
-          value = ccUtils.SDTNext(reader, out tag);
-          if ((value == null) || (tag == null))
-            continue;
-          switch (tag) {
-            case "HW": //Right now I think we're only using one of the params here, could change though
-              data.hw = value;
-              break;
-          }
-        } while (value != null);
-      }
     }
   }
 }
