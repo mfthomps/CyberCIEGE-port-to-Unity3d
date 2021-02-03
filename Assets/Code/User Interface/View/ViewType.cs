@@ -1,5 +1,7 @@
-﻿namespace Code.User_Interface.Main {
+﻿namespace Code.User_Interface.View {
   public enum ViewType {
+    Invalid = -1,
+
     Debrief = 1,
     Office,
     Network,

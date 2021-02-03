@@ -2,8 +2,8 @@
 using System.Collections;
 using UnityEngine;
 using Shared.ScriptableVariables;
-using Code.User_Interface.Main;
 using Code.User_Interface.Objectives;
+using Code.User_Interface.View;
 
 namespace Code.Test {
   public class TestMainUI : MonoBehaviour {
@@ -103,7 +103,7 @@ namespace Code.Test {
 
     // --------------------------------------------------------------------------
     private void OnCurrentViewChanged() {
-      Debug.Log($"Current View: {Enum.GetName(typeof(ViewType), currentViewType.Value)}");
+      Debug.Log($"Current View: {Enum.GetName(typeof(ViewType), currentViewType.TopView())}");
     }
   }
 }
