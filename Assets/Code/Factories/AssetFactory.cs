@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 using UnityEngine;
 using Code.Scriptable_Variables;
+using Code.World_Objects.Asset;
 
 namespace Code.Factories {
   //A factory that creates Asset instances

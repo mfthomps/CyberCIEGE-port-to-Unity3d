@@ -1,14 +1,21 @@
-﻿using Code;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class DeviceBehavior : ComponentBehavior {
-  [SerializeField] private DeviceDataObject _data;
+namespace Code.World_Objects.Device {
+  public class DeviceBehavior : ComponentBehavior {
+    [SerializeField] private DeviceDataObject _data;
 
-  public override ComponentDataObject Data {
-    get => _data;
-    set {
-      base.Data = value;
-      _data = value as DeviceDataObject;
+    //---------------------------------------------------------------------------
+    public override ComponentDataObject Data {
+      get => _data;
+      set {
+        base.Data = value;
+        _data = value as DeviceDataObject;
+      }
+    }
+
+    //---------------------------------------------------------------------------
+    public override WorldObjectType Type() {
+      return WorldObjectType.Device;
     }
   }
 }

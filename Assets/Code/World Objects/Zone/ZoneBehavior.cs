@@ -9,7 +9,7 @@ using Code.Scriptable_Variables;
 using Code.World_Objects.User;
 
 namespace Code.World_Objects.Zone {
-  public class ZoneBehavior : MonoBehaviour {
+  public class ZoneBehavior : BaseWorldObject {
     [Tooltip("List of policy groups for organizing mutually exclusive policies")]
     public PolicyGroupListVariable mutuallyExclusivePolicyGroups;
     [Header("Output Events")]
@@ -33,6 +33,12 @@ namespace Code.World_Objects.Zone {
     [Tooltip("The data related to this Zone.")]
     [SerializeField] private ZoneDataObject _data;
 
+    //----------------------------------------------------------------------------
+    public override WorldObjectType Type() {
+      return WorldObjectType.Zone;
+    }
+    
+    //----------------------------------------------------------------------------
     public ZoneDataObject Data {
       get => _data;
       set => _data = value;

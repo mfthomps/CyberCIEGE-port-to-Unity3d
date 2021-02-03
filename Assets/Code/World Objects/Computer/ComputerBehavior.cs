@@ -3,6 +3,7 @@ using UnityEngine;
 using Code.Game_Events;
 using Code.Policies;
 using Code.Scriptable_Variables;
+using Code.World_Objects;
 
 /*
  * Represents computer attributes, inheriting from ComponentBehavior.
@@ -19,6 +20,12 @@ namespace Code {
     [Tooltip("A policy was toggled off")]
     public PolicyGameEvent policyDisabled;
 
+    //----------------------------------------------------------------------------
+    public override WorldObjectType Type() {
+      return WorldObjectType.Computer;
+    }
+    
+    //----------------------------------------------------------------------------
     public override ComponentDataObject Data {
       get { return _data; }
       set {
@@ -71,6 +78,6 @@ namespace Code {
       policyDisabled?.Raise(policy);
     }
 
-    //----------------------------------------------------------------------------
+    
   }
 }
