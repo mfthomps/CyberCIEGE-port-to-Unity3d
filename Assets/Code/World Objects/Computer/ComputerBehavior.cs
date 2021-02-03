@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using Code.Factories;
 using Code.Game_Events;
 using Code.Policies;
 using Code.Scriptable_Variables;
@@ -73,14 +72,5 @@ namespace Code {
     }
 
     //----------------------------------------------------------------------------
-    public static void RemoveComputer(string computer_name) {
-      if (!ComponentFactory.computer_dict.ContainsKey(computer_name)) {
-        Debug.Log("ERROR: RemoveComputer, no computer named " + computer_name);
-        return;
-      }
-
-      ComponentBehavior bh = ComponentFactory.computer_dict[computer_name];
-      Destroy(bh.gameObject);
-    }
   }
 }

@@ -80,10 +80,14 @@ namespace Code.User_Interface.Office {
         var canBePlacedInRoom = true;
         switch (hardwareCatalog.Value.GetHardwareType(_hardwareToBuy)) {
           case HardwareType.Workstations:
-            if (!ws.ComputerRoom()) canBePlacedInRoom = false;
+            if (!ws.HaveRoomForComputer()) {
+              canBePlacedInRoom = false;
+            }
             break;
           case HardwareType.NetworkDevices:
-            if (!ws.DeviceRoom()) canBePlacedInRoom = false;
+            if (!ws.DeviceRoom()) {
+              canBePlacedInRoom = false;
+            }
             break;
         }
 
