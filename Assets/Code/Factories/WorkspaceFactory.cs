@@ -20,11 +20,18 @@ namespace Code.Factories {
     [SerializeField] private WorkSpaceListVariable _workSpaceListVariable;
 
     //Some local data read from the "workspace.sdf" file
-    private class WorkSpaceData {
+    public class WorkSpaceData {
       public int PosIndex;
       public bool IsServer;
       public int Random1;
       public int Random2;
+
+      public WorkSpaceData(int posIndex= -1, bool isServer = false, int random1 = -1, int random2 = -1) {
+        PosIndex = posIndex;
+        IsServer = isServer;
+        Random1 = random1;
+        Random2 = random2;
+      }
     }
     
     //-------------------------------------------------------------------------
@@ -151,7 +158,8 @@ namespace Code.Factories {
     }
 
     //-------------------------------------------------------------------------
-    private void SetupGameObject(WorkSpaceScript workSpace, WorkSpaceData supplementalData, int index) { 
+    //Public, for unit testing.
+    public void SetupGameObject(WorkSpaceScript workSpace, WorkSpaceData supplementalData, int index) { 
       ccUtils.GridTo3dPos(workSpace.Data.x, workSpace.Data.y,  out float x, out float y);
       workSpace.transform.position = new Vector3(x, 0, y);
       workSpace.transform.rotation = GetRotation(workSpace.Data.GetDirection());
@@ -199,7 +207,7 @@ namespace Code.Factories {
 
     //-------------------------------------------------------------------------
     //instantiate and position the stuff that goes in a regular WorkSpace
-    private static void PopulateRegularWorkspace(WorkSpaceScript workSpace,WorkSpaceData supplementalData, int workSpaceIndex, WorkSpaceFurniture furniture) {
+    private static void PopulateRegularWorkspace(WorkSpaceScript workSpace, WorkSpaceData supplementalData, int workSpaceIndex, WorkSpaceFurniture furniture) {
       //regular WorkSpaces get a chair and a desk
       GameObject chairPrefab = furniture.GetWorkSpaceChair(workSpaceIndex);
       Direction direction = workSpace.Data.GetDirection();
@@ -220,13 +228,17 @@ namespace Code.Factories {
       var firstItemPrefab = furniture.GetRandomItem1(supplementalData.Random1, workSpaceIndex);
       if (firstItemPrefab) {
         var item = Instantiate(firstItemPrefab, workSpace.transform);
+        item.gameObject.name = $"R1 - {item.gameObject.name}";
         item.transform.Translate(furniture.Random1Offset.GetOffset(direction), Space.Self);
       }
       
       var secondItemPrefab = furniture.GetRandomItem2(supplementalData.Random2, workSpaceIndex);
       if (secondItemPrefab) {
         var item = Instantiate(secondItemPrefab, workSpace.transform);
+        item.gameObject.name = $"R2 - {item.gameObject.name}";
         item.transform.Translate(furniture.Random2Offset.GetOffset(direction), Space.Self);
+        //the item needs to be rotated 90 degrees, relative to the parent
+        item.transform.Rotate(0, 90, 0, Space.Self);
       }
     }
 
