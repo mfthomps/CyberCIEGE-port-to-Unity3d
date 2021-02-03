@@ -49,16 +49,21 @@ namespace Code.Factories {
     public void Remove(string itemName) {
       var computer = computerListVariable.Value.Find(x => x.Data.component_name == itemName);
       if (computer) {
-        computerListVariable.Remove(computer);
-        
-        //update the WorkSpace
-        WorkSpace ws = _workSpaceListVariable.GetWorkSpace(computer.Data.position);
-        ws?.RemoveComputer(computer);
-        Destroy(computer.gameObject);
+        Remove(computer);
       }
       else {
         Debug.LogError($"Couldn't find a computer to remove with the name '{itemName}'");
       }
+    }
+
+    //-------------------------------------------------------------------------
+    public void Remove(ComputerBehavior computer) {
+      computerListVariable.Remove(computer);
+
+      //update the WorkSpace
+      WorkSpace ws = _workSpaceListVariable.GetWorkSpace(computer.Data.position);
+      ws?.RemoveComputer(computer);
+      Destroy(computer.gameObject);
     }
 
     //-------------------------------------------------------------------------

@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Code.Factories;
+using Code.Game_Events;
+using UnityEngine;
 using Shared.ScriptableVariables;
 using Code.Scriptable_Variables;
 
@@ -10,6 +12,10 @@ namespace Code.User_Interface.Components {
     [Header("Output Variables")]
     [Tooltip("Currently selected GameObject")]
     public GameObjectVariable selectedObject;
+
+    [Tooltip("The GameEvent to fire when a Computer should be scrapped")]
+    [SerializeField] private ComputerGameEvent _scrapComputerGameEvent;
+    
     [Header("UI Elements")]
     [Tooltip("List of computers to display")]
     public ComputerList computerList;
@@ -30,6 +36,15 @@ namespace Code.User_Interface.Components {
     // ------------------------------------------------------------------------
     public void SelectComputer(ComputerBehavior computerBehavior) {
       selectedObject.Value = computerBehavior.gameObject;
+    }
+
+    // ------------------------------------------------------------------------
+    public void ScrapSelectedComputer() {
+      ComputerBehavior computer = selectedObject.Value.GetComponent<ComputerBehavior>();
+      if (computer) {
+        //Fire Event
+        _scrapComputerGameEvent?.Raise(computer);
+      }
     }
 
     // ------------------------------------------------------------------------
