@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 using Shared.ScriptableVariables;
 
 namespace Code.User_Interface.Main {
@@ -37,8 +36,8 @@ namespace Code.User_Interface.Main {
     // ------------------------------------------------------------------------
     private void OnGamePausedChanged() {
       pausedLabel.SetActive(gamePaused.Value);
-      playButton.SetActive(!gamePaused.Value);
-      pauseButton.SetActive(gamePaused.Value);
+      playButton.SetActive(gamePaused.Value);
+      pauseButton.SetActive(!gamePaused.Value);
     }
   }
 }

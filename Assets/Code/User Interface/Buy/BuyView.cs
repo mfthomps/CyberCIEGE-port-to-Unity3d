@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Shared.ScriptableVariables;
 using Code.Hardware;
-using Code.User_Interface.Main;
+using Code.User_Interface.View;
 
 namespace Code.User_Interface.Buy {
   public class BuyView : MonoBehaviour {
@@ -56,11 +56,6 @@ namespace Code.User_Interface.Buy {
     }
 
     // ------------------------------------------------------------------------
-    public void Close() {
-      currentViewType.Back();
-    }
-
-    // ------------------------------------------------------------------------
     private void AddHardwareTypeToggle(HardwareType hardwareType) {
       var toggle = Instantiate(hardwareTypeTogglePrefab, hardwareTypeContentArea);
       toggle.SetHardwareType(hardwareType, hardwareTypeToggleGroup);
@@ -87,7 +82,7 @@ namespace Code.User_Interface.Buy {
           hardwareUI.SetHardware(hardware);
           hardwareUI.onBuyHardware += () => {
             onBuyHardware?.Raise(hardware.id);
-            Close();
+            currentViewType.Back();
           };
           _hardwareUIs.Add(hardwareUI);
         }
