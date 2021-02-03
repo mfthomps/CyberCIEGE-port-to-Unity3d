@@ -161,7 +161,7 @@ public class ccUtils : MonoBehaviour {
             /* assume new subblock */
             level++;
             //Debug.Log("New level now " + level + " for " + line);
-            retval = retval + "\t" + line + "\n";
+            retval = retval + "\n\t" + line + "\n";
           }
           else {
             colon_count = SubstringCount(line, ": ");

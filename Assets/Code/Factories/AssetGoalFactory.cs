@@ -3,25 +3,23 @@ using System.IO;
 using System.Text;
 using UnityEngine;
 using Code.Scriptable_Variables;
-using Code.Clearance;
+using Code.AssetGoal;
 
 namespace Code.Factories {
-  // Factory that create Clearance GameObjects
-  public class ClearanceFactory : MonoBehaviour, iFactory {
+  // Factory that create AssetGoal GameObjects
+  public class AssetGoalFactory : MonoBehaviour, iFactory {
     [Header("Input Variables")]
-    [Tooltip("Prefab for a ClearanceBehavior that represents a Clearance in the scenario.")]
-    [SerializeField] private ClearanceBehavior _prefab;
+    [Tooltip("Prefab for a AssetGoalBehavior that represents a AssetGoal in the scenario.")]
+    [SerializeField] private AssetGoalBehavior _prefab;
     [Header("Output Variables")]
-    [Tooltip("The variable containing the list of all the Clearances currently in the scenario.")]
-    [SerializeField] private ClearanceListVariable clearanceListVariable;
+    [Tooltip("The variable containing the list of all the AssetGoals currently in the scenario.")]
+    [SerializeField] private AssetGoalListVariable assetGoalListVariable;
 
-    private readonly string LABELS = "labels.sdf";
-    private const string TAG_SECRECY = "Secrecy";
-    private const string TAG_INTEGRITY = "Integrity";
+    private readonly string GOALS = "goals.sdf";
 
     //-------------------------------------------------------------------------
     void OnDestroy() {
-      clearanceListVariable.Clear();
+      assetGoalListVariable.Clear();
     }
 
     //-------------------------------------------------------------------------
@@ -31,9 +29,9 @@ namespace Code.Factories {
 
     //-------------------------------------------------------------------------
     public void CreateAll(string path, Transform parent = null) {
-      clearanceListVariable.Clear();
+      assetGoalListVariable.Clear();
 
-      string filePath = Path.Combine(path, LABELS);
+      string filePath = Path.Combine(path, GOALS);
       try {
         StreamReader reader = new StreamReader(filePath, Encoding.ASCII);
 
@@ -42,10 +40,8 @@ namespace Code.Factories {
           var value = ccUtils.SDTNext(reader, out tag);
           while (value != null) {
             switch (tag) {
-              case TAG_SECRECY:
-              case TAG_INTEGRITY:
-                var data = new ClearanceDataObject();
-                data.type = GetType(tag);
+              case "AssetGoal":
+                var data = new AssetGoalDataObject();
                 using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(value ?? ""))) {
                   using (var substream = new StreamReader(stream)) {
                     var v = ccUtils.SDTNext(substream, out string t);
@@ -53,6 +49,9 @@ namespace Code.Factories {
                       switch (t) {
                         case "Name":
                           data.name = v;
+                          break;
+                        case "Description":
+                          data.description = v;
                           break;
                       }
                       v = ccUtils.SDTNext(substream, out t);
@@ -72,24 +71,13 @@ namespace Code.Factories {
     }
     
     //-------------------------------------------------------------------------
-    private void CreateGameObject(ClearanceDataObject data, Transform parent) {
+    private void CreateGameObject(AssetGoalDataObject data, Transform parent) {
       var group = Instantiate(_prefab, parent);
-      group.name = $"Clearance - {data.name}";
+      group.name = $"AssetGoal - {data.name}";
       group.Data = data;
 
       //add it to the device list.
-      clearanceListVariable.Add(group);
-    }
-
-    //-------------------------------------------------------------------------
-    private ClearanceDataObject.ClearanceType GetType(string tag) {
-      switch (tag) {
-        case TAG_SECRECY:
-          return ClearanceDataObject.ClearanceType.Secrecy;
-        case TAG_INTEGRITY:
-          return ClearanceDataObject.ClearanceType.Integrity;
-      }
-      return ClearanceDataObject.ClearanceType.Invalid;
+      assetGoalListVariable.Add(group);
     }
   }
 }
