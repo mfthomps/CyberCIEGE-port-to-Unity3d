@@ -2,9 +2,15 @@
 
 namespace Code.World_Objects.Staff {
   //Represents a single Staff member
-  public class StaffBehavior : MonoBehaviour {
+  public class StaffBehavior : BaseWorldObject {
     [SerializeField] private StaffDataObject _data;
 
+    // ------------------------------------------------------------------------
+    public override WorldObjectType Type() {
+      return WorldObjectType.Staff;
+    }
+    
+    // ------------------------------------------------------------------------
     public StaffDataObject Data {
       get => _data;
       set => _data = value;

@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UltimateCameraController.Cameras.Controllers;
 using Code.Scriptable_Variables;
 using Code.World_Objects;
-using Code.World_Objects.User;
 
 namespace Code.Camera {
   public class CameraManager : MonoBehaviour {
@@ -22,15 +19,14 @@ namespace Code.Camera {
     [Tooltip("List of devices in the scenario")]
     [SerializeField] private DeviceListVariable _deviceList;
 
-    private readonly CircularList<UserBehavior> _userCircList = new CircularList<UserBehavior>();
-    private readonly CircularList<ComputerBehavior> _computerCircList = new CircularList<ComputerBehavior>();
-    private readonly CircularList<DeviceBehavior> _deviceCircList = new CircularList<DeviceBehavior>();
+    //contains circular lists of different types of WorldObjects
+    private readonly WorldObjectCircularLists _objectCircularLists = new WorldObjectCircularLists();
 
     // ------------------------------------------------------------------------
     private void Awake() {
-      _userCircList.SetList(_userList.Value);
-      _computerCircList.SetList(_computerList.Value);
-      _deviceCircList.SetList(_deviceList.Value);
+      _objectCircularLists.SetList(_userList.Value, WorldObjectType.User);
+      _objectCircularLists.SetList(_computerList.Value, WorldObjectType.Computer);
+      _objectCircularLists.SetList(_deviceList.Value, WorldObjectType.Device);
     }
 
     // ------------------------------------------------------------------------
@@ -49,47 +45,31 @@ namespace Code.Camera {
     }
 
     // ------------------------------------------------------------------------
-    public void MoveCameraToObject(WorldObjectType type) {
-      MonoBehaviour newTargetObject = null;
-      switch (type) {
-        case WorldObjectType.Component:
-          break;
-        case WorldObjectType.Computer:
-          newTargetObject = _computerCircList.GetNext();
-          break;
-        case WorldObjectType.Device:
-          newTargetObject = _deviceCircList.GetNext();
-          break;
-        case WorldObjectType.User:
-          newTargetObject = _userCircList.GetNext();
-          break;
-        case WorldObjectType.Asset:
-          break;
-        case WorldObjectType.Staff:
-          break;
-        case WorldObjectType.Workspace:
-          break;
-        case WorldObjectType.Zone:
-          break;
-        default:
-          throw new ArgumentOutOfRangeException(nameof(type), type, null);
-      }
-
-      if (newTargetObject != null) {
-        cameraController.targetObject = newTargetObject.transform;
+    public void MoveCameraToPreviousObject(WorldObjectType type) {
+      var target =_objectCircularLists.GetPrev(type);
+      if (target) {
+        cameraController.targetObject = target.transform;
       }
     }
-
+    
+    //--------------------------------------------------------------------------
+    public void MoveCameraToNextObject(WorldObjectType type) {
+      var target =_objectCircularLists.GetNext(type);
+      if (target) {
+        cameraController.targetObject = target.transform;
+      }
+    }
+    
     // ------------------------------------------------------------------------
     public void OnScenarioStarted() {
       //TODO Where should the camera start from?
       //This will auto slave the camera target to the first user. If none, try the first computer.
-      UserBehavior ub = _userCircList.GetNext();
+      var ub = _objectCircularLists.GetNext(WorldObjectType.User);
       if (ub != null) {
         cameraController.targetObject = ub.transform;  
       }
       else {
-        var computer = _computerCircList.GetNext();
+        var computer = _objectCircularLists.GetNext(WorldObjectType.Computer);
         if (computer) {
           cameraController.targetObject = computer.transform;
         }

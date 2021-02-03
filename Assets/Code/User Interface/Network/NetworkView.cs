@@ -3,6 +3,7 @@ using UnityEngine;
 using Shared.ScriptableVariables;
 using Code.Game_Events;
 using Code.Scriptable_Variables;
+using Code.World_Objects.Device;
 using Code.World_Objects.Network;
 
 namespace Code.User_Interface.Network {

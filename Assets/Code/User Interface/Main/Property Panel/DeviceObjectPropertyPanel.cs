@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Code.World_Objects.Device;
+using UnityEngine;
 using TMPro;
 
 namespace Code.User_Interface.Main {

@@ -2,7 +2,7 @@
 using UnityEngine;
 
 namespace Code.World_Objects.User {
-  public class UserBehavior : MonoBehaviour {
+  public class UserBehavior : BaseWorldObject {
     [SerializeField] private GameObject _maleChildGameObject;
     [SerializeField] private GameObject _femaleChildGameObject;
     [SerializeField] private GameObject _techChildGameObject;
@@ -11,6 +11,10 @@ namespace Code.World_Objects.User {
     
     [SerializeField] private UserDataObject _data;
 
+    //---------------------------------------------------------------------------
+    public override WorldObjectType Type() {
+      return WorldObjectType.User;
+    }
     //---------------------------------------------------------------------------
     public UserDataObject Data {
       get => _data;
