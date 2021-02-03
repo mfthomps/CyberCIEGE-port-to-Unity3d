@@ -772,6 +772,7 @@ GameObject:
   - component: {fileID: 5994606735801564016}
   - component: {fileID: 3253182827101230169}
   - component: {fileID: 2052201832859505875}
+  - component: {fileID: 5310253103253487984}
   m_Layer: 5
   m_Name: Selection Button
   m_TagString: Untagged
@@ -944,3 +945,20 @@ MonoBehaviour:
   _tooltipPrefab: {fileID: 7222113049118747447, guid: 172ef090b3cb7b64fbd8a55fbd4cae7d,
     type: 3}
   _tooltipText: 
+--- !u!114 &5310253103253487984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9150436359603813741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8be74aa3bc51c146b68d37b506f604a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 3253182827101230169}
+  defaultAnimatorController: {fileID: 9100000, guid: 474b483345576124d918bd911014e83b,
+    type: 2}
+  alternateAnimatorController: {fileID: 9100000, guid: 4665f6ab56af7a74b9581632773a46a9,
+    type: 2}
