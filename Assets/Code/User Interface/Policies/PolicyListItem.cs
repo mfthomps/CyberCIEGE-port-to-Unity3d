@@ -26,6 +26,7 @@ namespace Code.User_Interface.Policies {
 
     //-------------------------------------------------------------------------
     public override void SetSelected(bool isSelected) {
+
       base.SetSelected(isSelected);
       UpdateCostLabel();
     }
