@@ -33,7 +33,7 @@ namespace Code.User_Interface.Policies {
       // and set the animation state
       Animator animator = selectionButton.GetComponent<Animator>();
       if (animator) {
-        Debug.Log("Animator: " + animator.gameObject.name);
+        // Debug.Log("Animator: " + animator.gameObject.name);
         animator.SetBool("Selected", isSelected);
         animator.SetBool("Normal", !isSelected);
       }
