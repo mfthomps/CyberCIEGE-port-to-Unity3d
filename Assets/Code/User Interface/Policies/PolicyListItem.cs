@@ -42,7 +42,7 @@ namespace Code.User_Interface.Policies {
       // and swap the animators based on whether the item is selected or not
       SwapAnimators swapAnimators = selectionButton.GetComponent<SwapAnimators>();
       if (swapAnimators) {
-        swapAnimators.UseDefaultAnimator = isSelected;
+        swapAnimators.UseAlternateAnimator = isSelected;
       }
     }
 
