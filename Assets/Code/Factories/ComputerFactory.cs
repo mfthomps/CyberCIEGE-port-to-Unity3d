@@ -21,6 +21,8 @@ namespace Code.Factories {
     [SerializeField] private WorkSpaceListVariable _workSpaceListVariable;
     [Tooltip("List of policy lists that computers care about")]
     public List<PolicyListVariable> policies = new List<PolicyListVariable>();
+    [Tooltip("The variable that contains the currently in-game selected World Object")]
+    [SerializeField] private GameObjectVariable _currentlySelectedWorldObject;
 
     [Header("Output Variables")]
     [Tooltip("The variable containing the list of all the Computers currently in the scenario.")]
@@ -59,6 +61,11 @@ namespace Code.Factories {
     //-------------------------------------------------------------------------
     public void Remove(ComputerBehavior computer) {
       computerListVariable.Remove(computer);
+
+      //if this Computer was currently selected, deselect it
+      if (_currentlySelectedWorldObject.Value == computer.gameObject) {
+        _currentlySelectedWorldObject.Value = null;
+      }
 
       //update the WorkSpace
       WorkSpace ws = _workSpaceListVariable.GetWorkSpace(computer.Data.position);
