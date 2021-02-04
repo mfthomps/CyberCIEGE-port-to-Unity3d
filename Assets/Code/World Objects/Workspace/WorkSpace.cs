@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 namespace Code.World_Objects.Workspace {
   [Serializable]
@@ -11,7 +12,8 @@ namespace Code.World_Objects.Workspace {
       Inactive
     }
 
-    public string[] computer_slots;
+    [Tooltip("The list of Computers that have been added to this WorkSpace")]
+    [SerializeField] private ComputerBehavior[] _computerSlots;
     public string[] device_slots;
     public char direction;
     public char usage; //I = inactive, A = Active, S = Server
@@ -19,6 +21,7 @@ namespace Code.World_Objects.Workspace {
     public int x;
     public int y;
 
+    //-------------------------------------------------------------------------
     public WorkSpace(int x, int y, char direction, char usage) {
       this.x = x;
       this.y = y;
@@ -30,27 +33,37 @@ namespace Code.World_Objects.Workspace {
         num_computers = 6;
       }
 
-      //this.computer_slots = (int[])Enumerable.Repeat(-1, num_computers);
-      //this.device_slots = (int[])Enumerable.Repeat(-1, num_devices);
-      computer_slots = new string[num_computers];
+      _computerSlots = new ComputerBehavior[num_computers];
       device_slots = new string[num_devices];
     }
 
-    public int AddComputer(string computer_name) {
-      int retval = -1;
-      int i = 0;
-      while (retval < 0 && i < computer_slots.Length)
-        if (computer_slots[i] == null) {
-          retval = i;
-          computer_slots[i] = computer_name;
-          // int myindex = ws_list.IndexOf(this);
-          //Debug.Log("WorkSpace "+myindex+" AddComputer " + computer_name + " slot " + i + " of " + computer_slots.Length);
+    //-------------------------------------------------------------------------
+    //Add a computer to this WorkSpace if there is room. 
+    //@return the WorkSpace computer slot index (-1 if not added)
+    public int AddComputer(ComputerBehavior computer) {
+      for (int i = 0; i < _computerSlots.Length; i++){
+        if (!_computerSlots[i]) {
+          _computerSlots[i] = computer;
+          return i;
         }
-
-      i++;
-      return retval;
+      }
+      return -1;
     }
-
+    
+    //-------------------------------------------------------------------------
+    //Remove a computer from this WorkSpace. 
+    //@return true if removed, false otherwise.
+    public bool RemoveComputer(ComputerBehavior computer) {
+      for (int i = 0; i < _computerSlots.Length; i++){
+        if (_computerSlots[i] == computer) {
+          _computerSlots[i] = null;
+          return true;
+        }
+      }
+      return false;
+    }
+    
+    //-------------------------------------------------------------------------
     public int AddDevice(string device_name) {
       int retval = -1;
       int i = 0;
@@ -66,19 +79,16 @@ namespace Code.World_Objects.Workspace {
       return retval;
     }
 
-    public bool ComputerRoom() {
-      bool retval = false;
-      int i = 0;
-      while (!retval && i < computer_slots.Length) {
-        if (computer_slots[i] == null) {
-          //Debug.Log("slot empty " + i);
-          retval = true;
+    //-------------------------------------------------------------------------
+    //Is there currently any empty slots for computers?
+    public bool HaveRoomForComputer() {
+      for (int i = 0; i < _computerSlots.Length; i++) {
+        if (_computerSlots[i] == null) {
+          return true;
         }
-
-        i++;
       }
 
-      return retval;
+      return false;
     }
 
     public bool DeviceRoom() {

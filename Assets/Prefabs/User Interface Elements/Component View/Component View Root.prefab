@@ -2051,6 +2051,8 @@ MonoBehaviour:
   computerListVariable: {fileID: 11400000, guid: 8380099111649e944adcc17e9f804d36,
     type: 2}
   selectedObject: {fileID: 11400000, guid: 357d0fa733a03e24f82c4b882d71dea0, type: 2}
+  _scrapComputerGameEvent: {fileID: 11400000, guid: 8f59494279e176249907dad84d520bd5,
+    type: 2}
   computerList: {fileID: 5954298864273145864}
 --- !u!1 &5954298865061868784
 GameObject:
@@ -4894,7 +4896,7 @@ PrefabInstance:
     - target: {fileID: 564040623858192589, guid: 680345386362d664bb2735f526c637e2,
         type: 3}
       propertyPath: m_fontSize
-      value: 18
+      value: 15.55
       objectReference: {fileID: 0}
     - target: {fileID: 564040623858192589, guid: 680345386362d664bb2735f526c637e2,
         type: 3}
@@ -5068,6 +5070,36 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5954298864781001352}
     m_Modifications:
+    - target: {fileID: 564040623204313464, guid: 680345386362d664bb2735f526c637e2,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 564040623204313464, guid: 680345386362d664bb2735f526c637e2,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 564040623204313464, guid: 680345386362d664bb2735f526c637e2,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 5954298865000469863}
+    - target: {fileID: 564040623204313464, guid: 680345386362d664bb2735f526c637e2,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 564040623204313464, guid: 680345386362d664bb2735f526c637e2,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ScrapSelectedComputer
+      objectReference: {fileID: 0}
+    - target: {fileID: 564040623204313464, guid: 680345386362d664bb2735f526c637e2,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 564040623204313466, guid: 680345386362d664bb2735f526c637e2,
         type: 3}
       propertyPath: m_Name
@@ -6076,7 +6108,7 @@ PrefabInstance:
     - target: {fileID: 564040623858192589, guid: 680345386362d664bb2735f526c637e2,
         type: 3}
       propertyPath: m_fontSize
-      value: 18
+      value: 16.15
       objectReference: {fileID: 0}
     - target: {fileID: 564040623858192589, guid: 680345386362d664bb2735f526c637e2,
         type: 3}

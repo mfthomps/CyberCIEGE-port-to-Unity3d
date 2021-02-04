@@ -4,6 +4,7 @@ using UnityEngine;
 using Shared.ScriptableVariables;
 using Code.Hardware;
 using Code.Scriptable_Variables;
+using Code.World_Objects.Device;
 using Code.World_Objects.Workspace;
 
 namespace Code.Factories {

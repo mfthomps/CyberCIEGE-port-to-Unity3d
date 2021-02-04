@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Code.World_Objects.Device;
+using UnityEngine;
 
 namespace Code.Scriptable_Variables {
   [CreateAssetMenu(menuName = "Scriptable Objects/Variables/CC/Device List")]

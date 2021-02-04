@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using Code.User_Interface.Main;
+using Code.User_Interface.View;
 
 namespace Code.Test {
   public class TestBuyUI : MonoBehaviour {
@@ -9,7 +9,7 @@ namespace Code.Test {
 
     // --------------------------------------------------------------------------
     void Start() {
-      currentViewType.Value = ViewType.Buy;
+      currentViewType.SetView(ViewType.Buy);
       currentViewType.OnValueChanged += OnCurrentViewChanged;
     }
 
@@ -26,7 +26,7 @@ namespace Code.Test {
 
     // --------------------------------------------------------------------------
     private void OnCurrentViewChanged() {
-      Debug.Log($"Current view changed to {currentViewType.Value}");
+      Debug.Log($"Current view changed to {currentViewType.TopView()}");
     }
   }
 }

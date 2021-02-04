@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Code.User_Interface.Main {
+namespace Code.User_Interface.View {
   public class ViewArea : MonoBehaviour {
     [Header("Input Variables")]
     [Tooltip("The current view type we have selected")]
@@ -22,7 +22,7 @@ namespace Code.User_Interface.Main {
 
     // ------------------------------------------------------------------------
     private void OnCurrentViewChanged() {
-      gameObject.SetActive(currentViewType.Value == viewType);
+      gameObject.SetActive(currentViewType.IsVisible(viewType));
     }
   }
 }

@@ -1,13 +1,9 @@
-﻿using TMPro;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
+using TMPro;
 
 //used to manage the attack button
 namespace Code.AttackLog {
   public class AttackLogButton : MonoBehaviour {
-    [SerializeField]
-    private Button button;
-
     [SerializeField]
     private TMP_Text buttonText;
   

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace Code.User_Interface.Main {
+namespace Code.User_Interface.View {
   public class ViewToggle : MonoBehaviour {
     [Header("Output Variables")]
     [Tooltip("The current view type we have selected")]
@@ -12,6 +12,8 @@ namespace Code.User_Interface.Main {
     [Header("Customization")]
     [Tooltip("What view type this toggle represents")]
     public ViewType viewType = ViewType.Office;
+    [Tooltip("Whether this toggle is in charge of a mutually exclusive ViewType or not")]
+    public bool isMutuallyExclusive;
 
     // ------------------------------------------------------------------------
     void OnEnable() {
@@ -27,27 +29,28 @@ namespace Code.User_Interface.Main {
 
     // ------------------------------------------------------------------------
     private void OnToggleValueChanged(bool isOn) {
-      // If our toggle is on and it's not the current view type, set the current view type to us
-      if (isOn && currentViewType.Value != viewType) {
-        currentViewType.Value = viewType;
-        IPCManagerScript.DialogUp();
-        IPCManagerScript.SendRequest($"on_screen:{(int)viewType}");
+      // If our toggle is on and this view type isn't visible, modify the view stack
+      if (isOn && !currentViewType.IsVisible(viewType)) {
+        if (isMutuallyExclusive) {
+          currentViewType.SetView(viewType);
+        }
+        else {
+          currentViewType.AddView(viewType);
+        }
       }
-      // If we're turned off and the current view is ours, reset it to the office view
-      else if (!isOn && currentViewType.Value == viewType) {
-        currentViewType.Value = ViewType.Office;
-        IPCManagerScript.DialogClosed();
-        IPCManagerScript.SendRequest($"on_screen:{(int)ViewType.Office}");
+      // If we're turned off and this view type is visible, go back a view type
+      else if (!isOn && currentViewType.IsVisible(viewType)) {
+        currentViewType.Back();
       }
     }
 
     // ------------------------------------------------------------------------
     private void OnCurrentViewChanged() {
       // If something else changed the current view type, make sure the UI matches
-      if (currentViewType.Value == viewType && !input.isOn) {
+      if (currentViewType.IsVisible(viewType) && !input.isOn) {
         input.isOn = true;
       }
-      else if (currentViewType.Value != viewType && input.isOn) {
+      else if (!currentViewType.IsVisible(viewType) && input.isOn) {
         input.isOn = false;
       }
     }
