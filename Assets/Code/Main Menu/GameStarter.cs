@@ -56,7 +56,7 @@ namespace Code.MainMenu {
 
     // ------------------------------------------------------------------------
     public void Play() {
-      GameLoadBehavior.ccInstallPath = ccInstallPath.Value;
+      GameLoadBehavior.StoreCCInstallPath(ccInstallPath.Value);
 
       var newGame = string.IsNullOrEmpty(selectedSavedGame.Value);
       _gameProcess = new Process();

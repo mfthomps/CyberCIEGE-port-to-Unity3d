@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Text;
 using UnityEngine;
 using Code.Scriptable_Variables;
 using Code.AccessControlGroup;
@@ -36,29 +35,34 @@ namespace Code.Factories {
       publicData.name = "Public";
       CreateGameObject(publicData, parent);
 
-      string filePath = Path.Combine(path, GROUPS);
-      try {
-        StreamReader reader = new StreamReader(filePath, Encoding.ASCII);
-
-        using (reader) {
-          string tag;
-          ccUtils.PositionAfter(reader, "DACGroups");
-          var value = ccUtils.SDTNext(reader, out tag);
-          while (value != null) {
-            if (value != "end") {
-              var data = new AccessControlGroupDataObject();
-              data.name = value;
-              data.domain = ccUtils.SDTNext(reader, out tag);
-              data.background = ccUtils.SDTNext(reader, out tag);
-              CreateGameObject(data, parent);
+      var filePath = Path.Combine(path, GROUPS);
+      ccUtils.ParseSDFFile(filePath, (tag, value) => {
+        if (tag == "DACGroups") {
+          AccessControlGroupDataObject currentGroup = null;
+          ccUtils.ParseSDFFileSubElement(value, (subTag, subValue) => {
+            switch (subTag) {
+              case "Group":
+                // If we had a previous group we were working on, add it to our list
+                if (currentGroup != null) {
+                  CreateGameObject(currentGroup, parent);
+                }
+                currentGroup = new AccessControlGroupDataObject();
+                currentGroup.name = subValue;
+                break;
+              case "Domain":
+                currentGroup.domain = subValue;
+                break;
+              case "InitialBackGroundCheck":
+                currentGroup.background = subValue;
+                break;
             }
-            value = ccUtils.SDTNext(reader, out tag);
+          });
+          // If we had a previous group we were working on, add it to our list
+          if (currentGroup != null) {
+            CreateGameObject(currentGroup, parent);
           }
         }
-      }
-      catch (Exception e) {
-        Debug.LogError(e);
-      }
+      });
     }
     
     //-------------------------------------------------------------------------
