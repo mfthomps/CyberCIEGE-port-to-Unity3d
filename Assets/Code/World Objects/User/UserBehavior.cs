@@ -5,9 +5,6 @@ using Code.Scriptable_Variables;
 
 namespace Code.World_Objects.User {
   public class UserBehavior : BaseWorldObject {
-    public delegate void ValueChangeHandler();
-    public event ValueChangeHandler OnValueChanged;
-
     [Tooltip("The list of all the currently loaded access control groups")]
     [SerializeField] private AccessControlGroupListVariable _accessControlGroups;
     [Tooltip("The list of all the currently loaded clearances")]
@@ -102,11 +99,6 @@ namespace Code.World_Objects.User {
       }
 
       ValueChanged();
-    }
-
-    // ------------------------------------------------------------------------
-    protected void ValueChanged() {
-      OnValueChanged?.Invoke();
     }
   }
 }
