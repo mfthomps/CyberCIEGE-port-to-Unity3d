@@ -101,6 +101,9 @@ namespace Code.Factories {
             AddEnabledPolicy(computerData, subTag, subValue);
           });
           break;
+        case "Software":
+          computerData.software.Add(value);
+          break;
         case "Assets":
           computerData.asset_list.Add(value);
           AssetBehavior asset = AssetFactory.asset_dict[value];
@@ -110,6 +113,18 @@ namespace Code.Factories {
           computerData.user_list.Add(value);
           break;
         case "User":
+          computerData.assignedUser = value;
+          break;
+        case "OS":
+          computerData.os = value;
+          break;
+        case "Availability":
+          if (!int.TryParse(value, out computerData.availability)) {
+            Debug.LogError($"Error: ComputerFactory parsing availability: {value}");
+          }
+          break;
+        case "DomainName":
+          computerData.domain = value;
           break;
         case "hwName":
           computerData.hw_name = value;
