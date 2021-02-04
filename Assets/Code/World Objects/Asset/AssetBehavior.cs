@@ -1,9 +1,14 @@
 ﻿using UnityEngine;
 
-namespace Code {
-  public class AssetBehavior : MonoBehaviour {
+namespace Code.World_Objects.Asset {
+  public class AssetBehavior : BaseWorldObject {
     [SerializeField] private AssetDataObject _data;
-  
+
+    //----------------------------------------------------------------------------
+    public override WorldObjectType Type() {
+      return WorldObjectType.Asset;
+    }
+
     //----------------------------------------------------------------------------
     public string AssetName => Data.AssetName;
 

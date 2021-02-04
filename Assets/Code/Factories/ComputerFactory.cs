@@ -4,6 +4,7 @@ using UnityEngine;
 using Shared.ScriptableVariables;
 using Code.Hardware;
 using Code.Scriptable_Variables;
+using Code.World_Objects.Asset;
 using Code.World_Objects.Workspace;
 
 namespace Code.Factories {
@@ -42,6 +43,27 @@ namespace Code.Factories {
     //-------------------------------------------------------------------------
     public void CreateAll(string path, Transform parent = null) {
       LoadAllComputers(path);
+    }
+
+    //-------------------------------------------------------------------------
+    public void Remove(string itemName) {
+      var computer = computerListVariable.Value.Find(x => x.Data.component_name == itemName);
+      if (computer) {
+        Remove(computer);
+      }
+      else {
+        Debug.LogError($"Couldn't find a computer to remove with the name '{itemName}'");
+      }
+    }
+
+    //-------------------------------------------------------------------------
+    public void Remove(ComputerBehavior computer) {
+      computerListVariable.Remove(computer);
+
+      //update the WorkSpace
+      WorkSpace ws = _workSpaceListVariable.GetWorkSpace(computer.Data.position);
+      ws?.RemoveComputer(computer);
+      Destroy(computer.gameObject);
     }
 
     //-------------------------------------------------------------------------
@@ -122,7 +144,7 @@ namespace Code.Factories {
       }
 
       WorkSpace ws = _workSpaceListVariable.GetWorkSpace(pos);
-      int slot = ws.AddComputer(newComputer.Data.component_name);
+      int slot = ws.AddComputer(newComputer);
       float xf, zf;
       ccUtils.GridTo3dPos(ws.x, ws.y, out xf, out zf);
 

@@ -123,7 +123,7 @@ public class IPCManagerScript : MonoBehaviour {
           quit?.Raise();
           break;
         case "remove_computer":
-          ComputerBehavior.RemoveComputer(message);
+          _computerFactory.Remove(itemName: message);
           break;
         default:
           Debug.Log("nothing to do for " + command + " " + message);

@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using Code.Factories;
 using Code.Game_Events;
 using Code.Policies;
 using Code.Scriptable_Variables;
+using Code.World_Objects;
 
 /*
  * Represents computer attributes, inheriting from ComponentBehavior.
@@ -20,6 +20,12 @@ namespace Code {
     [Tooltip("A policy was toggled off")]
     public PolicyGameEvent policyDisabled;
 
+    //----------------------------------------------------------------------------
+    public override WorldObjectType Type() {
+      return WorldObjectType.Computer;
+    }
+    
+    //----------------------------------------------------------------------------
     public override ComponentDataObject Data {
       get { return _data; }
       set {
@@ -72,15 +78,6 @@ namespace Code {
       policyDisabled?.Raise(policy);
     }
 
-    //----------------------------------------------------------------------------
-    public static void RemoveComputer(string computer_name) {
-      if (!ComponentFactory.computer_dict.ContainsKey(computer_name)) {
-        Debug.Log("ERROR: RemoveComputer, no computer named " + computer_name);
-        return;
-      }
-
-      ComponentBehavior bh = ComponentFactory.computer_dict[computer_name];
-      Destroy(bh.gameObject);
-    }
+    
   }
 }
