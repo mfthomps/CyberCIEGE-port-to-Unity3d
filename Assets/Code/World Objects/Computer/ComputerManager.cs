@@ -1,4 +1,5 @@
-﻿using Code.Factories;
+﻿using System.Xml.Linq;
+using Code.Factories;
 using UnityEngine;
 
 namespace Code.World_Objects.Computer {
@@ -10,7 +11,17 @@ namespace Code.World_Objects.Computer {
     //--------------------------------------------------------------------------
     public void OnScrapComputer(ComputerBehavior computer) {
       //TODO Notify the game server this computer should be removed
+      SendScrapEvent(computer);
       _computerFactory.Remove(computer);
+    }
+
+    //--------------------------------------------------------------------------
+    private static void SendScrapEvent(ComponentBehavior computer) {
+      var xml = new XElement("componentEvent",
+        new XElement("name", computer.Data.component_name),
+        new XElement("sell"));
+
+      IPCManagerScript.SendRequest(xml.ToString());
     }
   }
 }
