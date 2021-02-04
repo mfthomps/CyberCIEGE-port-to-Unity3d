@@ -26,7 +26,6 @@ namespace Code.User_Interface.Policies {
 
     //-------------------------------------------------------------------------
     public override void SetSelected(bool isSelected) {
-
       base.SetSelected(isSelected);
       UpdateCostLabel();
 
@@ -50,6 +49,7 @@ namespace Code.User_Interface.Policies {
     //-------------------------------------------------------------------------
     public void SetInteractable(bool interactable) {
       selectionButton.interactable = interactable;
+      selectionToggle.interactable = interactable;
     }
 
     //-------------------------------------------------------------------------
