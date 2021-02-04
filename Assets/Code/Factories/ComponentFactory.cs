@@ -27,6 +27,9 @@ namespace Code.Factories {
             Debug.Log($"Error: LoadComponent position {value}");
           }
           break;
+        case "HW":
+          data.hw = value;
+          break;
         case "Network":
           ccUtils.ParseSDFFileSubElement(value, (subTag, subValue) => {
             switch (subTag) {

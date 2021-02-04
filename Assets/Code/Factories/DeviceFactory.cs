@@ -62,12 +62,14 @@ namespace Code.Factories {
     //--------------------------------------------------------------------------
     protected override void ProcessComponentProperty(ComponentBehavior component, ComponentDataObject data, string tag, string value) {
       base.ProcessComponentProperty(component, data, tag, value);
-      var deviceComponent = component as DeviceBehavior;
       var deviceData = data as DeviceDataObject;
 
       switch (tag) {
-        case "HW":
-          deviceData.hw = value;
+        case "OS":
+          deviceData.os = value;
+          break;
+        case "VPNKeyType":
+          deviceData.vnpKeyType = value;
           break;
       }
     }
