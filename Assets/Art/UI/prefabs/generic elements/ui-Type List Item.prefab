@@ -53,7 +53,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1623206373803251717}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -107,13 +107,11 @@ GameObject:
   - component: {fileID: 7024381166346829799}
   - component: {fileID: 2823651770385565001}
   - component: {fileID: 1878472631997533317}
-  - component: {fileID: 4027596316883803476}
-  - component: {fileID: 1831388945114481716}
-  - component: {fileID: 4045544392667028250}
-  - component: {fileID: 8489245653136999379}
-  - component: {fileID: 6193483234441031974}
+  - component: {fileID: 225207343339362469}
+  - component: {fileID: 3291739810152759749}
+  - component: {fileID: 927834228999544555}
   m_Layer: 5
-  m_Name: Zone Setting Type List Item
+  m_Name: Tab List Item
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -222,20 +220,9 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4045544392667028250}
-        m_MethodName: ToggleAnimators
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_IsOn: 0
---- !u!114 &4027596316883803476
+--- !u!114 &225207343339362469
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -249,7 +236,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   label: {fileID: 1052901199584148771}
   toggle: {fileID: 1878472631997533317}
---- !u!95 &1831388945114481716
+--- !u!95 &3291739810152759749
 Animator:
   serializedVersion: 3
   m_ObjectHideFlags: 0
@@ -259,7 +246,7 @@ Animator:
   m_GameObject: {fileID: 2291773049446171896}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: ed1d5c87989bf0e43b91deeff4822793, type: 2}
+  m_Controller: {fileID: 9100000, guid: 784fac24986a89e40b79965a218e02b7, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -268,7 +255,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &4045544392667028250
+--- !u!114 &927834228999544555
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -280,45 +267,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8be74aa3bc51c146b68d37b506f604a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 1831388945114481716}
+  animator: {fileID: 3291739810152759749}
   defaultAnimatorController: {fileID: 9100000, guid: ed1d5c87989bf0e43b91deeff4822793,
     type: 2}
   alternateAnimatorController: {fileID: 9100000, guid: 784fac24986a89e40b79965a218e02b7,
     type: 2}
---- !u!114 &8489245653136999379
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2291773049446171896}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10b8a20a840ddee40ab6a05f9d5cc0f3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  label: {fileID: 1052901199584148771}
-  toggle: {fileID: 1878472631997533317}
---- !u!114 &6193483234441031974
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2291773049446171896}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IgnoreLayout: 0
-  m_MinWidth: -1
-  m_MinHeight: -1
-  m_PreferredWidth: -1
-  m_PreferredHeight: 40
-  m_FlexibleWidth: -1
-  m_FlexibleHeight: -1
-  m_LayoutPriority: 1
 --- !u!1 &2460363130718892137
 GameObject:
   m_ObjectHideFlags: 0

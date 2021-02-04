@@ -39,4 +39,26 @@ public class SwapAnimators : MonoBehaviour
         animator.runtimeAnimatorController = useAlternateAnimator ? alternateAnimatorController : defaultAnimatorController;
       }
     }
+    public void SetDefaultAnimator () {
+        useDefaultAnimator = true;
+        useAlternateAnimator = false;
+
+        animator.runtimeAnimatorController = useDefaultAnimator ? defaultAnimatorController : alternateAnimatorController;
+    }
+    // Use this property to tell the Animator to use the default animator
+    public void SetAlternateAnimator () {
+        useAlternateAnimator = true;
+        useDefaultAnimator = false;
+
+        animator.runtimeAnimatorController = useAlternateAnimator ? alternateAnimatorController : defaultAnimatorController;
+    }
+
+    public void ToggleAnimators () { 
+      if (useDefaultAnimator) {
+        SetDefaultAnimator();
+      }
+      else {
+        SetAlternateAnimator();
+      }
+    }
 }
