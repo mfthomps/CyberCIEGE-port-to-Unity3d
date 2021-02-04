@@ -27,6 +27,8 @@ namespace Code.User_Interface.Main {
     public StringList assetFailureList;
     [Tooltip("List for selected user's locally accessible computers")]
     public StringList localAccessList;
+    [Tooltip("Label for selected user's thoughts")]
+    public TMP_Text thoughtsLabel;
 
     private UserBehavior _displayedUser;
 
@@ -52,6 +54,7 @@ namespace Code.User_Interface.Main {
       SetStringProperty(backgroundCheckLabel, BackgroundCheck.ToString(displayedDataObject.highestBackgroundCheck));
       SetStringList(assetFailureList, displayedDataObject.failed_goals);
       SetStringList(localAccessList, computers.Value.FindAll(computer => (computer.Data as ComputerDataObject).assignedUser == displayedDataObject.user_name).ConvertAll(computer => computer.Data.component_name));
+      SetStringProperty(thoughtsLabel, displayedDataObject.current_thought);
     }
   }
 }

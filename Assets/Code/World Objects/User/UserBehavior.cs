@@ -76,6 +76,12 @@ namespace Code.World_Objects.User {
     }
 
     //---------------------------------------------------------------------------
+    public void UpdateCurrentThought(string thought) {
+      Data.current_thought = thought;
+      ValueChanged();
+    }
+
+    //---------------------------------------------------------------------------
     public void UpdateTraining(int training) {
       Data.training = training;
       ValueChanged();
