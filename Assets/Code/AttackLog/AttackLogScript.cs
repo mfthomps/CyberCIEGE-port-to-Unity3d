@@ -41,7 +41,6 @@ namespace Code.AttackLog {
       //update the look of the attack log button to indicate there are new logs
       if (attackLogButton) {
         attackLogButton.SetHasNewLogs(true);
-        Debug.Log("Swapped");
       }
     }
 
@@ -49,7 +48,6 @@ namespace Code.AttackLog {
     private void OnDialogClosed() {
       if (attackLogButton) {
         attackLogButton.SetHasNewLogs(false);
-        Debug.Log("Swapped");
       }
     }
   }
