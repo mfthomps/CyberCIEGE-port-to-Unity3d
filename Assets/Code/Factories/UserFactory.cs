@@ -69,6 +69,7 @@ namespace Code.Factories {
           newUser.gameObject.SetActive(true);
           newUser.gameObject.name = $"User--{data.user_name}";
           newUser.Data = data;
+          newUser.UpdateHighestBackgroundCheck();
           _userListVariable.Add(newUser);
         }
       }
@@ -112,6 +113,16 @@ namespace Code.Factories {
               case "InitialTraining":
                 if (!int.TryParse(subValue, out data.training)) {
                   Debug.Log("Error: LoadUser parsing training" + subValue);
+                }
+                break;
+              case "Happiness":
+                if (!int.TryParse(subValue, out data.happiness)) {
+                  Debug.Log("Error: LoadUser parsing happiness" + subValue);
+                }
+                break;
+              case "Productivity":
+                if (!int.TryParse(subValue, out data.productivity)) {
+                  Debug.Log("Error: LoadUser parsing productivity" + subValue);
                 }
                 break;
               case "PosIndex":

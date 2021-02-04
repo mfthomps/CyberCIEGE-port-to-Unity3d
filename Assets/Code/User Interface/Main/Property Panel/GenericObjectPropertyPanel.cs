@@ -29,12 +29,22 @@ namespace Code.User_Interface.Main {
 
     // ------------------------------------------------------------------------
     protected void SetStringList(StringList stringList, HashSet<string> items) {
+      SetStringList(stringList, new List<string>(items));
+    }
+
+    // ------------------------------------------------------------------------
+    protected void SetStringList(StringList stringList, List<string> items) {
       if (items.Count > 0) {
-        stringList.SetItems(new List<string>(items));
+        stringList.SetItems(items);
       }
       else {
         stringList.SetItems(new List<string>{ "None" });
       }
+    }
+
+    // ------------------------------------------------------------------------
+    protected void SetRangeProperty(RangeProperty range, int value, int min = 0, int max = 100) {
+      range.SetRange(value, min, max);
     }
   }
 }

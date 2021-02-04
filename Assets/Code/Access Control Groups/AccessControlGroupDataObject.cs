@@ -6,6 +6,6 @@ namespace Code.AccessControlGroup {
   public class AccessControlGroupDataObject {
     public string name;
     public string domain;
-    public string background;
+    public BackgroundCheck.Level backgroundCheckLevel;
   }
 }
