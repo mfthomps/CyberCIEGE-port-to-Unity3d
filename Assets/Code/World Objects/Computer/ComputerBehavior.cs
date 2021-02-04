@@ -70,14 +70,38 @@ namespace Code {
     private void EnablePolicy(Policy policy) {
       _data.enabledPolicies.Add(policy.GetName());
       policyEnabled?.Raise(policy);
+      ValueChanged();
     }
 
     //----------------------------------------------------------------------------
     private void DisablePolicy(Policy policy) {
       _data.enabledPolicies.Remove(policy.GetName());
       policyDisabled?.Raise(policy);
+      ValueChanged();
     }
 
-    
+    // ------------------------------------------------------------------------
+    public void AddAsset(string asset) {
+      _data.AddAsset(asset);
+      ValueChanged();
+    }
+
+    // ------------------------------------------------------------------------
+    public void RemoveAsset(string asset) {
+      _data.RemoveAsset(asset);
+      ValueChanged();
+    }
+
+    // ------------------------------------------------------------------------
+    public void AddUser(string user) {
+      _data.AddUser(user);
+      ValueChanged();
+    }
+
+    // ------------------------------------------------------------------------
+    public void RemoveUser(string user) {
+      _data.RemoveUser(user);
+      ValueChanged();
+    }
   }
 }

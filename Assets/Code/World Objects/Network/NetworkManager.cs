@@ -27,7 +27,7 @@ namespace Code.World_Objects.Network {
         new XElement("name", component.Data.component_name),
         new XElement("networkConnect", network.Data.name));
       IPCManagerScript.SendRequest(xml.ToString());
-      component.Data.ConnectToNetwork(network.Data.name);
+      component.ConnectToNetwork(network.Data.name);
     }
 
     // ------------------------------------------------------------------------
@@ -36,7 +36,7 @@ namespace Code.World_Objects.Network {
         new XElement("name", component.Data.component_name),
         new XElement("networkDisconnect", network.Data.name));
       IPCManagerScript.SendRequest(xml.ToString());
-      component.Data.DisconnectFromNetwork(network.Data.name);
+      component.DisconnectFromNetwork(network.Data.name);
     }
   }
 }

@@ -10,7 +10,7 @@ namespace Code {
     public string hw;
     public int cost;
     public int position = -1;
-    public List<string> network_list = new List<string>();
+    public HashSet<string> network_list = new HashSet<string>();
 
     // ------------------------------------------------------------------------
     public bool IsConnectedToNetwork(string network) {

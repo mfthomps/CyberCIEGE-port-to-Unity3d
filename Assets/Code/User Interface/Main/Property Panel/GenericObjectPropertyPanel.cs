@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
+using TMPro;
 
 namespace Code.User_Interface.Main {
   // The actual functional base class for property panels that will automatically
@@ -19,5 +21,20 @@ namespace Code.User_Interface.Main {
 
     // ------------------------------------------------------------------------
     protected abstract void DisplayProperties(T component);
+
+    // ------------------------------------------------------------------------
+    protected void SetStringProperty(TMP_Text label, string value, string placeholderValue = "") {
+      label.text = !string.IsNullOrEmpty(value) ? value : placeholderValue;
+    }
+
+    // ------------------------------------------------------------------------
+    protected void SetStringList(StringList stringList, HashSet<string> items) {
+      if (items.Count > 0) {
+        stringList.SetItems(new List<string>(items));
+      }
+      else {
+        stringList.SetItems(new List<string>{ "None" });
+      }
+    }
   }
 }

@@ -19,10 +19,10 @@ namespace Code.Test {
       if (component != null) {
         Debug.Log($"Toggle network: {network.Data.name} for {component.Data.component_name}");
         if (!component.Data.IsConnectedToNetwork(network.Data.name)) {
-          component.Data.ConnectToNetwork(network.Data.name);
+          component.ConnectToNetwork(network.Data.name);
         }
         else {
-          component.Data.DisconnectFromNetwork(network.Data.name);
+          component.DisconnectFromNetwork(network.Data.name);
         }
       }
       else {

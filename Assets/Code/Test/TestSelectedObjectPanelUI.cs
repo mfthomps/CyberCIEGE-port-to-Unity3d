@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using Shared.ScriptableVariables;
 using Code.Scriptable_Variables;
 
@@ -27,31 +28,42 @@ namespace Code.Test {
     // ------------------------------------------------------------------------
     [ContextMenu("Select Computer")]
     public void SelectComputer() {
-      selectedObject.Value = computerListVariable.Value[0].gameObject;
+      SelectItemFromList(computerListVariable.Value);
     }
 
     // ------------------------------------------------------------------------
     [ContextMenu("Select Device")]
     public void SelectDevice() {
-      selectedObject.Value = deviceListVariable.Value[0].gameObject;
+      SelectItemFromList(deviceListVariable.Value);
     }
 
     // ------------------------------------------------------------------------
     [ContextMenu("Select Staff")]
     public void SelectStaff() {
-      selectedObject.Value = staffListVariable.Value[0].gameObject;
+      SelectItemFromList(staffListVariable.Value);
     }
 
     // ------------------------------------------------------------------------
     [ContextMenu("Select User")]
     public void SelectUser() {
-      selectedObject.Value = userListVariable.Value[0].gameObject;
+      SelectItemFromList(userListVariable.Value);
     }
 
     // ------------------------------------------------------------------------
     [ContextMenu("Select Zone")]
     public void SelectZone() {
-      selectedObject.Value = zoneListVariable.Value[0].gameObject;
+      SelectItemFromList(zoneListVariable.Value);
+    }
+
+    // ------------------------------------------------------------------------
+    private void SelectItemFromList<T>(List<T> list) where T : MonoBehaviour {
+      var selectedIndex = list.FindIndex(item => item.gameObject == selectedObject.Value) + 1;
+      if (selectedIndex >= list.Count) {
+        selectedIndex = 0;
+      }
+      if (0 <= selectedIndex && selectedIndex < list.Count) {
+        selectedObject.Value = list[selectedIndex].gameObject;
+      }
     }
   }
 }
