@@ -17,6 +17,14 @@ namespace Code.User_Interface {
     public virtual void SetSelected(bool isSelected) {
       if (selectionToggle != null) {
         selectionToggle.isOn = isSelected;
+
+        // get the animator from the non-interactable toggle
+        Animator animator = selectionToggle.GetComponent<Animator>();
+
+        if (animator) {
+          animator.SetBool("Selected", isSelected);
+          animator.SetBool("Normal", !isSelected);
+        }
       }
     }
 

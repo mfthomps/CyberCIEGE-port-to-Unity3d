@@ -28,11 +28,28 @@ namespace Code.User_Interface.Policies {
     public override void SetSelected(bool isSelected) {
       base.SetSelected(isSelected);
       UpdateCostLabel();
+
+      // get the animator from the interactable toggle
+      // and set the animation state
+      Animator animator = selectionButton.GetComponent<Animator>();
+      if (animator) {
+        // Debug.Log("Animator: " + animator.gameObject.name);
+        animator.SetBool("Selected", isSelected);
+        animator.SetBool("Normal", !isSelected);
+      }
+
+      // get the SwapAnimators component from the interactable toggle
+      // and swap the animators based on whether the item is selected or not
+      SwapAnimators swapAnimators = selectionButton.GetComponent<SwapAnimators>();
+      if (swapAnimators) {
+        swapAnimators.UseDefaultAnimator = isSelected;
+      }
     }
 
     //-------------------------------------------------------------------------
     public void SetInteractable(bool interactable) {
       selectionButton.interactable = interactable;
+      selectionToggle.interactable = interactable;
     }
 
     //-------------------------------------------------------------------------
