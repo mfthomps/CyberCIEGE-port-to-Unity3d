@@ -19,13 +19,24 @@ public class SwapAnimators : MonoBehaviour
     // the alternate animator
     [SerializeField] private AnimatorController alternateAnimatorController;
 
+    // private variables for public property
     private bool useDefaultAnimator;
+    private bool useAlternateAnimator;
     
-    // Use this property to tell the Animator to use the alternate animator
+    // Use this property to tell the Animator to use the default animator
     public bool UseDefaultAnimator {
       set {
         useDefaultAnimator = value;
-        animator.runtimeAnimatorController = useDefaultAnimator ? alternateAnimatorController : defaultAnimatorController;
+        useAlternateAnimator = !useDefaultAnimator;
+        animator.runtimeAnimatorController = useDefaultAnimator ? defaultAnimatorController : alternateAnimatorController;
+      }
+    }
+    // Use this property to tell the Animator to use the default animator
+    public bool UseAlternateAnimator {
+      set {
+        useAlternateAnimator = value;
+        useDefaultAnimator = !useAlternateAnimator;
+        animator.runtimeAnimatorController = useAlternateAnimator ? alternateAnimatorController : defaultAnimatorController;
       }
     }
 }
