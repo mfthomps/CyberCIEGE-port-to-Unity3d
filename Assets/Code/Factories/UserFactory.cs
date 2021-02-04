@@ -1,5 +1,5 @@
-﻿using System.IO;
-using System.Text;
+﻿using System;
+using System.IO;
 using Code.Scriptable_Variables;
 using Code.World_Objects.Workspace;
 using UnityEngine;
@@ -78,65 +78,57 @@ namespace Code.Factories {
     private UserDataObject LoadOneUser(string user_file) {
       var data = new UserDataObject();
 
-      StreamReader reader = new StreamReader(user_file, Encoding.Default);
-      using (reader) {
-        ccUtils.PositionAfter(reader, "User");
-        var value = ccUtils.SDTNext(reader, out string tag);
-        while (value != null) {
-          switch (tag) {
-            case "Name":
-              data.user_name = value;
-              break;
-            case "Dept":
-              data.department = value;
-              break;
-            case "SecrecyClearance":
-              data.secrecyClearance = value;
-              break;
-            case "IntegrityClearance":
-              data.integrityClearance = value;
-              break;
-            case "DACGroups":
-              var groups = value.Split('\n');
-              foreach (var group in groups) {
-                data.groups.Add(group);
-              }
-              break;
-            case "AssetGoal":
-              using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(value ?? ""))) {
-                using (var substream = new StreamReader(stream)) {
-                  var v = ccUtils.SDTNext(substream, out string t);
-                  while (v != null) {
-                    switch (t) {
-                      case "AssetGoalName":
-                        data.assetGoals.Add(v);
-                        break;
-                    }
-                    v = ccUtils.SDTNext(substream, out t);
-                  };
+      ccUtils.ParseSDFFile(user_file, (tag, value) => {
+        if (tag == "User") {
+          ccUtils.ParseSDFFileSubElement(value, (subTag, subValue) => {
+            switch (subTag) {
+              case "Name":
+                data.user_name = subValue;
+                break;
+              case "Dept":
+                data.department = subValue;
+                break;
+              case "SecrecyClearance":
+                data.secrecyClearance = subValue;
+                break;
+              case "IntegrityClearance":
+                data.integrityClearance = subValue;
+                break;
+              case "DACGroups":
+                var groups = subValue.Split(new string[] { ":end" }, StringSplitOptions.None);
+                foreach (var group in groups) {
+                  data.groups.Add(group.Trim());
                 }
-              }
-              break;
-            case "InitialTraining":
-              if (!int.TryParse(value, out data.training)) {
-                Debug.Log("Error: LoadUser parsing training" + value);
-              }
-              break;
-            case "PosIndex":
-              if (!int.TryParse(value, out data.position)) {
-                Debug.Log("Error: LoadUser parsing position" + value);
-              }
-              break;
-            case "Gender":
-              data.gender = value;
-              break;
-            case "UserDescription":
-              data.description = value;
-              break;
-          }
-          value = ccUtils.SDTNext(reader, out tag);
+                break;
+              case "AssetGoal":
+                ccUtils.ParseSDFFileSubElement(subValue, (assetGoalTag, assetGoalValue) => {
+                  switch (assetGoalTag) {
+                    case "AssetGoalName":
+                      data.assetGoals.Add(assetGoalValue);
+                      break;
+                  }
+                });
+                break;
+              case "InitialTraining":
+                if (!int.TryParse(subValue, out data.training)) {
+                  Debug.Log("Error: LoadUser parsing training" + subValue);
+                }
+                break;
+              case "PosIndex":
+                if (!int.TryParse(subValue, out data.position)) {
+                  Debug.Log("Error: LoadUser parsing position" + subValue);
+                }
+                break;
+              case "Gender":
+                data.gender = subValue;
+                break;
+              case "UserDescription":
+                data.description = subValue;
+                break;
+            }
+          });
         }
-      }
+      });
 
       return data;
     }

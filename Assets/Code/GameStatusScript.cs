@@ -7,6 +7,9 @@ using Shared.ScriptableVariables;
 using Code.MainMenu;
 
 public class GameStatusScript : MonoBehaviour {
+  [Header("Input Variables")]
+  [Tooltip("Path to the CyberCIEGE Install folder")]
+  public StringVariable ccInstallPath;
   [Header("Output Variables")]
   [Tooltip("Whether the game is currently paused or not")]
   public BooleanVariable gamePaused;
@@ -63,7 +66,7 @@ public class GameStatusScript : MonoBehaviour {
       // which requires the main game to know what the CyberCIEGE Install path is.  I'm not sure if the GameLoadBehavior
       // class is the best place for it, but we can't use a scriptable variable since those reset themselves when
       // on scene changes, so we won't still have it in there from the Main Menu
-      CyberCIEGEParser.ForEachScenario(GameLoadBehavior.ccInstallPath, currentCampaign.Value, (scenario) => {
+      CyberCIEGEParser.ForEachScenario(ccInstallPath.Value, currentCampaign.Value, (scenario) => {
         if (scenario.id.ToLower() == scenarioID.ToLower()) {
           currentScenario.Value = scenario.name;
         }

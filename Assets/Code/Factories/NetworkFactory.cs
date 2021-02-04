@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using UnityEngine;
 using Code.Scriptable_Variables;
 using Code.World_Objects.Network;
@@ -54,37 +52,35 @@ namespace Code.Factories {
       }
 
       string filePath = Path.Combine(path, NETWORKS);
-      try {
-        StreamReader reader = new StreamReader(filePath, Encoding.ASCII);
-
-        using (reader) {
-          string tag;
-          //Debug.Log("LoadNetworks read from " + filePath);
-          var value = ccUtils.SDTNext(reader, out tag);
-          while (value != null) {
-            if (tag == "Network") {
-              Create(value, parent);
-              value = ccUtils.SDTNext(reader, out tag);
-            }
-            else {
-              Debug.Log("LoadNetwork found unexpected tag " + tag);
-              Debug.Break();
-              break;
-            }
-          }
+      ccUtils.ParseSDFFile(filePath, (tag, value) => {
+        if (tag == "Network") {
+          Create(value, parent);
         }
-      }
-      catch (Exception e) {
-        Debug.LogError(e);
-      }
+      });
     }
     
     //-------------------------------------------------------------------------
     private NetworkDataObject ParseNetworkData(string sdf, NetworkBehavior newNetwork) {
-      MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(sdf ?? ""));
-      var name = ccUtils.SDTField(stream, "Name");
-      var isStatic = ccUtils.SDTFieldDefault(stream, "Static", false);
-      var isLeased = ccUtils.SDTFieldDefault(stream, "Leased", false);
+      string name = null;
+      bool isStatic = false, isLeased = false;
+      ccUtils.ParseSDFFileSubElement(sdf, (tag, value) => {
+        switch (tag) {
+          case "Name":
+            name = value;
+            break;
+          case "Static":
+            if (bool.TryParse(value, out isStatic)) {
+              Debug.Log($"Error: Can't parse NetworkFactory static parameter {value}");
+            }
+            break;
+          case "Leased":
+            if (bool.TryParse(value, out isLeased)) {
+              Debug.Log($"Error: Can't parse NetworkFactory static parameter {value}");
+            }
+            break;
+        }
+      });
+
       return CreateNetworkData(name, isStatic, isLeased);
     }
 
@@ -95,6 +91,8 @@ namespace Code.Factories {
       data.name = name;
       data.isStatic = isStatic;
       data.isLeased = isLeased;
+
+      // Set the network color and put its color back to the end of the network color list
       data.color = _networkColors.Dequeue();
       _networkColors.Enqueue(data.color);
 

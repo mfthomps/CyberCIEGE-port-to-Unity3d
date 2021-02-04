@@ -1,11 +1,9 @@
 ﻿using System;
-using System.IO;
 using System.Net.Sockets;
 using System.Text;
 using Code;
 using Code.Factories;
 using Code.Scriptable_Variables;
-using UnityEditor;
 using UnityEngine;
 using Shared.ScriptableVariables;
 
@@ -28,6 +26,8 @@ public class IPCManagerScript : MonoBehaviour {
   public StringGameEvent objectiveUpdated;
   [Tooltip("Event to fire when user message changes")]
   public StringGameEvent userStatusChanged;
+  [Tooltip("Quit scenario")]
+  public GameEvent quit;
 
   private static NetworkStream serverStream;
 
@@ -120,7 +120,7 @@ public class IPCManagerScript : MonoBehaviour {
           break;
         case "lose":
           SendRequest("exit");
-          QuitGame();
+          quit?.Raise();
           break;
         case "remove_computer":
           _computerFactory.Remove(itemName: message);
@@ -150,17 +150,6 @@ public class IPCManagerScript : MonoBehaviour {
     //Debug.Log("ReceiveMsg num_read " + num_read + "["+read_string+"]");
     //buf[len] = 0;
     return num_read;
-  }
-
-  public void QuitGame() {
-    // save any game data here
-#if UNITY_EDITOR
-    // Application.Quit() does not work in the editor so
-    // UnityEditor.EditorApplication.isPlaying need to be set to false to end the game
-    EditorApplication.isPlaying = false;
-#else
-		Application.Quit();
-#endif
   }
 
   // --------------------------------------------------------------------------

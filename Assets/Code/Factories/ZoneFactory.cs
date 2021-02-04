@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using UnityEngine;
 using Code.Scriptable_Variables;
 using Code.World_Objects.Zone;
@@ -92,62 +91,55 @@ namespace Code.Factories {
     private ZoneDataObject CreateDataObject(string zoneFile) {
       ZoneDataObject data = new ZoneDataObject();
 
-      StreamReader reader = new StreamReader(zoneFile, Encoding.Default);
-      using (reader) {
-        ccUtils.PositionAfter(reader, "Zone");
-        var value = ccUtils.SDTNext(reader, out string tag);
-        while (value != null) {
-          switch (tag) {
-            case "Name":
-              data.ZoneName = value;
-              string lowerName = value.ToLower();
-              if (lowerName.Contains("entire") && data.RootZoneName == null) {
-                data.RootZoneName = data.ZoneName;
-              }
+      ccUtils.ParseSDFFile(zoneFile, (tag, value) => {
+        if (tag == "Zone") {
+          ccUtils.ParseSDFFileSubElement(value, (subTag, subValue) => {
+            switch (subTag) {
+              case "Name":
+                data.ZoneName = subValue;
+                string lowerName = subValue.ToLower();
+                if (lowerName.Contains("entire") && data.RootZoneName == null) {
+                  data.RootZoneName = data.ZoneName;
+                }
+                break;
+              case "ULC":
+                string[] parts = subValue.Split(new char[0], StringSplitOptions.RemoveEmptyEntries);
+                if (!int.TryParse(parts[0], out data.ulc_x)) {
+                  Debug.Log($"Error: ZoneBehavior parsing ULC X {subValue}");
+                }
 
-              break;
-            case "ULC":
-              string[] parts = value.Split(new char[0], StringSplitOptions.RemoveEmptyEntries);
-              if (!int.TryParse(parts[0], out data.ulc_x)) {
-                Debug.Log("Error: ZoneBehavior parsing " + value);
-                return null;
-              }
+                if (!int.TryParse(parts[1], out data.ulc_y)) {
+                  Debug.Log($"Error: ZoneBehavior parsing ULC Y {subValue}");
+                }
 
-              if (!int.TryParse(parts[1], out data.ulc_y)) {
-                Debug.Log("Error: ZoneBehavior parsing " + value);
-                return null;
-              }
+                break;
+              case "LRC":
+                parts = subValue.Split(new char[0], StringSplitOptions.RemoveEmptyEntries);
+                if (!int.TryParse(parts[0], out data.lrc_x)) {
+                  Debug.Log($"Error: ZoneBehavior parsing LRC X {subValue}");
+                }
 
-              break;
-            case "LRC":
-              parts = value.Split(new char[0], StringSplitOptions.RemoveEmptyEntries);
-              if (!int.TryParse(parts[0], out data.lrc_x)) {
-                Debug.Log("Error: ZoneBehavior parsing " + value);
-                return null;
-              }
+                if (!int.TryParse(parts[1], out data.lrc_y)) {
+                  Debug.Log($"Error: ZoneBehavior parsing LRC Y {subValue}");
+                }
 
-              if (!int.TryParse(parts[1], out data.lrc_y)) {
-                Debug.Log("Error: ZoneBehavior parsing " + value);
-                return null;
-              }
-
-              break;
-            case "PermittedUsers":
-              data.permittedUsers.Add(value);
-              break;
-            case "Secrecy":
-              data.secrecy = value;
-              break;
-            case "Integrity":
-              data.integrity = value;
-              break;
-            default:
-              AddEnabledPolicy(data, tag, value);
-              break;
-          }
-          value = ccUtils.SDTNext(reader, out tag);
-        };
-      }
+                break;
+              case "PermittedUsers":
+                data.permittedUsers.Add(subValue);
+                break;
+              case "Secrecy":
+                data.secrecy = subValue;
+                break;
+              case "Integrity":
+                data.integrity = subValue;
+                break;
+              default:
+                AddEnabledPolicy(data, subTag, subValue);
+                break;
+            }
+          });
+        }
+      });
 
       return data;
     }

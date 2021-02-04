@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Text;
 using UnityEngine;
 using Code.Scriptable_Variables;
 using Code.AssetGoal;
@@ -32,42 +31,22 @@ namespace Code.Factories {
       assetGoalListVariable.Clear();
 
       string filePath = Path.Combine(path, GOALS);
-      try {
-        StreamReader reader = new StreamReader(filePath, Encoding.ASCII);
-
-        using (reader) {
-          string tag;
-          var value = ccUtils.SDTNext(reader, out tag);
-          while (value != null) {
-            switch (tag) {
-              case "AssetGoal":
-                var data = new AssetGoalDataObject();
-                using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(value ?? ""))) {
-                  using (var substream = new StreamReader(stream)) {
-                    var v = ccUtils.SDTNext(substream, out string t);
-                    while (v != null) {
-                      switch (t) {
-                        case "Name":
-                          data.name = v;
-                          break;
-                        case "Description":
-                          data.description = v;
-                          break;
-                      }
-                      v = ccUtils.SDTNext(substream, out t);
-                    };
-                  }
-                }
-                CreateGameObject(data, parent);
-              break;
+      ccUtils.ParseSDFFile(filePath, (tag, value) => {
+        if (tag == "AssetGoal") {
+          var data = new AssetGoalDataObject();
+          ccUtils.ParseSDFFileSubElement(value, (subTag, subValue) => {
+            switch (subTag) {
+              case "Name":
+                data.name = subValue;
+                break;
+              case "Description":
+                data.description = subValue;
+                break;
             }
-            value = ccUtils.SDTNext(reader, out tag);
-          }
+          });
+          CreateGameObject(data, parent);
         }
-      }
-      catch (Exception e) {
-        Debug.LogError(e);
-      }
+      });
     }
     
     //-------------------------------------------------------------------------

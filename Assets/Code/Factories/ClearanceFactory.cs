@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Text;
 using UnityEngine;
 using Code.Scriptable_Variables;
 using Code.Clearance;
@@ -34,41 +33,23 @@ namespace Code.Factories {
       clearanceListVariable.Clear();
 
       string filePath = Path.Combine(path, LABELS);
-      try {
-        StreamReader reader = new StreamReader(filePath, Encoding.ASCII);
-
-        using (reader) {
-          string tag;
-          var value = ccUtils.SDTNext(reader, out tag);
-          while (value != null) {
-            switch (tag) {
-              case TAG_SECRECY:
-              case TAG_INTEGRITY:
-                var data = new ClearanceDataObject();
-                data.type = GetType(tag);
-                using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(value ?? ""))) {
-                  using (var substream = new StreamReader(stream)) {
-                    var v = ccUtils.SDTNext(substream, out string t);
-                    while (v != null) {
-                      switch (t) {
-                        case "Name":
-                          data.name = v;
-                          break;
-                      }
-                      v = ccUtils.SDTNext(substream, out t);
-                    };
-                  }
-                }
-                CreateGameObject(data, parent);
-              break;
-            }
-            value = ccUtils.SDTNext(reader, out tag);
-          }
+      ccUtils.ParseSDFFile(filePath, (tag, value) => {
+        switch (tag) {
+          case TAG_SECRECY:
+          case TAG_INTEGRITY:
+            var data = new ClearanceDataObject();
+            data.type = GetType(tag);
+            ccUtils.ParseSDFFileSubElement(value, (subTag, subValue) => {
+              switch (subTag) {
+                case "Name":
+                  data.name = subValue;
+                  break;
+              }
+            });
+            CreateGameObject(data, parent);
+            break;
         }
-      }
-      catch (Exception e) {
-        Debug.LogError(e);
-      }
+      });
     }
     
     //-------------------------------------------------------------------------
