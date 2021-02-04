@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
+using Shared.ScriptableVariables;
 
 public class menus : MonoBehaviour {
   private static readonly GUIStyle labelStyle = new GUIStyle();
@@ -8,6 +8,12 @@ public class menus : MonoBehaviour {
 
   [SerializeField] private GUISkin guiSkin;
   
+  [Header("Output Events")]
+  [Tooltip("Save scenario")]
+  public GameEvent save;
+  [Tooltip("Quit scenario")]
+  public GameEvent quit;
+
   private static string clicked_was = "";
 
   public static Dictionary<string, GameObject> menu_panels = new Dictionary<string, GameObject>();
@@ -115,8 +121,7 @@ public class menus : MonoBehaviour {
       clicked = "";
     }
     else if (clicked == "Save") {
-      string fname = Path.Combine(GameLoadBehavior.user_app_path, "debug_save.sdf");
-      IPCManagerScript.SendRequest("save:" + fname);
+      save?.Raise();
     }
   }
 
@@ -129,8 +134,8 @@ public class menus : MonoBehaviour {
     }
     else if (GUILayout.Button("Quit")) {
       clicked = "";
-      Application.Quit();
       Debug.Log("quit from menu");
+      quit?.Raise();
     }
     else if (GUILayout.Button("Close menu")) {
       clicked = "";

@@ -104,57 +104,36 @@ namespace Code.Factories {
     //-------------------------------------------------------------------------
     //Parse the workspace.sdf file and return the list of WorkSpace information
     private static List<WorkSpaceData> ParseSDF(string path) {
-      string full_path = Path.Combine(path, "workspace.sdf");
       var workSpaceDataList = new List<WorkSpaceData>();
 
-      StreamReader reader = new StreamReader(full_path, Encoding.Default);
-      using (reader) {
-        string value = null;
-        
-        do {
-          value = ccUtils.SDTNext(reader, out string key);
-          if ((value == null) || (key == null)) {
-            continue;
-          }
-
-          if (key == "Workspace") {
-            var wsData = new WorkSpaceData(){PosIndex = -1, Random1 = -1, Random2 = -1, IsServer = false};
-            workSpaceDataList.Add(wsData);
-            
-            using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(value ?? ""))) {
-              using (var substream = new StreamReader(stream)) {
-                string v = null;
-                do {
-                  v = ccUtils.SDTNext(substream, out string t);
-                  if (string.IsNullOrEmpty(v)) {
-                    continue;
-                  }
-                  switch (t) {
-                    case "PosIndex":
-                      int.TryParse(v, out int posIndex);
-                      wsData.PosIndex = posIndex;
-                      break;
-                    case "Type":
-                      wsData.IsServer = (v == "SERVER");
-                      break;
-                    case "Random1":
-                      int.TryParse(v, out int random1);
-                      wsData.Random1 = random1;
-                      break;
-                    case "Random2":
-                      int.TryParse(v, out int random2);
-                      wsData.Random2 = random2;
-                      break;
-                  }
-                } while (v != null);
-              }
+      string full_path = Path.Combine(path, "workspace.sdf");
+      ccUtils.ParseSDFFile(full_path, (tag, value) => {
+        if (tag == "Workspace") {
+          var wsData = new WorkSpaceData(){PosIndex = -1, Random1 = -1, Random2 = -1, IsServer = false};
+          ccUtils.ParseSDFFileSubElement(value, (subTag, subValue) => {
+            switch (subTag) {
+              case "PosIndex":
+                int.TryParse(subValue, out int posIndex);
+                wsData.PosIndex = posIndex;
+                break;
+              case "Type":
+                wsData.IsServer = (subValue == "SERVER");
+                break;
+              case "Random1":
+                int.TryParse(subValue, out int random1);
+                wsData.Random1 = random1;
+                break;
+              case "Random2":
+                int.TryParse(subValue, out int random2);
+                wsData.Random2 = random2;
+                break;
             }
-          }
-          
-        } while (value != null);
+          });
+          workSpaceDataList.Add(wsData);
+        }
+      });
 
-        return workSpaceDataList;
-      }
+      return workSpaceDataList;
     }
 
     //-------------------------------------------------------------------------

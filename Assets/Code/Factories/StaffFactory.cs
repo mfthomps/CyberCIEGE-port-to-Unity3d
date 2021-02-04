@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Text;
+﻿using System.IO;
 using UnityEngine;
 using Code.Scriptable_Variables;
 using Code.World_Objects.Staff;
@@ -59,7 +57,7 @@ namespace Code.Factories {
     }
     
     //--------------------------------------------------------------------------
-    private StaffBehavior InstantiateStaffFromFile(string user_file, Transform parent=null) {
+    private StaffBehavior InstantiateStaffFromFile(string user_file, Transform parent = null) {
       StaffDataObject data = LoadStaffData(user_file);
       if (data == null) {
         return null;
@@ -81,68 +79,53 @@ namespace Code.Factories {
     //--------------------------------------------------------------------------
     private StaffDataObject LoadStaffData(string filePath) {
       var data = new StaffDataObject();
-      try {
-        StreamReader reader = new StreamReader(filePath, Encoding.Default);
-        using (reader) {
-          string tag;
-          ccUtils.PositionAfter(reader, "User");
-          //if this is the end of the stream, then something went bad
-          if (reader.EndOfStream) {
-            return null;
-          }
-          string value;
-          do {
-            value = ccUtils.SDTNext(reader, out tag);
-            if (value == null || tag == null) {
-              continue;
-            }
 
-            switch (tag) {
+      ccUtils.ParseSDFFile(filePath, (tag, value) => {
+        if (tag == "User") {
+          ccUtils.ParseSDFFileSubElement(value, (subTag, subValue) => {
+            switch (subTag) {
               case "Name":
-                data.user_name = value;
+                data.user_name = subValue;
                 break;
               case "PosIndex":
-                if (!int.TryParse(value, out data.position)) {
-                  Debug.LogError("LoadStaff parsing position " + value);
+                if (!int.TryParse(subValue, out data.position)) {
+                  Debug.LogError($"StaffFactory parsing position {subValue}");
                 }
                 break;
               case "Dept":
-                data.type = GetStaffType(value);
+                data.type = GetStaffType(subValue);
                 break;
               case "Cost":
-                if (!int.TryParse(value, out data.cost)) {
-                  Debug.LogError("LoadStaff parsing cost " + value);
+                if (!int.TryParse(subValue, out data.cost)) {
+                  Debug.LogError($"StaffFactory parsing cost {subValue}");
                 }
                 break;
               case "Skill":
-                if (!int.TryParse(value, out data.skill)) {
-                  Debug.LogError("LoadStaff parsing skill " + value);
+                if (!int.TryParse(subValue, out data.skill)) {
+                  Debug.LogError($"StaffFactory parsing skill {subValue}");
                 }
 
                 break;
               case "HISupportSkill":
-                if (!int.TryParse(value, out data.hi_skill)) {
-                  Debug.LogError("LoadStaff parsing hi_skill " + value);
+                if (!int.TryParse(subValue, out data.hi_skill)) {
+                  Debug.LogError($"StaffFactory parsing hi_skill {subValue}");
                 }
 
                 break;
               case "HWSupportSkill":
-                if (!int.TryParse(value, out data.hw_skill)) {
-                  Debug.LogError("LoadStaff parsing hw_skill " + value);
+                if (!int.TryParse(subValue, out data.hw_skill)) {
+                  Debug.LogError($"StaffFactory parsing hw_skill {subValue}");
                 }
                 break;
               case "DaysTillAvailable":
-                if (!int.TryParse(value, out data.daysTillAvailable)) {
-                  Debug.LogError("LoadStaff parsing DaysTillAvailable " + value);
+                if (!int.TryParse(subValue, out data.daysTillAvailable)) {
+                  Debug.LogError($"StaffFactory parsing DaysTillAvailable {subValue}");
                 }
                 break;
             }
-          } while (value != null);
+          });
         }
-      }
-      catch (Exception e) {
-        Debug.LogError(e.ToString());
-      }
+      });
 
       return data;
     }
@@ -162,7 +145,7 @@ namespace Code.Factories {
       
       //activate and rename
       staff.gameObject.SetActive(staff.Data.IsCurrentlyHired());
-      staff.gameObject.name = $"Staff-{staff.Data.type}--{staff.Data.user_name}";
+      staff.gameObject.name = $"Staff-{staff.Data.type} - {staff.Data.user_name}";
     }
     
     //--------------------------------------------------------------------------
