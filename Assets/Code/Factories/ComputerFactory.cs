@@ -128,9 +128,6 @@ namespace Code.Factories {
           break;
         case "hwName":
           computerData.hw_name = value;
-          break;
-        case "HW":
-          computerData.hw = value;
           computerData.isServer = hardwareCatalog.Value.GetHardwareType(value) == HardwareType.Servers;
           break;
         default:
