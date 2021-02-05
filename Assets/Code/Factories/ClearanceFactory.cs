@@ -47,6 +47,11 @@ namespace Code.Factories {
                 case "InitialBackGroundCheck":
                   data.backgroundCheckLevel = BackgroundCheck.FromString(subValue);
                   break;
+                case "Level":
+                  if (!int.TryParse(subValue, out data.level)) {
+                    Debug.LogError($"Error: ClearanceFactory parsing level: {subValue}");
+                  }
+                  break;
               }
             });
             CreateGameObject(data, parent);

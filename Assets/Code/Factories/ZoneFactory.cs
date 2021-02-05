@@ -133,6 +133,9 @@ namespace Code.Factories {
               case "Integrity":
                 data.integrity = subValue;
                 break;
+              case "Site":
+                data.domain = subValue;
+                break;
               default:
                 AddEnabledPolicy(data, subTag, subValue);
                 break;
