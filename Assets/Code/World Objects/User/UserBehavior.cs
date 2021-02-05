@@ -1,8 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
+using Code.Scriptable_Variables;
 
 namespace Code.World_Objects.User {
   public class UserBehavior : BaseWorldObject {
+    public delegate void ValueChangeHandler();
+    public event ValueChangeHandler OnValueChanged;
+
+    [Tooltip("The list of all the currently loaded access control groups")]
+    [SerializeField] private AccessControlGroupListVariable _accessControlGroups;
+    [Tooltip("The list of all the currently loaded clearances")]
+    [SerializeField] private ClearanceListVariable _clearances;
+
     [SerializeField] private GameObject _maleChildGameObject;
     [SerializeField] private GameObject _femaleChildGameObject;
 
@@ -48,10 +58,57 @@ namespace Code.World_Objects.User {
         Data.training = Math.Max(add_amount * 4, 5) + Data.training;
         if (Data.training > 95) {
           Data.training = 95;
+          ValueChanged();
         }
         return true;
       }
       return false;
+    }
+
+    //---------------------------------------------------------------------------
+    public void UpdateFailedGoals(HashSet<string> failedGoals) {
+      Data.failed_goals = failedGoals;
+      ValueChanged();
+    }
+
+    //---------------------------------------------------------------------------
+    public void UpdateCurrentThought(string thought) {
+      Data.current_thought = thought;
+      ValueChanged();
+    }
+
+    //---------------------------------------------------------------------------
+    public void UpdateTraining(int training) {
+      Data.training = training;
+      ValueChanged();
+    }
+
+    //---------------------------------------------------------------------------
+    public void UpdateHighestBackgroundCheck() {
+      // Default to the lowest level background check
+      Data.highestBackgroundCheck = BackgroundCheck.Level.None;
+
+      // See what background check our clearances warrant
+      foreach (var clearance in _clearances.Value) {
+        if (Data.secrecyClearance == clearance.Data.name ||
+            Data.integrityClearance == clearance.Data.name) {
+          Data.highestBackgroundCheck = BackgroundCheck.GetHighestLevel(Data.highestBackgroundCheck, clearance.Data.backgroundCheckLevel);
+        }
+      }
+
+      // See what background check our access control groups warrant
+      foreach (var accessControlGroup in _accessControlGroups.Value) {
+        if (Data.groups.Contains(accessControlGroup.Data.name)) {
+          Data.highestBackgroundCheck = BackgroundCheck.GetHighestLevel(Data.highestBackgroundCheck, accessControlGroup.Data.backgroundCheckLevel);
+        }
+      }
+
+      ValueChanged();
+    }
+
+    // ------------------------------------------------------------------------
+    protected void ValueChanged() {
+      OnValueChanged?.Invoke();
     }
   }
 }

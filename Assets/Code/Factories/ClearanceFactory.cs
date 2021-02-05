@@ -44,6 +44,9 @@ namespace Code.Factories {
                 case "Name":
                   data.name = subValue;
                   break;
+                case "InitialBackGroundCheck":
+                  data.backgroundCheckLevel = BackgroundCheck.FromString(subValue);
+                  break;
               }
             });
             CreateGameObject(data, parent);

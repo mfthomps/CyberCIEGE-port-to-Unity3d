@@ -53,7 +53,7 @@ namespace Code.Factories {
                 currentGroup.domain = subValue;
                 break;
               case "InitialBackGroundCheck":
-                currentGroup.background = subValue;
+                currentGroup.backgroundCheckLevel = BackgroundCheck.FromString(subValue);
                 break;
             }
           });

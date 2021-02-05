@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Shared.ScriptableVariables;
@@ -109,8 +110,8 @@ namespace Code.User_Interface.User {
       secrecyClearanceText.text = user != null ? user.Data.secrecyClearance : "";
       integrityClearanceText.text = user != null ? user.Data.integrityClearance : "";
       if (user != null) {
-        groupList.SetItems(user.Data.groups);
-        assetGoalList.SetItems(user.Data.assetGoals);
+        groupList.SetItems(new List<string>(user.Data.groups));
+        assetGoalList.SetItems(new List<string>(user.Data.assetGoals));
       }
       else {
         groupList.ClearItems();
