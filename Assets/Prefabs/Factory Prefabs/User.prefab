@@ -106,6 +106,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca6e88d6943ea1e41b4d8e728e2ac1a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _accessControlGroups: {fileID: 11400000, guid: a31557e3d9753f442b1d34d7ac994b6f,
+    type: 2}
+  _clearances: {fileID: 11400000, guid: 91580ed8c1b252e438258dbb2d1252b0, type: 2}
   _maleChildGameObject: {fileID: 5164614468491020250}
   _femaleChildGameObject: {fileID: 3781623114894535904}
   _data:
@@ -115,7 +118,12 @@ MonoBehaviour:
     department: 
     current_thought: 
     training: 0
-    failed_goals: []
+    happiness: 0
+    productivity: 0
+    description: 
+    secrecyClearance: 
+    integrityClearance: 
+    highestBackgroundCheck: 0
 --- !u!136 &2672857406115281387
 CapsuleCollider:
   m_ObjectHideFlags: 0

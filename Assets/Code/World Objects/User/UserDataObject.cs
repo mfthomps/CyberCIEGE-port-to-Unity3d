@@ -11,11 +11,14 @@ namespace Code.World_Objects.User {
     public string department = "";
     public string current_thought = "";
     public int training;
-    public List<string> failed_goals = new List<string>();
+    public int happiness;
+    public int productivity;
+    public HashSet<string> failed_goals = new HashSet<string>();
     public string description;
     public string secrecyClearance;
     public string integrityClearance;
-    public List<string> groups = new List<string>();
-    public List<string> assetGoals = new List<string>();
+    public HashSet<string> groups = new HashSet<string>();
+    public HashSet<string> assetGoals = new HashSet<string>();
+    public BackgroundCheck.Level highestBackgroundCheck;
   }
 }

@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Xml;
 using System.Xml.Linq;
 using UnityEngine;
@@ -34,21 +35,23 @@ namespace Code.World_Objects.User {
 
     //---------------------------------------------------------------------------
     private void UpdateUserStatus(UserBehavior user, XmlNode userNode) {
-      user.Data.current_thought = userNode["thought"].InnerText;
+      user.UpdateCurrentThought(userNode["thought"].InnerText);
 
-      user.Data.failed_goals.Clear();
+      var failedGoals = new HashSet<string>();
       XmlNodeList goal_nodes = userNode.SelectNodes("//goal");
       foreach (XmlNode goal in goal_nodes) {
         string status = goal["status"].InnerText;
         if (status == "fail") {
-          user.Data.failed_goals.Add(goal["name"].InnerText);
+          failedGoals.Add(goal["name"].InnerText);
         }
       }
+      user.UpdateFailedGoals(failedGoals);
 
       string tmp = userNode["training"].InnerText;
-      if (!int.TryParse(tmp, out user.Data.training)) {
+      if (!int.TryParse(tmp, out int training)) {
         Debug.Log("Error: UserManager could not parse training " + tmp);
       }
+      user.UpdateTraining(training);
     }
 
     //---------------------------------------------------------------------------
