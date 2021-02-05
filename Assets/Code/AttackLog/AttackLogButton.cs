@@ -7,7 +7,7 @@ namespace Code.AttackLog {
     [SerializeField] private SwapAnimators swapAnimators;
   
     public void SetHasNewLogs(bool newLogs) {
-      swapAnimators.UseAlternateAnimator = newLogs;
+      swapAnimators.IsUsingAlternateAnimator = newLogs;
     }
 
   }
