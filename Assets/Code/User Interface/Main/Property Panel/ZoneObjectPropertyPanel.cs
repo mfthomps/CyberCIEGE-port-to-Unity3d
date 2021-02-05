@@ -3,6 +3,7 @@ using UnityEngine;
 using TMPro;
 using Code.Scriptable_Variables;
 using Code.Clearance;
+using Code.World_Objects.Staff;
 using Code.World_Objects.User;
 using Code.World_Objects.Zone;
 
@@ -13,6 +14,8 @@ namespace Code.User_Interface.Main {
     public ClearanceListVariable clearances;
     [Tooltip("List of computers in scenario")]
     public ComputerListVariable computers;
+    [Tooltip("List of staff in scenario")]
+    public StaffListVariable staff;
     [Tooltip("List of users in scenario")]
     public UserListVariable users;
     [Tooltip("List of zones in scenario")]
@@ -24,6 +27,8 @@ namespace Code.User_Interface.Main {
     public TMP_Text secruityRatingLabel;
     [Tooltip("Label for selected zone's domain")]
     public TMP_Text domainLabel;
+    [Tooltip("Label for selected zone's description")]
+    public TMP_Text descriptionLabel;
     [Tooltip("List for selected zone's computers in zone")]
     public StringList computersInZoneList;
     [Tooltip("List for selected zone's assets in zone")]
@@ -52,6 +57,7 @@ namespace Code.User_Interface.Main {
       SetStringProperty(nameLabel, displayedDataObject.ZoneName);
       SetStringProperty(secruityRatingLabel, GetSecurityRating(displayedDataObject).ToString());
       SetStringProperty(domainLabel, displayedDataObject.domain);
+      SetStringProperty(descriptionLabel, displayedDataObject.description, "No Description Given");
       SetStringList(computersInZoneList, GetComputerNames(computersInZone));
       SetStringList(assetsInZoneList, GetAssetsInZone(computersInZone));
       SetStringList(usersAllowedInZoneList, GetUsersAllowedInZone(displayedDataObject));
@@ -123,8 +129,14 @@ namespace Code.User_Interface.Main {
       var usersAllowedInZone = new HashSet<string>();
 
       foreach (var user in users.Value) {
-        if (IsUserAllowedInZone(user.Data, data.permittedUsers, clearances.FindByName(data.secrecy), clearances.FindByName(data.integrity))) {
+        if (IsAllowedInZone(user.Data, data.permittedUsers, clearances.FindByName(data.secrecy), clearances.FindByName(data.integrity))) {
           usersAllowedInZone.Add(user.Data.user_name);
+        }
+      }
+
+      foreach (var staffMember in staff.Value) {
+        if (IsAllowedInZone(staffMember.Data, data.permittedUsers, clearances.FindByName(data.secrecy), clearances.FindByName(data.integrity))) {
+          usersAllowedInZone.Add(staffMember.Data.user_name);
         }
       }
 
@@ -132,8 +144,8 @@ namespace Code.User_Interface.Main {
     }
 
     // ------------------------------------------------------------------------
-    private bool IsUserAllowedInZone(UserDataObject userData, HashSet<string> permittedUsers, ClearanceBehavior zoneSecrecy, ClearanceBehavior zoneIntegrity) {
-      // Check if the user himself is in the permitted user list
+    private bool IsAllowedInZone(UserDataObject userData, HashSet<string> permittedUsers, ClearanceBehavior zoneSecrecy, ClearanceBehavior zoneIntegrity) {
+      // Check if the user is in the permitted user list
       if (permittedUsers.Contains(userData.user_name)) {
         return true;
       }
@@ -156,6 +168,25 @@ namespace Code.User_Interface.Main {
         var userIntegrity = clearances.FindByName(userData.integrityClearance);
         if (userIntegrity != null && userIntegrity.Data.level >= zoneIntegrity.Data.level) {
           return true;
+        }
+      }
+
+      return false;
+    }
+
+    // ------------------------------------------------------------------------
+    private bool IsAllowedInZone(StaffDataObject staffData, HashSet<string> permittedUsers, ClearanceBehavior zoneSecrecy, ClearanceBehavior zoneIntegrity) {
+      if (staffData.IsCurrentlyHired()) {
+        // Check if the staff is in the permitted user list
+        if (permittedUsers.Contains(staffData.user_name)) {
+          return true;
+        }
+
+        // Check if any group the staff belongs to is in the permitted user list
+        foreach (var group in staffData.groups) {
+          if (permittedUsers.Contains($"*.{group}")) {
+            return true;
+          }
         }
       }
 

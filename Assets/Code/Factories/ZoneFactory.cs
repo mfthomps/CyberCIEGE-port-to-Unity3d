@@ -136,6 +136,9 @@ namespace Code.Factories {
               case "Site":
                 data.domain = subValue;
                 break;
+              case "Description":
+                data.description = subValue;
+                break;
               default:
                 AddEnabledPolicy(data, subTag, subValue);
                 break;
