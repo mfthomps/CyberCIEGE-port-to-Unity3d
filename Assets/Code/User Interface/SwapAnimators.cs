@@ -20,23 +20,50 @@ public class SwapAnimators : MonoBehaviour
     [SerializeField] private AnimatorController alternateAnimatorController;
 
     // private variables for public property
-    private bool useDefaultAnimator;
-    private bool useAlternateAnimator;
+    private bool isUsingDefaultAnimator;
+    private bool isUsingAlternateAnimator;
     
     // Use this property to tell the Animator to use the default animator
-    public bool UseDefaultAnimator {
+    public bool IsUsingDefaultAnimator {
       set {
-        useDefaultAnimator = value;
-        useAlternateAnimator = !useDefaultAnimator;
-        animator.runtimeAnimatorController = useDefaultAnimator ? defaultAnimatorController : alternateAnimatorController;
+        isUsingDefaultAnimator = value;
+        isUsingAlternateAnimator = !isUsingDefaultAnimator;
+        animator.runtimeAnimatorController = isUsingDefaultAnimator ? defaultAnimatorController : alternateAnimatorController;
       }
     }
     // Use this property to tell the Animator to use the default animator
-    public bool UseAlternateAnimator {
+    public bool IsUsingAlternateAnimator {
       set {
-        useAlternateAnimator = value;
-        useDefaultAnimator = !useAlternateAnimator;
-        animator.runtimeAnimatorController = useAlternateAnimator ? alternateAnimatorController : defaultAnimatorController;
+        isUsingAlternateAnimator = value;
+        isUsingDefaultAnimator = !isUsingAlternateAnimator;
+        animator.runtimeAnimatorController = isUsingAlternateAnimator ? alternateAnimatorController : defaultAnimatorController;
       }
+    }
+    public void UseDefaultAnimator () {
+        isUsingDefaultAnimator = true;
+        isUsingAlternateAnimator = false;
+
+        animator.runtimeAnimatorController = isUsingDefaultAnimator ? defaultAnimatorController : alternateAnimatorController;
+    }
+    // Use this property to tell the Animator to use the default animator
+    public void UseAlternateAnimator () {
+        isUsingAlternateAnimator = true;
+        isUsingDefaultAnimator = false;
+
+        animator.runtimeAnimatorController = isUsingAlternateAnimator ? alternateAnimatorController : defaultAnimatorController;
+    }
+
+    public void ToggleAnimators () { 
+      if (isUsingDefaultAnimator) {
+        UseDefaultAnimator();
+      }
+      else {
+        UseAlternateAnimator();
+      }
+    }
+
+    public void SetAlternateAnimator (bool isOn) { 
+      Debug.Log("Value: " + isOn.ToString());
+      IsUsingAlternateAnimator = isOn;
     }
 }
