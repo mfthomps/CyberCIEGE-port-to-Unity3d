@@ -35,7 +35,7 @@ namespace Code.World_Objects.User {
 
     //---------------------------------------------------------------------------
     private void UpdateUserStatus(UserBehavior user, XmlNode userNode) {
-      user.Data.current_thought = userNode["thought"].InnerText;
+      user.UpdateCurrentThought(userNode["thought"].InnerText);
 
       var failedGoals = new HashSet<string>();
       XmlNodeList goal_nodes = userNode.SelectNodes("//goal");

@@ -12,10 +12,7 @@ namespace Code.World_Objects.User {
 
     [SerializeField] private GameObject _maleChildGameObject;
     [SerializeField] private GameObject _femaleChildGameObject;
-    [SerializeField] private GameObject _techChildGameObject;
 
-    private static UserBehavior current_user;
-    
     [SerializeField] private UserDataObject _data;
 
     //---------------------------------------------------------------------------
@@ -27,20 +24,19 @@ namespace Code.World_Objects.User {
       get => _data;
       set {
         _data = value;
-        if (_data.department == "Tech")
-          _techChildGameObject.SetActive(true);
-        else if (_data.gender == "female")
+        if (_data.gender == "female") {
           _femaleChildGameObject.SetActive(true);
-        else
+        }
+        else if (_data.gender == "male") {
           _maleChildGameObject.SetActive(true);
+        }
       }
     }
     
     //---------------------------------------------------------------------------
     private void Awake() {
       if (_maleChildGameObject) {_maleChildGameObject.SetActive(false);} 
-      if (_femaleChildGameObject) {_femaleChildGameObject.SetActive(false);} 
-      if (_techChildGameObject) {_techChildGameObject.SetActive(false);} 
+      if (_femaleChildGameObject) {_femaleChildGameObject.SetActive(false);}
     }
 
     //---------------------------------------------------------------------------
@@ -69,6 +65,12 @@ namespace Code.World_Objects.User {
     //---------------------------------------------------------------------------
     public void UpdateFailedGoals(HashSet<string> failedGoals) {
       Data.failed_goals = failedGoals;
+      ValueChanged();
+    }
+
+    //---------------------------------------------------------------------------
+    public void UpdateCurrentThought(string thought) {
+      Data.current_thought = thought;
       ValueChanged();
     }
 

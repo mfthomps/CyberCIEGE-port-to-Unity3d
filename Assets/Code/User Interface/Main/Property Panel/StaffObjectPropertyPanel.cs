@@ -16,8 +16,8 @@ namespace Code.User_Interface.Main {
     public TMP_Text costLabel;
     [Tooltip("List for selected staff's groups")]
     public StringList groupList;
-    [Tooltip("List for selected staff's description")]
-    public StringList descriptionList;
+    [Tooltip("Label for selected staff's description")]
+    public TMP_Text descriptionLabel;
 
     private StaffBehavior _displayedStaff;
 
@@ -41,7 +41,7 @@ namespace Code.User_Interface.Main {
       SetRangeProperty(productivityRange, displayedDataObject.productivity);
       SetStringProperty(costLabel, string.Format($"${displayedDataObject.cost} / hour"));
       SetStringList(groupList, displayedDataObject.groups);
-      SetStringList(descriptionList, new List<string>{ displayedDataObject.description });
+      SetStringProperty(descriptionLabel, displayedDataObject.description);
     }
 
     // ------------------------------------------------------------------------

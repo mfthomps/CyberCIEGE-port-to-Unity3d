@@ -62,7 +62,7 @@ namespace Code.Factories {
             }
 
             ccUtils.GridTo3dPos(ws.x, ws.y, out float xf, out float zf);
-            Vector3 v = new Vector3(xf - 1.0f, 0.5f, zf);
+            Vector3 v = new Vector3(xf, 0, zf);
             newUser.transform.position = v;
           }
           
