@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using TMPro;
+using Code.World_Objects.Zone;
 
 namespace Code.User_Interface.Main {
   public class ZoneObjectPropertyPanel : GenericObjectPropertyPanel<ZoneBehavior> {

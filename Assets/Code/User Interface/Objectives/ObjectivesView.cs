@@ -1,10 +1,16 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Shared.ScriptableVariables;
 using Code.Objectives;
 
 namespace Code.User_Interface.Objectives {
   public class ObjectivesView : MonoBehaviour {
+    [Header("Output Variables")]
+    [Tooltip("Short briefing for the given scenario")]
+    public StringVariable shortBriefing;
+    [Tooltip("Full briefing for the given scenario")]
+    public StringVariable briefing;
     [Header("UI Elements")]
     [Tooltip("Prefab for creating phase UI")]
     public PhaseUIItem phaseUIPrefab;
@@ -22,8 +28,13 @@ namespace Code.User_Interface.Objectives {
     private string _activePhase;
 
     // ------------------------------------------------------------------------
-    public void Init() {
-      var objectiveParser = new ObjectiveParser(GameLoadBehavior.user_app_path);
+    public void Init(string userAppPath) {
+      var objectiveParser = new ObjectiveParser(userAppPath);
+
+      // The briefing/debriefing values are stored with the objectives, so store those now
+      shortBriefing.Value = objectiveParser.shortBriefing;
+      briefing.Value = objectiveParser.briefing;
+
       foreach (var phase in objectiveParser.phases) {
         _phaseUI.Add(phase.name, AddPhaseUI(phase));
       }
@@ -48,6 +59,12 @@ namespace Code.User_Interface.Objectives {
           phaseUI.Value.ToggleActive(phaseUI.Value.IsComplete());
         }
       }
+    }
+
+    // ------------------------------------------------------------------------
+    void OnDestroy() {
+      shortBriefing.Reset();
+      briefing.Reset();
     }
 
     // ------------------------------------------------------------------------

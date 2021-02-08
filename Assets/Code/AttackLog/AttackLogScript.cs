@@ -12,21 +12,8 @@ namespace Code.AttackLog {
     [SerializeField] private StringListVariable attackLogVariable;
     
     //----------------------------------------------------------------------------
-    //Show or hide the Attack Log Dialog
-    public void Show(bool showDialog) {
-      if (showDialog) {
-        ShowDialog();
-      }
-      else {
-        HideDialog();
-      }
-    }
-    
-    //----------------------------------------------------------------------------
     private void Start() {
       if (attackLogPanel) {
-        //auto-hide the attack log display
-        attackLogPanel.HideDialog();
         attackLogPanel.OnDialogClosed += OnDialogClosed;
       }
 
@@ -58,27 +45,10 @@ namespace Code.AttackLog {
     }
 
     //----------------------------------------------------------------------------
-    private void ShowDialog() {
-      menus.ActiveScreen("AttackLog");
-      if (attackLogPanel) {
-        attackLogPanel.ShowDialog();
-      }
-    }
-
-    //----------------------------------------------------------------------------
-    private void HideDialog() {
-      if (attackLogPanel) {
-        attackLogPanel.HideDialog();
-      }
-    }
-    
-    //----------------------------------------------------------------------------
     private void OnDialogClosed() {
-      menus.ClosedScreen("not used");
       if (attackLogButton) {
         attackLogButton.SetHasNewLogs(false);
       }
     }
-
   }
 }

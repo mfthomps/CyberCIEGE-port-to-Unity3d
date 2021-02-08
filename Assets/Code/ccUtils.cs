@@ -1,10 +1,44 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 using UnityEngine;
 
 public class ccUtils : MonoBehaviour {
   //static float GRID_SIZE = 3.0f;
   private static readonly float GRID_SIZE = 1.0f;
+
+  // --------------------------------------------------------------------------
+  public static void ParseSDFFile(string filename, Action<string, string> elementCallback) {
+    try {
+      StreamReader reader = new StreamReader(filename, Encoding.Default);
+      using (reader) {
+        string value = SDTNext(reader, out string tag);
+        while (value != null) {
+          elementCallback(tag, value);
+          value = SDTNext(reader, out tag);
+        }
+      }
+    }
+    catch (Exception e) {
+      Debug.LogError(e);
+    }
+  }
+
+  // --------------------------------------------------------------------------
+  public static void ParseSDFFileSubElement(string elementData, Action<string, string> subelementCallback) {
+    try {
+      var stream = new MemoryStream(Encoding.UTF8.GetBytes(elementData ?? ""));
+      var substream = new StreamReader(stream);
+      var value = SDTNext(substream, out string tag);
+      while (value != null) {
+        subelementCallback(tag, value);
+        value = SDTNext(substream, out tag);
+      }
+    }
+    catch (Exception e) {
+      Debug.LogError(e);
+    }
+  }
 
   public static string SDTField(string line, string token) {
     line = line.Trim();
@@ -135,19 +169,6 @@ public class ccUtils : MonoBehaviour {
           //Debug.Log("SDTNext retval " + retval);
         }
       }
-      else if (tag == "DACGroups") {
-        /* special case for broken SDF syntax */
-        while (line != ":end") {
-          line = ReaderCutComment(reader);
-          if (line == null) {
-            Debug.Log("ERROR: unexpected end of stream in STDNext");
-            return retval;
-          }
-
-          int len = line.Length - 4;
-          retval += line.Substring(0, len) + "\n";
-        }
-      }
       else {
         int colon_count = 99;
         //Debug.Log("this <" + retval + "> does not end with end:");
@@ -161,7 +182,7 @@ public class ccUtils : MonoBehaviour {
             /* assume new subblock */
             level++;
             //Debug.Log("New level now " + level + " for " + line);
-            retval = retval + "\t" + line + "\n";
+            retval = retval + "\n" + line + "\n";
           }
           else {
             colon_count = SubstringCount(line, ": ");
@@ -173,7 +194,7 @@ public class ccUtils : MonoBehaviour {
               if (line.StartsWith(":end") && level > 0) {
                 level--;
                 //Debug.Log("dec level to " + level + " for line " + line);
-                /* eat the end */
+                retval = retval + "\n" + line;
                 line = "";
               }
               else if (colon_count == 0) {
@@ -198,8 +219,10 @@ public class ccUtils : MonoBehaviour {
   public static void GridTo3dPos(int xcoord, int ycoord, out float xout, out float yout) {
     //	*xout = (0.5f+ (float)xcoord) * GRID_SIZE; 
     //	*yout = (0.5f+ (float)ycoord) * GRID_SIZE;
-    xout = (0.48f + xcoord) * GRID_SIZE;
-    yout = (0.48f + ycoord) * GRID_SIZE;
+    // xout = (0.48f + xcoord) * GRID_SIZE;
+    // yout = (0.48f + ycoord) * GRID_SIZE;
+    xout = xcoord;
+    yout = ycoord;
   }
 
   public static void PosToGrid(out int xcoord, out int ycoord, float xin, float yin) {

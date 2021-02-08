@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Code {
- 
+namespace Code.World_Objects.User {
   [Serializable]
   //Data related to a single User instance
   public class UserDataObject {
@@ -12,6 +11,14 @@ namespace Code {
     public string department = "";
     public string current_thought = "";
     public int training;
-    public List<string> failed_goals = new List<string>();
+    public int happiness;
+    public int productivity;
+    public HashSet<string> failed_goals = new HashSet<string>();
+    public string description;
+    public string secrecyClearance;
+    public string integrityClearance;
+    public HashSet<string> groups = new HashSet<string>();
+    public HashSet<string> assetGoals = new HashSet<string>();
+    public BackgroundCheck.Level highestBackgroundCheck;
   }
 }

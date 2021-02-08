@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using UnityEngine;
+using Code.Scriptable_Variables;
+using Code.World_Objects.Asset;
 
 namespace Code.Factories {
   //A factory that creates Asset instances
@@ -12,6 +12,9 @@ namespace Code.Factories {
     [Tooltip("The prefab to instantiate for new Assets")]
     [SerializeField] private AssetBehavior _prefab;
     
+    [Tooltip("The list of users in the scenario")]
+    [SerializeField] private UserListVariable _userList;
+
     private static readonly string ASSETS = "assets";
     
     //--------------------------------------------------------------------------
@@ -36,45 +39,34 @@ namespace Code.Factories {
     
     //--------------------------------------------------------------------------
     private void LoadOneAsset(string assetFile, Transform parent = null) {
-      string cfile = Path.Combine(GameLoadBehavior.user_app_path, assetFile);
-
       AssetBehavior asset = Instantiate(_prefab, parent);
       asset.gameObject.SetActive(true);
       
-      var data = LoadAsset(cfile, asset);
+      var data = LoadAsset(assetFile, asset);
       asset.Data = data;
       asset.gameObject.name = $"Asset--{asset.Data.AssetName}";
     }
 
     //----------------------------------------------------------------------------
-    private static AssetDataObject LoadAsset(string filePath, AssetBehavior newAsset) {
-      AssetDataObject data = new AssetDataObject();;
-      try {
-        StreamReader reader = new StreamReader(filePath, Encoding.Default);
-        using (reader) {
-          ccUtils.PositionAfter(reader, "Asset");
-          string value = null;
-          do {
-            value = ccUtils.SDTNext(reader, out string tag);
-            if (value == null || tag == null) {
-              continue;
-            }
+    private AssetDataObject LoadAsset(string filePath, AssetBehavior newAsset) {
+      AssetDataObject data = new AssetDataObject();
 
-            switch (tag) {
+      ccUtils.ParseSDFFile(filePath, (tag, value) => {
+        if (tag == "Asset") {
+          ccUtils.ParseSDFFileSubElement(value, (subTag, subValue) => {
+            switch (subTag) {
               case "Name":
-                data.AssetName = value;
+                data.AssetName = subValue;
                 asset_dict.Add(data.AssetName, newAsset);
                 break;
               case "ActualAccessList":
-                data.DACAccess = new DACAccess(value, newAsset);
+                data.DACAccess = new DACAccess(subValue, newAsset, _userList);
                 break;
             }
-          } while (value != null);
+          });
         }
-      }
-      catch (Exception e) {
-        Debug.LogError(e.ToString());
-      }
+      });
+
       return data;
     }
   }

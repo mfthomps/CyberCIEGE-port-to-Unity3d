@@ -20,11 +20,18 @@ namespace Code.Factories {
     [SerializeField] private WorkSpaceListVariable _workSpaceListVariable;
 
     //Some local data read from the "workspace.sdf" file
-    private class WorkSpaceData {
+    public class WorkSpaceData {
       public int PosIndex;
       public bool IsServer;
       public int Random1;
       public int Random2;
+
+      public WorkSpaceData(int posIndex= -1, bool isServer = false, int random1 = -1, int random2 = -1) {
+        PosIndex = posIndex;
+        IsServer = isServer;
+        Random1 = random1;
+        Random2 = random2;
+      }
     }
     
     //-------------------------------------------------------------------------
@@ -85,7 +92,7 @@ namespace Code.Factories {
             _workSpaceListVariable.Add(ws);
             var workSpace = Instantiate(_prefab, parent);
             workSpace.Data = ws;
-            SetupGameObject(workSpace, _workSpaceListVariable.Value.Count-1);
+            SetupGameObject(workSpace, wsData, _workSpaceListVariable.Value.Count-1);
           } while (line != "end" && line != null);
         }
       }
@@ -97,76 +104,56 @@ namespace Code.Factories {
     //-------------------------------------------------------------------------
     //Parse the workspace.sdf file and return the list of WorkSpace information
     private static List<WorkSpaceData> ParseSDF(string path) {
-      string full_path = Path.Combine(path, "workspace.sdf");
       var workSpaceDataList = new List<WorkSpaceData>();
 
-      StreamReader reader = new StreamReader(full_path, Encoding.Default);
-      using (reader) {
-        string value = null;
-        
-        do {
-          value = ccUtils.SDTNext(reader, out string key);
-          if ((value == null) || (key == null)) {
-            continue;
-          }
-
-          if (key == "Workspace") {
-            var wsData = new WorkSpaceData(){PosIndex = -1, Random1 = -1, Random2 = -1, IsServer = false};
-            workSpaceDataList.Add(wsData);
-            
-            using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(value ?? ""))) {
-              using (var substream = new StreamReader(stream)) {
-                string v = null;
-                do {
-                  v = ccUtils.SDTNext(substream, out string t);
-                  if (string.IsNullOrEmpty(v)) {
-                    continue;
-                  }
-                  switch (t) {
-                    case "PosIndex":
-                      int.TryParse(v, out int posIndex);
-                      wsData.PosIndex = posIndex;
-                      break;
-                    case "Type":
-                      wsData.IsServer = (v == "SERVER");
-                      break;
-                    case "Random1":
-                      int.TryParse(v, out int random1);
-                      wsData.Random1 = random1;
-                      break;
-                    case "Random2":
-                      int.TryParse(v, out int random2);
-                      wsData.Random2 = random2;
-                      break;
-                  }
-                } while (v != null);
-              }
+      string full_path = Path.Combine(path, "workspace.sdf");
+      ccUtils.ParseSDFFile(full_path, (tag, value) => {
+        if (tag == "Workspace") {
+          var wsData = new WorkSpaceData(){PosIndex = -1, Random1 = -1, Random2 = -1, IsServer = false};
+          ccUtils.ParseSDFFileSubElement(value, (subTag, subValue) => {
+            switch (subTag) {
+              case "PosIndex":
+                int.TryParse(subValue, out int posIndex);
+                wsData.PosIndex = posIndex;
+                break;
+              case "Type":
+                wsData.IsServer = (subValue == "SERVER");
+                break;
+              case "Random1":
+                int.TryParse(subValue, out int random1);
+                wsData.Random1 = random1;
+                break;
+              case "Random2":
+                int.TryParse(subValue, out int random2);
+                wsData.Random2 = random2;
+                break;
             }
-          }
-          
-        } while (value != null);
+          });
+          workSpaceDataList.Add(wsData);
+        }
+      });
 
-        return workSpaceDataList;
-      }
+      return workSpaceDataList;
     }
 
     //-------------------------------------------------------------------------
-    private void SetupGameObject(WorkSpaceScript workSpace, int index) { 
+    //Public, for unit testing.
+    public void SetupGameObject(WorkSpaceScript workSpace, WorkSpaceData supplementalData, int index) { 
       ccUtils.GridTo3dPos(workSpace.Data.x, workSpace.Data.y,  out float x, out float y);
       workSpace.transform.position = new Vector3(x, 0, y);
       workSpace.transform.rotation = GetRotation(workSpace.Data.GetDirection());
       
       workSpace.gameObject.name = $"WorkSpace--{index}";
-      PopulateWorkspace(workSpace, index);
+      PopulateWorkspace(workSpace, supplementalData, index);
     }
 
     //-------------------------------------------------------------------------
-    private static Quaternion GetRotation(WorkSpace.WorkSpaceDirection direction) {
+    private static Quaternion GetRotation(Direction direction) {
       switch (direction) {
-        case WorkSpace.WorkSpaceDirection.North: return Quaternion.Euler(0, -90, 0);
-        case WorkSpace.WorkSpaceDirection.East: return Quaternion.Euler(0, -180, 0);
-        case WorkSpace.WorkSpaceDirection.South: return Quaternion.Euler(0, 90, 0);
-        case WorkSpace.WorkSpaceDirection.West: return Quaternion.Euler(0, 0, 0);
+        case Direction.North: return Quaternion.Euler(0, -90, 0);
+        case Direction.East: return Quaternion.Euler(0, -180, 0);
+        case Direction.South: return Quaternion.Euler(0, 90, 0);
+        case Direction.West: return Quaternion.Euler(0, 0, 0);
         default:
           return Quaternion.identity;
       }
@@ -175,7 +162,7 @@ namespace Code.Factories {
 
     //-------------------------------------------------------------------------
     //Instantiate the office furniture for the supplied WorkSpace
-    private void PopulateWorkspace(WorkSpaceScript workSpace, int index) {
+    private void PopulateWorkspace(WorkSpaceScript workSpace, WorkSpaceData supplementalData, int index) {
       //get the magic string of office type in order to find the grouping of
       //furniture to populate the WorkSpaces with
       string officeName = _organizationDictionary["MainOfficeVersion"];
@@ -190,7 +177,7 @@ namespace Code.Factories {
       }
       
       if (workSpace.Data.GetWorkSpaceType() == WorkSpace.WorkSpaceType.Regular) {
-        PopulateRegularWorkspace(workSpace, index, furniture);
+        PopulateRegularWorkspace(workSpace, supplementalData, index, furniture);
       }
       else if (workSpace.Data.GetWorkSpaceType() == WorkSpace.WorkSpaceType.Server) {
         PopulateServerRoom(workSpace, furniture);
@@ -199,34 +186,62 @@ namespace Code.Factories {
 
     //-------------------------------------------------------------------------
     //instantiate and position the stuff that goes in a regular WorkSpace
-    private static void PopulateRegularWorkspace(WorkSpaceScript workSpace, int index, WorkSpaceFurniture furniture) {
+    private static void PopulateRegularWorkspace(WorkSpaceScript workSpace, WorkSpaceData supplementalData, int workSpaceIndex, WorkSpaceFurniture furniture) {
       //regular WorkSpaces get a chair and a desk
-      GameObject chairPrefab = furniture.GetWorkSpaceChair(index);
+      GameObject chairPrefab = furniture.GetWorkSpaceChair(workSpaceIndex);
+      Direction direction = workSpace.Data.GetDirection();
+      
       if (chairPrefab) {
-        Instantiate(chairPrefab, workSpace.transform);
+        var item = Instantiate(chairPrefab, workSpace.transform);
+        item.transform.Translate(furniture.ChairOffset.GetOffset(direction), Space.Self);
       }
 
-      GameObject deskPrefab = furniture.GetWorkSpaceDesk(index);
+      GameObject deskPrefab = furniture.GetWorkSpaceDesk(workSpaceIndex);
       if (deskPrefab) {
-        Instantiate(deskPrefab, workSpace.transform);
+        var item = Instantiate(deskPrefab, workSpace.transform);
+        item.transform.Translate(furniture.DeskOffset.GetOffset(direction), Space.Self);
       }
 
-      //TODO add in the random office stuff using the random lists of objects 
+      //add in the random office stuff using the random lists of objects 
       //and the scenario-define random number (random number range?)
+      var firstItemPrefab = furniture.GetRandomItem1(supplementalData.Random1, workSpaceIndex);
+      if (firstItemPrefab) {
+        var item = Instantiate(firstItemPrefab, workSpace.transform);
+        item.gameObject.name = $"R1 - {item.gameObject.name}";
+        item.transform.Translate(furniture.Random1Offset.GetOffset(direction), Space.Self);
+      }
+      
+      var secondItemPrefab = furniture.GetRandomItem2(supplementalData.Random2, workSpaceIndex);
+      if (secondItemPrefab) {
+        var item = Instantiate(secondItemPrefab, workSpace.transform);
+        item.gameObject.name = $"R2 - {item.gameObject.name}";
+        item.transform.Translate(furniture.Random2Offset.GetOffset(direction), Space.Self);
+        //the item needs to be rotated 90 degrees, relative to the parent
+        item.transform.Rotate(0, 90, 0, Space.Self);
+      }
     }
-    
+
     //--------------------------------------------------------------------------
     //instantiate and position the stuff that goes in a server room WorkSpace
     private static void PopulateServerRoom(WorkSpaceScript workSpace, WorkSpaceFurniture furniture) {
       //create table
-      var table = Instantiate(furniture._workSpaceWorkServerDeskPrefab, workSpace.transform);
+      if (furniture._serverRoomDeskPrefab) {
+        var table = Instantiate(furniture._serverRoomDeskPrefab, workSpace.transform);
+        table.transform.Translate(furniture._serverRoomDeskOffset, Space.Self);
+      }
+
       //create server rack
-      var rack = Instantiate(furniture._workSpaceWorkServerRackPrefab, workSpace.transform);
+      if (furniture._serverRoomServerRackPrefab) {
+        var rack = Instantiate(furniture._serverRoomServerRackPrefab, workSpace.transform);
+        rack.transform.Translate(furniture._serverRoomRackOffset, Space.Self);
+      }
+
+      //Add in the lamp
+      if (furniture._serverRoomLampPrefab) {
+        var lamp = Instantiate(furniture._serverRoomLampPrefab, workSpace.transform);
+        lamp.transform.Translate(furniture._serverRoomLampOffset, Space.Self);
+      }
       
-      //TODO Add in the lamp
-      // if (Enterprise.themeSetting != AIRFORCE_SETTING) {
-      //   WORLD_CreateSimpleOfficeObject(SHAPE_LAMP,xpos+cornerOffset[oppindex][0],ypos+cornerOffset[oppindex][1],&Orien,0.0f );
-      // }
     }
   }
 }

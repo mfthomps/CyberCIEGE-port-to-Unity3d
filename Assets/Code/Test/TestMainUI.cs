@@ -2,11 +2,14 @@
 using System.Collections;
 using UnityEngine;
 using Shared.ScriptableVariables;
-using Code.User_Interface.Main;
+using Code.User_Interface.Objectives;
+using Code.User_Interface.View;
 
 namespace Code.Test {
   public class TestMainUI : MonoBehaviour {
     [Header("External Variables")]
+    [Tooltip("User app path")]
+    public StringVariable userAppPath;
     [Tooltip("Currently playing campaign")]
     public StringVariable currentCampaign;
     [Tooltip("Currently playing scenario")]
@@ -27,9 +30,14 @@ namespace Code.Test {
     public BooleanVariable gamePaused;
     [Tooltip("The current view type we have selected")]
     public ViewTypeVariable currentViewType;
+    [Header("UI Elements")]
+    [Tooltip("The objective view")]
+    public ObjectivesView objectivesView;
 
     // --------------------------------------------------------------------------
     IEnumerator Start() {
+      objectivesView.Init(userAppPath.Value);
+
       currentCampaign.Value = "Current Campaign";
       currentScenario.Value = "Current Scenario";
       currentFunds.Value = 99999;
@@ -95,7 +103,7 @@ namespace Code.Test {
 
     // --------------------------------------------------------------------------
     private void OnCurrentViewChanged() {
-      Debug.Log($"Current View: {Enum.GetName(typeof(ViewType), currentViewType.Value)}");
+      Debug.Log($"Current View: {Enum.GetName(typeof(ViewType), currentViewType.TopView())}");
     }
   }
 }

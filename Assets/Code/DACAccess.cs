@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Linq;
-using Code;
-using Code.Factories;
 using UnityEngine;
 using UnityEngine.UI;
+using Code;
+using Code.Factories;
+using Code.Scriptable_Variables;
+using Code.World_Objects.Asset;
 
 [Serializable]
 public class DACAccess {
@@ -17,8 +19,9 @@ public class DACAccess {
   public Dictionary<string, DACEntry> dac_dict = new Dictionary<string, DACEntry>();
   private readonly Dictionary<string, char> option_map = new Dictionary<string, char>();
   private bool supress_value_change_hack;
+  private UserListVariable _userList;
 
-  public DACAccess(string user_mode_list, AssetBehavior asset) {
+  public DACAccess(string user_mode_list, AssetBehavior asset, UserListVariable userList) {
     //Debug.Log("DACAccess for " + user_mode_list);
     SetAccess(user_mode_list);
     this.asset = asset;
@@ -26,6 +29,7 @@ public class DACAccess {
     option_map["No"] = 'N';
     option_map["-"] = '-';
     option_map["Don't care"] = 'X';
+    _userList = userList;
   }
 
   public string DACEntryToString() {
@@ -99,7 +103,7 @@ public class DACAccess {
     string component_name = asset.Data.Computer.Data.component_name;
     string command = "changeGroupMask";
     string name_string = "groupName";
-    if (UserFactory.user_dict.ContainsKey(user_group_name)) {
+    if (_userList.Value.Exists(user => user.Data.user_name == user_group_name)) {
       command = "changeUserMask";
       name_string = "userName";
     }
@@ -121,7 +125,7 @@ public class DACAccess {
     entry.Clear();
     string component_name = asset.Data.Computer.Data.component_name;
     string command = "removeGroup";
-    if (UserFactory.user_dict.ContainsKey(user_group_name)) command = "removeUser";
+    if (_userList.Value.Exists(user => user.Data.user_name == user_group_name)) command = "removeUser";
 
     XElement xml = new XElement("componentEvent",
       new XElement("name", component_name),

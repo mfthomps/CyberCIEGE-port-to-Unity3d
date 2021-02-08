@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text;
 using Code;
 using Code.Factories;
 using Code.Scriptable_Variables;
-using UnityEditor;
 using UnityEngine;
 using Shared.ScriptableVariables;
 
@@ -26,6 +24,10 @@ public class IPCManagerScript : MonoBehaviour {
   public StringGameEvent phaseCompleted;
   [Tooltip("Event to fire when an objective is updated")]
   public StringGameEvent objectiveUpdated;
+  [Tooltip("Event to fire when user message changes")]
+  public StringGameEvent userStatusChanged;
+  [Tooltip("Quit scenario")]
+  public GameEvent quit;
 
   private static NetworkStream serverStream;
 
@@ -34,6 +36,16 @@ public class IPCManagerScript : MonoBehaviour {
 
   public static bool server_ready; /* ignore server messages until we receive the ready message */
   private static float elapsed_since_receive;
+
+  // --------------------------------------------------------------------------
+  void Start() {
+    ConnectServer();
+  }
+
+  // --------------------------------------------------------------------------
+  void OnDestroy() {
+    attackLogVariable.Clear();
+  }
 
   // --------------------------------------------------------------------------
   private void Update() {
@@ -80,7 +92,7 @@ public class IPCManagerScript : MonoBehaviour {
           _deviceFactory.Create(message + ".sdf");
           break;
         case "user_status":
-          UserBehavior.UpdateStatus(message);
+          userStatusChanged?.Raise(message);
           break;
         case "ticker":
           currentMessageChanged?.Raise(message);
@@ -108,10 +120,10 @@ public class IPCManagerScript : MonoBehaviour {
           break;
         case "lose":
           SendRequest("exit");
-          QuitGame();
+          quit?.Raise();
           break;
         case "remove_computer":
-          ComputerBehavior.RemoveComputer(message);
+          _computerFactory.Remove(itemName: message);
           break;
         default:
           Debug.Log("nothing to do for " + command + " " + message);
@@ -138,17 +150,6 @@ public class IPCManagerScript : MonoBehaviour {
     //Debug.Log("ReceiveMsg num_read " + num_read + "["+read_string+"]");
     //buf[len] = 0;
     return num_read;
-  }
-
-  public void QuitGame() {
-    // save any game data here
-#if UNITY_EDITOR
-    // Application.Quit() does not work in the editor so
-    // UnityEditor.EditorApplication.isPlaying need to be set to false to end the game
-    EditorApplication.isPlaying = false;
-#else
-		Application.Quit();
-#endif
   }
 
   // --------------------------------------------------------------------------
@@ -199,7 +200,8 @@ public class IPCManagerScript : MonoBehaviour {
       SendRequest("dialog_closed:" + message);
   }
 
-  public static void ConnectServer() {
+  // --------------------------------------------------------------------------
+  private void ConnectServer() {
     Debug.Log("IPCManager connect to server");
     /* Connect to the server.  The waiting happens in Update, which handles all receives */
     TcpClient clientSocket = new TcpClient();

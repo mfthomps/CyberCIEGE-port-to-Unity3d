@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Code.World_Objects.Zone;
 
 namespace Code.Scriptable_Variables {
   [CreateAssetMenu(menuName = "Scriptable Objects/Variables/CC/Zone List")]

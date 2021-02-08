@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.IO;
-using System.Text;
 using Code.Scriptable_Variables;
+using Code.World_Objects.Workspace;
 using UnityEngine;
+using Code.World_Objects.User;
 
 namespace Code.Factories {
   //A factory that creates User GameObjects
@@ -13,9 +14,16 @@ namespace Code.Factories {
     [Tooltip("The list of all the currently loaded workspaces")]
     [SerializeField] private WorkSpaceListVariable _workSpaceListVariable;
 
-    public static Dictionary<string, UserBehavior> user_dict = new Dictionary<string, UserBehavior>();
+    [Header("Output Variables")]
+    [Tooltip("The variable containing the list of all the Users currently in the scenario.")]
+    [SerializeField] private UserListVariable _userListVariable;
     
     private static readonly string USERS = "users";
+
+    //-------------------------------------------------------------------------
+    void OnDestroy() {
+      _userListVariable.Clear();
+    }
 
     //-------------------------------------------------------------------------
     public void Create(string filename, Transform parent = null) {
@@ -29,7 +37,9 @@ namespace Code.Factories {
 
     //-------------------------------------------------------------------------
     private void LoadUsers(string path, Transform parent = null) {
-      string user_dir = Path.Combine(GameLoadBehavior.user_app_path, USERS);
+      _userListVariable.Clear();
+
+      string user_dir = Path.Combine(path, USERS);
       string[] clist = Directory.GetFiles(user_dir);
       foreach (string user_file in clist) {
         if (user_file.EndsWith(".sdf")) {
@@ -52,59 +62,86 @@ namespace Code.Factories {
             }
 
             ccUtils.GridTo3dPos(ws.x, ws.y, out float xf, out float zf);
-            Vector3 v = new Vector3(xf - 1.0f, 0.5f, zf);
+            Vector3 v = new Vector3(xf, 0, zf);
             newUser.transform.position = v;
           }
           
           newUser.gameObject.SetActive(true);
           newUser.gameObject.name = $"User--{data.user_name}";
           newUser.Data = data;
-          user_dict.Add(newUser.Data.user_name, newUser);
+          newUser.UpdateHighestBackgroundCheck();
+          _userListVariable.Add(newUser);
         }
       }
     }
 
     //---------------------------------------------------------------------------
     private UserDataObject LoadOneUser(string user_file) {
-      UserDataObject data = new UserDataObject();
-      string cfile = Path.Combine(GameLoadBehavior.user_app_path, user_file);
-      var this_user_info = new Dictionary<string, string>();
+      var data = new UserDataObject();
 
-      LoadUser(cfile, ref this_user_info);
+      ccUtils.ParseSDFFile(user_file, (tag, value) => {
+        if (tag == "User") {
+          ccUtils.ParseSDFFileSubElement(value, (subTag, subValue) => {
+            switch (subTag) {
+              case "Name":
+                data.user_name = subValue;
+                break;
+              case "Dept":
+                data.department = subValue;
+                break;
+              case "SecrecyClearance":
+                data.secrecyClearance = subValue;
+                break;
+              case "IntegrityClearance":
+                data.integrityClearance = subValue;
+                break;
+              case "DACGroups":
+                var groups = subValue.Split(new string[] { ":end" }, StringSplitOptions.None);
+                foreach (var group in groups) {
+                  data.groups.Add(group.Trim());
+                }
+                break;
+              case "AssetGoal":
+                ccUtils.ParseSDFFileSubElement(subValue, (assetGoalTag, assetGoalValue) => {
+                  switch (assetGoalTag) {
+                    case "AssetGoalName":
+                      data.assetGoals.Add(assetGoalValue);
+                      break;
+                  }
+                });
+                break;
+              case "InitialTraining":
+                if (!int.TryParse(subValue, out data.training)) {
+                  Debug.Log("Error: LoadUser parsing training" + subValue);
+                }
+                break;
+              case "Happiness":
+                if (!int.TryParse(subValue, out data.happiness)) {
+                  Debug.Log("Error: LoadUser parsing happiness" + subValue);
+                }
+                break;
+              case "Productivity":
+                if (!int.TryParse(subValue, out data.productivity)) {
+                  Debug.Log("Error: LoadUser parsing productivity" + subValue);
+                }
+                break;
+              case "PosIndex":
+                if (!int.TryParse(subValue, out data.position)) {
+                  Debug.Log("Error: LoadUser parsing position" + subValue);
+                }
+                break;
+              case "Gender":
+                data.gender = subValue;
+                break;
+              case "UserDescription":
+                data.description = subValue;
+                break;
+            }
+          });
+        }
+      });
 
-      data.gender =  this_user_info.ContainsKey("Gender") ? this_user_info["Gender"] : "";
-      data.user_name = this_user_info.ContainsKey("Name") ? this_user_info["Name"]   : "";
-      data.department = this_user_info.ContainsKey("Dept")? this_user_info["Dept"]   : "";
-      
-      if (!int.TryParse(this_user_info["PosIndex"], out data.position)) {
-        Debug.Log("Error: LoadUser parsing position" + this_user_info["PosIndex"]);
-      }
-
-      if (!int.TryParse(this_user_info["InitialTraining"], out data.training)) {
-        Debug.Log("Error: LoadUser parsing training" + this_user_info["InitialTraining"]);
-      }
-      
       return data;
-    }
-    
-    //-------------------------------------------------------------------------
-    private static void LoadUser(string thisFilePath, ref Dictionary<string, string> this_user_info) {
-      StreamReader reader = new StreamReader(thisFilePath, Encoding.Default);
-      using (reader) {
-        string tag;
-        ccUtils.PositionAfter(reader, "User");
-        string value = null;
-        do {
-          value = ccUtils.SDTNext(reader, out tag);
-          if (value == null || tag == null) {
-            continue;
-          }
-
-          this_user_info[tag] = value;
-
-        } while (value != null);
-      }
-
     }
   }
 }

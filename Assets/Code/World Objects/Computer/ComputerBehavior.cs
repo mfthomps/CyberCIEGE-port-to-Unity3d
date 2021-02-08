@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using Code.Factories;
 using Code.Game_Events;
 using Code.Policies;
 using Code.Scriptable_Variables;
+using Code.World_Objects;
 
 /*
  * Represents computer attributes, inheriting from ComponentBehavior.
@@ -20,6 +20,12 @@ namespace Code {
     [Tooltip("A policy was toggled off")]
     public PolicyGameEvent policyDisabled;
 
+    //----------------------------------------------------------------------------
+    public override WorldObjectType Type() {
+      return WorldObjectType.Computer;
+    }
+    
+    //----------------------------------------------------------------------------
     public override ComponentDataObject Data {
       get { return _data; }
       set {
@@ -64,23 +70,38 @@ namespace Code {
     private void EnablePolicy(Policy policy) {
       _data.enabledPolicies.Add(policy.GetName());
       policyEnabled?.Raise(policy);
+      ValueChanged();
     }
 
     //----------------------------------------------------------------------------
     private void DisablePolicy(Policy policy) {
       _data.enabledPolicies.Remove(policy.GetName());
       policyDisabled?.Raise(policy);
+      ValueChanged();
     }
 
-    //----------------------------------------------------------------------------
-    public static void RemoveComputer(string computer_name) {
-      if (!ComponentFactory.computer_dict.ContainsKey(computer_name)) {
-        Debug.Log("ERROR: RemoveComputer, no computer named " + computer_name);
-        return;
-      }
+    // ------------------------------------------------------------------------
+    public void AddAsset(string asset) {
+      _data.AddAsset(asset);
+      ValueChanged();
+    }
 
-      ComponentBehavior bh = ComponentFactory.computer_dict[computer_name];
-      Destroy(bh.gameObject);
+    // ------------------------------------------------------------------------
+    public void RemoveAsset(string asset) {
+      _data.RemoveAsset(asset);
+      ValueChanged();
+    }
+
+    // ------------------------------------------------------------------------
+    public void AddUser(string user) {
+      _data.AddUser(user);
+      ValueChanged();
+    }
+
+    // ------------------------------------------------------------------------
+    public void RemoveUser(string user) {
+      _data.RemoveUser(user);
+      ValueChanged();
     }
   }
 }

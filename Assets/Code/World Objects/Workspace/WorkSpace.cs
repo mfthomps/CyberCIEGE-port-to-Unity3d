@@ -1,137 +1,142 @@
 ﻿using System;
+using UnityEngine;
 
-[Serializable]
-public class WorkSpace {
-  
+namespace Code.World_Objects.Workspace {
   [Serializable]
-  public enum WorkSpaceType {
-    Regular,
-    Server, 
-    Inactive
-  }
+  public class WorkSpace {
   
-  public enum WorkSpaceDirection {
-    North,
-    East,
-    South,
-    West
-  }
-  
-  public string[] computer_slots;
-  public string[] device_slots;
-  public char direction;
-  public char usage; //I = inactive, A = Active, S = Server
-  public string user;
-  public int x;
-  public int y;
-
-  public WorkSpace(int x, int y, char direction, char usage) {
-    this.x = x;
-    this.y = y;
-    this.direction = direction;
-    this.usage = usage;
-    int num_computers = 1;
-    int num_devices = 2;
-    if (usage == 'S') {
-      num_computers = 6;
+    [Serializable]
+    public enum WorkSpaceType {
+      Regular,
+      Server, 
+      Inactive
     }
 
-    //this.computer_slots = (int[])Enumerable.Repeat(-1, num_computers);
-    //this.device_slots = (int[])Enumerable.Repeat(-1, num_devices);
-    computer_slots = new string[num_computers];
-    device_slots = new string[num_devices];
-  }
+    [Tooltip("The list of Computers that have been added to this WorkSpace")]
+    [SerializeField] private ComputerBehavior[] _computerSlots;
+    public string[] device_slots;
+    public char direction;
+    public char usage; //I = inactive, A = Active, S = Server
+    public string user;
+    public int x;
+    public int y;
 
-  public int AddComputer(string computer_name) {
-    int retval = -1;
-    int i = 0;
-    while (retval < 0 && i < computer_slots.Length)
-      if (computer_slots[i] == null) {
-        retval = i;
-        computer_slots[i] = computer_name;
-        // int myindex = ws_list.IndexOf(this);
-        //Debug.Log("WorkSpace "+myindex+" AddComputer " + computer_name + " slot " + i + " of " + computer_slots.Length);
+    //-------------------------------------------------------------------------
+    public WorkSpace(int x, int y, char direction, char usage) {
+      this.x = x;
+      this.y = y;
+      this.direction = direction;
+      this.usage = usage;
+      int num_computers = 1;
+      int num_devices = 2;
+      if (usage == 'S') {
+        num_computers = 6;
       }
 
-    i++;
-    return retval;
-  }
+      _computerSlots = new ComputerBehavior[num_computers];
+      device_slots = new string[num_devices];
+    }
 
-  public int AddDevice(string device_name) {
-    int retval = -1;
-    int i = 0;
-    while (retval < 0 && i < device_slots.Length) {
-      if (device_slots[i] == null) {
-        retval = i;
-        device_slots[i] = device_name;
+    //-------------------------------------------------------------------------
+    //Add a computer to this WorkSpace if there is room. 
+    //@return the WorkSpace computer slot index (-1 if not added)
+    public int AddComputer(ComputerBehavior computer) {
+      for (int i = 0; i < _computerSlots.Length; i++){
+        if (!_computerSlots[i]) {
+          _computerSlots[i] = computer;
+          return i;
+        }
+      }
+      return -1;
+    }
+    
+    //-------------------------------------------------------------------------
+    //Remove a computer from this WorkSpace. 
+    //@return true if removed, false otherwise.
+    public bool RemoveComputer(ComputerBehavior computer) {
+      for (int i = 0; i < _computerSlots.Length; i++){
+        if (_computerSlots[i] == computer) {
+          _computerSlots[i] = null;
+          return true;
+        }
+      }
+      return false;
+    }
+    
+    //-------------------------------------------------------------------------
+    public int AddDevice(string device_name) {
+      int retval = -1;
+      int i = 0;
+      while (retval < 0 && i < device_slots.Length) {
+        if (device_slots[i] == null) {
+          retval = i;
+          device_slots[i] = device_name;
+        }
+
+        i++;
       }
 
-      i++;
+      return retval;
     }
 
-    return retval;
-  }
-
-  public bool ComputerRoom() {
-    bool retval = false;
-    int i = 0;
-    while (!retval && i < computer_slots.Length) {
-      if (computer_slots[i] == null) {
-        //Debug.Log("slot empty " + i);
-        retval = true;
+    //-------------------------------------------------------------------------
+    //Is there currently any empty slots for computers?
+    public bool HaveRoomForComputer() {
+      for (int i = 0; i < _computerSlots.Length; i++) {
+        if (_computerSlots[i] == null) {
+          return true;
+        }
       }
 
-      i++;
+      return false;
     }
 
-    return retval;
-  }
+    public bool DeviceRoom() {
+      bool retval = false;
+      int i = 0;
+      while (!retval && i < device_slots.Length) {
+        if (device_slots[i] == null) retval = true;
 
-  public bool DeviceRoom() {
-    bool retval = false;
-    int i = 0;
-    while (!retval && i < device_slots.Length) {
-      if (device_slots[i] == null) retval = true;
+        i++;
+      }
 
-      i++;
+      return retval;
     }
 
-    return retval;
-  }
+    public bool AddUser(string user_name) {
+      bool retval = true;
+      if (user == null)
+        user = user_name;
+      else
+        retval = false;
 
-  public bool AddUser(string user_name) {
-    bool retval = true;
-    if (user == null)
-      user = user_name;
-    else
-      retval = false;
+      return retval;
+    }
 
-    return retval;
-  }
-
-  public void ClearUser() {
-    user = null;
-  }
+    public void ClearUser() {
+      user = null;
+    }
 
   
-  //---------------------------------------------------------------------------
-  public WorkSpaceDirection GetDirection() {
-    switch (direction) {
-      case 'N' : return WorkSpaceDirection.North;
-      case 'E' : return WorkSpaceDirection.East;
-      case 'S' : return WorkSpaceDirection.South;
-      case 'W' : return WorkSpaceDirection.West;
-      default: return WorkSpaceDirection.North;
+    //---------------------------------------------------------------------------
+    public Direction GetDirection() {
+      switch (direction) {
+        case 'N' : return Direction.North;
+        case 'E' : return Direction.East;
+        case 'S' : return Direction.South;
+        case 'W' : return Direction.West;
+        default: return Direction.North;
+      }
     }
-  }
 
-  //---------------------------------------------------------------------------
-  public WorkSpaceType GetWorkSpaceType() {
-    switch (usage) {
-      case 'A' : return WorkSpaceType.Regular;
-      case 'I' : return WorkSpaceType.Inactive;
-      case 'S' : return WorkSpaceType.Server;
-      default: return WorkSpaceType.Inactive;
+    //---------------------------------------------------------------------------
+    public WorkSpaceType GetWorkSpaceType() {
+      switch (usage) {
+        case 'A' : return WorkSpaceType.Regular;
+        case 'I' : return WorkSpaceType.Inactive;
+        case 'S' : return WorkSpaceType.Server;
+        default: return WorkSpaceType.Inactive;
+      }
     }
   }
 }

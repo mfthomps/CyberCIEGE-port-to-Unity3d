@@ -1,16 +1,19 @@
 ﻿using System.IO;
 using System.Xml;
+using Shared.ScriptableVariables;
 using UnityEngine;
 
 namespace Code.User_Interface.Objectives {
   public class ObjectivesManager : MonoBehaviour {
     [Header("External Variables")]
+    [Tooltip("Path to the user's AppData folder")]
+    public StringVariable userAppPath;
     [Tooltip("Currently playing campaign")]
     public ObjectivesView objectivesView;
 
     // ------------------------------------------------------------------------
     public void LoadObjectives() {
-      objectivesView.Init();
+      objectivesView.Init(userAppPath.Value);
     }
 
     // ------------------------------------------------------------------------
