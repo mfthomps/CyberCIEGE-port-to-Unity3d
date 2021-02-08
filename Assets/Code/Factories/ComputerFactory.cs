@@ -19,6 +19,8 @@ namespace Code.Factories {
     public HardwareCatalogVariable hardwareCatalog;
     [Tooltip("The list of all the currently loaded workspaces")]
     [SerializeField] private WorkSpaceListVariable _workSpaceListVariable;
+    [Tooltip("The list of assets in the scenario")]
+    [SerializeField] private AssetListVariable assets;
     [Tooltip("List of policy lists that computers care about")]
     public List<PolicyListVariable> policies = new List<PolicyListVariable>();
     [Tooltip("The variable that contains the currently in-game selected World Object")]
@@ -113,7 +115,7 @@ namespace Code.Factories {
           break;
         case "Assets":
           computerData.asset_list.Add(value);
-          AssetBehavior asset = AssetFactory.asset_dict[value];
+          AssetBehavior asset = assets.FindAsset(value);
           asset.SetComputer(computerComponent);
           break;
         case "AccessListLocal":
