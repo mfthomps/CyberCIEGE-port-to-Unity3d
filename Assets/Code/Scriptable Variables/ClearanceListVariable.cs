@@ -9,6 +9,16 @@ namespace Code.Scriptable_Variables {
     public void ContextMenuReset() {
       Reset();
     }
+
+    //---------------------------------------------------------------------------
+    public ClearanceBehavior FindByName(string clearanceName) {
+      foreach (var clearance in Value) {
+        if (clearance.Data.name == clearanceName) {
+          return clearance;
+        }
+      }
+      return null;
+    }
   }
   
 #if UNITY_EDITOR

@@ -83,6 +83,7 @@ namespace Code.World_Objects.Zone {
         Data.permittedUsers.Remove(user.Data.user_name);
         accessRemovedUser?.Raise(user.Data.user_name);
       }
+      ValueChanged();
     }
 
     //----------------------------------------------------------------------------
@@ -96,6 +97,7 @@ namespace Code.World_Objects.Zone {
         Data.permittedUsers.Remove(groupName);
         accessRemovedGroup?.Raise(group.Data.name);
       }
+      ValueChanged();
     }
 
     //----------------------------------------------------------------------------
@@ -117,18 +119,21 @@ namespace Code.World_Objects.Zone {
           break;
       }
       accessAddedClearance?.Raise(clearance.Data.name);
+      ValueChanged();
     }
 
     //----------------------------------------------------------------------------
     private void EnablePolicy(Policy policy) {
       _data.enabledPolicies.Add(policy.GetName());
       policyEnabled?.Raise(policy);
+      ValueChanged();
     }
 
     //----------------------------------------------------------------------------
     private void DisablePolicy(Policy policy) {
       _data.enabledPolicies.Remove(policy.GetName());
       policyDisabled?.Raise(policy);
+      ValueChanged();
     }
   }
 }

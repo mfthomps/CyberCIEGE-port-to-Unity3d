@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using UnityEngine;
 using Code.Scriptable_Variables;
 using Code.World_Objects.Staff;
@@ -104,13 +105,11 @@ namespace Code.Factories {
                 if (!int.TryParse(subValue, out data.skill)) {
                   Debug.LogError($"StaffFactory parsing skill {subValue}");
                 }
-
                 break;
               case "HISupportSkill":
                 if (!int.TryParse(subValue, out data.hi_skill)) {
                   Debug.LogError($"StaffFactory parsing hi_skill {subValue}");
                 }
-
                 break;
               case "HWSupportSkill":
                 if (!int.TryParse(subValue, out data.hw_skill)) {
@@ -120,6 +119,20 @@ namespace Code.Factories {
               case "DaysTillAvailable":
                 if (!int.TryParse(subValue, out data.daysTillAvailable)) {
                   Debug.LogError($"StaffFactory parsing DaysTillAvailable {subValue}");
+                }
+                break;
+              case "UserDescription":
+                data.description = subValue;
+                break;
+              case "Productivity":
+                if (!int.TryParse(subValue, out data.productivity)) {
+                  Debug.LogError($"StaffFactory parsing productivity {subValue}");
+                }
+                break;
+              case "DACGroups":
+                var groups = subValue.Split(new string[] { ":end" }, StringSplitOptions.None);
+                foreach (var group in groups) {
+                  data.groups.Add(group.Trim());
                 }
                 break;
             }

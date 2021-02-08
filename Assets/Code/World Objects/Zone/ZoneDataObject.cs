@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Code.World_Objects.Zone {  
   [Serializable]
@@ -17,5 +18,17 @@ namespace Code.World_Objects.Zone {
     public HashSet<string> permittedUsers = new HashSet<string>();
     public string secrecy;
     public string integrity;
+    public string domain;
+    public string description;
+
+    // ------------------------------------------------------------------------
+    public Rect GetRect() {
+      var rect = new Rect();
+      rect.xMin = ulc_x;
+      rect.yMin = lrc_y;
+      rect.xMax = lrc_x;
+      rect.yMax = ulc_y;
+      return rect;
+    }
   }
 }

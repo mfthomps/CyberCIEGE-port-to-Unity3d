@@ -20,6 +20,7 @@ namespace Code.World_Objects.Staff {
     public void SetHired(bool isHired) {
       Data.SetHired(isHired);
       gameObject.SetActive(isHired);
+      ValueChanged();
     }
   }
 }
