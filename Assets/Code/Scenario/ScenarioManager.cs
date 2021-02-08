@@ -1,12 +1,17 @@
 ﻿using System.IO;
 using UnityEngine;
+using Shared.SceneLoader;
 using Shared.ScriptableVariables;
+using Code.MainMenu;
 
 namespace Code.Scenario {
   public class ScenarioManager : MonoBehaviour {
     [Header("Input Variables")]
     [Tooltip("User AppData path")]
     public StringVariable userAppDataPath;
+    [Header("Connected Components")]
+    [Tooltip("Scenario changer to use when we quit a scenario")]
+    public SceneChanger sceneChanger;
 
     // ------------------------------------------------------------------------
     public void Restart() {
@@ -26,14 +31,10 @@ namespace Code.Scenario {
 
     // ------------------------------------------------------------------------
     public void Quit() {
-      // TODO: Replace with going back to main menu
-#if UNITY_EDITOR
-      // Application.Quit() does not work in the editor so
-      // UnityEditor.EditorApplication.isPlaying need to be set to false to end the game
-      UnityEditor.EditorApplication.isPlaying = false;
-#else
-  		Application.Quit();
-#endif
+      // Try to find the GameStarter monobehavior and tell it to stop
+      var gameStarter = FindObjectOfType<GameStarter>();
+      gameStarter.Stop();
+      sceneChanger.ChangeScene();
     }
   }
 }
