@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Code.World_Objects.Staff {
@@ -18,6 +19,9 @@ namespace Code.World_Objects.Staff {
     public int sw_skill;
     public int cost;
     public int salary;
+    public int productivity;
+    public string description;
+    public HashSet<string> groups = new HashSet<string>();
     
     [Tooltip("The number of days until this staff is available to hire." +
              "-1 = already hired, 0 = available now, 2 = wait for two days.")]

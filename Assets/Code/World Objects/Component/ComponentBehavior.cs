@@ -4,9 +4,6 @@ using Code.World_Objects;
 using UnityEngine;
 
 public abstract class ComponentBehavior : BaseWorldObject {
-  public delegate void ValueChangeHandler();
-  public event ValueChangeHandler OnValueChanged;
-
   [Header("Input Variables")]
   [SerializeField] private StringStringVariable _organizationDict;
   [Tooltip("The variable containing the list of all the Networks currently in the scenario.")]
@@ -31,10 +28,5 @@ public abstract class ComponentBehavior : BaseWorldObject {
   public void DisconnectFromNetwork(string network) {
     Data.DisconnectFromNetwork(network);
     ValueChanged();
-  }
-
-  // ------------------------------------------------------------------------
-  protected void ValueChanged() {
-    OnValueChanged?.Invoke();
   }
 }
