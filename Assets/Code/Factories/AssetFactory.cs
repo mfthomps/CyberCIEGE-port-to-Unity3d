@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using Code.Scriptable_Variables;
 using Code.World_Objects.Asset;
@@ -7,16 +7,24 @@ using Code.World_Objects.Asset;
 namespace Code.Factories {
   //A factory that creates Asset instances
   public class AssetFactory : MonoBehaviour, iFactory {
-    public static Dictionary<string, AssetBehavior> asset_dict = new Dictionary<string, AssetBehavior>();
-    
     [Tooltip("The prefab to instantiate for new Assets")]
     [SerializeField] private AssetBehavior _prefab;
+
+    [Header("Output Variables")]
+    [Tooltip("The list of assets in the scenario")]
+    [SerializeField] private AssetListVariable assets;
     
+    [Header("Input Variables")]
     [Tooltip("The list of users in the scenario")]
     [SerializeField] private UserListVariable _userList;
 
     private static readonly string ASSETS = "assets";
     
+    //-------------------------------------------------------------------------
+    void OnDestroy() {
+      assets.Clear();
+    }
+
     //--------------------------------------------------------------------------
     public void Create(string filename, Transform parent = null) {
       throw new System.NotImplementedException();
@@ -29,6 +37,8 @@ namespace Code.Factories {
     
     //--------------------------------------------------------------------------
     private void LoadAssets(string path, Transform parent = null) {
+      assets.Clear();
+
       string asset_dir = Path.Combine(path, ASSETS);
       string[] clist = Directory.GetFiles(asset_dir);
       foreach (string asset_file in clist)
@@ -45,6 +55,8 @@ namespace Code.Factories {
       var data = LoadAsset(assetFile, asset);
       asset.Data = data;
       asset.gameObject.name = $"Asset--{asset.Data.AssetName}";
+
+      assets.Add(asset);
     }
 
     //----------------------------------------------------------------------------
@@ -57,10 +69,23 @@ namespace Code.Factories {
             switch (subTag) {
               case "Name":
                 data.AssetName = subValue;
-                asset_dict.Add(data.AssetName, newAsset);
                 break;
-              case "ActualAccessList":
-                data.DACAccess = new DACAccess(subValue, newAsset, _userList);
+              case "Description":
+                data.description = subValue;
+                break;
+              case "AccessList":
+                var accessors = Regex.Matches(subValue, @"(\w+)[ ]+(\w+)");
+                foreach (Match accessor in accessors) {
+                  var accessorName = accessor.Groups[1].ToString();
+                  var permissionsString = accessor.Groups[2].ToString();
+                  data.DACAccessors.Add(new DACAccess(accessorName, permissionsString));
+                }
+                break;
+              case "Secrecy":
+                data.secrecy = subValue;
+                break;
+              case "Integrity":
+                data.integrity = subValue;
                 break;
             }
           });
