@@ -48,10 +48,19 @@ namespace Code.World_Objects.User {
       user.UpdateFailedGoals(failedGoals);
 
       string tmp = userNode["training"].InnerText;
-      if (!int.TryParse(tmp, out int training)) {
-        Debug.Log("Error: UserManager could not parse training " + tmp);
+      if (int.TryParse(tmp, out int training)) {
+        user.UpdateTraining(training);
       }
-      user.UpdateTraining(training);
+
+      string happinessStr = userNode["happiness"].InnerText;
+      if (int.TryParse(happinessStr, out int happiness)) {
+        user.UpdateHappiness(happiness);
+      }
+      
+      string productivityStr = userNode["productivity"].InnerText;
+      if (int.TryParse(productivityStr, out int productivity)) {
+        user.UpdateProductivity(productivity);
+      }
     }
 
     //---------------------------------------------------------------------------

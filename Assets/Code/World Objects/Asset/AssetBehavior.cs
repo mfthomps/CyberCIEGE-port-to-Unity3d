@@ -22,15 +22,5 @@ namespace Code.World_Objects.Asset {
     public void SetComputer(ComputerBehavior computer) {
       Data.Computer = computer;
     }
-  
-    //----------------------------------------------------------------------------
-    public string GetDACString() {
-      return Data.DACAccess.ToString();
-    }
-
-    //----------------------------------------------------------------------------
-    public DACAccess GetDACAccess() {
-      return Data.DACAccess;
-    }
   }
 }

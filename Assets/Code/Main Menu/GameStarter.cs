@@ -27,7 +27,7 @@ namespace Code.MainMenu {
     }
 
     // ------------------------------------------------------------------------
-    void OnApplicationQuit() {
+    void OnDestroy() {
       // If we launched a game process, then kill it when we quit
       if (_gameProcess != null) {
         foreach (var process in Process.GetProcessesByName("simsecNoUi")) {
@@ -77,6 +77,11 @@ namespace Code.MainMenu {
       string working_dir = CyberCIEGEParser.GetCyberCIEGEWorkingDirectory(ccInstallPath.Value);
       _gameProcess.StartInfo.WorkingDirectory = working_dir;
       _gameProcess.Start();
+    }
+
+    // ------------------------------------------------------------------------
+    public void Stop() {
+      Destroy(gameObject);
     }
 
     // ------------------------------------------------------------------------

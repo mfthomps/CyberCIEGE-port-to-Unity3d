@@ -59,6 +59,7 @@ namespace Code.User_Interface.Objectives {
     // ------------------------------------------------------------------------
     public void AddObjective(ObjectiveUIItem objectiveUI) {
       objectiveUI.transform.SetParent(objectiveUIContentArea);
+      objectiveUI.transform.localScale = new Vector3(1f,1f,1f);
     }
 
     // ------------------------------------------------------------------------

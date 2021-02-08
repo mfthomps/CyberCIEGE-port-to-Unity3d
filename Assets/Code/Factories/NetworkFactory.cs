@@ -69,12 +69,12 @@ namespace Code.Factories {
             name = value;
             break;
           case "Static":
-            if (bool.TryParse(value, out isStatic)) {
+            if (!bool.TryParse(value, out isStatic)) {
               Debug.Log($"Error: Can't parse NetworkFactory static parameter {value}");
             }
             break;
           case "Leased":
-            if (bool.TryParse(value, out isLeased)) {
+            if (!bool.TryParse(value, out isLeased)) {
               Debug.Log($"Error: Can't parse NetworkFactory static parameter {value}");
             }
             break;
