@@ -79,6 +79,17 @@ namespace Code.World_Objects.User {
       Data.training = training;
       ValueChanged();
     }
+    
+    //---------------------------------------------------------------------------
+    public void UpdateHappiness(int value) {
+      Data.happiness = value;
+      ValueChanged();
+    }
+    //---------------------------------------------------------------------------
+    public void UpdateProductivity(int value) {
+      Data.productivity = value;
+      ValueChanged();
+    }
 
     //---------------------------------------------------------------------------
     public void UpdateHighestBackgroundCheck() {
