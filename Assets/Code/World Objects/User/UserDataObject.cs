@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
+
 namespace Code.World_Objects.User {
   [Serializable]
   //Data related to a single User instance
@@ -20,5 +21,19 @@ namespace Code.World_Objects.User {
     public HashSet<string> groups = new HashSet<string>();
     public HashSet<string> assetGoals = new HashSet<string>();
     public BackgroundCheck.Level highestBackgroundCheck;
+
+    //-------------------------------------------------------------------------
+    public UserGender Gender {
+      get {
+        switch (gender) {
+          case "male":
+            return UserGender.Male;
+          case "female":
+            return UserGender.Female;
+          default:
+            return UserGender.Unknown;
+        }
+      }
+    }
   }
 }
