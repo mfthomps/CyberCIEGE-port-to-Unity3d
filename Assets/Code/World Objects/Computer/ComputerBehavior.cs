@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using Code.AccessControlGroup;
 using Code.Game_Events;
 using Code.Policies;
 using Code.Scriptable_Variables;
@@ -115,6 +116,41 @@ namespace Code.World_Objects.Computer {
     public void RemoveSoftware(SoftwareBehavior software) {
       _data.RemoveSoftware(software.Data.name);
       ValueChanged();
+    }
+
+    // ------------------------------------------------------------------------
+    public void ToggleReadAccess(string network, string accessor) {
+      ToggleAccess(network, accessor, DACAccess.PermissionType.Read);
+    }
+
+    // ------------------------------------------------------------------------
+    public void ToggleWriteAccess(string network, string accessor) {
+      ToggleAccess(network, accessor, DACAccess.PermissionType.Write);
+    }
+
+    // ------------------------------------------------------------------------
+    public void ToggleControlAccess(string network, string accessor) {
+      ToggleAccess(network, accessor, DACAccess.PermissionType.Control);
+    }
+
+    // ------------------------------------------------------------------------
+    public void ToggleExecuteAccess(string network, string accessor) {
+      ToggleAccess(network, accessor, DACAccess.PermissionType.Execute);
+    }
+
+    // ------------------------------------------------------------------------
+    private void ToggleAccess(string network, string accessor, DACAccess.PermissionType permissionType) {
+      if (_data.networkDACAccessors.ContainsKey(network)) {
+        var existingAccess = _data.networkDACAccessors[network].Find(access => access.accessor == accessor);
+        // If this accessor already has permissions, then just toggle the read state
+        if (existingAccess != null) {
+          existingAccess.permissions[permissionType] = !existingAccess.permissions[permissionType];
+        }
+        // Otherwise, add this user with default permissions + read access
+        else {
+          _data.networkDACAccessors[network].Add(new DACAccess(accessor, permissionType));
+        }
+      }
     }
   }
 }
