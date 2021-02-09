@@ -67,15 +67,15 @@ namespace Code.User_Interface.Asset {
       }
 
       if (selectedObject.Value != null) {
-        DisplayUserInformation(selectedObject.Value.GetComponent<AssetBehavior>());
+        DisplayAssetInformation(selectedObject.Value.GetComponent<AssetBehavior>());
       }
       else {
-        DisplayUserInformation(null);
+        DisplayAssetInformation(null);
       }
     }
 
     // ------------------------------------------------------------------------
-    private void DisplayUserInformation(AssetBehavior asset) {
+    private void DisplayAssetInformation(AssetBehavior asset) {
       descriptionText.text = asset != null ? asset.Data.description : "";
       if (asset != null) {
         assignedComputerText.text = asset.Data.Computer != null ? asset.Data.Computer.Data.component_name : "No Computer";

@@ -63,7 +63,7 @@ public class SwapAnimators : MonoBehaviour
     }
 
     public void SetAlternateAnimator (bool isOn) { 
-      Debug.Log("Value: " + isOn.ToString());
+      // Debug.Log("Value: " + isOn.ToString());
       IsUsingAlternateAnimator = isOn;
     }
 }

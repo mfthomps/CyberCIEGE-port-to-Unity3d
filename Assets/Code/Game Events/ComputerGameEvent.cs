@@ -1,5 +1,6 @@
 ﻿using Shared.ScriptableVariables;
 using UnityEngine;
+using Code.World_Objects.Computer;
 
 namespace Code.Game_Events {
   // GameEvents with a ComputerBehavior payload

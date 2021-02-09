@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Code.World_Objects.Computer;
 
 namespace Code.User_Interface.Components {
   //Represents one selectable Computer item in the Computer List UI screen

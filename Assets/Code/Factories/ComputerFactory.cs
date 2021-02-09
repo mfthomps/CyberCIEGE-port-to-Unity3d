@@ -5,6 +5,7 @@ using Shared.ScriptableVariables;
 using Code.Hardware;
 using Code.Scriptable_Variables;
 using Code.World_Objects.Asset;
+using Code.World_Objects.Computer;
 using Code.World_Objects.Workspace;
 
 namespace Code.Factories {
@@ -114,12 +115,12 @@ namespace Code.Factories {
           computerData.software.Add(value);
           break;
         case "Assets":
-          computerData.asset_list.Add(value);
+          computerData.AddAsset(value);
           AssetBehavior asset = assets.FindAsset(value);
           asset.SetComputer(computerComponent);
           break;
         case "AccessListLocal":
-          computerData.user_list.Add(value);
+          computerData.AddUser(value);
           break;
         case "User":
           computerData.assignedUser = value;

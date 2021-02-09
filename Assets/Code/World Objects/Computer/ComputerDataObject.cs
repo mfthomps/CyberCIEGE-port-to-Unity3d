@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Code {
+namespace Code.World_Objects.Computer {
   //Data related to a single instance of a Computer
   [Serializable]
   public class ComputerDataObject : ComponentDataObject {
