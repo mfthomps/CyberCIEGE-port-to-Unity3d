@@ -3,7 +3,9 @@ using UnityEngine;
 using Shared.ScriptableVariables;
 using Code.Game_Events;
 using Code.Scriptable_Variables;
+using Code.Software;
 using Code.User_Interface.Asset;
+using Code.User_Interface.Software;
 using Code.World_Objects.Asset;
 using Code.World_Objects.Computer;
 
@@ -14,6 +16,8 @@ namespace Code.User_Interface.Components {
     public AssetListVariable assets;
     [Tooltip("List of computers in the given scenario")]
     public ComputerListVariable computerListVariable;
+    [Tooltip("List of software in the given scenario")]
+    public SoftwareListVariable softwareListVariable;
     [Header("Output Events/Variables")]
     [Tooltip("Currently selected GameObject")]
     public GameObjectVariable selectedObject;
@@ -24,6 +28,10 @@ namespace Code.User_Interface.Components {
     [SerializeField] private AssetGameEvent _assignAsset;
     [Tooltip("The GameEvent to fire when an asset should be unassigned from the selected computer")]
     [SerializeField] private AssetGameEvent _unassignAsset;
+    [Tooltip("The GameEvent to fire when software should be added to the selected computer")]
+    [SerializeField] private SoftwareGameEvent _addSoftware;
+    [Tooltip("The GameEvent to fire when software should be removed from the selected computer")]
+    [SerializeField] private SoftwareGameEvent _removeSoftware;
     
     [Header("UI Elements")]
     [Tooltip("List of computers to display")]
@@ -32,6 +40,10 @@ namespace Code.User_Interface.Components {
     public AssetList assignedAssetsList;
     [Tooltip("List of assets not assigned to the selected computer")]
     public AssetList unassignedAssetsList;
+    [Tooltip("List of software assigned to the selected computer")]
+    public SoftwareList addedSoftwareList;
+    [Tooltip("List of software not assigned to the selected computer")]
+    public SoftwareList availableSoftwareList;
 
     // ------------------------------------------------------------------------
     void OnEnable() {
@@ -75,6 +87,18 @@ namespace Code.User_Interface.Components {
     }
 
     // ------------------------------------------------------------------------
+    public void AddSoftware(SoftwareBehavior software) {
+      _addSoftware?.Raise(software);
+      UpdateSoftwareSettings(selectedObject.Value.GetComponent<ComputerBehavior>());
+    }
+
+    // ------------------------------------------------------------------------
+    public void RemoveSoftware(SoftwareBehavior software) {
+      _removeSoftware?.Raise(software);
+      UpdateSoftwareSettings(selectedObject.Value.GetComponent<ComputerBehavior>());
+    }
+
+    // ------------------------------------------------------------------------
     private void UpdateComputerList() {
       computerList.SetItems(computerListVariable.Value);
       UpdateSelection();
@@ -100,6 +124,32 @@ namespace Code.User_Interface.Components {
     // ------------------------------------------------------------------------
     private void DisplayComputerInformation(ComputerBehavior computer) {
       UpdateAssetsSettings(computer);
+      UpdateSoftwareSettings(computer);
+    }
+
+    // ------------------------------------------------------------------------
+    private void UpdateSoftwareSettings(ComputerBehavior computer) {
+      if (computer != null) {
+        var computerDataObject = computer.Data as ComputerDataObject;
+        var assignedSoftware = new List<SoftwareBehavior>();
+        var unassignedSoftware = new List<SoftwareBehavior>();
+        foreach (var software in softwareListVariable.Value) {
+          if (software.Data.validOSes.Contains(computerDataObject.os)) {
+            if (computerDataObject.software_list.Contains(software.Data.name)) {
+              assignedSoftware.Add(software);
+            }
+            else {
+              unassignedSoftware.Add(software);
+            }
+          }
+        }
+        addedSoftwareList.SetItems(assignedSoftware);
+        availableSoftwareList.SetItems(unassignedSoftware);
+      }
+      else {
+        addedSoftwareList.ClearItems();
+        availableSoftwareList.ClearItems();
+      }
     }
 
     // ------------------------------------------------------------------------
@@ -118,6 +168,10 @@ namespace Code.User_Interface.Components {
         }
         assignedAssetsList.SetItems(assignedAssets);
         unassignedAssetsList.SetItems(unassignedAssets);
+      }
+      else {
+        assignedAssetsList.ClearItems();
+        unassignedAssetsList.ClearItems();
       }
     }
   }

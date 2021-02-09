@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using Shared.ScriptableVariables;
 using Code.Policies;
+using Code.Software;
 using Code.World_Objects.Asset;
 using Code.World_Objects.Computer;
 
@@ -71,6 +72,26 @@ namespace Code.Test {
             computerBehavior.RemoveAsset(asset);
             asset.SetComputer(null);
           }
+        }
+      }
+    }
+
+    // ------------------------------------------------------------------------
+    public void AddSoftware(SoftwareBehavior software) {
+      if (selectedObject.Value != null) {
+        var computerBehavior = selectedObject.Value.GetComponent<ComputerBehavior>();
+        if (computerBehavior != null) {
+          computerBehavior.AddSoftware(software);
+        }
+      }
+    }
+
+    // ------------------------------------------------------------------------
+    public void RemoveSoftware(SoftwareBehavior software) {
+      if (selectedObject.Value != null) {
+        var computerBehavior = selectedObject.Value.GetComponent<ComputerBehavior>();
+        if (computerBehavior != null) {
+          computerBehavior.RemoveSoftware(software);
         }
       }
     }
