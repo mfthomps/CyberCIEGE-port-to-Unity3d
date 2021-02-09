@@ -2,6 +2,11 @@
 
 namespace Code.Software {
   public class SoftwareBehavior : MonoBehaviour {
-    public SoftwareDataObject Data { get; set; }
+    [SerializeField] private SoftwareDataObject _data;
+
+    public SoftwareDataObject Data {
+      get => _data;
+      set => _data = value;
+    }
   }
 }
