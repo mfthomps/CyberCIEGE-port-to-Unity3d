@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using TMPro;
 using Code.Scriptable_Variables;
+using Code.World_Objects.Computer;
 using Code.World_Objects.User;
 
 namespace Code.User_Interface.Main {

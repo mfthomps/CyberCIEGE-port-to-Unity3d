@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Code.World_Objects.Computer;
 
 namespace Code.World_Objects.Asset {
   public class AssetBehavior : BaseWorldObject {
@@ -21,6 +22,7 @@ namespace Code.World_Objects.Asset {
     //----------------------------------------------------------------------------
     public void SetComputer(ComputerBehavior computer) {
       Data.Computer = computer;
+      ValueChanged();
     }
   }
 }

@@ -3,12 +3,12 @@ using UnityEngine;
 using Code.Game_Events;
 using Code.Policies;
 using Code.Scriptable_Variables;
-using Code.World_Objects;
+using Code.World_Objects.Asset;
 
 /*
  * Represents computer attributes, inheriting from ComponentBehavior.
  */
-namespace Code {
+namespace Code.World_Objects.Computer {
   public class ComputerBehavior : ComponentBehavior {
     [Tooltip("The variable containing the list of all the Computers currently in the scenario.")]
     [SerializeField] private ComputerListVariable computerListVariable;
@@ -81,14 +81,14 @@ namespace Code {
     }
 
     // ------------------------------------------------------------------------
-    public void AddAsset(string asset) {
-      _data.AddAsset(asset);
+    public void AddAsset(AssetBehavior asset) {
+      _data.AddAsset(asset.Data.AssetName);
       ValueChanged();
     }
 
     // ------------------------------------------------------------------------
-    public void RemoveAsset(string asset) {
-      _data.RemoveAsset(asset);
+    public void RemoveAsset(AssetBehavior asset) {
+      _data.RemoveAsset(asset.Data.AssetName);
       ValueChanged();
     }
 

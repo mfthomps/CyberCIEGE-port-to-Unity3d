@@ -1,6 +1,7 @@
-﻿using Shared.ScriptableVariables;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
+using Shared.ScriptableVariables;
+using Code.World_Objects.Computer;
 
 namespace Code.Game_Events {
   public class ComputerGameEventListener : GameEventListener<ComputerBehavior> {

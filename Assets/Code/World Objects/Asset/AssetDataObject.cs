@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Code.World_Objects.Computer;
 
 namespace Code.World_Objects.Asset {
   //The data related to one Asset instance
