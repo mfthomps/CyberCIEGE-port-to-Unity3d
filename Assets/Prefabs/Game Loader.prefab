@@ -1,5 +1,51 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1016754258418850480
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2697250782747259184}
+  - component: {fileID: 4097237211010837624}
+  m_Layer: 0
+  m_Name: Software Factory
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2697250782747259184
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1016754258418850480}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6549311440533916876}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4097237211010837624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1016754258418850480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 173ce3bf73f9dc046ad7ef324cc7dc06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _prefab: {fileID: 262845676332327063, guid: 4fd1fc9a6003d184cb40fe1839bf60a3, type: 3}
+  softwareListVariable: {fileID: 11400000, guid: 0fc290c3a5ccb0a4cbb02dde95132498,
+    type: 2}
 --- !u!1 &1306098549058799570
 GameObject:
   m_ObjectHideFlags: 0
@@ -121,7 +167,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6549311440533916876}
-  m_RootOrder: 12
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6549311439739493567
 MonoBehaviour:
@@ -224,7 +270,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6549311440533916876}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6549311439845486864
 MonoBehaviour:
@@ -282,6 +328,7 @@ Transform:
   - {fileID: 6549311440831744060}
   - {fileID: 6549311440942109301}
   - {fileID: 6549311440567633040}
+  - {fileID: 2697250782747259184}
   - {fileID: 6549311441437792861}
   - {fileID: 6549311441201119022}
   - {fileID: 6549311439845486867}
@@ -376,8 +423,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16a6ecdeac2f4ce8b48b5562f5dc5179, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  assets: {fileID: 11400000, guid: a0ee651bd01af2649ba7a88a2f2af73c, type: 2}
   _prefab: {fileID: 7122772725586760942, guid: 45d011668db1a8d4d95adf3eea0a0d57, type: 3}
+  assets: {fileID: 11400000, guid: a0ee651bd01af2649ba7a88a2f2af73c, type: 2}
   _userList: {fileID: 11400000, guid: da170da9991c5f344a72bd6d63b7a07a, type: 2}
 --- !u!1 &6549311440831744063
 GameObject:
@@ -500,7 +547,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6549311440533916876}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6549311441201119023
 MonoBehaviour:
@@ -514,7 +561,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ff552b0f05446319aa496cd6df8f595, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _prefab: {fileID: 1782108855848456436, guid: c45b44ff3b325db44b854d5ae1fbc984, type: 3}
   _mapping: {fileID: 11400000, guid: 8cb6b80479af6b54c81c22d90a17ae93, type: 2}
   _workSpaceListVariable: {fileID: 11400000, guid: d58ae4d2fe18c644789dbe0b0007d8d3,
     type: 2}
@@ -609,7 +655,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6549311440533916876}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6549311441437792858
 MonoBehaviour:
@@ -683,6 +729,7 @@ MonoBehaviour:
   _deviceFactory: {fileID: 6549311439821271446}
   _networkFactory: {fileID: 6549311440831744061}
   _organizationFactory: {fileID: 6549311440567633041}
+  _ssoftwareFactory: {fileID: 4097237211010837624}
   _staffFactory: {fileID: 6549311441437792858}
   _userFactory: {fileID: 6549311441201119023}
   _workspaceFactory: {fileID: 6549311439845486864}

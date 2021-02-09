@@ -3,6 +3,7 @@ using UnityEngine;
 using Code.Game_Events;
 using Code.Policies;
 using Code.Scriptable_Variables;
+using Code.Software;
 using Code.World_Objects.Asset;
 
 /*
@@ -101,6 +102,18 @@ namespace Code.World_Objects.Computer {
     // ------------------------------------------------------------------------
     public void RemoveUser(string user) {
       _data.RemoveUser(user);
+      ValueChanged();
+    }
+
+    // ------------------------------------------------------------------------
+    public void AddSoftware(SoftwareBehavior software) {
+      _data.AddSoftware(software.Data.name);
+      ValueChanged();
+    }
+
+    // ------------------------------------------------------------------------
+    public void RemoveSoftware(SoftwareBehavior software) {
+      _data.RemoveSoftware(software.Data.name);
       ValueChanged();
     }
   }
