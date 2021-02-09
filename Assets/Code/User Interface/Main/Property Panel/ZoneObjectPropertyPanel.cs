@@ -3,6 +3,7 @@ using UnityEngine;
 using TMPro;
 using Code.Scriptable_Variables;
 using Code.Clearance;
+using Code.World_Objects.Computer;
 using Code.World_Objects.Staff;
 using Code.World_Objects.User;
 using Code.World_Objects.Zone;

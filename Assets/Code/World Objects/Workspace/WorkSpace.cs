@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using Code.World_Objects.Computer;
 
 namespace Code.World_Objects.Workspace {
   [Serializable]

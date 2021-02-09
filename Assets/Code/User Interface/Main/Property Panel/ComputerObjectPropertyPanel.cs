@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using TMPro;
+using Code.World_Objects.Computer;
 
 namespace Code.User_Interface.Main {
   public class ComputerObjectPropertyPanel : GenericObjectPropertyPanel<ComputerBehavior> {

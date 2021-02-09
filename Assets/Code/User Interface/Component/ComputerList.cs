@@ -1,4 +1,5 @@
 ﻿using UnityEngine.Events;
+using Code.World_Objects.Computer;
 
 namespace Code.User_Interface.Components {
   //Represents the list of Computers in the computer configure UI screen.
