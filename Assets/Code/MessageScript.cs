@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class MessageScript : MonoBehaviour {
-  public Text text;
+  [SerializeField] private TMP_Text text;
 
-  public Button close_button;
+  [SerializeField] private Button close_button;
 
   // Use this for initialization
   private void Start() {
@@ -20,4 +21,5 @@ public class MessageScript : MonoBehaviour {
     text.text = message;
     gameObject.SetActive(true);
   }
+
 }
