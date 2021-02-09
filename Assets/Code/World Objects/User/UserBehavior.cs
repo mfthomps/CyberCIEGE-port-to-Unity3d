@@ -9,10 +9,7 @@ namespace Code.World_Objects.User {
     [SerializeField] private AccessControlGroupListVariable _accessControlGroups;
     [Tooltip("The list of all the currently loaded clearances")]
     [SerializeField] private ClearanceListVariable _clearances;
-
-    [SerializeField] private GameObject _maleChildGameObject;
-    [SerializeField] private GameObject _femaleChildGameObject;
-
+    
     [SerializeField] private UserDataObject _data;
 
     //---------------------------------------------------------------------------
@@ -22,21 +19,7 @@ namespace Code.World_Objects.User {
     //---------------------------------------------------------------------------
     public UserDataObject Data {
       get => _data;
-      set {
-        _data = value;
-        if (_data.gender == "female") {
-          _femaleChildGameObject.SetActive(true);
-        }
-        else if (_data.gender == "male") {
-          _maleChildGameObject.SetActive(true);
-        }
-      }
-    }
-    
-    //---------------------------------------------------------------------------
-    private void Awake() {
-      if (_maleChildGameObject) {_maleChildGameObject.SetActive(false);} 
-      if (_femaleChildGameObject) {_femaleChildGameObject.SetActive(false);}
+      set => _data = value;
     }
 
     //---------------------------------------------------------------------------
@@ -77,6 +60,17 @@ namespace Code.World_Objects.User {
     //---------------------------------------------------------------------------
     public void UpdateTraining(int training) {
       Data.training = training;
+      ValueChanged();
+    }
+    
+    //---------------------------------------------------------------------------
+    public void UpdateHappiness(int value) {
+      Data.happiness = value;
+      ValueChanged();
+    }
+    //---------------------------------------------------------------------------
+    public void UpdateProductivity(int value) {
+      Data.productivity = value;
       ValueChanged();
     }
 

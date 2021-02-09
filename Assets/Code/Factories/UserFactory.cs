@@ -8,7 +8,8 @@ using Code.World_Objects.User;
 namespace Code.Factories {
   //A factory that creates User GameObjects
   public class UserFactory : MonoBehaviour, iFactory {
-    [SerializeField] private UserBehavior _prefab;
+    [Tooltip("The AvatarMapping to use when instantiating new User GameObjects.")]
+    [SerializeField] private AvatarPrefabMapping _mapping;
 
     [Header("Input Variables")]
     [Tooltip("The list of all the currently loaded workspaces")]
@@ -43,10 +44,18 @@ namespace Code.Factories {
       string[] clist = Directory.GetFiles(user_dir);
       foreach (string user_file in clist) {
         if (user_file.EndsWith(".sdf")) {
-          UserBehavior newUser = Instantiate(_prefab, parent);
-          var data = LoadOneUser(user_file);
-          int pos = data.position;
+          UserDataObject data = LoadOneUser(user_file);
+          var prefab =_mapping.GetPrefab(data.Gender);
+
+          if (!prefab) {
+            Debug.LogError($"Can't find a User prefab for gender {data.gender}");
+            continue;
+          }
           
+          GameObject newItem = Instantiate(prefab, parent);
+          UserBehavior newUser = newItem.GetComponent<UserBehavior>();
+          
+          int pos = data.position;
           if (pos < 0) {
             Debug.Log("LoadOneUser got invalid pos for " + data.user_name);
             continue;
@@ -63,11 +72,11 @@ namespace Code.Factories {
 
             ccUtils.GridTo3dPos(ws.x, ws.y, out float xf, out float zf);
             Vector3 v = new Vector3(xf, 0, zf);
-            newUser.transform.position = v;
+            newItem.transform.position = v;
           }
           
-          newUser.gameObject.SetActive(true);
-          newUser.gameObject.name = $"User--{data.user_name}";
+          newItem.gameObject.SetActive(true);
+          newItem.gameObject.name = $"User--{data.user_name}";
           newUser.Data = data;
           newUser.UpdateHighestBackgroundCheck();
           _userListVariable.Add(newUser);

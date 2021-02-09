@@ -39,7 +39,7 @@ ModelImporter:
       takeName: Take 001
       internalID: 0
       firstFrame: 1
-      lastFrame: 35
+      lastFrame: 1
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -362,18 +362,38 @@ ModelImporter:
         length: 0
         modified: 0
     skeleton:
-    - name: femguard_walk(Clone)
+    - name: femguard_stationary(Clone)
       parentName: 
       position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: femguard
-      parentName: femguard_walk(Clone)
+      parentName: femguard_stationary(Clone)
       position: {x: -0, y: 0, z: 0}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
+    - name: ikHandle1
+      parentName: femguard_stationary(Clone)
+      position: {x: -0.07191939, y: 0.091403425, z: -0.019230196}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: ikHandle2
+      parentName: femguard_stationary(Clone)
+      position: {x: 0.07191949, y: 0.0914034, z: -0.019230183}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: locator1
+      parentName: femguard_stationary(Clone)
+      position: {x: -0.08629925, y: 0.9332594, z: 0.6101722}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: locator2
+      parentName: femguard_stationary(Clone)
+      position: {x: 0.086499415, y: 0.9332594, z: 0.6101722}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
     - name: god_joint
-      parentName: femguard_walk(Clone)
+      parentName: femguard_stationary(Clone)
       position: {x: -0, y: 0.98114437, z: -0.023017544}
       rotation: {x: -0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
@@ -440,43 +460,43 @@ ModelImporter:
     - name: shoulder_right
       parentName: clavicle_right
       position: {x: 0.07153747, y: -0.018365193, z: -0.003800186}
-      rotation: {x: -0.001488687, y: 0.014501516, z: 0.055538796, w: 0.99835014}
-      scale: {x: 1, y: 1, z: 1}
+      rotation: {x: -0.0000062712124, y: 0.0034660783, z: 0.054616988, w: 0.99850136}
+      scale: {x: 1, y: 0.99999994, z: 0.99999994}
     - name: elbow_right
       parentName: shoulder_right
       position: {x: 0.27687785, y: -0.052395925, z: 0.0033569187}
-      rotation: {x: 0.0006489095, y: -0.024946423, z: 0.0064861462, w: 0.9996676}
+      rotation: {x: -0, y: -0, z: -2.6573177e-23, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: wrist_right
       parentName: elbow_right
       position: {x: 0.24901208, y: -0.046728738, z: 0.008711837}
       rotation: {x: -0, y: -0, z: -0, w: 1}
-      scale: {x: 0.99999994, y: 1, z: 0.99999994}
+      scale: {x: 1, y: 0.99999994, z: 1}
     - name: hand_right
       parentName: wrist_right
       position: {x: 0.07841687, y: -0.0029788786, z: 0.0050344723}
       rotation: {x: -0, y: -0, z: -0, w: 1}
-      scale: {x: 0.9999999, y: 1, z: 0.9999999}
+      scale: {x: 0.9999999, y: 0.9999999, z: 0.9999999}
     - name: finger_right
       parentName: hand_right
       position: {x: 0.037156474, y: -0.0077177784, z: 0.0027759788}
-      rotation: {x: -0.002138425, y: 0.0066018016, z: 0.046977215, w: 0.99887186}
-      scale: {x: 0.99999994, y: 1, z: 0.99999994}
+      rotation: {x: -0.0021384966, y: 0.0066017495, z: 0.046977744, w: 0.99887186}
+      scale: {x: 0.99999994, y: 1, z: 0.9999999}
     - name: finger_end_right
       parentName: finger_right
       position: {x: 0.04597313, y: -0.018241784, z: 0.00465627}
       rotation: {x: -0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
+      scale: {x: 1, y: 1.0000001, z: 1}
     - name: thumb_right
       parentName: wrist_right
       position: {x: 0.049068715, y: -0.0050782138, z: 0.06212221}
-      rotation: {x: -0.040951755, y: -0.100313425, z: 0.02966807, w: 0.99367005}
-      scale: {x: 0.9999999, y: 1, z: 0.9999999}
+      rotation: {x: -0.046213944, y: -0.11398819, z: 0.032991022, w: 0.9918581}
+      scale: {x: 0.9999999, y: 0.9999999, z: 0.9999999}
     - name: thumb_end_right
       parentName: thumb_right
       position: {x: 0.03531009, y: -0.009776119, z: 0.01568488}
       rotation: {x: -0, y: -0, z: -0, w: 1}
-      scale: {x: 0.99999994, y: 1, z: 0.99999994}
+      scale: {x: 0.99999994, y: 0.99999994, z: 0.9999999}
     - name: clavicle_left
       parentName: chest
       position: {x: -0.08725556, y: 0.05325005, z: -0.011429124}
@@ -485,27 +505,27 @@ ModelImporter:
     - name: shoulder_left
       parentName: clavicle_left
       position: {x: -0.06997828, y: -0.02000047, z: -0.0038739038}
-      rotation: {x: -0.002108817, y: -0.021348463, z: -0.058191545, w: 0.9980749}
+      rotation: {x: 0.0000065605686, y: -0.00677801, z: -0.057137314, w: 0.99834335}
       scale: {x: 1, y: 1, z: 1}
     - name: elbow_left
       parentName: shoulder_left
       position: {x: -0.28278387, y: -0.05480854, z: 0.0064692996}
-      rotation: {x: 0.003201572, y: 0.042801797, z: -0.010672393, w: 0.9990215}
+      rotation: {x: -0, y: -0, z: 1.0841999e-17, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: wrist_left
       parentName: elbow_left
       position: {x: -0.25135624, y: -0.042793665, z: 0.008311001}
       rotation: {x: -0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
+      scale: {x: 1, y: 1, z: 0.99999994}
     - name: hand_left
       parentName: wrist_left
       position: {x: -0.07336584, y: -0.0012890665, z: -0.0010739652}
-      rotation: {x: 0.005147226, y: -0.029337797, z: -0.025383888, w: 0.99923396}
-      scale: {x: 1, y: 1, z: 1}
+      rotation: {x: 0.0015893428, y: -0.016569506, z: -0.023213625, w: 0.99959195}
+      scale: {x: 1, y: 1.0000001, z: 1}
     - name: finger_left
       parentName: hand_left
       position: {x: -0.034148198, y: -0.010376919, z: 0.0050689094}
-      rotation: {x: -0.011172362, y: 0.02687005, z: -0.020258322, w: 0.99937123}
+      rotation: {x: -0.011172332, y: 0.02686996, z: -0.020258322, w: 0.99937123}
       scale: {x: 1, y: 1, z: 1}
     - name: finger_end_left
       parentName: finger_left
@@ -515,13 +535,13 @@ ModelImporter:
     - name: thumb_left
       parentName: wrist_left
       position: {x: -0.038622096, y: -0.01929319, z: 0.057182815}
-      rotation: {x: -0.01587095, y: 0.19488052, z: 0.009908463, w: 0.9806485}
-      scale: {x: 1, y: 1, z: 1}
+      rotation: {x: -0.019194815, y: 0.22308044, z: 0.0063821618, w: 0.9745902}
+      scale: {x: 1, y: 1, z: 1.0000001}
     - name: thumb_end_left
       parentName: thumb_left
       position: {x: -0.045363158, y: -0.004172127, z: 0.009396588}
       rotation: {x: -0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
+      scale: {x: 1, y: 0.99999994, z: 1}
     - name: hip_left
       parentName: god_joint
       position: {x: -0.08669548, y: -0.048444178, z: 0.028838525}
@@ -559,12 +579,11 @@ ModelImporter:
     hasTranslationDoF: 0
     hasExtraRoot: 1
     skeletonHasParents: 1
-  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 606b31958506ee749ac3f49401ab88d1,
-    type: 3}
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 3
   humanoidOversampling: 1
-  avatarSetup: 2
+  avatarSetup: 1
   additionalBone: 0
   userData: 
   assetBundleName: 
