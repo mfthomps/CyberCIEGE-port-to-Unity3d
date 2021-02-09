@@ -48,6 +48,8 @@ public class GameLoadBehavior : MonoBehaviour {
   [SerializeField] private ZoneFactory _zoneFactory;
 
   private static string _ccInstallPath;
+
+  private AssetBundle _loadedAssetBundle;
   
   // --------------------------------------------------------------------------
   void Awake() {
@@ -60,6 +62,9 @@ public class GameLoadBehavior : MonoBehaviour {
     ccInstallPath.Reset();
     userAppPath.Reset();
     hardwareCatalog.Reset();
+    if (_loadedAssetBundle != null) {
+      _loadedAssetBundle.Unload(true);
+    }
   }
 
   // --------------------------------------------------------------------------
@@ -91,13 +96,13 @@ public class GameLoadBehavior : MonoBehaviour {
 
   // --------------------------------------------------------------------------
   private void InitializeHardwareCatalog(string userAppPath) {
-    var assetBundle = AssetBundle.LoadFromFile(Path.Combine(Application.dataPath, "AssetBundles", "objects"));
+    _loadedAssetBundle = AssetBundle.LoadFromFile(Path.Combine(Application.dataPath, "AssetBundles", "objects"));
     var hardwareTypePath = Path.Combine(Application.dataPath, "HardwareTypes");
     var hardwareDefinitions = new List<Tuple<HardwareType, string>>{
       new Tuple<HardwareType, string>(HardwareType.Servers, Path.Combine(hardwareTypePath, "servers.txt")),
       new Tuple<HardwareType, string>(HardwareType.Workstations, Path.Combine(hardwareTypePath, "workstations.txt")),
       new Tuple<HardwareType, string>(HardwareType.NetworkDevices, Path.Combine(hardwareTypePath, "devices.txt")),
     };
-    hardwareCatalog.Value = new HardwareCatalog(assetBundle, hardwareDefinitions, userAppPath);
+    hardwareCatalog.Value = new HardwareCatalog(_loadedAssetBundle, hardwareDefinitions, userAppPath);
   }
 }

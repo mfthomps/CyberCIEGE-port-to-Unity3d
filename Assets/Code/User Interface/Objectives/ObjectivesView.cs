@@ -161,6 +161,8 @@ namespace Code.User_Interface.Objectives {
           }
         };
 
+
+
         // Add the Objective UI to the corresponding Phase UI
         var phaseUI = _phaseUI[objective.phase.name];
         phaseUI.AddObjective(objectiveUI);

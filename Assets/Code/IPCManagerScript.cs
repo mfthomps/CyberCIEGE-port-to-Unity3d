@@ -29,13 +29,13 @@ public class IPCManagerScript : MonoBehaviour {
   [Tooltip("Quit scenario")]
   public GameEvent quit;
 
-  private static NetworkStream serverStream;
+  private static NetworkStream _serverStream;
 
   // Use this for initialization
-  private static string read_string;
+  private static string _readString;
 
-  public static bool server_ready; /* ignore server messages until we receive the ready message */
-  private static float elapsed_since_receive;
+  private bool _serverReady; /* ignore server messages until we receive the ready message */
+  private float _elapsedSinceReceive;
 
   // --------------------------------------------------------------------------
   void Start() {
@@ -50,19 +50,19 @@ public class IPCManagerScript : MonoBehaviour {
   // --------------------------------------------------------------------------
   private void Update() {
     float delta = Time.deltaTime;
-    elapsed_since_receive += delta;
-    if (elapsed_since_receive > 0.1f)
-      elapsed_since_receive = 0.0f;
+    _elapsedSinceReceive += delta;
+    if (_elapsedSinceReceive > 0.1f)
+      _elapsedSinceReceive = 0.0f;
     else
       return;
 
     //Debug.Log("call receive");
     int len = ReceiveMsg();
     while (len > 0) {
-      if (!server_ready) {
-        if (read_string == "ready") {
+      if (!_serverReady) {
+        if (_readString == "ready") {
           Debug.Log("IPCManager got server ready");
-          server_ready = true;
+          _serverReady = true;
           _gameLoadBehavior.AfterServerReady();
           SendRequest("begin");
           SendRequest("on_screen:" + menus.UI_SCREEN_OFFICE);
@@ -71,10 +71,10 @@ public class IPCManagerScript : MonoBehaviour {
         return;
       }
 
-      string command = read_string;
+      string command = _readString;
       string message = null;
-      //Debug.Log("buf [" + read_string + "]");
-      if (read_string.IndexOf(':') > 0) message = ccUtils.GetCommand(read_string, out command);
+      //Debug.Log("buf [" + _readString + "]");
+      if (_readString.IndexOf(':') > 0) message = ccUtils.GetCommand(_readString, out command);
 
       //Debug.Log("IPC update got command " + command + " message [" + message+"]");
       switch (command) {
@@ -135,19 +135,19 @@ public class IPCManagerScript : MonoBehaviour {
   }
 
   public static int ReceiveMsg(bool block = false) {
-    if (serverStream == null)
+    if (_serverStream == null)
       return 0;
-    if (!block & !serverStream.DataAvailable) return 0;
+    if (!block & !_serverStream.DataAvailable) return 0;
 
     var lenArray = new byte[4];
-    int num_read = serverStream.Read(lenArray, 0, 4);
+    int num_read = _serverStream.Read(lenArray, 0, 4);
     //Debug.Log("len of len is " + num_read);
     int len = BitConverter.ToInt32(lenArray, 0);
     //Debug.Log("bitconvert len is " + len);
     var read_buf = new byte[len];
-    num_read = serverStream.Read(read_buf, 0, len);
-    read_string = Encoding.ASCII.GetString(read_buf);
-    //Debug.Log("ReceiveMsg num_read " + num_read + "["+read_string+"]");
+    num_read = _serverStream.Read(read_buf, 0, len);
+    _readString = Encoding.ASCII.GetString(read_buf);
+    //Debug.Log("ReceiveMsg num_read " + num_read + "["+_readString+"]");
     //buf[len] = 0;
     return num_read;
   }
@@ -158,7 +158,7 @@ public class IPCManagerScript : MonoBehaviour {
   }
 
   public static void SendRequest(string request) {
-    if (serverStream == null) {
+    if (_serverStream == null) {
       Debug.Log("SendRequest, no connection for to send " + request);
       return;
     }
@@ -175,13 +175,13 @@ public class IPCManagerScript : MonoBehaviour {
 
     // send the length value
     //socket.Send(reqLenArray, 4, System.Net.Sockets.SocketFlags.None);
-    serverStream.Write(reqLenArray, 0, reqLenArray.Length);
+    _serverStream.Write(reqLenArray, 0, reqLenArray.Length);
 
 
     // copy string to a byte array
     byte[] dataArray = Encoding.ASCII.GetBytes(request);
-    serverStream.Write(dataArray, 0, dataArray.Length);
-    serverStream.Flush();
+    _serverStream.Write(dataArray, 0, dataArray.Length);
+    _serverStream.Flush();
     // send the string array
     //socket.Send(dataArray, reqLen,
     //			System.Net.Sockets.SocketFlags.None);
@@ -218,6 +218,10 @@ public class IPCManagerScript : MonoBehaviour {
       done = true;
     }
 
-    serverStream = clientSocket.GetStream();
+    // Clear out our server stream if we had a previous one
+    if (_serverStream != null) {
+      _serverStream.Dispose();
+    }
+    _serverStream = clientSocket.GetStream();
   }
 }
