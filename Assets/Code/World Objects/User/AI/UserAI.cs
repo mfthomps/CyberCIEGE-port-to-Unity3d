@@ -1,8 +1,8 @@
-﻿using System;
-using Code.Scriptable_Variables;
+﻿using Code.Scriptable_Variables;
 using Code.World_Objects.Computer;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 namespace Code.World_Objects.User.AI {
   public class UserAI : MonoBehaviour {
@@ -13,10 +13,14 @@ namespace Code.World_Objects.User.AI {
     [SerializeField] private Animator _animator;
     
     private ComputerBehavior _assignedComputer;
+    private GameObject[] _objectsOfInterest;
+    private GameObject _currentWanderTarget = null;
+    
     
     //-------------------------------------------------------------------------
     private void Start() {
       _computerListVariable.OnValueChanged += ComputerListVariableOnOnValueChanged;
+      _objectsOfInterest = GameObject.FindGameObjectsWithTag("Object of Interest");
     }
 
     //-------------------------------------------------------------------------
@@ -41,7 +45,27 @@ namespace Code.World_Objects.User.AI {
       }
       else {
         Work(false);
-        //wander
+        Wander();
+      }
+    }
+
+    //-------------------------------------------------------------------------
+    private void Wander() {
+      if (!_currentWanderTarget && _objectsOfInterest.Length > 0) {
+        int rnd = Random.Range(0, _objectsOfInterest.Length);
+        _currentWanderTarget = _objectsOfInterest[rnd];
+        // Debug.Log($"{_user.Data.user_name} target is {_currentWanderTarget.name}");
+      }
+
+      if (_currentWanderTarget) {
+        Walk(true);
+        NavigateTo(_currentWanderTarget.transform.position);
+        
+        if (AtLocation(_currentWanderTarget.transform.position)) {
+          // Debug.Log($"{_user.Data.user_name} arrived.");
+          _currentWanderTarget = null;
+          Walk(false);
+        }
       }
     }
     
@@ -58,11 +82,15 @@ namespace Code.World_Objects.User.AI {
     //-------------------------------------------------------------------------
     private void NavigateTo(Vector3 location) {
       if (!_navMeshAgent.enabled) {
-        Debug.Log("Activating NavMeshAgent");
+        // Debug.Log("Activating NavMeshAgent");
         _navMeshAgent.enabled = true;
       }
 
-      _navMeshAgent.destination = location;
+      if (_navMeshAgent.destination != location) {
+        if (!_navMeshAgent.SetDestination(location)) {
+          Debug.LogError($"Can't path {_user.Data.user_name} to {location}");
+        }
+      }
     }
 
     //-------------------------------------------------------------------------
@@ -70,7 +98,7 @@ namespace Code.World_Objects.User.AI {
       _assignedComputer =
         _computerListVariable.Value.Find(x => (x.Data as ComputerDataObject).assignedUser == _user.Data.user_name);
       
-      Debug.Log($"User {_user.Data.user_name} has computer '{_assignedComputer}'");
+      // Debug.Log($"User {_user.Data.user_name} has computer '{_assignedComputer}'");
     }
     
     //-------------------------------------------------------------------------
@@ -80,7 +108,7 @@ namespace Code.World_Objects.User.AI {
 
     //-------------------------------------------------------------------------
     private bool AtLocation(Vector3 location) {
-      return Vector3.Distance(_user.transform.position, location) < 0.5f;
+      return Vector3.Distance(_user.transform.position, location) < 1f;
     }
   }
 }

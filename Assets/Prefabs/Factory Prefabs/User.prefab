@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2073182798043134062}
   - component: {fileID: 1782108855848456436}
-  - component: {fileID: 2672857406115281387}
   - component: {fileID: 7846968173205791730}
   - component: {fileID: 1647046170842896626}
   m_Layer: 0
@@ -62,20 +61,6 @@ MonoBehaviour:
     secrecyClearance: 
     integrityClearance: 
     highestBackgroundCheck: 0
---- !u!136 &2672857406115281387
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5882195145636872645}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 1.8
-  m_Direction: 1
-  m_Center: {x: 0, y: 1, z: 0}
 --- !u!195 &7846968173205791730
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -85,11 +70,11 @@ NavMeshAgent:
   m_GameObject: {fileID: 5882195145636872645}
   m_Enabled: 0
   m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 3.5
+  m_Radius: 0.25
+  m_Speed: 1.5
   m_Acceleration: 8
   avoidancePriority: 50
-  m_AngularSpeed: 120
+  m_AngularSpeed: 200
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
@@ -114,3 +99,4 @@ MonoBehaviour:
   _computerListVariable: {fileID: 11400000, guid: 8380099111649e944adcc17e9f804d36,
     type: 2}
   _navMeshAgent: {fileID: 7846968173205791730}
+  _animator: {fileID: 0}
