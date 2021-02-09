@@ -14,7 +14,7 @@ namespace Code.World_Objects.Computer {
     public string os;
     public int availability;
     public string domain;
-    public HashSet<string> software = new HashSet<string>();
+    public HashSet<string> software_list = new HashSet<string>();
 
     // ------------------------------------------------------------------------
     public void AddAsset(string asset) {
@@ -34,6 +34,16 @@ namespace Code.World_Objects.Computer {
     // ------------------------------------------------------------------------
     public void RemoveUser(string user) {
       user_list.Remove(user);
+    }
+
+    // ------------------------------------------------------------------------
+    public void AddSoftware(string software) {
+      software_list.Add(software);
+    }
+
+    // ------------------------------------------------------------------------
+    public void RemoveSoftware(string software) {
+      software_list.Remove(software);
     }
   }
 }

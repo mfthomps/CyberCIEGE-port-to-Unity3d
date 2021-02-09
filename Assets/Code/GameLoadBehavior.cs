@@ -37,6 +37,8 @@ public class GameLoadBehavior : MonoBehaviour {
   [SerializeField] private NetworkFactory _networkFactory;
   [Tooltip("The factory to use for creating Organizations")]
   [SerializeField] private OrganizationFactory _organizationFactory;
+  [Tooltip("The factory to use for creating Software")]
+  [SerializeField] private SoftwareFactory _ssoftwareFactory;
   [FormerlySerializedAs("_itStaffFactory")]
   [Tooltip("The factory to use for creating ITStaff")]
   [SerializeField] private StaffFactory _staffFactory;
@@ -87,6 +89,7 @@ public class GameLoadBehavior : MonoBehaviour {
     _assetFactory.CreateAll(userAppPath.Value);
     _computerFactory.CreateAll(userAppPath.Value);
     _deviceFactory.CreateAll(userAppPath.Value);
+    _ssoftwareFactory.CreateAll(userAppPath.Value);
     _staffFactory.CreateAll(userAppPath.Value);
     _zoneFactory.CreateAll(userAppPath.Value);
 

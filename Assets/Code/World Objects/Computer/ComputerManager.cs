@@ -1,6 +1,7 @@
 ﻿using System.Xml.Linq;
 using UnityEngine;
 using Shared.ScriptableVariables;
+using Code.Software;
 using Code.World_Objects.Asset;
 
 namespace Code.World_Objects.Computer {
@@ -49,6 +50,28 @@ namespace Code.World_Objects.Computer {
       }
     }
 
+    // ------------------------------------------------------------------------
+    public void AddSoftware(SoftwareBehavior software) {
+      if (selectedObject.Value != null) {
+        var computerBehavior = selectedObject.Value.GetComponent<ComputerBehavior>();
+        if (computerBehavior != null) {
+          computerBehavior.AddSoftware(software);
+          SendSoftwareChangeEvent(software, computerBehavior, true);
+        }
+      }
+    }
+
+    // ------------------------------------------------------------------------
+    public void RemoveSoftware(SoftwareBehavior software) {
+      if (selectedObject.Value != null) {
+        var computerBehavior = selectedObject.Value.GetComponent<ComputerBehavior>();
+        if (computerBehavior != null) {
+          computerBehavior.RemoveSoftware(software);
+          SendSoftwareChangeEvent(software, computerBehavior, false);
+        }
+      }
+    }
+
     //--------------------------------------------------------------------------
     private static void SendScrapEvent(ComponentBehavior computer) {
       var xml = new XElement("componentEvent",
@@ -64,6 +87,16 @@ namespace Code.World_Objects.Computer {
         new XElement("name", asset.Data.AssetName),
         new XElement("moveType", $"{(add ? "Add" : "Remove")} : PLAYER"),
         new XElement("computerName", computer.Data.component_name)
+      );
+
+      IPCManagerScript.SendRequest(xml.ToString());
+    }
+
+    //--------------------------------------------------------------------------
+    private void SendSoftwareChangeEvent(SoftwareBehavior software, ComputerBehavior computer, bool install) {
+      var xml = new XElement("componentEvent",
+        new XElement("name", computer.Data.component_name),
+        new XElement($"{(install ? "softwareAdd" : "softwareRemove")}", software.Data.name)
       );
 
       IPCManagerScript.SendRequest(xml.ToString());

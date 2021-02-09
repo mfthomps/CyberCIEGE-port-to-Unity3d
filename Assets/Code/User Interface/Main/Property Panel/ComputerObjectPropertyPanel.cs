@@ -47,7 +47,7 @@ namespace Code.User_Interface.Main {
       SetStringProperty(hardwareLabel, computerDataObject.hw, computerDataObject.hw_name);
       SetStringProperty(availabilityLabel, $"{computerDataObject.availability}");
       SetStringProperty(domainLabel, computerDataObject.domain);
-      SetStringList(softwareList, computerDataObject.software);
+      SetStringList(softwareList, computerDataObject.software_list);
       SetStringList(assetList, computerDataObject.asset_list);
       SetStringList(networkList, computerDataObject.network_list);
     }

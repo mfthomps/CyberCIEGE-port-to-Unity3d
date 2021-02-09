@@ -112,7 +112,7 @@ namespace Code.Factories {
           });
           break;
         case "Software":
-          computerData.software.Add(value);
+          computerData.AddSoftware(value);
           break;
         case "Assets":
           computerData.AddAsset(value);
