@@ -71,11 +71,13 @@ namespace Code.World_Objects.User.AI {
     
     //-------------------------------------------------------------------------
     private void Work(bool enable) {
+      if (!_animator.isInitialized) {return;}
       _animator.SetBool("Working", enable);
     }
 
     //-------------------------------------------------------------------------
     private void Walk(bool enable) {
+      if (!_animator.isInitialized) {return;}
       _animator.SetBool("Walking", enable);
     }
 
