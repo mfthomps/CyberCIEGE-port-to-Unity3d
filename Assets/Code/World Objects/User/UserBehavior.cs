@@ -23,6 +23,10 @@ namespace Code.World_Objects.User {
     }
 
     //---------------------------------------------------------------------------
+    //Get or set a Navigate Target for this User
+    public GameObject CurrentNavTarget { get; set; } 
+
+    //---------------------------------------------------------------------------
     public bool IsActiveUser() {
       if (Data.department != "Security" && Data.department != "Tech")
         return true;
