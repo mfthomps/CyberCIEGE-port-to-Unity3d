@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Code.World_Objects.User.AI {
+namespace Code.World_Objects.User.AI.States {
   
   //A Fsm state to animate the character as Idle
   public class IdleState : FsmState{

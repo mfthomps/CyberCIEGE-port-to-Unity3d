@@ -2,7 +2,7 @@
 using Code.World_Objects.Computer;
 using UnityEngine;
 
-namespace Code.World_Objects.User.AI {
+namespace Code.World_Objects.User.AI.Conditions {
   //a Fsm Condition to check if the supplied User has the ability to work or not
   public class CanWorkCondition : FsmCondition {
     [SerializeField] private ComputerListVariable _computerListVariable;

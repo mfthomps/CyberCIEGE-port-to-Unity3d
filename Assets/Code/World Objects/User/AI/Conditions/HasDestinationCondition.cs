@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Code.World_Objects.User.AI {
+namespace Code.World_Objects.User.AI.Conditions {
   //A Fsm condition to check if the User has a valid navigation target
   public class HasDestinationCondition : FsmCondition {
     [SerializeField] private UserBehavior _user;

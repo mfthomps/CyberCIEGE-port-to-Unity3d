@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
 
-namespace Code.World_Objects.User.AI {
+namespace Code.World_Objects.User.AI.States {
   //A FSM state that gives a NavMeshAgent a path to the User's current nav target
   public class NavigateState : FsmState {
     [SerializeField] private NavMeshAgent _agent;

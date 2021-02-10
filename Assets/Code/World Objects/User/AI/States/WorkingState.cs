@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Code.World_Objects.User.AI {
+namespace Code.World_Objects.User.AI.States {
   
   // A Fsm State that animates the character as working
   public class WorkingState : FsmState {

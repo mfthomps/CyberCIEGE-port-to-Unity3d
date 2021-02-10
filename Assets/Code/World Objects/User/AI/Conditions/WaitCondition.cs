@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Code.World_Objects.User.AI {
+namespace Code.World_Objects.User.AI.Conditions {
   //A Fsm Condition that waits for the supplied amount of seconds
   public class WaitCondition : FsmCondition {
     [Tooltip("How  many seconds to wait before this condition becomes true")]

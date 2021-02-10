@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Code.World_Objects.User.AI {
+namespace Code.World_Objects.User.AI.Conditions {
   
   //A Fsm condition to check if the supplied User is at their navigate target
   public class AtLocationCondition : FsmCondition {

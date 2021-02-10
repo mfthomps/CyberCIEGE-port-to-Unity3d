@@ -2,7 +2,7 @@
 using Code.World_Objects.Computer;
 using UnityEngine;
 
-namespace Code.World_Objects.User.AI {
+namespace Code.World_Objects.User.AI.States {
   // A Fsm state that gives the assigned User a navigation target of the first
   // computer that is assigned to this User.
   public class MoveToComputerState : FsmState {

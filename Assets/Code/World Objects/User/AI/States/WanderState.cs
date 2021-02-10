@@ -2,7 +2,7 @@
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace Code.World_Objects.User.AI {
+namespace Code.World_Objects.User.AI.States {
   // A Fsm State that randomly selects a GameObject in the scene that has 
   // the supplied Tag and sets the User's navigation target to it.
   public class WanderState : FsmState {
