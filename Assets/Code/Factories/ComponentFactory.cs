@@ -1,4 +1,7 @@
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
+using Code.AccessControlGroup;
 
 namespace Code.Factories {
   //A base Factor that handles the ComponentBehavior loading
@@ -31,13 +34,26 @@ namespace Code.Factories {
           data.hw = value;
           break;
         case "Network":
+          string networkName = null;
+          var accessors = new List<DACAccess>();
           ccUtils.ParseSDFFileSubElement(value, (subTag, subValue) => {
             switch (subTag) {
               case "Name":
-                data.ConnectToNetwork(subValue);
+                networkName = subValue;
+                break;
+              case "AccessList":
+                var accessorStringMatches = Regex.Matches(subValue, @"(\w+)[ :end AccessMode: ]+(\w+)");
+                foreach (Match accessor in accessorStringMatches) {
+                  var accessorName = accessor.Groups[1].ToString();
+                  var permissionsString = accessor.Groups[2].ToString();
+                  accessors.Add(new DACAccess(accessorName, permissionsString));
+                }
                 break;
             }
           });
+          if (!string.IsNullOrEmpty(networkName)) {
+            data.ConnectToNetwork(networkName, accessors);
+          }
           break;
       }
     }

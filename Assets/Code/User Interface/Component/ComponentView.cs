@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using Shared.ScriptableVariables;
+using Code.AccessControlGroup;
 using Code.Game_Events;
 using Code.Scriptable_Variables;
 using Code.Software;
+using Code.User_Interface.AccessControlGroup;
 using Code.User_Interface.Asset;
 using Code.User_Interface.Software;
 using Code.World_Objects.Asset;
@@ -12,12 +14,16 @@ using Code.World_Objects.Computer;
 namespace Code.User_Interface.Components {
   public class ComponentView : MonoBehaviour {
     [Header("Input Variables")]
+    [Tooltip("List of access control groups in the given scenario")]
+    public AccessControlGroupListVariable accessControlGroups;
     [Tooltip("List of assets in the given scenario")]
     public AssetListVariable assets;
     [Tooltip("List of computers in the given scenario")]
     public ComputerListVariable computerListVariable;
     [Tooltip("List of software in the given scenario")]
     public SoftwareListVariable softwareListVariable;
+    [Tooltip("List of users in the given scenario")]
+    public UserListVariable users;
     [Header("Output Events/Variables")]
     [Tooltip("Currently selected GameObject")]
     public GameObjectVariable selectedObject;
@@ -32,6 +38,16 @@ namespace Code.User_Interface.Components {
     [SerializeField] private SoftwareGameEvent _addSoftware;
     [Tooltip("The GameEvent to fire when software should be removed from the selected computer")]
     [SerializeField] private SoftwareGameEvent _removeSoftware;
+    [Tooltip("The GameEvent to fire when a networks' access should be cleared from the selected computer")]
+    [SerializeField] private ComputerNetworkAccessChangeGameEvent _accessChangeClear;
+    [Tooltip("The GameEvent to fire when a networks' read access should be changed from the selected computer")]
+    [SerializeField] private ComputerNetworkAccessChangeGameEvent _accessChangeRead;
+    [Tooltip("The GameEvent to fire when a networks' write access should be changed from the selected computer")]
+    [SerializeField] private ComputerNetworkAccessChangeGameEvent _accessChangeWrite;
+    [Tooltip("The GameEvent to fire when a networks' control access should be changed from the selected computer")]
+    [SerializeField] private ComputerNetworkAccessChangeGameEvent _accessChangeControl;
+    [Tooltip("The GameEvent to fire when a networks' execute access should be changed from the selected computer")]
+    [SerializeField] private ComputerNetworkAccessChangeGameEvent _accessChangeExecute;
     
     [Header("UI Elements")]
     [Tooltip("List of computers to display")]
@@ -44,6 +60,12 @@ namespace Code.User_Interface.Components {
     public SoftwareList addedSoftwareList;
     [Tooltip("List of software not assigned to the selected computer")]
     public SoftwareList availableSoftwareList;
+    [Tooltip("List of networks the selected computer is connected to")]
+    public SelectableStringList connectedNetworkList;
+    [Tooltip("List of DACAccesses for the selected network of the selected computer")]
+    public DACAccessList dacAccessList;
+
+    private string _selectedNetwork;
 
     // ------------------------------------------------------------------------
     void OnEnable() {
@@ -65,37 +87,97 @@ namespace Code.User_Interface.Components {
 
     // ------------------------------------------------------------------------
     public void ScrapSelectedComputer() {
-      if (selectedObject.Value != null) {
-        ComputerBehavior computer = selectedObject.Value.GetComponent<ComputerBehavior>();
-        if (computer) {
-          //Fire Event
-          _scrapComputerGameEvent?.Raise(computer);
-        }
+      var computer = GetSelectedComputer();
+      if (computer) {
+        //Fire Event
+        _scrapComputerGameEvent?.Raise(computer);
       }
     }
 
     // ------------------------------------------------------------------------
     public void AssignAsset(AssetBehavior asset) {
       _assignAsset?.Raise(asset);
-      UpdateAssetsSettings(selectedObject.Value.GetComponent<ComputerBehavior>());
+      UpdateAssetsSettings(GetSelectedComputer());
     }
 
     // ------------------------------------------------------------------------
     public void UnassignAsset(AssetBehavior asset) {
       _unassignAsset?.Raise(asset);
-      UpdateAssetsSettings(selectedObject.Value.GetComponent<ComputerBehavior>());
+      UpdateAssetsSettings(GetSelectedComputer());
     }
 
     // ------------------------------------------------------------------------
     public void AddSoftware(SoftwareBehavior software) {
       _addSoftware?.Raise(software);
-      UpdateSoftwareSettings(selectedObject.Value.GetComponent<ComputerBehavior>());
+      UpdateSoftwareSettings(GetSelectedComputer());
     }
 
     // ------------------------------------------------------------------------
     public void RemoveSoftware(SoftwareBehavior software) {
       _removeSoftware?.Raise(software);
-      UpdateSoftwareSettings(selectedObject.Value.GetComponent<ComputerBehavior>());
+      UpdateSoftwareSettings(GetSelectedComputer());
+    }
+
+    // ------------------------------------------------------------------------
+    public void SelectConnectedNetwork(string networkName) {
+      var selectedComputer = GetSelectedComputer();
+
+      _selectedNetwork = networkName;
+      foreach (var network in selectedComputer.Data.network_list) {
+        connectedNetworkList.SetSelected(network, network == _selectedNetwork);
+      }
+
+      if (selectedComputer != null && selectedComputer.Data.networkDACAccessors.ContainsKey(_selectedNetwork)) {
+        var networkAccessors = selectedComputer.Data.networkDACAccessors[_selectedNetwork];
+        var accessors = new List<DACAccess>();
+
+        // Add a DACAccess for each user (filled in if we already have one for this network)
+        foreach (var user in users.Value) {
+          var existingAccessor = networkAccessors.Find(accessor => accessor.accessor == user.Data.user_name);
+          accessors.Add(existingAccessor != null ? existingAccessor : new DACAccess(user.Data.user_name));
+        }
+
+        // Add a DACAccess for each group (filled in if we already have one for this network)
+        foreach (var group in accessControlGroups.Value) {
+          var existingAccessor = networkAccessors.Find(accessor => accessor.accessor == group.Data.name);
+          accessors.Add(existingAccessor != null ? existingAccessor : new DACAccess(group.Data.name));
+        }
+
+        dacAccessList.SetItems(accessors);
+      }
+      else {
+        dacAccessList.ClearItems();
+      }
+    }
+
+    // ------------------------------------------------------------------------
+    public void ChangeNetworkClearAccess(DACAccess access) {
+      _accessChangeClear?.Raise(new ComputerNetworkAccessChange(GetSelectedComputer(), _selectedNetwork, access));
+      SelectConnectedNetwork(_selectedNetwork);
+    }
+
+    // ------------------------------------------------------------------------
+    public void ChangeNetworkReadAccess(DACAccess access) {
+      _accessChangeRead?.Raise(new ComputerNetworkAccessChange(GetSelectedComputer(), _selectedNetwork, access));
+      SelectConnectedNetwork(_selectedNetwork);
+    }
+
+    // ------------------------------------------------------------------------
+    public void ChangeNetworkWriteAccess(DACAccess access) {
+      _accessChangeWrite?.Raise(new ComputerNetworkAccessChange(GetSelectedComputer(), _selectedNetwork, access));
+      SelectConnectedNetwork(_selectedNetwork);
+    }
+
+    // ------------------------------------------------------------------------
+    public void ChangeNetworkControlAccess(DACAccess access) {
+      _accessChangeControl?.Raise(new ComputerNetworkAccessChange(GetSelectedComputer(), _selectedNetwork, access));
+      SelectConnectedNetwork(_selectedNetwork);
+    }
+
+    // ------------------------------------------------------------------------
+    public void ChangeNetworkExecuteAccess(DACAccess access) {
+      _accessChangeExecute?.Raise(new ComputerNetworkAccessChange(GetSelectedComputer(), _selectedNetwork, access));
+      SelectConnectedNetwork(_selectedNetwork);
     }
 
     // ------------------------------------------------------------------------
@@ -113,18 +195,21 @@ namespace Code.User_Interface.Components {
         }
       }
 
-      if (selectedObject.Value != null) {
-        DisplayComputerInformation(selectedObject.Value.GetComponent<ComputerBehavior>());
-      }
-      else {
-        DisplayComputerInformation(null);
-      }
+      DisplayComputerInformation(GetSelectedComputer());
     }
 
     // ------------------------------------------------------------------------
     private void DisplayComputerInformation(ComputerBehavior computer) {
       UpdateAssetsSettings(computer);
       UpdateSoftwareSettings(computer);
+
+      if (computer != null) {
+        connectedNetworkList.SetItems(new List<string>(computer.Data.network_list));
+      }
+      else {
+        connectedNetworkList.ClearItems();
+      }
+      dacAccessList.ClearItems();
     }
 
     // ------------------------------------------------------------------------
@@ -173,6 +258,14 @@ namespace Code.User_Interface.Components {
         assignedAssetsList.ClearItems();
         unassignedAssetsList.ClearItems();
       }
+    }
+
+    // ------------------------------------------------------------------------
+    private ComputerBehavior GetSelectedComputer() {
+      if (selectedObject.Value != null) {
+        return selectedObject.Value.GetComponent<ComputerBehavior>();
+      }
+      return null;
     }
   }
 }
