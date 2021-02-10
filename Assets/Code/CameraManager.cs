@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using Code.Scriptable_Variables;
 using Code.World_Objects;
 
@@ -66,7 +67,10 @@ namespace Code.Camera {
 
     // ------------------------------------------------------------------------
     public void PanCamera(Vector2 delta) {
-      cameraTarget.Translate(new Vector3(-delta.x * panScalar, 0.0f, -delta.y * panScalar));
+      //tweak the pan amount based on the current zoom level. Closer = slower pan, further = faster
+      float percZoom = (_currentZoomLevel - _minZoomInterval) / (_maxZoomInterval - _minZoomInterval);
+      float zoomAdj = Math.Max(percZoom, 0.1f);
+      cameraTarget.Translate(new Vector3(-delta.x * panScalar, 0.0f, -delta.y * panScalar) * zoomAdj);
     }
 
     // ------------------------------------------------------------------------
