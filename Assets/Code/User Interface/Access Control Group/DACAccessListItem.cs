@@ -9,6 +9,7 @@ namespace Code.User_Interface.AccessControlGroup {
   public class DACAccessListItem : DynamicListItem<DACAccess> {
     // called when a permission should change
     public delegate void OnChangedDelegate();
+    public OnChangedDelegate onClear;
     public OnChangedDelegate onChangeRead;
     public OnChangedDelegate onChangeWrite;
     public OnChangedDelegate onChangeControl;
@@ -18,6 +19,9 @@ namespace Code.User_Interface.AccessControlGroup {
     [Tooltip("The label that should display the item's accessor.")]
     [SerializeField]
     private TMP_Text accessorLabel;
+    [Tooltip("Press to clear access")]
+    [SerializeField]
+    private Button clearButton;
     [Tooltip("Toggle to alter read access")]
     [SerializeField]
     private Toggle readToggle;
@@ -35,10 +39,24 @@ namespace Code.User_Interface.AccessControlGroup {
     public override void SetItem(DACAccess item) {
       this.name = item.accessor;
       accessorLabel.text = item.accessor;
+      clearButton.gameObject.SetActive(item.permissions.Count > 0);
       SetUIState(item, DACAccess.PermissionType.Read, readToggle);
       SetUIState(item, DACAccess.PermissionType.Write, writeToggle);
       SetUIState(item, DACAccess.PermissionType.Control, controlToggle);
       SetUIState(item, DACAccess.PermissionType.Execute, executeToggle);
+    }
+
+    //-------------------------------------------------------------------------
+    public void SetInteractable(bool interactable) {
+      // If we can't modify things, then make sure the clear button is hiding
+      if (!interactable) {
+        clearButton.gameObject.SetActive(false);
+      }
+    }
+
+    //-------------------------------------------------------------------------
+    public void Clear() {
+      onClear?.Invoke();
     }
 
     //-------------------------------------------------------------------------

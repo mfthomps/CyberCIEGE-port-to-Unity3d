@@ -119,6 +119,13 @@ namespace Code.World_Objects.Computer {
     }
 
     // ------------------------------------------------------------------------
+    public void ClearAccess(string network, string accessor) {
+      if (_data.networkDACAccessors.ContainsKey(network)) {
+        _data.networkDACAccessors[network].RemoveAll(access => access.accessor == accessor);
+      }
+    }
+
+    // ------------------------------------------------------------------------
     public void ToggleReadAccess(string network, string accessor) {
       ToggleAccess(network, accessor, DACAccess.PermissionType.Read);
     }

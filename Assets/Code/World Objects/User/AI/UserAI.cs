@@ -88,9 +88,11 @@ namespace Code.World_Objects.User.AI {
         _navMeshAgent.enabled = true;
       }
 
-      if (_navMeshAgent.destination != location) {
-        if (!_navMeshAgent.SetDestination(location)) {
-          Debug.LogError($"Can't path {_user.Data.user_name} to {location}");
+      if (_navMeshAgent.isOnNavMesh) {
+        if (_navMeshAgent.destination != location) {
+          if (!_navMeshAgent.SetDestination(location)) {
+            Debug.LogError($"Can't path {_user.Data.user_name} to {location}");
+          }
         }
       }
     }

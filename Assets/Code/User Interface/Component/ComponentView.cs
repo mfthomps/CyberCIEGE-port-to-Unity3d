@@ -38,6 +38,8 @@ namespace Code.User_Interface.Components {
     [SerializeField] private SoftwareGameEvent _addSoftware;
     [Tooltip("The GameEvent to fire when software should be removed from the selected computer")]
     [SerializeField] private SoftwareGameEvent _removeSoftware;
+    [Tooltip("The GameEvent to fire when a networks' access should be cleared from the selected computer")]
+    [SerializeField] private ComputerNetworkAccessChangeGameEvent _accessChangeClear;
     [Tooltip("The GameEvent to fire when a networks' read access should be changed from the selected computer")]
     [SerializeField] private ComputerNetworkAccessChangeGameEvent _accessChangeRead;
     [Tooltip("The GameEvent to fire when a networks' write access should be changed from the selected computer")]
@@ -146,6 +148,12 @@ namespace Code.User_Interface.Components {
       else {
         dacAccessList.ClearItems();
       }
+    }
+
+    // ------------------------------------------------------------------------
+    public void ChangeNetworkClearAccess(DACAccess access) {
+      _accessChangeClear?.Raise(new ComputerNetworkAccessChange(GetSelectedComputer(), _selectedNetwork, access));
+      SelectConnectedNetwork(_selectedNetwork);
     }
 
     // ------------------------------------------------------------------------

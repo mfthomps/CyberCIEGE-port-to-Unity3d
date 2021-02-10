@@ -98,6 +98,13 @@ namespace Code.Test {
     }
 
     // ------------------------------------------------------------------------
+    public void ClearAccess(ComputerNetworkAccessChange changeEvent) {
+      if (changeEvent.computer != null) {
+        changeEvent.computer.ClearAccess(changeEvent.network, changeEvent.accessToChange.accessor);
+      }
+    }
+
+    // ------------------------------------------------------------------------
     public void ToggleReadAccess(ComputerNetworkAccessChange changeEvent) {
       if (changeEvent.computer != null) {
         changeEvent.computer.ToggleReadAccess(changeEvent.network, changeEvent.accessToChange.accessor);
