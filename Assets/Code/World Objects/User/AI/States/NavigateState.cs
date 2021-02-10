@@ -15,7 +15,7 @@ namespace Code.World_Objects.User.AI.States {
         _agent.enabled = true;
       }
       
-      if (_user.CurrentNavTarget) {
+      if (_user.CurrentNavTarget && _agent.isOnNavMesh) {
         if (_agent.SetDestination(_user.CurrentNavTarget.transform.position)) {
           _animator.SetBool(_walkingAnimParam, true);
           Debug.Log($"{_user.Data.user_name} navigating to {_user.CurrentNavTarget.name}");
