@@ -2,17 +2,19 @@
 using System.Xml;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class YesNoScript : MonoBehaviour {
-  public Text text;
-  public Button yes_button;
+  [SerializeField] private TMP_Text _text;
 
-  public Button no_button;
+  [SerializeField] private Button _yesButton;
+
+  [SerializeField] private Button _noButton;
 
   // Use this for initialization
   private void Start() {
-    yes_button.onClick.AddListener(YesClicked);
-    no_button.onClick.AddListener(NoClicked);
+    _yesButton.onClick.AddListener(YesClicked);
+    _noButton.onClick.AddListener(NoClicked);
   }
 
   public void YesClicked() {
@@ -30,11 +32,12 @@ public class YesNoScript : MonoBehaviour {
     XmlDocument xml_doc = new XmlDocument();
     xml_doc.Load(xmlreader);
     XmlNode the_node = xml_doc.SelectSingleNode("//yesNo");
-    text.text = the_node["text"].InnerText;
+    _text.text = the_node["text"].InnerText;
     string yes_text = the_node["yes"].InnerText;
-    yes_button.GetComponentInChildren<Text>().text = yes_text;
+    _yesButton.GetComponentInChildren<Text>().text = yes_text;
     string no_text = the_node["no"].InnerText;
-    no_button.GetComponentInChildren<Text>().text = no_text;
+    _noButton.GetComponentInChildren<Text>().text = no_text;
     gameObject.SetActive(true);
   }
+
 }
