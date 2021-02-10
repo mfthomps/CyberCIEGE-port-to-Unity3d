@@ -2,6 +2,7 @@
 using UnityEngine;
 using Shared.ScriptableVariables;
 using Code.Software;
+using Code.User_Interface.Components;
 using Code.World_Objects.Asset;
 
 namespace Code.World_Objects.Computer {
@@ -72,6 +73,41 @@ namespace Code.World_Objects.Computer {
       }
     }
 
+    // ------------------------------------------------------------------------
+    public void ClearAccess(ComputerNetworkAccessChange changeEvent) {
+      if (changeEvent.computer != null) {
+        changeEvent.computer.ClearAccess(changeEvent.network, changeEvent.accessToChange.accessor);
+      }
+    }
+
+    // ------------------------------------------------------------------------
+    public void ToggleReadAccess(ComputerNetworkAccessChange changeEvent) {
+      if (changeEvent.computer != null) {
+        changeEvent.computer.ToggleReadAccess(changeEvent.network, changeEvent.accessToChange.accessor);
+      }
+    }
+
+    // ------------------------------------------------------------------------
+    public void ToggleWriteAccess(ComputerNetworkAccessChange changeEvent) {
+      if (changeEvent.computer != null) {
+        changeEvent.computer.ToggleWriteAccess(changeEvent.network, changeEvent.accessToChange.accessor);
+      }
+    }
+
+    // ------------------------------------------------------------------------
+    public void ToggleControlAccess(ComputerNetworkAccessChange changeEvent) {
+      if (changeEvent.computer != null) {
+        changeEvent.computer.ToggleControlAccess(changeEvent.network, changeEvent.accessToChange.accessor);
+      }
+    }
+
+    // ------------------------------------------------------------------------
+    public void ToggleExecuteAccess(ComputerNetworkAccessChange changeEvent) {
+      if (changeEvent.computer != null) {
+        changeEvent.computer.ToggleExecuteAccess(changeEvent.network, changeEvent.accessToChange.accessor);
+      }
+    }
+    
     //--------------------------------------------------------------------------
     private static void SendScrapEvent(ComponentBehavior computer) {
       var xml = new XElement("componentEvent",

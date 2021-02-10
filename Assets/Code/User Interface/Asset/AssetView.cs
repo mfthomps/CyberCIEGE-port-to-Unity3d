@@ -3,6 +3,7 @@ using UnityEngine;
 using Shared.ScriptableVariables;
 using TMPro;
 using Code.Scriptable_Variables;
+using Code.User_Interface.AccessControlGroup;
 using Code.World_Objects.Asset;
 
 namespace Code.User_Interface.Asset {
@@ -30,7 +31,7 @@ namespace Code.User_Interface.Asset {
     [Tooltip("GameObject for discretionary access control section")]
     public GameObject dacSection;
     [Tooltip("List of discretionary access control groups for an asset")]
-    public AssetDACList dacList;
+    public DACAccessList dacList;
 
     // ------------------------------------------------------------------------
     void OnEnable() {
