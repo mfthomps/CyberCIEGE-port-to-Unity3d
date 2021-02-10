@@ -52,8 +52,7 @@ namespace Code.Factories {
             }
           });
           if (!string.IsNullOrEmpty(networkName)) {
-            data.ConnectToNetwork(networkName);
-            data.networkDACAccessors.Add(networkName, accessors);
+            data.ConnectToNetwork(networkName, accessors);
           }
           break;
       }

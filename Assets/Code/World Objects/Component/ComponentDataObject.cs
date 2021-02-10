@@ -21,12 +21,19 @@ namespace Code {
 
     // ------------------------------------------------------------------------
     public void ConnectToNetwork(string network) {
+      ConnectToNetwork(network, new List<DACAccess>());
+    }
+
+    // ------------------------------------------------------------------------
+    public void ConnectToNetwork(string network, List<DACAccess> dacAccessors) {
       network_list.Add(network);
+      networkDACAccessors.Add(network, dacAccessors);
     }
 
     // ------------------------------------------------------------------------
     public void DisconnectFromNetwork(string network) {
       network_list.Remove(network);
+      networkDACAccessors.Remove(network);
     }
   }
 }
