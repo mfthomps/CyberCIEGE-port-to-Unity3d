@@ -31,6 +31,8 @@ namespace Code.Scenario {
 
     // ------------------------------------------------------------------------
     public void Quit() {
+      IPCManagerScript.SendRequest("exit");
+
       // Try to find the GameStarter monobehavior and tell it to stop
       var gameStarter = FindObjectOfType<GameStarter>();
       gameStarter.Stop();
