@@ -6,7 +6,7 @@ namespace Code.World_Objects.User.AI.States {
   // A Fsm State that randomly selects a GameObject in the scene that has 
   // the supplied Tag and sets the User's navigation target to it.
   public class WanderState : FsmState {
-    [SerializeField] private UserBehavior _user;
+    [SerializeField] private Navigator _user;
 
     [Tooltip("The Tag of the GameObjects in the scene to randomly navigate to")]
     [Tag]

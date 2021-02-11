@@ -6,7 +6,7 @@ namespace Code.World_Objects.User.AI.States {
   public class NavigateState : FsmState {
     [SerializeField] private NavMeshAgent _agent;
     [SerializeField] private Animator _animator;
-    [SerializeField] private UserBehavior _user;
+    [SerializeField] private Navigator _user;
     [SerializeField] private string _walkingAnimParam = "Walking";
 
     //--------------------------------------------------------------------------
@@ -18,7 +18,6 @@ namespace Code.World_Objects.User.AI.States {
       if (_user.CurrentNavTarget && _agent.isOnNavMesh) {
         if (_agent.SetDestination(_user.CurrentNavTarget.transform.position)) {
           _animator.SetBool(_walkingAnimParam, true);
-          Debug.Log($"{_user.Data.user_name} navigating to {_user.CurrentNavTarget.name}");
         }
         else {
           Debug.LogError($"Can't path to {_user.CurrentNavTarget.transform.position}");

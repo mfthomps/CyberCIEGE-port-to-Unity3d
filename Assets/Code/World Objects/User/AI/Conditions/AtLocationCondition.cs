@@ -4,7 +4,7 @@ namespace Code.World_Objects.User.AI.Conditions {
   
   //A Fsm condition to check if the supplied User is at their navigate target
   public class AtLocationCondition : FsmCondition {
-    [SerializeField] private UserBehavior _user;
+    [SerializeField] private Navigator _user;
     
     [Tooltip("How much distance tolerance when comparing locations")]
     [SerializeField] private float tolerance = 1f;
