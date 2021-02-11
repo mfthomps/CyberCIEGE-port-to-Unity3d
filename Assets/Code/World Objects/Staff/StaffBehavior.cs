@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using Code.World_Objects.User;
+using UnityEngine;
 
 namespace Code.World_Objects.Staff {
   //Represents a single Staff member
-  public class StaffBehavior : BaseWorldObject {
+  public class StaffBehavior : Navigator {
     [SerializeField] private StaffDataObject _data;
 
     // ------------------------------------------------------------------------
