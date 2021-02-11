@@ -4,7 +4,7 @@ using UnityEngine;
 using Code.Scriptable_Variables;
 
 namespace Code.World_Objects.User {
-  public class UserBehavior : BaseWorldObject {
+  public class UserBehavior : Navigator {
     [Tooltip("The list of all the currently loaded access control groups")]
     [SerializeField] private AccessControlGroupListVariable _accessControlGroups;
     [Tooltip("The list of all the currently loaded clearances")]
@@ -21,7 +21,7 @@ namespace Code.World_Objects.User {
       get => _data;
       set => _data = value;
     }
-
+    
     //---------------------------------------------------------------------------
     public bool IsActiveUser() {
       if (Data.department != "Security" && Data.department != "Tech")
