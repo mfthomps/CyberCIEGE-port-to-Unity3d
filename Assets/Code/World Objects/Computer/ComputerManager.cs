@@ -22,7 +22,7 @@ namespace Code.World_Objects.Computer {
 
     //--------------------------------------------------------------------------
     public void OnScrapComputer(ComputerBehavior computer) {
-      //Notify the game server this computer should be removed
+      // Notify the game server this computer should be removed
       SendComputerActionEvent(computer, "sell");
     }
 
@@ -30,6 +30,12 @@ namespace Code.World_Objects.Computer {
     public void OnScanComputer(ComputerBehavior computer) {
       // Notify the game server this computer should be scanned
       SendComputerActionEvent(computer, "scan");
+    }
+
+    //--------------------------------------------------------------------------
+    public void OnDiagnoseComputer(ComputerBehavior computer) {
+      // Notify the game server this computer should be diagnosed
+      SendComputerActionEvent(computer, "diagnose");
     }
 
     //--------------------------------------------------------------------------

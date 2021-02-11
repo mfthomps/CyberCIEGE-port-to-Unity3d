@@ -1,14 +1,10 @@
 ﻿using System;
-using System.IO;
 using System.Net.Sockets;
 using System.Text;
-using System.Xml;
 using UnityEngine;
 using Shared.ScriptableVariables;
 using Code.Factories;
-using Code.Game_Events;
 using Code.Scriptable_Variables;
-using Code.User_Interface.Main;
 
 public class IPCManagerScript : MonoBehaviour {
   [SerializeField] private StringListVariable attackLogVariable;
@@ -19,6 +15,8 @@ public class IPCManagerScript : MonoBehaviour {
   [Header("Output Events")]
   [Tooltip("Event to fire when game status changes")]
   public StringGameEvent gameStatusChanged;
+  [Tooltip("Event to fire when a component status changes")]
+  public StringGameEvent componentStatusChanged;
   [Tooltip("Event to fire when current user message changes")]
   public StringGameEvent currentMessageChanged;
   [Tooltip("Event to fire when help tip message changes")]
@@ -30,9 +28,9 @@ public class IPCManagerScript : MonoBehaviour {
   [Tooltip("Event to fire when user message changes")]
   public StringGameEvent userStatusChanged;
   [Tooltip("Event to fire when the server wants to show a message to the user")]
-  public MessageRequestGameEvent showMessage;
+  public StringGameEvent showMessage;
   [Tooltip("Event to fire when the server is requesting a yes/no answer")]
-  public ConfirmationRequestGameEvent requestConfirmation;
+  public StringGameEvent requestConfirmation;
   [Tooltip("Quit scenario")]
   public GameEvent quit;
 
@@ -89,6 +87,9 @@ public class IPCManagerScript : MonoBehaviour {
           //Debug.Log("got status %s" + message);
           gameStatusChanged?.Raise(message);
           break;
+        case "component_status":
+          componentStatusChanged?.Raise(message);
+          break;
         case "attack_log":
           attackLogVariable.Add(message);
           break;
@@ -108,17 +109,10 @@ public class IPCManagerScript : MonoBehaviour {
           currentMessageChanged?.Raise(null);
           break;
         case "message":
-          showMessage?.Raise(new MessageRequest(message));
+          showMessage?.Raise(message);
           break;
         case "yes_no":
-          StringReader xmlreader = new StringReader(message);
-          XmlDocument xml_doc = new XmlDocument();
-          xml_doc.Load(xmlreader);
-          XmlNode the_node = xml_doc.SelectSingleNode("//yesNo");
-          var confirmationMessage = the_node["text"].InnerText;
-          var acceptText = the_node["yes"].InnerText;
-          var canceltext = the_node["no"].InnerText;
-          requestConfirmation?.Raise(new ConfirmationRequest(confirmationMessage, acceptText, canceltext, (bool accepted) => DialogClosed(accepted ? "yes" : "no")));
+          requestConfirmation?.Raise(message);
           break;
         case "tool_tip":
           helpTipMessageChanged?.Raise(message);
@@ -130,7 +124,6 @@ public class IPCManagerScript : MonoBehaviour {
           objectiveUpdated?.Raise(message);
           break;
         case "lose":
-          SendRequest("exit");
           quit?.Raise();
           break;
         case "remove_computer":
@@ -145,6 +138,7 @@ public class IPCManagerScript : MonoBehaviour {
     }
   }
 
+  // --------------------------------------------------------------------------
   public static int ReceiveMsg(bool block = false) {
     if (_serverStream == null)
       return 0;
@@ -168,6 +162,7 @@ public class IPCManagerScript : MonoBehaviour {
     SendRequest(paused ? "Pause" : "Play");
   }
 
+  // --------------------------------------------------------------------------
   public static void SendRequest(string request) {
     if (_serverStream == null) {
       Debug.Log("SendRequest, no connection for to send " + request);

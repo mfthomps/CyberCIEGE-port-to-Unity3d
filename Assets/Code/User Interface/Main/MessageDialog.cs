@@ -18,6 +18,11 @@ namespace Code.User_Interface.Main {
     }
 
     // --------------------------------------------------------------------------
+    public void OnServerMessageReceived(string message) {
+      ShowMessage(new MessageRequest(message));
+    }
+
+    // --------------------------------------------------------------------------
     public void ShowMessage(MessageRequest request) {
       _messageLabel.text = request.message;
       _callback = request.callback;

@@ -145,6 +145,7 @@ GameObject:
   - component: {fileID: 3763745650547803820}
   - component: {fileID: 3763745650547803823}
   - component: {fileID: 3763745650547803821}
+  - component: {fileID: 103600119507080713}
   - component: {fileID: 1320464761452394936}
   m_Layer: 5
   m_Name: Message Dialog
@@ -195,6 +196,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialog: {fileID: 6515986526327477240}
   _messageLabel: {fileID: 7024372706617196427}
+--- !u!114 &103600119507080713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3763745650547803819}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ace966faabda0734887c2cb816d27c30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delay: 0
+  eventToListenTo: {fileID: 11400000, guid: ea5f186186c581d4a81b8b21503014d2, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3763745650547803821}
+        m_MethodName: OnServerMessageReceived
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1320464761452394936
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -730,15 +759,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a030066e5259cb74b8d98dd560d99687, type: 3}
---- !u!224 &4161396687038705973 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 7031985256833139628, guid: a030066e5259cb74b8d98dd560d99687,
-    type: 3}
-  m_PrefabInstance: {fileID: 6365522962933559961}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &4161396687038705974 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7031985256833139631, guid: a030066e5259cb74b8d98dd560d99687,
+    type: 3}
+  m_PrefabInstance: {fileID: 6365522962933559961}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &4161396687038705973 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 7031985256833139628, guid: a030066e5259cb74b8d98dd560d99687,
     type: 3}
   m_PrefabInstance: {fileID: 6365522962933559961}
   m_PrefabAsset: {fileID: 0}

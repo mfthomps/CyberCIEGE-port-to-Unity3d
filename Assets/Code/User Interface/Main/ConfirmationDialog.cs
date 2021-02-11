@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Xml;
 using UnityEngine;
 using TMPro;
 
@@ -19,6 +21,18 @@ namespace Code.User_Interface.Main {
     // --------------------------------------------------------------------------
     void Awake() {
       ToggleDialog(false);
+    }
+
+    // --------------------------------------------------------------------------
+    public void OnServerConfirmationReceived(string message) {
+      StringReader xmlreader = new StringReader(message);
+      XmlDocument xml_doc = new XmlDocument();
+      xml_doc.Load(xmlreader);
+      XmlNode the_node = xml_doc.SelectSingleNode("//yesNo");
+      var confirmationMessage = the_node["text"].InnerText;
+      var acceptText = the_node["yes"].InnerText;
+      var canceltext = the_node["no"].InnerText;
+      GetConfirmation(new ConfirmationRequest(confirmationMessage, acceptText, canceltext, (bool accepted) => IPCManagerScript.DialogClosed(accepted ? "yes" : "no")));
     }
 
     // --------------------------------------------------------------------------

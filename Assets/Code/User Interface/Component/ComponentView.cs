@@ -24,14 +24,16 @@ namespace Code.User_Interface.Components {
     public SoftwareListVariable softwareListVariable;
     [Tooltip("List of users in the given scenario")]
     public UserListVariable users;
+
     [Header("Output Events/Variables")]
     [Tooltip("Currently selected GameObject")]
     public GameObjectVariable selectedObject;
-
     [Tooltip("The GameEvent to fire when a Computer should be scrapped")]
     [SerializeField] private ComputerGameEvent _scrapComputerGameEvent;
     [Tooltip("The GameEvent to fire when a Computer should be scanned")]
     [SerializeField] private ComputerGameEvent _scanComputerGameEvent;
+    [Tooltip("The GameEvent to fire when a Computer should be diagnosed")]
+    [SerializeField] private ComputerGameEvent _diagnoseComputerGameEvent;
     [Tooltip("The GameEvent to fire when a Computer should be reimaged")]
     [SerializeField] private ComputerGameEvent _reimageComputerGameEvent;
     [Tooltip("The GameEvent to fire when a Computer should have drive replaced")]
@@ -105,6 +107,14 @@ namespace Code.User_Interface.Components {
       var computer = GetSelectedComputer();
       if (computer != null) {
         _scanComputerGameEvent?.Raise(computer);
+      }
+    }
+
+    // ------------------------------------------------------------------------
+    public void DiagnoseSelectedComputer() {
+      var computer = GetSelectedComputer();
+      if (computer != null) {
+        _diagnoseComputerGameEvent?.Raise(computer);
       }
     }
 

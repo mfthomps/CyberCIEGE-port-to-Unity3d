@@ -28,6 +28,11 @@ namespace Code.Test {
     }
 
     //--------------------------------------------------------------------------
+    public void OnDiagnoseComputer(ComputerBehavior computer) {
+      Debug.Log($"Diagnose computer: {computer.Data.component_name}");
+    }
+
+    //--------------------------------------------------------------------------
     public void OnReimageComputer(ComputerBehavior computer) {
       Debug.Log($"Reimage computer: {computer.Data.component_name}");
     }
