@@ -16,11 +16,15 @@ namespace Code.Factories {
     public StringVariable userAppPath;
     [Tooltip("Variable containing all hardware (computers, servers, routers, etc) information for game")]
     public HardwareCatalogVariable hardwareCatalog;
-    [Tooltip("The variable containing the list of all the Devices currently in the scenario.")]
-    [SerializeField] private DeviceListVariable deviceListVariable;
     [Tooltip("The list of all the currently loaded workspaces")]
     [SerializeField] private WorkSpaceListVariable _workSpaceListVariable;
     
+    [Header("Output Variables")]
+    [Tooltip("The variable containing the list of all the Devices currently in the scenario.")]
+    [SerializeField] private DeviceListVariable deviceListVariable;
+    [Tooltip("Currently selected object in game to show properties for")]
+    public GameObjectVariable selectedObject;
+
     private readonly string DEVICES = "devices";
 
     //-------------------------------------------------------------------------
@@ -33,6 +37,9 @@ namespace Code.Factories {
       DeviceBehavior item = Instantiate(_prefab, parent);
       item.Data = LoadOneDevice(Path.Combine(userAppPath.Value, DEVICES, filename), item);
       UpdateGameObject(item);
+
+      // Select our newly created computer
+      selectedObject.Value = item.gameObject;
     }
 
     //-------------------------------------------------------------------------
