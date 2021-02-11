@@ -1,0 +1,66 @@
+﻿using System;
+using System.Collections.Generic;
+using NaughtyAttributes;
+using Shared.ScriptableVariables;
+using UnityEngine;
+using UnityEngine.AI;
+
+namespace Code {
+  public class CharacterPauser : MonoBehaviour {
+    [Header("Input")]
+    [SerializeField] private BooleanVariable _activeVariable;
+    
+    [Header("Options")]
+    [Tooltip("Will consider the objects active if this value equals the boolean variable value. Not active otherwise.")]
+    [SerializeField] private bool _activeIfTrue = true;
+    
+    [Header("References")]
+    [Tooltip("The list of GameObjects that should be activated/deactived")]
+    [SerializeField] private List<GameObject> _gameObjects = new List<GameObject>();
+
+    [Tooltip("The NavMeshAgent that should be activated/deactived.")]
+    [SerializeField] private NavMeshAgent _agent;
+    
+    private Vector3 _lastAgentSpeed;
+    private NavMeshPath _lastAgentPath;
+
+    //-------------------------------------------------------------------------
+    private void OnEnable() {
+      _activeVariable.OnValueChanged += OnValueChanged;
+      OnValueChanged();
+    }
+    
+    //-------------------------------------------------------------------------
+    private void OnDisable() {
+      _activeVariable.OnValueChanged -= OnValueChanged;
+    }
+    
+    //-------------------------------------------------------------------------
+    private void OnValueChanged() {
+      var active = (_activeVariable.Value == _activeIfTrue) ? true : false;
+      foreach (GameObject o in _gameObjects) {
+        o.SetActive(active);
+      }
+      
+      ActivateAgent(_agent, active);
+    }
+
+    //-------------------------------------------------------------------------
+    private void ActivateAgent(NavMeshAgent agent, bool active) {
+      if (active) {
+        _agent.velocity = _lastAgentSpeed;
+        if (_lastAgentPath != null && _agent.isOnNavMesh) {
+          _agent.SetPath(_lastAgentPath);
+        }
+      }
+      else {
+        _lastAgentSpeed = _agent.velocity;
+        _agent.velocity = Vector3.zero;
+        _lastAgentPath = _agent.path;
+        if (_agent.isOnNavMesh) {
+          _agent.ResetPath();
+        }
+      }
+    }
+  }
+}
