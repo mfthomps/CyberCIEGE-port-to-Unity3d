@@ -30,7 +30,9 @@ namespace Code.Factories {
     [Header("Output Variables")]
     [Tooltip("The variable containing the list of all the Computers currently in the scenario.")]
     [SerializeField] private ComputerListVariable computerListVariable;
-   
+    [Tooltip("Currently selected object in game to show properties for")]
+    public GameObjectVariable selectedObject;
+
     private static readonly string COMPUTERS = "computers";
 
     //-------------------------------------------------------------------------
@@ -43,6 +45,9 @@ namespace Code.Factories {
       ComputerBehavior item = Instantiate(_prefab, parent);
       item.Data = LoadOneComputer(Path.Combine(userAppPath.Value, COMPUTERS, filename), item);
       UpdateGameObject(item);
+
+      // Select our newly created computer
+      selectedObject.Value = item.gameObject;
     }
 
     //-------------------------------------------------------------------------
