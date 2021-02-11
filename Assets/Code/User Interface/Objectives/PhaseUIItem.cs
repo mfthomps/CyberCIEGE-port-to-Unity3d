@@ -31,6 +31,7 @@ namespace Code.User_Interface.Objectives {
       _phase = phase;
       _index = index;
       label.text = $"PHASE {_index}";
+      completedToggle.isOn = phase.isComplete;
     }
 
     // ------------------------------------------------------------------------
