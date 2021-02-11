@@ -22,6 +22,7 @@ namespace Code.User_Interface.Objectives {
     public void SetObjective(Objective objective) {
       _objective = objective;
       label.text = _objective.GetTitle();
+      completedToggle.isOn = objective.isComplete;
     }
 
     // ------------------------------------------------------------------------
