@@ -1,8 +1,10 @@
 ﻿using System.Xml.Linq;
 using UnityEngine;
 using Shared.ScriptableVariables;
+using Code.Game_Events;
 using Code.Software;
 using Code.User_Interface.Components;
+using Code.User_Interface.Main;
 using Code.World_Objects.Asset;
 
 namespace Code.World_Objects.Computer {
@@ -11,11 +13,57 @@ namespace Code.World_Objects.Computer {
     [Header("Input Variables")]
     [Tooltip("Currently selected object")]
     public GameObjectVariable selectedObject;
+    [Header("Output Events")]
+    [Tooltip("Event to open confirmation diallog")]
+    public ConfirmationRequestGameEvent getConfirmation;
+
+    private static int REIMAGE_COST = 500;
+    private static int REPLACE_DRIVE_COST = 1000;
 
     //--------------------------------------------------------------------------
     public void OnScrapComputer(ComputerBehavior computer) {
-      //Notify the game server this computer should be removed
-      SendScrapEvent(computer);
+      // Notify the game server this computer should be removed
+      SendComputerActionEvent(computer, "sell");
+    }
+
+    //--------------------------------------------------------------------------
+    public void OnScanComputer(ComputerBehavior computer) {
+      // Notify the game server this computer should be scanned
+      SendComputerActionEvent(computer, "scan");
+    }
+
+    //--------------------------------------------------------------------------
+    public void OnDiagnoseComputer(ComputerBehavior computer) {
+      // Notify the game server this computer should be diagnosed
+      SendComputerActionEvent(computer, "diagnose");
+    }
+
+    //--------------------------------------------------------------------------
+    public void OnReimageComputer(ComputerBehavior computer) {
+      // Get user confirmation before performing this action
+      getConfirmation?.Raise(new ConfirmationRequest($"Re-installing a system image will elimiate newly introduced malware, but will cost you {REIMAGE_COST:C0}", "Reimage system", "Cancel",
+        (bool accepted) => {
+          if (accepted) {
+            // Notify the game server this computer should be reimaged
+            SendComputerActionEvent(computer, "reimage");
+            SendCostEvent(REIMAGE_COST);
+          }
+        })
+      );
+    }
+
+    //--------------------------------------------------------------------------
+    public void OnReplaceComputerDrive(ComputerBehavior computer) {
+      // Get user confirmation before performing this action
+      getConfirmation?.Raise(new ConfirmationRequest($"Replacing & reloading the hard drive will elimiate newly introduced malware, but will cost you {REPLACE_DRIVE_COST:C0}", "Replace drive", "Cancel",
+        (bool accepted) => {
+          if (accepted) {
+            // Notify the game server this computer should have its drive replaced
+            SendComputerActionEvent(computer, "replace_drive");
+            SendCostEvent(1000);
+          }
+        })
+      );
     }
 
     // ------------------------------------------------------------------------
@@ -109,10 +157,10 @@ namespace Code.World_Objects.Computer {
     }
     
     //--------------------------------------------------------------------------
-    private static void SendScrapEvent(ComponentBehavior computer) {
+    private static void SendComputerActionEvent(ComponentBehavior computer, string action) {
       var xml = new XElement("componentEvent",
         new XElement("name", computer.Data.component_name),
-        new XElement("sell", ""));
+        new XElement(action, ""));
 
       IPCManagerScript.SendRequest(xml.ToString());
     }
@@ -133,6 +181,15 @@ namespace Code.World_Objects.Computer {
       var xml = new XElement("componentEvent",
         new XElement("name", computer.Data.component_name),
         new XElement($"{(install ? "softwareAdd" : "softwareRemove")}", software.Data.name)
+      );
+
+      IPCManagerScript.SendRequest(xml.ToString());
+    }
+
+    //--------------------------------------------------------------------------
+    private void SendCostEvent(int cost) {
+      var xml = new XElement("userEvent",
+        new XElement("cost", cost.ToString())
       );
 
       IPCManagerScript.SendRequest(xml.ToString());

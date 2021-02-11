@@ -24,12 +24,20 @@ namespace Code.User_Interface.Components {
     public SoftwareListVariable softwareListVariable;
     [Tooltip("List of users in the given scenario")]
     public UserListVariable users;
+
     [Header("Output Events/Variables")]
     [Tooltip("Currently selected GameObject")]
     public GameObjectVariable selectedObject;
-
     [Tooltip("The GameEvent to fire when a Computer should be scrapped")]
     [SerializeField] private ComputerGameEvent _scrapComputerGameEvent;
+    [Tooltip("The GameEvent to fire when a Computer should be scanned")]
+    [SerializeField] private ComputerGameEvent _scanComputerGameEvent;
+    [Tooltip("The GameEvent to fire when a Computer should be diagnosed")]
+    [SerializeField] private ComputerGameEvent _diagnoseComputerGameEvent;
+    [Tooltip("The GameEvent to fire when a Computer should be reimaged")]
+    [SerializeField] private ComputerGameEvent _reimageComputerGameEvent;
+    [Tooltip("The GameEvent to fire when a Computer should have drive replaced")]
+    [SerializeField] private ComputerGameEvent _replaceComputerDriveGameEvent;
     [Tooltip("The GameEvent to fire when an asset should be assigned to the selected computer")]
     [SerializeField] private AssetGameEvent _assignAsset;
     [Tooltip("The GameEvent to fire when an asset should be unassigned from the selected computer")]
@@ -91,6 +99,38 @@ namespace Code.User_Interface.Components {
       if (computer) {
         //Fire Event
         _scrapComputerGameEvent?.Raise(computer);
+      }
+    }
+
+    // ------------------------------------------------------------------------
+    public void ScanSelectedComputer() {
+      var computer = GetSelectedComputer();
+      if (computer != null) {
+        _scanComputerGameEvent?.Raise(computer);
+      }
+    }
+
+    // ------------------------------------------------------------------------
+    public void DiagnoseSelectedComputer() {
+      var computer = GetSelectedComputer();
+      if (computer != null) {
+        _diagnoseComputerGameEvent?.Raise(computer);
+      }
+    }
+
+    // ------------------------------------------------------------------------
+    public void ReimageSelectedComputer() {
+      var computer = GetSelectedComputer();
+      if (computer != null) {
+        _reimageComputerGameEvent?.Raise(computer);
+      }
+    }
+
+    // ------------------------------------------------------------------------
+    public void ReplaceDriveSelectedComputer() {
+      var computer = GetSelectedComputer();
+      if (computer != null) {
+        _replaceComputerDriveGameEvent?.Raise(computer);
       }
     }
 

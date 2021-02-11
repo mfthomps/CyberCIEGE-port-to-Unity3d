@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Net.Sockets;
 using System.Text;
-using Code;
-using Code.Factories;
-using Code.Scriptable_Variables;
 using UnityEngine;
 using Shared.ScriptableVariables;
+using Code.Factories;
+using Code.Scriptable_Variables;
 
 public class IPCManagerScript : MonoBehaviour {
   [SerializeField] private StringListVariable attackLogVariable;
@@ -16,6 +15,8 @@ public class IPCManagerScript : MonoBehaviour {
   [Header("Output Events")]
   [Tooltip("Event to fire when game status changes")]
   public StringGameEvent gameStatusChanged;
+  [Tooltip("Event to fire when a component status changes")]
+  public StringGameEvent componentStatusChanged;
   [Tooltip("Event to fire when current user message changes")]
   public StringGameEvent currentMessageChanged;
   [Tooltip("Event to fire when help tip message changes")]
@@ -26,6 +27,10 @@ public class IPCManagerScript : MonoBehaviour {
   public StringGameEvent objectiveUpdated;
   [Tooltip("Event to fire when user message changes")]
   public StringGameEvent userStatusChanged;
+  [Tooltip("Event to fire when the server wants to show a message to the user")]
+  public StringGameEvent showMessage;
+  [Tooltip("Event to fire when the server is requesting a yes/no answer")]
+  public StringGameEvent requestConfirmation;
   [Tooltip("Quit scenario")]
   public GameEvent quit;
 
@@ -82,6 +87,9 @@ public class IPCManagerScript : MonoBehaviour {
           //Debug.Log("got status %s" + message);
           gameStatusChanged?.Raise(message);
           break;
+        case "component_status":
+          componentStatusChanged?.Raise(message);
+          break;
         case "attack_log":
           attackLogVariable.Add(message);
           break;
@@ -101,13 +109,10 @@ public class IPCManagerScript : MonoBehaviour {
           currentMessageChanged?.Raise(null);
           break;
         case "message":
-          MessageScript message_panel =
-            (MessageScript) menus.menu_panels["MessagePanel"].GetComponent(typeof(MessageScript));
-          message_panel.ShowMessage(message);
+          showMessage?.Raise(message);
           break;
         case "yes_no":
-          YesNoScript yesno_panel = (YesNoScript) menus.menu_panels["YesNoPanel"].GetComponent(typeof(YesNoScript));
-          yesno_panel.ShowMessage(message);
+          requestConfirmation?.Raise(message);
           break;
         case "tool_tip":
           helpTipMessageChanged?.Raise(message);
@@ -119,7 +124,6 @@ public class IPCManagerScript : MonoBehaviour {
           objectiveUpdated?.Raise(message);
           break;
         case "lose":
-          SendRequest("exit");
           quit?.Raise();
           break;
         case "remove_computer":
@@ -134,6 +138,7 @@ public class IPCManagerScript : MonoBehaviour {
     }
   }
 
+  // --------------------------------------------------------------------------
   public static int ReceiveMsg(bool block = false) {
     if (_serverStream == null)
       return 0;
@@ -157,6 +162,7 @@ public class IPCManagerScript : MonoBehaviour {
     SendRequest(paused ? "Pause" : "Play");
   }
 
+  // --------------------------------------------------------------------------
   public static void SendRequest(string request) {
     if (_serverStream == null) {
       Debug.Log("SendRequest, no connection for to send " + request);

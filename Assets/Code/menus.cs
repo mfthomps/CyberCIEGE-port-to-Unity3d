@@ -66,18 +66,6 @@ public class menus : MonoBehaviour {
     helpStyle.normal.textColor = Color.white;
 
     labelStyle.normal.textColor = Color.black;
-
-    /* create dictionary of menu/gui panels so they can be deactivated and yet 
-     * still found by the menus script and whatever else may need to name them. */
-    GameObject message_panel = GameObject.Find("MessagePanel");
-    menu_panels["MessagePanel"] = message_panel;
-    message_panel.SetActive(false);
-
-    GameObject yesno_panel = GameObject.Find("YesNoPanel");
-    menu_panels["YesNoPanel"] = yesno_panel;
-    yesno_panel.SetActive(false);
-
-    screen_dict["AttackLog"] = UI_SCREEN_ATTACKLOG;
   }
 
   // --------------------------------------------------------------------------
