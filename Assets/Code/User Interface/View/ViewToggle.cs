@@ -15,6 +15,8 @@ namespace Code.User_Interface.View {
     [Tooltip("Whether this toggle is in charge of a mutually exclusive ViewType or not")]
     public bool isMutuallyExclusive;
 
+    [SerializeField] private SwapAnimators _animatorSwap;
+
     // ------------------------------------------------------------------------
     void OnEnable() {
       input.onValueChanged.AddListener(OnToggleValueChanged);
@@ -42,6 +44,11 @@ namespace Code.User_Interface.View {
       else if (!isOn && currentViewType.IsVisible(viewType)) {
         currentViewType.Back();
       }
+
+      if (_animatorSwap) {
+        _animatorSwap.IsUsingAlternateAnimator = isOn;
+      }
+
     }
 
     // ------------------------------------------------------------------------
