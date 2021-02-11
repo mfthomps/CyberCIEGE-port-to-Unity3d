@@ -1,11 +1,14 @@
 ﻿using System;
+using System.IO;
 using System.Net.Sockets;
 using System.Text;
-using Code;
-using Code.Factories;
-using Code.Scriptable_Variables;
+using System.Xml;
 using UnityEngine;
 using Shared.ScriptableVariables;
+using Code.Factories;
+using Code.Game_Events;
+using Code.Scriptable_Variables;
+using Code.User_Interface.Main;
 
 public class IPCManagerScript : MonoBehaviour {
   [SerializeField] private StringListVariable attackLogVariable;
@@ -26,6 +29,10 @@ public class IPCManagerScript : MonoBehaviour {
   public StringGameEvent objectiveUpdated;
   [Tooltip("Event to fire when user message changes")]
   public StringGameEvent userStatusChanged;
+  [Tooltip("Event to fire when the server wants to show a message to the user")]
+  public MessageRequestGameEvent showMessage;
+  [Tooltip("Event to fire when the server is requesting a yes/no answer")]
+  public ConfirmationRequestGameEvent requestConfirmation;
   [Tooltip("Quit scenario")]
   public GameEvent quit;
 
@@ -101,13 +108,17 @@ public class IPCManagerScript : MonoBehaviour {
           currentMessageChanged?.Raise(null);
           break;
         case "message":
-          MessageScript message_panel =
-            (MessageScript) menus.menu_panels["MessagePanel"].GetComponent(typeof(MessageScript));
-          message_panel.ShowMessage(message);
+          showMessage?.Raise(new MessageRequest(message));
           break;
         case "yes_no":
-          YesNoScript yesno_panel = (YesNoScript) menus.menu_panels["YesNoPanel"].GetComponent(typeof(YesNoScript));
-          yesno_panel.ShowMessage(message);
+          StringReader xmlreader = new StringReader(message);
+          XmlDocument xml_doc = new XmlDocument();
+          xml_doc.Load(xmlreader);
+          XmlNode the_node = xml_doc.SelectSingleNode("//yesNo");
+          var confirmationMessage = the_node["text"].InnerText;
+          var acceptText = the_node["yes"].InnerText;
+          var canceltext = the_node["no"].InnerText;
+          requestConfirmation?.Raise(new ConfirmationRequest(confirmationMessage, acceptText, canceltext, (bool accepted) => DialogClosed(accepted ? "yes" : "no")));
           break;
         case "tool_tip":
           helpTipMessageChanged?.Raise(message);

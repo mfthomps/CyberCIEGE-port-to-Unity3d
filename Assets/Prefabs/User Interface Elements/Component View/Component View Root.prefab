@@ -3594,6 +3594,12 @@ MonoBehaviour:
   selectedObject: {fileID: 11400000, guid: 357d0fa733a03e24f82c4b882d71dea0, type: 2}
   _scrapComputerGameEvent: {fileID: 11400000, guid: 8f59494279e176249907dad84d520bd5,
     type: 2}
+  _scanComputerGameEvent: {fileID: 11400000, guid: 9c391d0d4610be8438329e05066a349c,
+    type: 2}
+  _reimageComputerGameEvent: {fileID: 11400000, guid: 11b19f0657dd79b45b4a4eefc6d8abcf,
+    type: 2}
+  _replaceComputerDriveGameEvent: {fileID: 11400000, guid: b25b2b5450052e447b970245dfeefbe3,
+    type: 2}
   _assignAsset: {fileID: 11400000, guid: 776f01aa7f04d1e4ea8994ed5990cfe2, type: 2}
   _unassignAsset: {fileID: 11400000, guid: 1410a710539fcb346820593ebef5767a, type: 2}
   _addSoftware: {fileID: 11400000, guid: de3d1dadc1958b14eac6a8eea0a6a247, type: 2}
@@ -7753,6 +7759,36 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5954298864781001352}
     m_Modifications:
+    - target: {fileID: 564040623204313464, guid: 680345386362d664bb2735f526c637e2,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 564040623204313464, guid: 680345386362d664bb2735f526c637e2,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 564040623204313464, guid: 680345386362d664bb2735f526c637e2,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 5954298865000469863}
+    - target: {fileID: 564040623204313464, guid: 680345386362d664bb2735f526c637e2,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 564040623204313464, guid: 680345386362d664bb2735f526c637e2,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ReimageSelectedComputer
+      objectReference: {fileID: 0}
+    - target: {fileID: 564040623204313464, guid: 680345386362d664bb2735f526c637e2,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 564040623204313466, guid: 680345386362d664bb2735f526c637e2,
         type: 3}
       propertyPath: m_Name
@@ -7899,6 +7935,36 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5954298864781001352}
     m_Modifications:
+    - target: {fileID: 564040623204313464, guid: 680345386362d664bb2735f526c637e2,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 564040623204313464, guid: 680345386362d664bb2735f526c637e2,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 564040623204313464, guid: 680345386362d664bb2735f526c637e2,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 5954298865000469863}
+    - target: {fileID: 564040623204313464, guid: 680345386362d664bb2735f526c637e2,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 564040623204313464, guid: 680345386362d664bb2735f526c637e2,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ReplaceDriveSelectedComputer
+      objectReference: {fileID: 0}
+    - target: {fileID: 564040623204313464, guid: 680345386362d664bb2735f526c637e2,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 564040623204313466, guid: 680345386362d664bb2735f526c637e2,
         type: 3}
       propertyPath: m_Name
@@ -8045,6 +8111,36 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5954298864781001352}
     m_Modifications:
+    - target: {fileID: 564040623204313464, guid: 680345386362d664bb2735f526c637e2,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 564040623204313464, guid: 680345386362d664bb2735f526c637e2,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 564040623204313464, guid: 680345386362d664bb2735f526c637e2,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 5954298865000469863}
+    - target: {fileID: 564040623204313464, guid: 680345386362d664bb2735f526c637e2,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 564040623204313464, guid: 680345386362d664bb2735f526c637e2,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ScanSelectedComputer
+      objectReference: {fileID: 0}
+    - target: {fileID: 564040623204313464, guid: 680345386362d664bb2735f526c637e2,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 564040623204313466, guid: 680345386362d664bb2735f526c637e2,
         type: 3}
       propertyPath: m_Name

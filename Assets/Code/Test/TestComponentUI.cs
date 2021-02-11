@@ -17,6 +17,26 @@ namespace Code.Test {
       selectedObject.Reset();
     }
 
+    //--------------------------------------------------------------------------
+    public void OnScrapComputer(ComputerBehavior computer) {
+      Debug.Log($"Scrap computer: {computer.Data.component_name}");
+    }
+
+    //--------------------------------------------------------------------------
+    public void OnScanComputer(ComputerBehavior computer) {
+      Debug.Log($"Scan computer: {computer.Data.component_name}");
+    }
+
+    //--------------------------------------------------------------------------
+    public void OnReimageComputer(ComputerBehavior computer) {
+      Debug.Log($"Reimage computer: {computer.Data.component_name}");
+    }
+
+    //--------------------------------------------------------------------------
+    public void OnReplaceComputerDrive(ComputerBehavior computer) {
+      Debug.Log($"Replace Computer Drive for computer: {computer.Data.component_name}");
+    }
+
     // ------------------------------------------------------------------------
     public void TogglePolicy(Policy policy) {
       if (selectedObject.Value != null) {
