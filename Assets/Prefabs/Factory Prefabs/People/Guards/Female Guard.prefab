@@ -290,8 +290,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1379468850902629142}
   - component: {fileID: 5027414976717496684}
+  - component: {fileID: 721865069599837166}
   m_Layer: 0
-  m_Name: femguard_walk
+  m_Name: Female Guard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -332,6 +333,21 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &721865069599837166
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1760638284112077228}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a54c58f7ee1442d885268ab6e81072d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pauseVariable: {fileID: 11400000, guid: 4daf764659cd37546870825c57fbb597, type: 2}
+  _animator: {fileID: 5027414976717496684}
+  _freezeIfTrue: 1
 --- !u!1 &1885552738794925375
 GameObject:
   m_ObjectHideFlags: 0
