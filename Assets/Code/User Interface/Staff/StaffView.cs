@@ -22,6 +22,9 @@ namespace Code.User_Interface.Staff {
     public StaffTypeList staffTypeList;
     [Tooltip("Label for staff capacity at current workload")]
     public TMP_Text capacityLabel;
+
+    [Tooltip("Fill of the Capacity Meter")]
+    [SerializeField] private RectTransform capacityFillMeter;
     [Tooltip("List of staff to display")]
     public StaffList staffList;
 
@@ -51,7 +54,9 @@ namespace Code.User_Interface.Staff {
 
     // ------------------------------------------------------------------------
     private void UpdateCapacity() {
-      capacityLabel.text = string.Format("{0}%", GetCapacity(staffTypeList.GetSelectedType()));
+      int percentage = GetCapacity(staffTypeList.GetSelectedType());
+      capacityLabel.text = string.Format("{0}%", percentage);
+      capacityFillMeter.transform.localScale = new Vector3((percentage / 100f), 1f, 1f);
     }
 
     // ------------------------------------------------------------------------
