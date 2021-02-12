@@ -13,6 +13,7 @@ namespace Code.User_Interface.Buy {
     public Toggle toggle;
     [Tooltip("Label for what header type this represents")]
     public TMP_Text label;
+    [SerializeField] private SwapAnimators animatorSwap;
 
     // ------------------------------------------------------------------------
     public void SetHardwareType(HardwareType hardwareType, ToggleGroup toggleGroup) {
@@ -24,6 +25,10 @@ namespace Code.User_Interface.Buy {
     public void OnToggle(bool isOn) {
       if (isOn) {
         onHardwareTypeSelected?.Invoke();
+      }
+
+      if (animatorSwap) {
+        animatorSwap.IsUsingAlternateAnimator = isOn;
       }
     }
 

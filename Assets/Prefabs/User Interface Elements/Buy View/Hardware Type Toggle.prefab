@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5925524996933805748}
   - component: {fileID: 8775204922012520863}
   - component: {fileID: 7257587672298719098}
+  - component: {fileID: 6778001668310434396}
   m_Layer: 5
   m_Name: Hardware Type Toggle
   m_TagString: Untagged
@@ -151,6 +152,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   toggle: {fileID: 5925524996933805748}
   label: {fileID: 2734324916666871480}
+  animatorSwap: {fileID: 6778001668310434396}
 --- !u!95 &7257587672298719098
 Animator:
   serializedVersion: 3
@@ -170,6 +172,23 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &6778001668310434396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 985381710748799338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8be74aa3bc51c146b68d37b506f604a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 7257587672298719098}
+  defaultAnimatorController: {fileID: 9100000, guid: 42e60b736832d394bab22e6cd9a1c1ab,
+    type: 2}
+  alternateAnimatorController: {fileID: 9100000, guid: daa306b04c337a343abdaa2ed7474456,
+    type: 2}
 --- !u!1 &3625455695668718215
 GameObject:
   m_ObjectHideFlags: 0
@@ -228,7 +247,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -318,7 +337,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4294407442
   m_fontColor: {r: 0.07058824, g: 0.4588235, b: 0.9686275, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
