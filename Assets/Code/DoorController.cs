@@ -1,18 +1,17 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class DoorController : MonoBehaviour
-{
-    // Start is called before the first frame update
+namespace Code {
+  public class DoorController : MonoBehaviour {
     [SerializeField] private Animator animator;
-
+    [Tooltip("The boolean animation parameter name to use when opening/closing doors.")]
+    [SerializeField] private string _enterAnimationParam = "Open";
+    
     private void OnTriggerEnter(Collider other) {
-      animator.SetBool("Open", true);
+      animator.SetBool(_enterAnimationParam, true);
     }
 
     private void OnTriggerExit(Collider other) {
-      animator.SetBool("Open", false);
-
+      animator.SetBool(_enterAnimationParam, false);
     }
+  }
 }
