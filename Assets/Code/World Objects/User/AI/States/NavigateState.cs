@@ -23,6 +23,10 @@ namespace Code.World_Objects.User.AI.States {
           Debug.LogError($"Can't path to {_user.CurrentNavTarget.transform.position}");
         }        
       }
+      else {
+        Debug.LogError($"Can't set destination for {_user.name}");
+
+      }
     }
     
     //--------------------------------------------------------------------------

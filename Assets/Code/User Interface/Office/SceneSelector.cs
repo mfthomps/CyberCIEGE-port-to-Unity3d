@@ -4,6 +4,7 @@ using NaughtyAttributes;
 using Shared.ScriptableVariables;
 using Code.Hardware;
 using Code.Scriptable_Variables;
+using Code.World_Objects.Staff;
 using Code.World_Objects.User;
 
 namespace Code.User_Interface.Office {
@@ -47,15 +48,7 @@ namespace Code.User_Interface.Office {
 
       if (Physics.Raycast(ray, out hit, 100)) {
         //Debug.Log("raycast on " + hit.transform.gameObject.name);
-        if (hit.transform.gameObject.name.StartsWith("Computer") ||
-            hit.transform.gameObject.name.StartsWith("Device")) {
-          ComponentBehavior bh = (ComponentBehavior) hit.transform.gameObject.GetComponent(typeof(ComponentBehavior));
-          menus.clicked = "Component:" + bh.Data.component_name;
-          selectedObject.Value = hit.transform.gameObject;
-        }
-        else if (hit.transform.gameObject.CompareTag(_userTag)) {
-          UserBehavior bh = (UserBehavior) hit.transform.gameObject.GetComponent(typeof(UserBehavior));
-          menus.clicked = "User:" + bh.Data.user_name;
+        if (HasSelectableComponent(hit.transform.gameObject)) {
           selectedObject.Value = hit.transform.gameObject;
         }
         else {
@@ -67,6 +60,20 @@ namespace Code.User_Interface.Office {
         menus.clicked = "";
         selectedObject.Value = null;
       }
+    }
+
+    // --------------------------------------------------------------------------
+    private bool HasSelectableComponent(GameObject gameObject) {
+      if (gameObject.GetComponent<ComponentBehavior>() != null) {
+        return true;
+      }
+      else if (gameObject.GetComponent<UserBehavior>() != null) {
+        return true;
+      }
+      else if (gameObject.GetComponent<StaffBehavior>() != null) {
+        return true;
+      }
+      return false;
     }
 
     // --------------------------------------------------------------------------
