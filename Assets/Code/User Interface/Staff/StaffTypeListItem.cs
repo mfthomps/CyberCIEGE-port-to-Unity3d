@@ -18,6 +18,8 @@ namespace Code.User_Interface.Staff {
     [Tooltip("Toggle to select given StaffType")]
     public Toggle toggle;
 
+    [SerializeField] private SwapAnimators animatorSwap;
+
     // ------------------------------------------------------------------------
     public override void SetItem(StaffType item) {
       icon.sprite = staffTypeIconMap.GetStaffTypeIcon(item);
@@ -25,6 +27,14 @@ namespace Code.User_Interface.Staff {
         icon.gameObject.SetActive(false);
       }
       label.text = Enum.GetName(typeof(StaffType), item);
+    }
+
+    // ------------------------------------------------------------------------
+    public void OnToggle(bool isOn) {
+      
+      if (animatorSwap) {
+        animatorSwap.IsUsingAlternateAnimator = isOn;
+      }
     }
   }
 }
