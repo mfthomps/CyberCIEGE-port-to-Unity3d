@@ -4,15 +4,22 @@ using Code.World_Objects;
 using UnityEngine;
 
 public abstract class ComponentBehavior : BaseWorldObject {
+  [Header("Setup")]
+  [Tooltip("The SkinnedMeshRender to use for rendering this Computer")]
+  [SerializeField] private SkinnedMeshRenderer _renderer;
+  
   [Header("Input Variables")]
   [SerializeField] private StringStringVariable _organizationDict;
   [Tooltip("The variable containing the list of all the Networks currently in the scenario.")]
   [SerializeField] private NetworkListVariable networkListVariable;
 
   public virtual ComponentDataObject Data { get; set; }
-  
-  private static ComponentBehavior current_component;
 
+  //----------------------------------------------------------------------------
+  public SkinnedMeshRenderer GetRenderer() {
+    return _renderer;
+  }
+  
   // --------------------------------------------------------------------------
   public bool IsActiveComponent() {
     return true;

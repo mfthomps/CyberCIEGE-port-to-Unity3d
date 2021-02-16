@@ -184,11 +184,8 @@ namespace Code.Factories {
 
       WorkSpace ws = _workSpaceListVariable.GetWorkSpace(pos);
       int slot = ws.AddComputer(newComputer);
-      float xf, zf;
-      ccUtils.GridTo3dPos(ws.x, ws.y, out xf, out zf);
-
-      Vector3 v = new Vector3(xf, 0.5f, zf);
-      newComputer.transform.position = v;
+      ccUtils.GridTo3dPos(ws.x, ws.y, out float xf, out float zf);
+      newComputer.transform.position =  new Vector3(xf, 0.5f, zf);
       newComputer.transform.rotation = WorkSpace.GetRotation(ws.GetDirection());
 
       newComputer.gameObject.name = $"Computer - {newComputer.Data.component_name}";
