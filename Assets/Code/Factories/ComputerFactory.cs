@@ -125,7 +125,19 @@ namespace Code.Factories {
           asset.SetComputer(computerComponent);
           break;
         case "AccessListLocal":
-          computerData.AddUser(value);
+          computerData.AddLocalAccount(value);
+          break;
+        case "AuthServerList":
+          computerData.SetAuthenticatedServer(value);
+          break;
+        case "SecrecyProfile":
+          computerData.AddProfile(value);
+          break;
+        case "IntegrityProfile":
+          computerData.AddProfile(value);
+          break;
+        case "GroupProfile":
+          computerData.AddProfile(value);
           break;
         case "User":
           computerData.assignedUser = value;

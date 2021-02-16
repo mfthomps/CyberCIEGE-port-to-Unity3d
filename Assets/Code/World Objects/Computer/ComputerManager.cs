@@ -2,6 +2,7 @@
 using UnityEngine;
 using Shared.ScriptableVariables;
 using Code.Game_Events;
+using Code.Scriptable_Variables;
 using Code.Software;
 using Code.User_Interface.Components;
 using Code.User_Interface.Main;
@@ -13,6 +14,10 @@ namespace Code.World_Objects.Computer {
     [Header("Input Variables")]
     [Tooltip("Currently selected object")]
     public GameObjectVariable selectedObject;
+    [Tooltip("Clearances in the current scenario")]
+    public ClearanceListVariable clearances;
+    [Tooltip("Users in the current scenario")]
+    public UserListVariable users;
     [Header("Output Events")]
     [Tooltip("Event to open confirmation diallog")]
     public ConfirmationRequestGameEvent getConfirmation;
@@ -68,56 +73,48 @@ namespace Code.World_Objects.Computer {
 
     // ------------------------------------------------------------------------
     public void AssignAsset(AssetBehavior asset) {
-      if (selectedObject.Value != null) {
-        var computerBehavior = selectedObject.Value.GetComponent<ComputerBehavior>();
-        if (computerBehavior != null) {
-          // If this asset had a previously assigned computer, remove it from the computer's asset list
-          if (asset.Data.Computer != null) {
-            asset.Data.Computer.RemoveAsset(asset);
-            SendAssetMoveEvent(asset, asset.Data.Computer, false);
-          }
-
-          asset.SetComputer(computerBehavior);
-          computerBehavior.AddAsset(asset);
-          SendAssetMoveEvent(asset, computerBehavior, true);
+      var computerBehavior = GetSelectedComputer();
+      if (computerBehavior != null) {
+        // If this asset had a previously assigned computer, remove it from the computer's asset list
+        if (asset.Data.Computer != null) {
+          asset.Data.Computer.RemoveAsset(asset);
+          SendAssetMoveEvent(asset, asset.Data.Computer, false);
         }
+
+        asset.SetComputer(computerBehavior);
+        computerBehavior.AddAsset(asset);
+        SendAssetMoveEvent(asset, computerBehavior, true);
       }
     }
 
     // ------------------------------------------------------------------------
     public void UnassignAsset(AssetBehavior asset) {
-      if (selectedObject.Value != null) {
-        var computerBehavior = selectedObject.Value.GetComponent<ComputerBehavior>();
-        if (computerBehavior != null) {
-          // Make sure the asset in question was actually assigned to the selected computer
-          if (asset.Data.Computer == computerBehavior) {
-            computerBehavior.RemoveAsset(asset);
-            asset.SetComputer(null);
-            SendAssetMoveEvent(asset, computerBehavior, false);
-          }
+      var computerBehavior = GetSelectedComputer();
+      if (computerBehavior != null) {
+        // Make sure the asset in question was actually assigned to the selected computer
+        if (asset.Data.Computer == computerBehavior) {
+          computerBehavior.RemoveAsset(asset);
+          asset.SetComputer(null);
+          SendAssetMoveEvent(asset, computerBehavior, false);
         }
       }
     }
 
     // ------------------------------------------------------------------------
     public void AddSoftware(SoftwareBehavior software) {
-      if (selectedObject.Value != null) {
-        var computerBehavior = selectedObject.Value.GetComponent<ComputerBehavior>();
-        if (computerBehavior != null) {
-          computerBehavior.AddSoftware(software);
-          SendSoftwareChangeEvent(software, computerBehavior, true);
-        }
+      var computerBehavior = GetSelectedComputer();
+      if (computerBehavior != null) {
+        computerBehavior.AddSoftware(software);
+        SendSoftwareChangeEvent(software, computerBehavior, true);
       }
     }
 
     // ------------------------------------------------------------------------
     public void RemoveSoftware(SoftwareBehavior software) {
-      if (selectedObject.Value != null) {
-        var computerBehavior = selectedObject.Value.GetComponent<ComputerBehavior>();
-        if (computerBehavior != null) {
-          computerBehavior.RemoveSoftware(software);
-          SendSoftwareChangeEvent(software, computerBehavior, false);
-        }
+      var computerBehavior = GetSelectedComputer();
+      if (computerBehavior != null) {
+        computerBehavior.RemoveSoftware(software);
+        SendSoftwareChangeEvent(software, computerBehavior, false);
       }
     }
 
@@ -155,7 +152,120 @@ namespace Code.World_Objects.Computer {
         changeEvent.computer.ToggleExecuteAccess(changeEvent.network, changeEvent.accessToChange.accessor);
       }
     }
-    
+
+    // ------------------------------------------------------------------------
+    public void ToggleLocalAccount(string accountName) {
+      var computerBehavior = GetSelectedComputer();
+      if (computerBehavior != null) {
+        computerBehavior.ToggleLocalAccount(accountName);
+      }
+    }
+
+    // ------------------------------------------------------------------------
+    public void ToggleAuthenticatedServer(string serverName) {
+      var computerBehavior = GetSelectedComputer();
+      if (computerBehavior != null) {
+        // If the computer didn't have an authenticating server and is about to, confirm that the user knows the local
+        // accounts are all going to get wiped out
+        if (string.IsNullOrEmpty(computerBehavior.GetAuthenticatingServer()) && string.IsNullOrEmpty(serverName)) {
+          getConfirmation?.Raise(new ConfirmationRequest($"Re-installing a system image will elimiate newly introduced malware, but will cost you {REIMAGE_COST:C0}", "Reimage system", "Cancel",
+            (bool accepted) => {
+              if (accepted) {
+                computerBehavior.ToggleAuthenticatingServer(serverName);
+              }
+            }
+          ));
+        }
+        // Otherwise, we're switching authentication servers or going back to using local accounts, so we can just change it
+        else {
+          computerBehavior.ToggleAuthenticatingServer(serverName);
+        }
+      }
+    }
+
+    // ------------------------------------------------------------------------
+    public void ToggleProfile(string profile) {
+      var computerBehavior = GetSelectedComputer();
+      if (computerBehavior != null) {
+        computerBehavior.ToggleProfile(profile);
+      }
+    }
+
+    // ------------------------------------------------------------------------
+    public void OnLocalAccountAdded(string accountName) {
+      var computerBehavior = GetSelectedComputer();
+      if (computerBehavior != null) {
+        SendAccessEvent(computerBehavior, "accountAdd", GetAccountType(accountName), accountName);
+      }
+    }
+
+    // ------------------------------------------------------------------------
+    public void OnLocalAccountRemoved(string accountName) {
+      var computerBehavior = GetSelectedComputer();
+      if (computerBehavior != null) {
+        SendAccessEvent(computerBehavior, "accountRemove", GetAccountType(accountName), accountName);
+      }
+    }
+
+    // ------------------------------------------------------------------------
+    public void OnAuthenticatingServerAdded(string serverName) {
+      var computerBehavior = GetSelectedComputer();
+      if (computerBehavior != null) {
+        SendAuthenticatedServerEvent(computerBehavior, "authServerAdd", serverName);
+      }
+    }
+
+    // ------------------------------------------------------------------------
+    public void OnAuthenticatingServerRemoved(string serverName) {
+      var computerBehavior = GetSelectedComputer();
+      if (computerBehavior != null) {
+        SendAuthenticatedServerEvent(computerBehavior, "authServerRemove", serverName);
+      }
+    }
+
+    // ------------------------------------------------------------------------
+    public void OnProfileAdded(string accountName) {
+      var computerBehavior = GetSelectedComputer();
+      if (computerBehavior != null) {
+        SendAccessEvent(computerBehavior, "profileAdd", GetAccountType(accountName), accountName);
+      }
+    }
+
+    // ------------------------------------------------------------------------
+    public void OnProfileRemoved(string accountName) {
+      var computerBehavior = GetSelectedComputer();
+      if (computerBehavior != null) {
+        SendAccessEvent(computerBehavior, "profileRemove", GetAccountType(accountName), accountName);
+      }
+    }
+
+    // ------------------------------------------------------------------------
+    private ComputerBehavior GetSelectedComputer() {
+      if (selectedObject.Value != null) {
+        return selectedObject.Value.GetComponent<ComputerBehavior>();
+      }
+      return null;
+    }
+
+    //--------------------------------------------------------------------------
+    private string GetAccountType(string account) {
+      // Check if this is a user
+      foreach (var user in users.Value) {
+        if (user.Data.user_name == account) {
+          return "user";
+        }
+      }
+
+      // Check if this is a clearance
+      foreach (var clearance in clearances.Value) {
+        if (clearance.Data.name == account) {
+          return "clearance";
+        }
+      }
+
+      return "group";
+    }
+
     //--------------------------------------------------------------------------
     private static void SendComputerActionEvent(ComponentBehavior computer, string action) {
       var xml = new XElement("componentEvent",
@@ -181,6 +291,28 @@ namespace Code.World_Objects.Computer {
       var xml = new XElement("componentEvent",
         new XElement("name", computer.Data.component_name),
         new XElement($"{(install ? "softwareAdd" : "softwareRemove")}", software.Data.name)
+      );
+
+      IPCManagerScript.SendRequest(xml.ToString());
+    }
+
+    //--------------------------------------------------------------------------
+    private void SendAccessEvent(ComputerBehavior computer, string eventType, string accountType, string accountName) {
+      var xml = new XElement("componentEvent",
+        new XElement("name", computer.Data.component_name),
+        new XElement(eventType,
+          new XElement(accountType, accountName)
+        )
+      );
+
+      IPCManagerScript.SendRequest(xml.ToString());
+    }
+
+    //--------------------------------------------------------------------------
+    private void SendAuthenticatedServerEvent(ComputerBehavior computer, string eventType, string serverName) {
+      var xml = new XElement("componentEvent",
+        new XElement("name", computer.Data.component_name),
+        new XElement(eventType, serverName)
       );
 
       IPCManagerScript.SendRequest(xml.ToString());
