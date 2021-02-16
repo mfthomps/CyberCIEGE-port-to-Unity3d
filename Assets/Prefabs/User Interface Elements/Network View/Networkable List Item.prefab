@@ -400,6 +400,7 @@ GameObject:
   - component: {fileID: 4733577755757718174}
   - component: {fileID: 5999750417787407847}
   - component: {fileID: 7352396213457836769}
+  - component: {fileID: 247178890379288664}
   m_Layer: 5
   m_Name: Networkable List Item
   m_TagString: Untagged
@@ -462,6 +463,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectionToggle: {fileID: 4300678267673832924}
   labelUI: {fileID: 2429593646357663452}
+--- !u!114 &247178890379288664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2713591417723211091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0276b268e1568044f8e496a158636a8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  connectionIcon: {fileID: 5050845122939843530}
+  connectedImage: {fileID: 21300000, guid: 673deb887819e33438236bb144388d53, type: 3}
+  disconnectedImage: {fileID: 21300000, guid: f575bd0e056d1b8469819587cae929c9, type: 3}
 --- !u!1 &4510970628579792213
 GameObject:
   m_ObjectHideFlags: 0
