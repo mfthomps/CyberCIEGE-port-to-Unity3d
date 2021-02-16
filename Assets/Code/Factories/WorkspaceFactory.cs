@@ -141,24 +141,11 @@ namespace Code.Factories {
     public void SetupGameObject(WorkSpaceScript workSpace, WorkSpaceData supplementalData, int index) { 
       ccUtils.GridTo3dPos(workSpace.Data.x, workSpace.Data.y,  out float x, out float y);
       workSpace.transform.position = new Vector3(x, 0, y);
-      workSpace.transform.rotation = GetRotation(workSpace.Data.GetDirection());
+      workSpace.transform.rotation = WorkSpace.GetRotation(workSpace.Data.GetDirection());
       
       workSpace.gameObject.name = $"WorkSpace--{index}";
       PopulateWorkspace(workSpace, supplementalData, index);
     }
-
-    //-------------------------------------------------------------------------
-    private static Quaternion GetRotation(Direction direction) {
-      switch (direction) {
-        case Direction.North: return Quaternion.Euler(0, -90, 0);
-        case Direction.East: return Quaternion.Euler(0, -180, 0);
-        case Direction.South: return Quaternion.Euler(0, 90, 0);
-        case Direction.West: return Quaternion.Euler(0, 0, 0);
-        default:
-          return Quaternion.identity;
-      }
-    }
-
 
     //-------------------------------------------------------------------------
     //Instantiate the office furniture for the supplied WorkSpace

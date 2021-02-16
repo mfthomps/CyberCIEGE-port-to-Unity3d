@@ -17,6 +17,11 @@ namespace Code.World_Objects.Computer {
     [SerializeField] private ComputerListVariable computerListVariable;
     [Tooltip("List of policy groups for organizing mutually exclusive policies")]
     public PolicyGroupListVariable mutuallyExclusivePolicyGroups;
+    
+    [Header("Setup")]
+    [Tooltip("The SkinnedMeshRender to use for rendering this Computer")]
+    [SerializeField] private SkinnedMeshRenderer _renderer;
+    
     [Header("Output Events")]
     [Tooltip("A policy was toggled on")]
     public PolicyGameEvent policyEnabled;
@@ -51,6 +56,11 @@ namespace Code.World_Objects.Computer {
     }
 
     [SerializeField] private ComputerDataObject _data;
+
+    //----------------------------------------------------------------------------
+    public SkinnedMeshRenderer GetRenderer() {
+      return _renderer;
+    }
 
     //----------------------------------------------------------------------------
     public bool IsServer() {

@@ -169,9 +169,9 @@ namespace Code.Factories {
       //This is the part that will hopefully load the correct assets from dict
       var hardwareAsset = hardwareCatalog.Value.GetHardwareAsset(newComputer.Data.hw);
       if (hardwareAsset != null) {
-        SkinnedMeshRenderer this_render = newComputer.GetComponent<SkinnedMeshRenderer>();
-        this_render.sharedMesh = hardwareAsset.mesh;
-        this_render.material = hardwareAsset.material;
+        SkinnedMeshRenderer newComputerRenderer = newComputer.GetRenderer();
+        newComputerRenderer.sharedMesh = hardwareAsset.mesh;
+        newComputerRenderer.material = hardwareAsset.material;
       }
       else {
         Debug.LogError($"Hardware asset missing for computer: {newComputer.Data.hw}");
@@ -189,6 +189,7 @@ namespace Code.Factories {
 
       Vector3 v = new Vector3(xf, 0.5f, zf);
       newComputer.transform.position = v;
+      newComputer.transform.rotation = WorkSpace.GetRotation(ws.GetDirection());
 
       newComputer.gameObject.name = $"Computer - {newComputer.Data.component_name}";
 
