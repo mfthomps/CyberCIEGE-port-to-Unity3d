@@ -18,6 +18,8 @@ namespace Code.User_Interface.Components {
     public AccessControlGroupListVariable accessControlGroups;
     [Tooltip("List of assets in the given scenario")]
     public AssetListVariable assets;
+    [Tooltip("List of clearances in the given scenario")]
+    public ClearanceListVariable clearances;
     [Tooltip("List of computers in the given scenario")]
     public ComputerListVariable computerListVariable;
     [Tooltip("List of software in the given scenario")]
@@ -46,6 +48,12 @@ namespace Code.User_Interface.Components {
     [SerializeField] private SoftwareGameEvent _addSoftware;
     [Tooltip("The GameEvent to fire when software should be removed from the selected computer")]
     [SerializeField] private SoftwareGameEvent _removeSoftware;
+    [Tooltip("The GameEvent to fire when a local account should be toggled for the selected computer")]
+    [SerializeField] private StringGameEvent _toggleLocalAccount;
+    [Tooltip("The GameEvent to fire when an authenticated server should be toggled for the selected computer")]
+    [SerializeField] private StringGameEvent _toggleAuthenticatedServer;
+    [Tooltip("The GameEvent to fire when a profile should be toggled for the selected computer")]
+    [SerializeField] private StringGameEvent _toggleProfile;
     [Tooltip("The GameEvent to fire when a networks' access should be cleared from the selected computer")]
     [SerializeField] private ComputerNetworkAccessChangeGameEvent _accessChangeClear;
     [Tooltip("The GameEvent to fire when a networks' read access should be changed from the selected computer")]
@@ -60,14 +68,20 @@ namespace Code.User_Interface.Components {
     [Header("UI Elements")]
     [Tooltip("List of computers to display")]
     public ComputerList computerList;
-    [Tooltip("List of assets assigned to the selected computer")]
-    public AssetList assignedAssetsList;
-    [Tooltip("List of assets not assigned to the selected computer")]
-    public AssetList unassignedAssetsList;
     [Tooltip("List of software assigned to the selected computer")]
     public SoftwareList addedSoftwareList;
     [Tooltip("List of software not assigned to the selected computer")]
     public SoftwareList availableSoftwareList;
+    [Tooltip("List of assets assigned to the selected computer")]
+    public AssetList assignedAssetsList;
+    [Tooltip("List of assets not assigned to the selected computer")]
+    public AssetList unassignedAssetsList;
+    [Tooltip("List of accounts for the selected computer")]
+    public SelectableStringList accountsList;
+    [Tooltip("List of authenticated servers for the selected computer")]
+    public SelectableStringList authenticatedServerList;
+    [Tooltip("List of authorized profiles for the selected computer")]
+    public SelectableStringList authorizedProfileList;
     [Tooltip("List of networks the selected computer is connected to")]
     public SelectableStringList connectedNetworkList;
     [Tooltip("List of DACAccesses for the selected network of the selected computer")]
@@ -159,6 +173,24 @@ namespace Code.User_Interface.Components {
     }
 
     // ------------------------------------------------------------------------
+    public void ToggleLocalAccount(string accountName) {
+      _toggleLocalAccount?.Raise(accountName);
+      UpdateUserSettings(GetSelectedComputer());
+    }
+
+    // ------------------------------------------------------------------------
+    public void ToggleAuthenticatedServer(string authenticatedServer) {
+      _toggleAuthenticatedServer?.Raise(authenticatedServer);
+      UpdateUserSettings(GetSelectedComputer());
+    }
+
+    // ------------------------------------------------------------------------
+    public void ToggleProfile(string profile) {
+      _toggleProfile?.Raise(profile);
+      UpdateUserSettings(GetSelectedComputer());
+    }
+
+    // ------------------------------------------------------------------------
     public void SelectConnectedNetwork(string networkName) {
       var selectedComputer = GetSelectedComputer();
 
@@ -240,8 +272,9 @@ namespace Code.User_Interface.Components {
 
     // ------------------------------------------------------------------------
     private void DisplayComputerInformation(ComputerBehavior computer) {
-      UpdateAssetsSettings(computer);
       UpdateSoftwareSettings(computer);
+      UpdateAssetsSettings(computer);
+      UpdateUserSettings(computer);
 
       if (computer != null) {
         connectedNetworkList.SetItems(new List<string>(computer.Data.network_list));
@@ -298,6 +331,51 @@ namespace Code.User_Interface.Components {
         assignedAssetsList.ClearItems();
         unassignedAssetsList.ClearItems();
       }
+    }
+
+    // ------------------------------------------------------------------------
+    private void UpdateUserSettings(ComputerBehavior selectedComputer) {
+      accountsList.ClearItems();
+      authenticatedServerList.ClearItems();
+      authorizedProfileList.ClearItems();
+
+      if (selectedComputer != null) {
+        // Add users to account lists
+        foreach (var user in users.Value) {
+          var userName = user.Data.user_name;
+          accountsList.AddItem(userName);
+          accountsList.SetSelected(userName, selectedComputer.IsValidLocalAccount(userName));
+        }
+        // Add groups to account and authorized profile lists
+        foreach (var group in accessControlGroups.Value) {
+          var groupName = group.Data.name;
+          accountsList.AddItem(groupName);
+          accountsList.SetSelected(groupName, selectedComputer.IsValidLocalAccount(groupName));
+          authorizedProfileList.AddItem(groupName);
+          authorizedProfileList.SetSelected(groupName, selectedComputer.IsValidProfile(groupName));
+        }
+        // Add clearances to authorized profile lists
+        foreach (var clearance in clearances.Value) {
+          var clearanceName = clearance.Data.name;
+          authorizedProfileList.AddItem(clearanceName);
+          authorizedProfileList.SetSelected(clearanceName, selectedComputer.IsValidProfile(clearanceName));
+        }
+
+        // Setup the authenticated server list, selecting the current authenticated server (if there is one)
+        foreach (var computer in computerListVariable.Value) {
+          if (computer.IsServer()) {
+            var computerName = computer.Data.component_name;
+            authenticatedServerList.AddItem(computerName);
+            authenticatedServerList.SetSelected(computerName, selectedComputer.GetAuthenticatingServer() == computerName);
+          }
+        }
+      }
+
+      // Clients can only see the accounts list if they don't have an authenticating server
+      accountsList.gameObject.SetActive(selectedComputer == null || selectedComputer.IsServer() || string.IsNullOrEmpty(selectedComputer.GetAuthenticatingServer()));
+
+      // Only clients can see the list of possible authenticating servers
+      authenticatedServerList.gameObject.SetActive(selectedComputer != null && !selectedComputer.IsServer());
     }
 
     // ------------------------------------------------------------------------

@@ -44,81 +44,67 @@ namespace Code.Test {
 
     // ------------------------------------------------------------------------
     public void TogglePolicy(Policy policy) {
-      if (selectedObject.Value != null) {
-        var computerBehavior = selectedObject.Value.GetComponent<ComputerBehavior>();
-        if (computerBehavior != null) {
-          computerBehavior.TogglePolicy(policy);
-        }
+      var computerBehavior = GetSelectedComputer();
+      if (computerBehavior != null) {
+        computerBehavior.TogglePolicy(policy);
       }
     }
 
     // ------------------------------------------------------------------------
     public void OnComputerPolicyEnabled(Policy policy) {
-      if (selectedObject.Value != null) {
-        var computerBehavior = selectedObject.Value.GetComponent<ComputerBehavior>();
-        if (computerBehavior != null) {
-          Debug.Log($"Policy {policy.GetName()} enabled for {computerBehavior.Data.component_name}");
-        }
+      var computerBehavior = GetSelectedComputer();
+      if (computerBehavior != null) {
+        Debug.Log($"Policy {policy.GetName()} enabled for {computerBehavior.Data.component_name}");
       }
     }
 
     // ------------------------------------------------------------------------
     public void OnComputerPolicyDisabled(Policy policy) {
-      if (selectedObject.Value != null) {
-        var computerBehavior = selectedObject.Value.GetComponent<ComputerBehavior>();
-        if (computerBehavior != null) {
-          Debug.Log($"Policy {policy.GetName()} disabled for {computerBehavior.Data.component_name}");
-        }
+      var computerBehavior = GetSelectedComputer();
+      if (computerBehavior != null) {
+        Debug.Log($"Policy {policy.GetName()} disabled for {computerBehavior.Data.component_name}");
       }
     }
 
     // ------------------------------------------------------------------------
     public void AssignAsset(AssetBehavior asset) {
-      if (selectedObject.Value != null) {
-        var computerBehavior = selectedObject.Value.GetComponent<ComputerBehavior>();
-        if (computerBehavior != null) {
-          // If this asset had a previously assigned computer, remove it from the computer's asset list
-          if (asset.Data.Computer != null) {
-            asset.Data.Computer.RemoveAsset(asset);
-          }
-
-          asset.SetComputer(computerBehavior);
-          computerBehavior.AddAsset(asset);
+      var computerBehavior = GetSelectedComputer();
+      if (computerBehavior != null) {
+        // If this asset had a previously assigned computer, remove it from the computer's asset list
+        if (asset.Data.Computer != null) {
+          asset.Data.Computer.RemoveAsset(asset);
         }
+
+        asset.SetComputer(computerBehavior);
+        computerBehavior.AddAsset(asset);
       }
     }
 
     // ------------------------------------------------------------------------
     public void UnassignAsset(AssetBehavior asset) {
-      if (selectedObject.Value != null) {
-        var computerBehavior = selectedObject.Value.GetComponent<ComputerBehavior>();
-        if (computerBehavior != null) {
-          // Make sure the asset in question was actually assigned to the selected computer
-          if (asset.Data.Computer == computerBehavior) {
-            computerBehavior.RemoveAsset(asset);
-            asset.SetComputer(null);
-          }
+      var computerBehavior = GetSelectedComputer();
+      if (computerBehavior != null) {
+        // Make sure the asset in question was actually assigned to the selected computer
+        if (asset.Data.Computer == computerBehavior) {
+          computerBehavior.RemoveAsset(asset);
+          asset.SetComputer(null);
         }
       }
     }
 
     // ------------------------------------------------------------------------
     public void AddSoftware(SoftwareBehavior software) {
-      if (selectedObject.Value != null) {
-        var computerBehavior = selectedObject.Value.GetComponent<ComputerBehavior>();
-        if (computerBehavior != null) {
-          computerBehavior.AddSoftware(software);
-        }
+      var computerBehavior = GetSelectedComputer();
+      if (computerBehavior != null) {
+        computerBehavior.AddSoftware(software);
       }
     }
 
     // ------------------------------------------------------------------------
     public void RemoveSoftware(SoftwareBehavior software) {
-      if (selectedObject.Value != null) {
-        var computerBehavior = selectedObject.Value.GetComponent<ComputerBehavior>();
-        if (computerBehavior != null) {
-          computerBehavior.RemoveSoftware(software);
-        }
+      var computerBehavior = GetSelectedComputer();
+      if (computerBehavior != null) {
+        computerBehavior.RemoveSoftware(software);
       }
     }
 
@@ -155,6 +141,38 @@ namespace Code.Test {
       if (changeEvent.computer != null) {
         changeEvent.computer.ToggleExecuteAccess(changeEvent.network, changeEvent.accessToChange.accessor);
       }
+    }
+
+    // ------------------------------------------------------------------------
+    public void ToggleLocalAccount(string accountName) {
+      var computerBehavior = GetSelectedComputer();
+      if (computerBehavior != null) {
+        computerBehavior.ToggleLocalAccount(accountName);
+      }
+    }
+
+    // ------------------------------------------------------------------------
+    public void ToggleAuthenticatedServer(string serverName) {
+      var computerBehavior = GetSelectedComputer();
+      if (computerBehavior != null) {
+        computerBehavior.ToggleAuthenticatingServer(serverName);
+      }
+    }
+
+    // ------------------------------------------------------------------------
+    public void ToggleProfile(string profile) {
+      var computerBehavior = GetSelectedComputer();
+      if (computerBehavior != null) {
+        computerBehavior.ToggleProfile(profile);
+      }
+    }
+
+    // ------------------------------------------------------------------------
+    private ComputerBehavior GetSelectedComputer() {
+      if (selectedObject.Value != null) {
+        return selectedObject.Value.GetComponent<ComputerBehavior>();
+      }
+      return null;
     }
   }
 }
