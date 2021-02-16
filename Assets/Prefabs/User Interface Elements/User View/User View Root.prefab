@@ -149,6 +149,7 @@ GameObject:
   - component: {fileID: 5809139030665557488}
   - component: {fileID: 235056105672998295}
   - component: {fileID: 3197492568116683846}
+  - component: {fileID: 609003123622070263}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -322,6 +323,19 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &609003123622070263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3197492568116683841}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0f6bf630cd71454fb52b3955aa1b1e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverCursor: {fileID: 2800000, guid: c067abe023352bc42a2cc533e7b00801, type: 3}
 --- !u!1 &4839716234640495268
 GameObject:
   m_ObjectHideFlags: 0
@@ -3525,6 +3539,7 @@ GameObject:
   - component: {fileID: 4839716236148801107}
   - component: {fileID: 4839716236148801106}
   - component: {fileID: 4839716236148801101}
+  - component: {fileID: 5629364170076510685}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -3698,6 +3713,19 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &5629364170076510685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4839716236148801103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0f6bf630cd71454fb52b3955aa1b1e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverCursor: {fileID: 2800000, guid: c067abe023352bc42a2cc533e7b00801, type: 3}
 --- !u!1 &4839716236284619096
 GameObject:
   m_ObjectHideFlags: 0
@@ -4194,6 +4222,7 @@ GameObject:
   - component: {fileID: 4839716236495684729}
   - component: {fileID: 4839716236495684728}
   - component: {fileID: 4839716236495684731}
+  - component: {fileID: 15539546080210348}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -4367,6 +4396,19 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &15539546080210348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4839716236495684725}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0f6bf630cd71454fb52b3955aa1b1e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverCursor: {fileID: 2800000, guid: c067abe023352bc42a2cc533e7b00801, type: 3}
 --- !u!1 &4839716236525058179
 GameObject:
   m_ObjectHideFlags: 0
@@ -4708,7 +4750,7 @@ PrefabInstance:
     - target: {fileID: 7031985257705313510, guid: 366e05cedb1176e428c15afbc647e52a,
         type: 3}
       propertyPath: m_fontSize
-      value: 30.9
+      value: 44.9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 366e05cedb1176e428c15afbc647e52a, type: 3}
