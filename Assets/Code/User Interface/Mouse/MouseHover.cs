@@ -9,12 +9,27 @@ public class MouseHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
   [SerializeField] private Texture2D hoverCursor;
   private CursorMode cursorMode = CursorMode.Auto;
   private Vector2 hotSpot = Vector2.zero;
+
+  private Selectable selectable;
+
+  //----------------------------------------------------------
+  // Get the first instance of a selectable (Toggle, Button) in the hierarchy
+  // We are assuming there is only one, or at least the first one we find is the relevant one
+  private void Start () {
+    
+    selectable = GetComponentInChildren<Selectable>();
+
+  }
   
+  //----------------------------------------------------------
   public void OnPointerEnter(PointerEventData pointerEventData)
   {
-    Cursor.SetCursor(hoverCursor, hotSpot, cursorMode);
+    if (selectable && selectable.interactable) {      
+      Cursor.SetCursor(hoverCursor, hotSpot, cursorMode);
+    }
   }
 
+  //----------------------------------------------------------
   //Detect when Cursor leaves the ui element
   public void OnPointerExit(PointerEventData pointerEventData)
   {
