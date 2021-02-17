@@ -19,7 +19,8 @@ namespace Code.User_Interface.Main {
 
     // --------------------------------------------------------------------------
     public void OnServerMessageReceived(string message) {
-      ShowMessage(new MessageRequest(message));
+      ShowMessage(new MessageRequest(message, () => IPCManagerScript.DialogClosed()));
+      IPCManagerScript.DialogUp();
     }
 
     // --------------------------------------------------------------------------

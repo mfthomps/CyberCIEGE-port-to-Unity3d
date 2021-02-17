@@ -33,6 +33,7 @@ namespace Code.User_Interface.Main {
       var acceptText = the_node["yes"].InnerText;
       var canceltext = the_node["no"].InnerText;
       GetConfirmation(new ConfirmationRequest(confirmationMessage, acceptText, canceltext, (bool accepted) => IPCManagerScript.DialogClosed(accepted ? "yes" : "no")));
+      IPCManagerScript.DialogUp();
     }
 
     // --------------------------------------------------------------------------
