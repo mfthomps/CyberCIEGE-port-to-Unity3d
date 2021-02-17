@@ -22,19 +22,26 @@ namespace Code.Factories {
     [Tooltip("Mapping of magic department string to StaffBehavior prefab")]
     [SerializeField] private StaffTypeBehaviorMappingObject _prefabMapping;
 
+    private Transform _parent;
+
+    //-------------------------------------------------------------------------
+    private void Start() {
+      _parent = new GameObject("Staff").transform;
+    }
+
     //--------------------------------------------------------------------------
     void OnDestroy() {
       _staffListVariable.Clear();
     }
 
     //--------------------------------------------------------------------------
-    public void Create(string filename, Transform parent = null) {
+    public void Create(string filename) {
       throw new System.NotImplementedException();
     }
 
     //--------------------------------------------------------------------------
-    public void CreateAll(string path, Transform parent = null) {
-      LoadStaffFromFile(path, parent);
+    public void CreateAll(string path) {
+      LoadStaffFromFile(path, _parent);
     }
 
     //--------------------------------------------------------------------------
@@ -46,7 +53,7 @@ namespace Code.Factories {
       foreach (string user_file in clist)
         if (user_file.EndsWith(".sdf")) {
 
-          StaffBehavior newStaff = InstantiateStaffFromFile(user_file, parent); 
+          StaffBehavior newStaff = InstantiateStaffFromFile(user_file, _parent); 
           
           if (newStaff) {
             UpdateGameObject(newStaff);  
@@ -69,7 +76,7 @@ namespace Code.Factories {
         return null;
       }
       
-      StaffBehavior newStaff = Instantiate(prefab, parent);
+      StaffBehavior newStaff = Instantiate(prefab, _parent);
       newStaff.Data = data;
       
       _staffListVariable.Add(newStaff);

@@ -26,6 +26,12 @@ namespace Code.Factories {
     public GameObjectVariable selectedObject;
 
     private readonly string DEVICES = "devices";
+    private Transform _parent;
+
+    //-------------------------------------------------------------------------
+    private void Start() {
+      _parent = new GameObject("Devices").transform;
+    }
 
     //-------------------------------------------------------------------------
     void OnDestroy() {
@@ -33,8 +39,8 @@ namespace Code.Factories {
     }
 
     //-------------------------------------------------------------------------
-    public void Create(string filename, Transform parent = null) {
-      DeviceBehavior item = Instantiate(_prefab, parent);
+    public void Create(string filename) {
+      DeviceBehavior item = Instantiate(_prefab, _parent);
       item.Data = LoadOneDevice(Path.Combine(userAppPath.Value, DEVICES, filename), item);
       UpdateGameObject(item);
 
@@ -43,8 +49,8 @@ namespace Code.Factories {
     }
 
     //-------------------------------------------------------------------------
-    public void CreateAll(string path, Transform parent = null) {
-      LoadDevices(path, parent);
+    public void CreateAll(string path) {
+      LoadDevices(path, _parent);
     }
 
     //-------------------------------------------------------------------------
@@ -55,7 +61,7 @@ namespace Code.Factories {
       string[] clist = Directory.GetFiles(cdir);
       
       foreach (string device_file in clist) {
-        Create(device_file, parent);
+        Create(device_file);
       }
     }
     
@@ -86,9 +92,9 @@ namespace Code.Factories {
       //This is the part that will hopefully load the correct assets from dict
       var hardwareAsset = hardwareCatalog.Value.GetHardwareAsset(device.Data.hw);
       if (hardwareAsset != null) {
-        SkinnedMeshRenderer this_render = device.GetComponent<SkinnedMeshRenderer>();
-        this_render.sharedMesh = hardwareAsset.mesh;
-        this_render.material = hardwareAsset.material;
+        SkinnedMeshRenderer deviceRenderer = device.GetRenderer();
+        deviceRenderer.sharedMesh = hardwareAsset.mesh;
+        deviceRenderer.material = hardwareAsset.material;
       }
       else {
         Debug.LogError($"Hardware asset missing for device: {device.Data.hw}");
@@ -101,11 +107,10 @@ namespace Code.Factories {
 
       WorkSpace ws = _workSpaceListVariable.GetWorkSpace(pos);
       int slot = ws.AddDevice(device.Data.component_name);
-      float xf, zf;
-      ccUtils.GridTo3dPos(ws.x, ws.y, out xf, out zf);
-      Vector3 v = new Vector3(xf, 0.5f, zf);
-      device.transform.position = v;
-
+      ccUtils.GridTo3dPos(ws.x, ws.y, out float xf, out float zf);
+      device.transform.position = new Vector3(xf, 0.5f, zf);
+      device.transform.rotation = WorkSpace.GetRotation(ws.GetDirection());
+      
       device.gameObject.name = $"Device - {device.Data.component_name}";
 
       //add it to the device list.

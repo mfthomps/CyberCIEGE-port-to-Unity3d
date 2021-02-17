@@ -17,7 +17,7 @@ namespace Code {
     //-------------------------------------------------------------------------
     public T GetNext() {
       Inc();
-      return _currIndex >= _list.Count() ? null : _list.ElementAt(_currIndex);
+      return _currIndex >= _list.Count() || _currIndex < 0 ? null : _list.ElementAt(_currIndex);
     }
 
     //-------------------------------------------------------------------------

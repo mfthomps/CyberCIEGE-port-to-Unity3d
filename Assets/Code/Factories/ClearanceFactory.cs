@@ -15,21 +15,27 @@ namespace Code.Factories {
     [SerializeField] private ClearanceListVariable clearanceListVariable;
 
     private readonly string LABELS = "labels.sdf";
+    private Transform _parent;
     private const string TAG_SECRECY = "Secrecy";
     private const string TAG_INTEGRITY = "Integrity";
 
+    //-------------------------------------------------------------------------
+    private void Start() {
+      _parent = new GameObject("Clearances").transform;
+    }
+    
     //-------------------------------------------------------------------------
     void OnDestroy() {
       clearanceListVariable.Clear();
     }
 
     //-------------------------------------------------------------------------
-    public void Create(string filename, Transform parent = null) {
+    public void Create(string filename) {
       throw new NotImplementedException();
     }
 
     //-------------------------------------------------------------------------
-    public void CreateAll(string path, Transform parent = null) {
+    public void CreateAll(string path) {
       clearanceListVariable.Clear();
 
       string filePath = Path.Combine(path, LABELS);
@@ -54,7 +60,7 @@ namespace Code.Factories {
                   break;
               }
             });
-            CreateGameObject(data, parent);
+            CreateGameObject(data, _parent);
             break;
         }
       });
@@ -62,7 +68,7 @@ namespace Code.Factories {
     
     //-------------------------------------------------------------------------
     private void CreateGameObject(ClearanceDataObject data, Transform parent) {
-      var group = Instantiate(_prefab, parent);
+      var group = Instantiate(_prefab, _parent);
       group.name = $"Clearance - {data.name}";
       group.Data = data;
 
