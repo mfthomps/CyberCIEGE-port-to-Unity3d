@@ -33,7 +33,7 @@ public class MouseHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
   //----------------------------------------------------------
   public void OnPointerEnter(PointerEventData pointerEventData)
   {
-    if (selectable && selectable.interactable) {      
+    if (!selectable || (selectable && selectable.interactable)) {      
       Cursor.SetCursor(hoverCursor, hotSpot, cursorMode);
     }
   }
