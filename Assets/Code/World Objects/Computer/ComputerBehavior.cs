@@ -17,6 +17,7 @@ namespace Code.World_Objects.Computer {
     [SerializeField] private ComputerListVariable computerListVariable;
     [Tooltip("List of policy groups for organizing mutually exclusive policies")]
     public PolicyGroupListVariable mutuallyExclusivePolicyGroups;
+
     [Header("Output Events")]
     [Tooltip("A policy was toggled on")]
     public PolicyGameEvent policyEnabled;
@@ -50,6 +51,7 @@ namespace Code.World_Objects.Computer {
       }
     }
 
+    //----------------------------------------------------------------------------
     [SerializeField] private ComputerDataObject _data;
 
     //----------------------------------------------------------------------------

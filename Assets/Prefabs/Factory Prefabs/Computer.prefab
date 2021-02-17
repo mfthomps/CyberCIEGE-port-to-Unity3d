@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &4764116108447556385
+--- !u!1 &1475264502071157016
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,94 +8,36 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4764116108447556398}
-  - component: {fileID: 4764116108447556396}
-  - component: {fileID: 4764116108447556386}
-  - component: {fileID: 4764116108447556387}
+  - component: {fileID: 3085490777673325269}
+  - component: {fileID: 5816550724779170922}
   m_Layer: 0
-  m_Name: Computer
+  m_Name: Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4764116108447556398
+--- !u!4 &3085490777673325269
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4764116108447556385}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_GameObject: {fileID: 1475264502071157016}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 4764116108447556398}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &4764116108447556396
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4764116108447556385}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 15, y: 15, z: 15}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4764116108447556386
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4764116108447556385}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad2ba02ede3b5de4980510a9a940dfe2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _organizationDict: {fileID: 11400000, guid: 084ceb66dd0805942b777834835ca759, type: 2}
-  networkListVariable: {fileID: 11400000, guid: ab62fe5bddd1eff4fb1cc975bf0771d3,
-    type: 2}
-  computerListVariable: {fileID: 11400000, guid: 8380099111649e944adcc17e9f804d36,
-    type: 2}
-  mutuallyExclusivePolicyGroups: {fileID: 11400000, guid: b49cd46a6d3eb4c4b8044762885b0b9f,
-    type: 2}
-  policyEnabled: {fileID: 11400000, guid: af7e939216519ea4eb7c27cc8feac589, type: 2}
-  policyDisabled: {fileID: 11400000, guid: 6cebf682dcfec3340a757ba6a27a35fc, type: 2}
-  localAccountAdded: {fileID: 11400000, guid: 586bb7e22609e6a4db0b5d375325f711, type: 2}
-  localAccountRemoved: {fileID: 11400000, guid: d96d991083b14d84ba8e9b6f862e2e4b,
-    type: 2}
-  authenticationServerAdded: {fileID: 11400000, guid: 5bc47f5f4bb5ef742a6f06852e8a2c8d,
-    type: 2}
-  authenticationServerRemoved: {fileID: 11400000, guid: ecc425d820c268c4ca6ef253214dd31e,
-    type: 2}
-  profileAdded: {fileID: 11400000, guid: 0e533b8e7a6bdd74dac8b5299e763298, type: 2}
-  profileRemoved: {fileID: 11400000, guid: 642c724abd5c8cc448811e14a43bd13b, type: 2}
-  _data:
-    component_name: 
-    description: 
-    hw: 
-    cost: 0
-    position: -1
-    authenticatingServer: 
-    hw_name: 
-    isServer: 0
-    assignedUser: 
-    os: 
-    availability: 0
-    domain: 
---- !u!137 &4764116108447556387
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!137 &5816550724779170922
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4764116108447556385}
+  m_GameObject: {fileID: 1475264502071157016}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -140,3 +82,93 @@ SkinnedMeshRenderer:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
   m_DirtyAABB: 1
+--- !u!1 &4764116108447556385
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4764116108447556398}
+  - component: {fileID: 4764116108447556396}
+  - component: {fileID: 4764116108447556386}
+  m_Layer: 0
+  m_Name: Computer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4764116108447556398
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4764116108447556385}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_Children:
+  - {fileID: 3085490777673325269}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &4764116108447556396
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4764116108447556385}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 15, y: 15, z: 15}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4764116108447556386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4764116108447556385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad2ba02ede3b5de4980510a9a940dfe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _organizationDict: {fileID: 11400000, guid: 084ceb66dd0805942b777834835ca759, type: 2}
+  networkListVariable: {fileID: 11400000, guid: ab62fe5bddd1eff4fb1cc975bf0771d3,
+    type: 2}
+  computerListVariable: {fileID: 11400000, guid: 8380099111649e944adcc17e9f804d36,
+    type: 2}
+  mutuallyExclusivePolicyGroups: {fileID: 11400000, guid: b49cd46a6d3eb4c4b8044762885b0b9f,
+    type: 2}
+  _renderer: {fileID: 5816550724779170922}
+  policyEnabled: {fileID: 11400000, guid: af7e939216519ea4eb7c27cc8feac589, type: 2}
+  policyDisabled: {fileID: 11400000, guid: 6cebf682dcfec3340a757ba6a27a35fc, type: 2}
+  localAccountAdded: {fileID: 11400000, guid: 586bb7e22609e6a4db0b5d375325f711, type: 2}
+  localAccountRemoved: {fileID: 11400000, guid: d96d991083b14d84ba8e9b6f862e2e4b,
+    type: 2}
+  authenticationServerAdded: {fileID: 11400000, guid: 5bc47f5f4bb5ef742a6f06852e8a2c8d,
+    type: 2}
+  authenticationServerRemoved: {fileID: 11400000, guid: ecc425d820c268c4ca6ef253214dd31e,
+    type: 2}
+  profileAdded: {fileID: 11400000, guid: 0e533b8e7a6bdd74dac8b5299e763298, type: 2}
+  profileRemoved: {fileID: 11400000, guid: 642c724abd5c8cc448811e14a43bd13b, type: 2}
+  _data:
+    component_name: 
+    description: 
+    hw: 
+    cost: 0
+    position: -1
+    authenticatingServer: 
+    hw_name: 
+    isServer: 0
+    assignedUser: 
+    os: 
+    availability: 0
+    domain: 

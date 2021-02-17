@@ -12,6 +12,9 @@ namespace Code.Factories {
   //Factory that creates Computers
   public class ComputerFactory : ComponentFactory, iFactory {
     [SerializeField] private ComputerBehavior _prefab;
+    [SerializeField] private StringStringVariable _organizationDictionary;
+    [Tooltip("A List of WorkSpaceFurnitureVariables. One for every office type.")]
+    [SerializeField] private List<WorkSpaceFurnitureVariable> _workSpaceFurnitureVariables;
 
     [Header("Input Variables")]
     [Tooltip("Path to the user's AppData folder")]
@@ -165,13 +168,14 @@ namespace Code.Factories {
     }
     
     //-------------------------------------------------------------------------
-    private void UpdateGameObject(ComputerBehavior newComputer) {
+    //Public, for unit testing
+    public void UpdateGameObject(ComputerBehavior newComputer) {
       //This is the part that will hopefully load the correct assets from dict
       var hardwareAsset = hardwareCatalog.Value.GetHardwareAsset(newComputer.Data.hw);
       if (hardwareAsset != null) {
-        SkinnedMeshRenderer this_render = newComputer.GetComponent<SkinnedMeshRenderer>();
-        this_render.sharedMesh = hardwareAsset.mesh;
-        this_render.material = hardwareAsset.material;
+        SkinnedMeshRenderer newComputerRenderer = newComputer.GetRenderer();
+        newComputerRenderer.sharedMesh = hardwareAsset.mesh;
+        newComputerRenderer.material = hardwareAsset.material;
       }
       else {
         Debug.LogError($"Hardware asset missing for computer: {newComputer.Data.hw}");
@@ -184,16 +188,31 @@ namespace Code.Factories {
 
       WorkSpace ws = _workSpaceListVariable.GetWorkSpace(pos);
       int slot = ws.AddComputer(newComputer);
-      float xf, zf;
-      ccUtils.GridTo3dPos(ws.x, ws.y, out xf, out zf);
-
-      Vector3 v = new Vector3(xf, 0.5f, zf);
-      newComputer.transform.position = v;
+      
+      SetComputerPositionRotation(newComputer, ws);
 
       newComputer.gameObject.name = $"Computer - {newComputer.Data.component_name}";
 
       //add it to the computer list.
       computerListVariable.Add(newComputer);
+    }
+    
+    //-------------------------------------------------------------------------
+    //setup the position and rotation of the computer based on the WorkSpace direction
+    //and office-specific offsets
+    private void SetComputerPositionRotation(Component newComputer, WorkSpace ws) {
+      ccUtils.GridTo3dPos(ws.x, ws.y, out float xf, out float zf);
+      newComputer.transform.position = new Vector3(xf, 0f, zf);
+      newComputer.transform.rotation = WorkSpace.GetRotation(ws.GetDirection());
+
+      string officeName = _organizationDictionary["MainOfficeVersion"];
+      WorkSpaceFurnitureVariable furnitureVar = _workSpaceFurnitureVariables.Find(
+        x => x.Value._associatedOfficeMagicString == officeName);
+      WorkSpaceFurniture furniture = furnitureVar ? furnitureVar.Value : null;
+      if (furniture != null) {
+        var offset = furniture.ComputerOffset.GetOffset(ws.GetDirection());
+        newComputer.transform.Translate(offset);
+      }
     }
 
     // ------------------------------------------------------------------------

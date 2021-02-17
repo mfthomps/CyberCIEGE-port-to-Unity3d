@@ -29,6 +29,9 @@ namespace Code.World_Objects.Workspace {
     public List<GameObject> _random2List = new List<GameObject>();
     [Tooltip("The offset from the WorkSpace to use for the second random item, in local coordinate system")]
     public WorkSpaceFurnitureOffset Random2Offset;
+
+    [Tooltip("The offset from the WorkSpace to use for added Computers, to place them on a desk.")]
+    public WorkSpaceFurnitureOffset ComputerOffset;
     
     [Header("Server Room")]
     [Tooltip("The lamp to use in the server room")]
