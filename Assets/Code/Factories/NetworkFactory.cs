@@ -33,14 +33,14 @@ namespace Code.Factories {
     }
 
     //-------------------------------------------------------------------------
-    public void Create(string filename, Transform parent = null) {
+    public void Create(string filename) {
       var item = Instantiate(_prefab, _parent);
       item.Data = ParseNetworkData(filename, item);
       UpdateGameObject(item);
     }
 
     //-------------------------------------------------------------------------
-    public void CreateAll(string path, Transform parent = null) {
+    public void CreateAll(string path) {
       LoadNetworks(path, _parent);
     }
 
@@ -60,7 +60,7 @@ namespace Code.Factories {
       string filePath = Path.Combine(path, NETWORKS);
       ccUtils.ParseSDFFile(filePath, (tag, value) => {
         if (tag == "Network") {
-          Create(value, _parent);
+          Create(value);
         }
       });
     }

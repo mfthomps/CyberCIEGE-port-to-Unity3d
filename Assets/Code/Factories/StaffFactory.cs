@@ -35,12 +35,12 @@ namespace Code.Factories {
     }
 
     //--------------------------------------------------------------------------
-    public void Create(string filename, Transform parent = null) {
+    public void Create(string filename) {
       throw new System.NotImplementedException();
     }
 
     //--------------------------------------------------------------------------
-    public void CreateAll(string path, Transform parent = null) {
+    public void CreateAll(string path) {
       LoadStaffFromFile(path, _parent);
     }
 

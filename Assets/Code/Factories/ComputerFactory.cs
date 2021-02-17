@@ -49,7 +49,7 @@ namespace Code.Factories {
     }
 
     //-------------------------------------------------------------------------
-    public void Create(string filename, Transform parent = null) {
+    public void Create(string filename) {
       ComputerBehavior item = Instantiate(_prefab, _parent);
       item.Data = LoadOneComputer(Path.Combine(userAppPath.Value, COMPUTERS, filename), item);
       UpdateGameObject(item);
@@ -59,7 +59,7 @@ namespace Code.Factories {
     }
 
     //-------------------------------------------------------------------------
-    public void CreateAll(string path, Transform parent = null) {
+    public void CreateAll(string path) {
       LoadAllComputers(path);
     }
 

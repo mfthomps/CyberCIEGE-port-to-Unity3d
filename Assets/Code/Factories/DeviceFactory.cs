@@ -39,7 +39,7 @@ namespace Code.Factories {
     }
 
     //-------------------------------------------------------------------------
-    public void Create(string filename, Transform parent = null) {
+    public void Create(string filename) {
       DeviceBehavior item = Instantiate(_prefab, _parent);
       item.Data = LoadOneDevice(Path.Combine(userAppPath.Value, DEVICES, filename), item);
       UpdateGameObject(item);
@@ -49,7 +49,7 @@ namespace Code.Factories {
     }
 
     //-------------------------------------------------------------------------
-    public void CreateAll(string path, Transform parent = null) {
+    public void CreateAll(string path) {
       LoadDevices(path, _parent);
     }
 
@@ -61,7 +61,7 @@ namespace Code.Factories {
       string[] clist = Directory.GetFiles(cdir);
       
       foreach (string device_file in clist) {
-        Create(device_file, _parent);
+        Create(device_file);
       }
     }
     

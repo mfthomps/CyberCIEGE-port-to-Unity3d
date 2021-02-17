@@ -15,13 +15,13 @@ namespace Code.Factories {
     }
 
     //-------------------------------------------------------------------------
-    public void Create(string filename, Transform parent = null) {
+    public void Create(string filename) {
       throw new NotImplementedException();
     }
 
     //-------------------------------------------------------------------------
     // Note, I think there can be only one Organization (?)
-    public void CreateAll(string path, Transform parent = null) {
+    public void CreateAll(string path) {
       OrganizationScript newOrg = Instantiate(prefab, _parent);
       LoadOrganization(newOrg, path);
       newOrg.name = $"Organization - {newOrg.GetValue("Name")}";
