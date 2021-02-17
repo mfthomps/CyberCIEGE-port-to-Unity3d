@@ -21,6 +21,7 @@ namespace Code.User_Interface.View {
     void OnEnable() {
       input.onValueChanged.AddListener(OnToggleValueChanged);
       currentViewType.OnValueChanged += OnCurrentViewChanged;
+      OnCurrentViewChanged();
     }
 
     // ------------------------------------------------------------------------
