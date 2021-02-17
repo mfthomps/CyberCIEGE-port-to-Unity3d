@@ -9,20 +9,34 @@ namespace Code.HelpTip {
     [Tooltip("Label to display help tip message on")]
     public TMP_Text label;
 
+    private Animator animator;
+
+
     // --------------------------------------------------------------------------
     void Awake() {
+      animator = uiRoot.GetComponent<Animator>();
       HideTip();
     }
 
     // --------------------------------------------------------------------------
     public void ShowTip(string xmlMessage) {
       label.text = HelpTipParser.ParseHelpTip(xmlMessage);
-      uiRoot.SetActive(true);
+      if (animator) {
+        animator.SetBool("Active", true);
+      }
+      else {
+        uiRoot.SetActive(true);
+      }
     }
 
     // --------------------------------------------------------------------------
     public void HideTip() {
-      uiRoot.SetActive(false);
+      if (animator) {
+        animator.SetBool("Active", false);
+      }
+      else {
+        uiRoot.SetActive(false);
+      }
     }
   }
 }
