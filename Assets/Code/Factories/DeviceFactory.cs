@@ -26,6 +26,12 @@ namespace Code.Factories {
     public GameObjectVariable selectedObject;
 
     private readonly string DEVICES = "devices";
+    private Transform _parent;
+
+    //-------------------------------------------------------------------------
+    private void Start() {
+      _parent = new GameObject("Devices").transform;
+    }
 
     //-------------------------------------------------------------------------
     void OnDestroy() {
@@ -33,8 +39,8 @@ namespace Code.Factories {
     }
 
     //-------------------------------------------------------------------------
-    public void Create(string filename, Transform parent = null) {
-      DeviceBehavior item = Instantiate(_prefab, parent);
+    public void Create(string filename) {
+      DeviceBehavior item = Instantiate(_prefab, _parent);
       item.Data = LoadOneDevice(Path.Combine(userAppPath.Value, DEVICES, filename), item);
       UpdateGameObject(item);
 
@@ -43,8 +49,8 @@ namespace Code.Factories {
     }
 
     //-------------------------------------------------------------------------
-    public void CreateAll(string path, Transform parent = null) {
-      LoadDevices(path, parent);
+    public void CreateAll(string path) {
+      LoadDevices(path, _parent);
     }
 
     //-------------------------------------------------------------------------
@@ -55,7 +61,7 @@ namespace Code.Factories {
       string[] clist = Directory.GetFiles(cdir);
       
       foreach (string device_file in clist) {
-        Create(device_file, parent);
+        Create(device_file);
       }
     }
     

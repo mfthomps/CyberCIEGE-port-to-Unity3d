@@ -20,22 +20,28 @@ namespace Code.Factories {
     private readonly string NETWORKS = "networks.sdf";
     private readonly string ORGANIZATION_HAS_INTERNET = "Internet";
     private readonly string ORGANIZATION_INTERNET_NETWORK_NAME = "InternetName";
+    private Transform _parent;
 
+    //-------------------------------------------------------------------------
+    private void Start() {
+      _parent = new GameObject("Networks").transform;
+    }
+    
     //-------------------------------------------------------------------------
     void OnDestroy() {
       networkListVariable.Clear();
     }
 
     //-------------------------------------------------------------------------
-    public void Create(string filename, Transform parent = null) {
-      var item = Instantiate(_prefab, parent);
+    public void Create(string filename) {
+      var item = Instantiate(_prefab, _parent);
       item.Data = ParseNetworkData(filename, item);
       UpdateGameObject(item);
     }
 
     //-------------------------------------------------------------------------
-    public void CreateAll(string path, Transform parent = null) {
-      LoadNetworks(path, parent);
+    public void CreateAll(string path) {
+      LoadNetworks(path, _parent);
     }
 
     //-------------------------------------------------------------------------
@@ -45,7 +51,7 @@ namespace Code.Factories {
       // Add an "Internet" network if our organization has the internet
       if (_organizationDict.ContainsKey(ORGANIZATION_HAS_INTERNET) &&
           bool.Parse(_organizationDict[ORGANIZATION_HAS_INTERNET])) {
-        var item = Instantiate(_prefab, parent);
+        var item = Instantiate(_prefab, _parent);
         item.Data = CreateNetworkData(_organizationDict[ORGANIZATION_INTERNET_NETWORK_NAME], true, false);
         item.Data.isInternet = true;
         UpdateGameObject(item);
@@ -54,7 +60,7 @@ namespace Code.Factories {
       string filePath = Path.Combine(path, NETWORKS);
       ccUtils.ParseSDFFile(filePath, (tag, value) => {
         if (tag == "Network") {
-          Create(value, parent);
+          Create(value);
         }
       });
     }
