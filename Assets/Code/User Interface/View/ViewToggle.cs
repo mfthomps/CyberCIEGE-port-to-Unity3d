@@ -21,6 +21,7 @@ namespace Code.User_Interface.View {
     void OnEnable() {
       input.onValueChanged.AddListener(OnToggleValueChanged);
       currentViewType.OnValueChanged += OnCurrentViewChanged;
+      OnCurrentViewChanged();
     }
 
     // ------------------------------------------------------------------------
@@ -31,6 +32,10 @@ namespace Code.User_Interface.View {
 
     // ------------------------------------------------------------------------
     private void OnToggleValueChanged(bool isOn) {
+      if (_animatorSwap) {
+        _animatorSwap.IsUsingAlternateAnimator = isOn;
+      }
+
       // If our toggle is on and this view type isn't visible, modify the view stack
       if (isOn && !currentViewType.IsVisible(viewType)) {
         if (isMutuallyExclusive) {
@@ -44,11 +49,6 @@ namespace Code.User_Interface.View {
       else if (!isOn && currentViewType.IsVisible(viewType)) {
         currentViewType.Back();
       }
-
-      if (_animatorSwap) {
-        _animatorSwap.IsUsingAlternateAnimator = isOn;
-      }
-
     }
 
     // ------------------------------------------------------------------------
