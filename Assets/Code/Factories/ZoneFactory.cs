@@ -50,6 +50,9 @@ namespace Code.Factories {
         if (zone_file.EndsWith(".sdf")) {
           LoadOneZone(zone_file, colors[i]);
           i++;
+          if (i >= colors.Length) {
+            i = 0;
+          }
         }
     }
 
