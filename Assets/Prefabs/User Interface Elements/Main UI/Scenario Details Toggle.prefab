@@ -107,6 +107,7 @@ GameObject:
   - component: {fileID: 7443954706907146688}
   - component: {fileID: 7443954706907146690}
   - component: {fileID: 876675110446136791}
+  - component: {fileID: 5089690897437921305}
   m_Layer: 5
   m_Name: Scenario Details Toggle
   m_TagString: Untagged
@@ -178,6 +179,20 @@ MonoBehaviour:
   input: {fileID: 7443954706917423927}
   viewType: 8
   isMutuallyExclusive: 0
+  _animatorSwap: {fileID: 0}
+--- !u!114 &5089690897437921305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7443954706907146692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0f6bf630cd71454fb52b3955aa1b1e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverCursor: {fileID: 2800000, guid: c067abe023352bc42a2cc533e7b00801, type: 3}
 --- !u!1 &7443954706917423881
 GameObject:
   m_ObjectHideFlags: 0
