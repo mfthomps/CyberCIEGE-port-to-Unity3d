@@ -20,6 +20,7 @@ namespace Code.World_Objects.Zone {
     public string integrity;
     public string domain;
     public string description;
+    public int security;
 
     // ------------------------------------------------------------------------
     public Rect GetRect() {

@@ -17,6 +17,8 @@ public class IPCManagerScript : MonoBehaviour {
   public StringGameEvent gameStatusChanged;
   [Tooltip("Event to fire when a component status changes")]
   public StringGameEvent componentStatusChanged;
+  [Tooltip("Event to fire when a zone status changes")]
+  public StringGameEvent zoneStatusChanged;
   [Tooltip("Event to fire when current user message changes")]
   public StringGameEvent currentMessageChanged;
   [Tooltip("Event to fire when help tip message changes")]
@@ -89,6 +91,9 @@ public class IPCManagerScript : MonoBehaviour {
           break;
         case "component_status":
           componentStatusChanged?.Raise(message);
+          break;
+        case "zone_status":
+          zoneStatusChanged?.Raise(message);
           break;
         case "attack_log":
           attackLogVariable.Add(message);
