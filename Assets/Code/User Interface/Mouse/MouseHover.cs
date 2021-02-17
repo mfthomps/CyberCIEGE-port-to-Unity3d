@@ -10,14 +10,23 @@ public class MouseHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
   private CursorMode cursorMode = CursorMode.Auto;
   private Vector2 hotSpot = Vector2.zero;
 
+  // [Tooltip("The Selectable Element used to determine the type of cursor displayed on highlight. Optional")]
   private Selectable selectable;
 
   //----------------------------------------------------------
   // Get the first instance of a selectable (Toggle, Button) in the hierarchy
   // We are assuming there is only one, or at least the first one we find is the relevant one
   private void Start () {
-    
-    selectable = GetComponentInChildren<Selectable>();
+    // Grab the first one in the hierarchy if none is specified
+    if (!selectable) {
+      Button button = GetComponentInChildren<Button>();
+      if (button) {
+        selectable = button as Selectable;
+      }
+      else {
+        selectable = GetComponentInChildren<Selectable>();
+      }
+    }
 
   }
   
