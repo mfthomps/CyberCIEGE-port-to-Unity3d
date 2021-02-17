@@ -20,6 +20,12 @@ namespace Code.Factories {
     [SerializeField] private UserListVariable _userListVariable;
     
     private static readonly string USERS = "users";
+    private Transform _parent;
+
+    //-------------------------------------------------------------------------
+    private void Start() {
+      _parent = new GameObject("Users").transform;
+    }
 
     //-------------------------------------------------------------------------
     void OnDestroy() {
@@ -27,13 +33,13 @@ namespace Code.Factories {
     }
 
     //-------------------------------------------------------------------------
-    public void Create(string filename, Transform parent = null) {
+    public void Create(string filename) {
       throw new System.NotImplementedException();
     }
 
     //-------------------------------------------------------------------------
-    public void CreateAll(string path, Transform parent = null) {
-      LoadUsers(path, parent);
+    public void CreateAll(string path) {
+      LoadUsers(path, _parent);
     }
 
     //-------------------------------------------------------------------------
@@ -52,7 +58,7 @@ namespace Code.Factories {
             continue;
           }
           
-          GameObject newItem = Instantiate(prefab, parent);
+          GameObject newItem = Instantiate(prefab, _parent);
           UserBehavior newUser = newItem.GetComponent<UserBehavior>();
           
           int pos = data.position;

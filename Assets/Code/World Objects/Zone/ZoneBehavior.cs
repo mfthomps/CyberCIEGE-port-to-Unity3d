@@ -123,6 +123,12 @@ namespace Code.World_Objects.Zone {
     }
 
     //----------------------------------------------------------------------------
+    public void SetSecurity(int security) {
+      Data.security = security;
+      ValueChanged();
+    }
+
+    //----------------------------------------------------------------------------
     private void EnablePolicy(Policy policy) {
       _data.enabledPolicies.Add(policy.GetName());
       policyEnabled?.Raise(policy);

@@ -5,9 +5,9 @@ namespace Code.Factories {
   public interface iFactory {
     
     //create one instance using the supplied filename
-    void Create(string filename, Transform parent = null);
+    void Create(string filename);
     
     //create all using the supplied path
-    void CreateAll(string path, Transform parent = null);
+    void CreateAll(string path);
   }
 }

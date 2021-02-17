@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8451461620516502495}
   - component: {fileID: 6666170920795950482}
   - component: {fileID: 799495997683881632}
+  - component: {fileID: 4816978415063596023}
   m_Layer: 5
   m_Name: String Item Selector Item
   m_TagString: Untagged
@@ -72,6 +73,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   label: {fileID: 2709183927563456667}
   toggle: {fileID: 2709183928103364184}
+--- !u!114 &4816978415063596023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1617987838299064801}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0f6bf630cd71454fb52b3955aa1b1e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverCursor: {fileID: 2800000, guid: c067abe023352bc42a2cc533e7b00801, type: 3}
 --- !u!1 &2709183927563456665
 GameObject:
   m_ObjectHideFlags: 0
@@ -146,7 +160,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4291480266
   m_fontColor: {r: 0.7924528, g: 0.7924528, b: 0.7924528, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3

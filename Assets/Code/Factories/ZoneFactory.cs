@@ -19,19 +19,26 @@ namespace Code.Factories {
     [Tooltip("The variable containing the list of all the Zones currently in the scenario.")]
     [SerializeField] private ZoneListVariable _zoneListVariable;
 
+    private Transform _parent;
+
+    //-------------------------------------------------------------------------
+    private void Start() {
+      _parent = new GameObject("Zones").transform;
+    }
+
     //-------------------------------------------------------------------------
     void OnDestroy() {
       _zoneListVariable.Clear();
     }
 
     //-------------------------------------------------------------------------
-    public void Create(string filename, Transform parent = null) {
+    public void Create(string filename) {
       throw new System.NotImplementedException();
     }
 
     //-------------------------------------------------------------------------
-    public void CreateAll(string path, Transform parent = null) {
-      LoadZones(path, parent);
+    public void CreateAll(string path) {
+      LoadZones(path, _parent);
     }
 
     //-------------------------------------------------------------------------
@@ -50,12 +57,15 @@ namespace Code.Factories {
         if (zone_file.EndsWith(".sdf")) {
           LoadOneZone(zone_file, colors[i]);
           i++;
+          if (i >= colors.Length) {
+            i = 0;
+          }
         }
     }
 
     //-------------------------------------------------------------------------
     private void LoadOneZone(string zone_file, Color color) {
-      ZoneBehavior newZone = Instantiate(_prefab, new Vector3(1.0F, 0, 0), Quaternion.identity);
+      ZoneBehavior newZone = Instantiate(_prefab, new Vector3(1.0F, 0, 0), Quaternion.identity, _parent);
 
       newZone.gameObject.GetComponent<Renderer>().material.color = color;
       newZone.gameObject.SetActive(true);

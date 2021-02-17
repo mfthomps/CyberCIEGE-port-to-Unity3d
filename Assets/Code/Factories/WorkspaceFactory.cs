@@ -19,6 +19,8 @@ namespace Code.Factories {
     [Tooltip("The variable to contain the list of WorkSpaces in the current scenario")]
     [SerializeField] private WorkSpaceListVariable _workSpaceListVariable;
 
+    private Transform _parent;
+
     //Some local data read from the "workspace.sdf" file
     public class WorkSpaceData {
       public int PosIndex;
@@ -35,14 +37,19 @@ namespace Code.Factories {
     }
     
     //-------------------------------------------------------------------------
-    public void Create(string filename, Transform parent = null) {
+    private void Start() {
+      _parent = new GameObject("Work Spaces").transform;
+    }
+
+    //-------------------------------------------------------------------------
+    public void Create(string filename) {
       throw new NotImplementedException();
     }
     
     //-------------------------------------------------------------------------
-    public void CreateAll(string path, Transform parent = null) {
+    public void CreateAll(string path) {
       _workSpaceListVariable.Clear();
-      LoadWorkSpacesFromFile(path, parent);
+      LoadWorkSpacesFromFile(path, _parent);
     }
     
     //-------------------------------------------------------------------------
@@ -90,7 +97,7 @@ namespace Code.Factories {
 
             WorkSpace ws = new WorkSpace(x, y, dir, usage);
             _workSpaceListVariable.Add(ws);
-            var workSpace = Instantiate(_prefab, parent);
+            var workSpace = Instantiate(_prefab, _parent);
             workSpace.Data = ws;
             SetupGameObject(workSpace, wsData, _workSpaceListVariable.Value.Count-1);
           } while (line != "end" && line != null);
@@ -141,24 +148,11 @@ namespace Code.Factories {
     public void SetupGameObject(WorkSpaceScript workSpace, WorkSpaceData supplementalData, int index) { 
       ccUtils.GridTo3dPos(workSpace.Data.x, workSpace.Data.y,  out float x, out float y);
       workSpace.transform.position = new Vector3(x, 0, y);
-      workSpace.transform.rotation = GetRotation(workSpace.Data.GetDirection());
+      workSpace.transform.rotation = WorkSpace.GetRotation(workSpace.Data.GetDirection());
       
       workSpace.gameObject.name = $"WorkSpace--{index}";
       PopulateWorkspace(workSpace, supplementalData, index);
     }
-
-    //-------------------------------------------------------------------------
-    private static Quaternion GetRotation(Direction direction) {
-      switch (direction) {
-        case Direction.North: return Quaternion.Euler(0, -90, 0);
-        case Direction.East: return Quaternion.Euler(0, -180, 0);
-        case Direction.South: return Quaternion.Euler(0, 90, 0);
-        case Direction.West: return Quaternion.Euler(0, 0, 0);
-        default:
-          return Quaternion.identity;
-      }
-    }
-
 
     //-------------------------------------------------------------------------
     //Instantiate the office furniture for the supplied WorkSpace

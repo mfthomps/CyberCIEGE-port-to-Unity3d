@@ -1,4 +1,6 @@
-﻿using System.Xml.Linq;
+﻿using System.IO;
+using System.Xml;
+using System.Xml.Linq;
 using UnityEngine;
 using Shared.ScriptableVariables;
 using Code.Scriptable_Variables;
@@ -14,12 +16,33 @@ namespace Code.World_Objects.Zone {
     public GameObjectVariable selectedObject;
     [Tooltip("List of users")]
     public UserListVariable users;
+    [Header("Output Variables")]
+    [Tooltip("List of zones")]
+    public ZoneListVariable zones;
 
     private static readonly string ZONE_EVENT_ADD_ACCESS = "accessAdd";
     private static readonly string ZONE_EVENT_REMOVE_ACCESS = "accessRemove";
     private static readonly string ZONE_EVENT_TARGET_KEY_USER = "user";
     private static readonly string ZONE_EVENT_TARGET_KEY_GROUP = "group";
     private static readonly string ZONE_EVENT_TARGET_KEY_CLEARANCE = "clearance";
+
+    // --------------------------------------------------------------------------
+    public void UpdateZoneStatus(string message) {
+      StringReader xmlreader = new StringReader(message);
+      XmlDocument xml_doc = new XmlDocument();
+      xml_doc.Load(xmlreader);
+      XmlNode the_node = xml_doc.SelectSingleNode("//zone_status");
+      var zoneStatuses = the_node.SelectNodes("zone");
+      foreach (XmlNode zoneStatus in zoneStatuses) {
+        var zoneName = zoneStatus["name"].InnerText;
+        var security = int.Parse(zoneStatus["security"].InnerText);
+        foreach (var zone in zones.Value) {
+          if (zone.Data.ZoneName == zoneName) {
+            zone.SetSecurity(security);
+          }
+        }
+      }
+    }
 
     // ------------------------------------------------------------------------
     public void ToggleUserAccess(string userName) {
