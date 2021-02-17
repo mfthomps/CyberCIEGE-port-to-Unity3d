@@ -56,18 +56,12 @@ namespace Code.User_Interface.Main {
       var computersInZone = GetComputersInZone(displayedDataObject);
 
       SetStringProperty(nameLabel, displayedDataObject.ZoneName);
-      SetStringProperty(secruityRatingLabel, GetSecurityRating(displayedDataObject).ToString());
+      SetStringProperty(secruityRatingLabel, displayedDataObject.security.ToString());
       SetStringProperty(domainLabel, displayedDataObject.domain);
       SetStringProperty(descriptionLabel, displayedDataObject.description, "No Description Given");
       SetStringList(computersInZoneList, GetComputerNames(computersInZone));
       SetStringList(assetsInZoneList, GetAssetsInZone(computersInZone));
       SetStringList(usersAllowedInZoneList, GetUsersAllowedInZone(displayedDataObject));
-    }
-
-    // ------------------------------------------------------------------------
-    private int GetSecurityRating(ZoneDataObject data) {
-      // TODO: Figure out how to calculate security (check zone.cpp line 1486 to try to understand it)
-      return 0;
     }
 
     // ------------------------------------------------------------------------
