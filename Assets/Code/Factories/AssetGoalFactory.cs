@@ -15,6 +15,12 @@ namespace Code.Factories {
     [SerializeField] private AssetGoalListVariable assetGoalListVariable;
 
     private readonly string GOALS = "goals.sdf";
+    private Transform _parent;
+
+    //-------------------------------------------------------------------------
+    private void Start() {
+      _parent = new GameObject("Asset Goals").transform;
+    }
 
     //-------------------------------------------------------------------------
     void OnDestroy() {
@@ -44,14 +50,14 @@ namespace Code.Factories {
                 break;
             }
           });
-          CreateGameObject(data, parent);
+          CreateGameObject(data, _parent);
         }
       });
     }
     
     //-------------------------------------------------------------------------
     private void CreateGameObject(AssetGoalDataObject data, Transform parent) {
-      var group = Instantiate(_prefab, parent);
+      var group = Instantiate(_prefab, _parent);
       group.name = $"AssetGoal - {data.name}";
       group.Data = data;
 

@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using Code.Scriptable_Variables;
@@ -20,7 +21,13 @@ namespace Code.Factories {
     [SerializeField] private UserListVariable _userList;
 
     private static readonly string ASSETS = "assets";
-    
+    private Transform _parent;
+
+    //-------------------------------------------------------------------------
+    private void Start() {
+      _parent = new GameObject("Assets").transform;
+    }
+
     //-------------------------------------------------------------------------
     void OnDestroy() {
       assets.Clear();
@@ -33,7 +40,7 @@ namespace Code.Factories {
 
     //--------------------------------------------------------------------------
     public void CreateAll(string path, Transform parent = null) {
-      LoadAssets(path, parent);
+      LoadAssets(path, _parent);
     }
     
     //--------------------------------------------------------------------------
@@ -50,7 +57,7 @@ namespace Code.Factories {
     
     //--------------------------------------------------------------------------
     private void LoadOneAsset(string assetFile, Transform parent = null) {
-      AssetBehavior asset = Instantiate(_prefab, parent);
+      AssetBehavior asset = Instantiate(_prefab, _parent);
       asset.gameObject.SetActive(true);
       
       var data = LoadAsset(assetFile, asset);

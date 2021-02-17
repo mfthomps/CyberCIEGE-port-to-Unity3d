@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using Shared.ScriptableVariables;
@@ -33,7 +34,14 @@ namespace Code.Factories {
     [Tooltip("Currently selected object in game to show properties for")]
     public GameObjectVariable selectedObject;
 
+    private Transform _parent = null;
+
     private static readonly string COMPUTERS = "computers";
+
+    //-------------------------------------------------------------------------
+    private void Start() {
+      _parent = new GameObject("Computers").transform;
+    }
 
     //-------------------------------------------------------------------------
     void OnDestroy() {
@@ -42,7 +50,7 @@ namespace Code.Factories {
 
     //-------------------------------------------------------------------------
     public void Create(string filename, Transform parent = null) {
-      ComputerBehavior item = Instantiate(_prefab, parent);
+      ComputerBehavior item = Instantiate(_prefab, _parent);
       item.Data = LoadOneComputer(Path.Combine(userAppPath.Value, COMPUTERS, filename), item);
       UpdateGameObject(item);
 
@@ -88,7 +96,7 @@ namespace Code.Factories {
       string cdir = Path.Combine(path, COMPUTERS);
       string[] clist = Directory.GetFiles(cdir);
       foreach (string computer_file in clist) {
-        ComputerBehavior newComputer = Instantiate(_prefab, parent);
+        ComputerBehavior newComputer = Instantiate(_prefab, _parent);
         
         newComputer.gameObject.SetActive(true);
         newComputer.Data = LoadOneComputer(computer_file, newComputer);

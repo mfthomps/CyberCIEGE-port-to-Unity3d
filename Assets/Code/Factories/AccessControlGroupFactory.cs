@@ -15,6 +15,12 @@ namespace Code.Factories {
     [SerializeField] private AccessControlGroupListVariable accessControlGroupListVariable;
 
     private readonly string GROUPS = "groups.sdf";
+    private Transform _parent;
+
+    //-------------------------------------------------------------------------
+    private void Start() {
+      _parent = new GameObject("Access Control Groups").transform;
+    }
 
     //-------------------------------------------------------------------------
     void OnDestroy() {
@@ -33,7 +39,7 @@ namespace Code.Factories {
       // Add a group for the public
       var publicData = new AccessControlGroupDataObject();
       publicData.name = "Public";
-      CreateGameObject(publicData, parent);
+      CreateGameObject(publicData, _parent);
 
       var filePath = Path.Combine(path, GROUPS);
       ccUtils.ParseSDFFile(filePath, (tag, value) => {
@@ -44,7 +50,7 @@ namespace Code.Factories {
               case "Group":
                 // If we had a previous group we were working on, add it to our list
                 if (currentGroup != null) {
-                  CreateGameObject(currentGroup, parent);
+                  CreateGameObject(currentGroup, _parent);
                 }
                 currentGroup = new AccessControlGroupDataObject();
                 currentGroup.name = subValue;
@@ -59,7 +65,7 @@ namespace Code.Factories {
           });
           // If we had a previous group we were working on, add it to our list
           if (currentGroup != null) {
-            CreateGameObject(currentGroup, parent);
+            CreateGameObject(currentGroup, _parent);
           }
         }
       });
@@ -67,7 +73,7 @@ namespace Code.Factories {
     
     //-------------------------------------------------------------------------
     private void CreateGameObject(AccessControlGroupDataObject data, Transform parent) {
-      var group = Instantiate(_prefab, parent);
+      var group = Instantiate(_prefab, _parent);
       group.name = $"AccessControlGroup - {data.name}";
       group.Data = data;
 

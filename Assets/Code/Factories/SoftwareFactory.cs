@@ -15,6 +15,12 @@ namespace Code.Factories {
     [SerializeField] private SoftwareListVariable softwareListVariable;
 
     private readonly string SOFTWARE = "software.sdf";
+    private Transform _parent;
+
+    //-------------------------------------------------------------------------
+    private void Start() {
+      _parent = new GameObject("Software").transform;
+    }
 
     //-------------------------------------------------------------------------
     void OnDestroy() {
@@ -51,7 +57,7 @@ namespace Code.Factories {
                     break;
                 }
               });
-              CreateGameObject(software, parent);
+              CreateGameObject(software, _parent);
             }
           });
         }
@@ -60,7 +66,7 @@ namespace Code.Factories {
     
     //-------------------------------------------------------------------------
     private void CreateGameObject(SoftwareDataObject data, Transform parent) {
-      var group = Instantiate(_prefab, parent);
+      var group = Instantiate(_prefab, _parent);
       group.name = $"Software - {data.name}";
       group.Data = data;
 
