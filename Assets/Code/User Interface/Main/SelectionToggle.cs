@@ -7,11 +7,7 @@ public class SelectionToggle : MonoBehaviour
     // Start is called before the first frame update
 
     [SerializeField] private SwapAnimators animatorSwap;
-    
-
-    // Update is called once per frame
-    public void SetSelected(bool isOn) {
-      
+    public void SetSelected(bool isOn) {      
       if (animatorSwap) {
         animatorSwap.IsUsingAlternateAnimator = isOn;
       }
