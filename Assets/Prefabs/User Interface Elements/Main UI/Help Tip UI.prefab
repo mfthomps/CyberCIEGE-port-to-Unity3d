@@ -147,7 +147,6 @@ GameObject:
   - component: {fileID: 1525431708608713664}
   - component: {fileID: 1525431708608713671}
   - component: {fileID: 1072844258150128860}
-  - component: {fileID: 1776565558375039622}
   m_Layer: 5
   m_Name: Help Tip UI
   m_TagString: Untagged
@@ -269,19 +268,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &1776565558375039622
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1525431708608713669}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b0f6bf630cd71454fb52b3955aa1b1e8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hoverCursor: {fileID: 2800000, guid: c067abe023352bc42a2cc533e7b00801, type: 3}
 --- !u!1 &1525431709250225654
 GameObject:
   m_ObjectHideFlags: 0
@@ -295,6 +281,7 @@ GameObject:
   - component: {fileID: 1525431709250225650}
   - component: {fileID: 1525431709250225649}
   - component: {fileID: 1525431709250225648}
+  - component: {fileID: 1625841038720969200}
   m_Layer: 5
   m_Name: Message Area
   m_TagString: Untagged
@@ -399,6 +386,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
   m_VerticalFit: 2
+--- !u!114 &1625841038720969200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1525431709250225654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0f6bf630cd71454fb52b3955aa1b1e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverCursor: {fileID: 2800000, guid: c067abe023352bc42a2cc533e7b00801, type: 3}
 --- !u!1 &7085801371617752957
 GameObject:
   m_ObjectHideFlags: 0
