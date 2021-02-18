@@ -1,5 +1,50 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &784882283661178163
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6028299696339622495}
+  - component: {fileID: 2571269388444292247}
+  m_Layer: 0
+  m_Name: ViewPoint Factory
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6028299696339622495
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 784882283661178163}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6549311440533916876}
+  m_RootOrder: 14
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2571269388444292247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 784882283661178163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63008daef658440cbfaad5e4641cdb09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _prefab: {fileID: 7474375097876818517, guid: 81f594faabeab7441b09b015e9523baa, type: 3}
+  _list: {fileID: 11400000, guid: 211ae25c4af962d4787bfa822de43db3, type: 2}
 --- !u!1 &1016754258418850480
 GameObject:
   m_ObjectHideFlags: 0
@@ -334,6 +379,7 @@ Transform:
   - {fileID: 6549311441201119022}
   - {fileID: 6549311439845486867}
   - {fileID: 6549311439739493566}
+  - {fileID: 6028299696339622495}
   m_Father: {fileID: 6549311441616935762}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -741,6 +787,10 @@ MonoBehaviour:
   _userFactory: {fileID: 6549311441201119023}
   _workspaceFactory: {fileID: 6549311439845486864}
   _zoneFactory: {fileID: 6549311439739493567}
+  _viewPointFactory: {fileID: 2571269388444292247}
+  _factoryList: []
+  references:
+    version: 1
 --- !u!1 &7811941527675944885
 GameObject:
   m_ObjectHideFlags: 0
