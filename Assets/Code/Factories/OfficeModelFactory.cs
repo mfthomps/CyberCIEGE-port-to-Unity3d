@@ -26,7 +26,7 @@ namespace Code.Factories {
         Instantiate(prefab);
       }
       else {
-        Debug.LogError("Could not find a prefab mapping for the office of type " + prefabKey);
+        Debug.LogError($"Could not find a prefab mapping for the office of type '{prefabKey}'");
       }
     }
   }

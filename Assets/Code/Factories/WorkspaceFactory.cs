@@ -166,7 +166,7 @@ namespace Code.Factories {
       WorkSpaceFurniture furniture = furnitureVar ? furnitureVar.Value : null;
       
       if (furniture == null) {
-        Debug.LogError($"No furniture object found for '{officeName}'");
+        Debug.LogError($"No WorkSpaceFurniture found for office '{officeName}'");
         return; 
       }
       
