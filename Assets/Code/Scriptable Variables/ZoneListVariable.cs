@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Code.World_Objects.Computer;
 using Code.World_Objects.Zone;
 
 namespace Code.Scriptable_Variables {
@@ -8,6 +9,39 @@ namespace Code.Scriptable_Variables {
     [ContextMenu("Reset To Default Value")]
     public void ContextMenuReset() {
       Reset();
+    }
+
+    //---------------------------------------------------------------------------
+    public ZoneBehavior GetZone(ComputerBehavior computer) {
+      return GetZone(computer.transform);
+    }
+
+    //---------------------------------------------------------------------------
+    private ZoneBehavior GetZone(Transform transform) {
+      ZoneBehavior containingZone = null;
+      foreach (var zone in Value) {
+        // Is this computer inside this zone?
+        if (IsTransformInZone(transform, zone)) {
+          // If we didn't already have a containing zone or this zone is inside the other one,
+          // then replace our containing zone
+          if (containingZone == null || DoesZoneEncapsulatesOtherZone(containingZone, zone)) {
+            containingZone = zone;
+          }
+        }
+      }
+      return containingZone;
+    }
+
+    //---------------------------------------------------------------------------
+    private bool IsTransformInZone(Transform transform, ZoneBehavior zone) {
+      return zone.Data.GetRect().Contains(new Vector2(transform.position.x, transform.position.z));
+    }
+
+    //---------------------------------------------------------------------------
+    private bool DoesZoneEncapsulatesOtherZone(ZoneBehavior zone, ZoneBehavior other) {
+      var zoneRect = zone.Data.GetRect();
+      var otherRect = other.Data.GetRect();
+      return zoneRect.Contains(otherRect.min) && zoneRect.Contains(otherRect.max);
     }
   }
 

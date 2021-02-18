@@ -37,23 +37,23 @@ namespace Code.User_Interface.Main {
     [Tooltip("List for selected zone's users allowed in zone")]
     public StringList usersAllowedInZoneList;
 
-    private ZoneBehavior _displayedUser;
+    private ZoneBehavior _displayedZone;
 
     // ------------------------------------------------------------------------
     protected override void DisplayProperties(ZoneBehavior component) {
-      if (_displayedUser != null) {
-        _displayedUser.OnValueChanged -= UpdateUI;
+      if (_displayedZone != null) {
+        _displayedZone.OnValueChanged -= UpdateUI;
       }
 
-      _displayedUser = component;
-      _displayedUser.OnValueChanged += UpdateUI;
+      _displayedZone = component;
+      _displayedZone.OnValueChanged += UpdateUI;
       UpdateUI();
     }
 
     // ------------------------------------------------------------------------
     private void UpdateUI() {
-      var displayedDataObject = _displayedUser.Data;
-      var computersInZone = GetComputersInZone(displayedDataObject);
+      var displayedDataObject = _displayedZone.Data;
+      var computersInZone = GetComputersInZone(_displayedZone);
 
       SetStringProperty(nameLabel, displayedDataObject.ZoneName);
       SetStringProperty(secruityRatingLabel, displayedDataObject.security.ToString());
@@ -65,30 +65,12 @@ namespace Code.User_Interface.Main {
     }
 
     // ------------------------------------------------------------------------
-    private HashSet<ComputerBehavior> GetComputersInZone(ZoneDataObject data) {
+    private HashSet<ComputerBehavior> GetComputersInZone(ZoneBehavior zone) {
       var computersInZone = new HashSet<ComputerBehavior>();
 
-      // First get all computers in the zone
-      var zoneRect = data.GetRect();
       foreach (var computer in computers.Value) {
-        if (zoneRect.Contains(new Vector2(computer.transform.position.x, computer.transform.position.z))) {
+        if (zones.GetZone(computer) == zone) {
           computersInZone.Add(computer);
-        }
-      }
-
-      // Then remove any computers that are in other zones that this zone encapsulates
-      foreach (var zone in zones.Value) {
-        if (zone.Data != data) {
-          // See if this zone fully encapsulates the other zone
-          var otherRect = zone.Data.GetRect();
-          if (zoneRect.Contains(otherRect.min) && zoneRect.Contains(otherRect.max)) {
-            // Check for each computer in the other zone and remove it from our list
-            foreach (var computer in computers.Value) {
-              if (otherRect.Contains(new Vector2(computer.transform.position.x, computer.transform.position.z))) {
-                computersInZone.Remove(computer);
-              }
-            }
-          }
         }
       }
 

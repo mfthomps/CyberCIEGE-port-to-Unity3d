@@ -1,12 +1,19 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
+using Code.Scriptable_Variables;
 using Code.World_Objects.Computer;
 
 namespace Code.User_Interface.Main {
   public class ComputerObjectPropertyPanel : GenericObjectPropertyPanel<ComputerBehavior> {
+    [Header("Input Variables")]
+    [Tooltip("List of zones in scenario")]
+    public ZoneListVariable zones;
     [Header("UI Elements")]
     [Tooltip("Label for selected computer's name")]
     public TMP_Text nameLabel;
+    [Tooltip("Toggle for whether the computer is connected to a network or not")]
+    public Toggle connectedLight;
     [Tooltip("Label for selected computer's assigned user")]
     public TMP_Text assignedUserLabel;
     [Tooltip("Label for selected computer's OS")]
@@ -17,6 +24,8 @@ namespace Code.User_Interface.Main {
     public TMP_Text availabilityLabel;
     [Tooltip("Label for selected computer's domain")]
     public TMP_Text domainLabel;
+    [Tooltip("Label for selected computer's current zone")]
+    public TMP_Text zoneLabel;
     [Tooltip("List for selected computer's software")]
     public StringList softwareList;
     [Tooltip("List for selected computer's assets")]
@@ -42,11 +51,13 @@ namespace Code.User_Interface.Main {
       var computerDataObject = _displayedComputer.Data as ComputerDataObject;
 
       SetStringProperty(nameLabel, computerDataObject.component_name, computerDataObject.hw_name);
+      connectedLight.isOn = computerDataObject.network_list.Count > 0;
       SetStringProperty(assignedUserLabel, computerDataObject.assignedUser, "No One");
       SetStringProperty(osLabel, computerDataObject.os);
       SetStringProperty(hardwareLabel, computerDataObject.hw, computerDataObject.hw_name);
       SetStringProperty(availabilityLabel, $"{computerDataObject.availability}");
       SetStringProperty(domainLabel, computerDataObject.domain);
+      SetStringProperty(zoneLabel, zones.GetZone(_displayedComputer)?.Data.ZoneName, "Unknown");
       SetStringList(softwareList, computerDataObject.software_list);
       SetStringList(assetList, computerDataObject.asset_list);
       SetStringList(networkList, computerDataObject.network_list);
