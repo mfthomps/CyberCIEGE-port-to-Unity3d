@@ -129,7 +129,20 @@ namespace Code.World_Objects.Workspace {
         default: return Direction.North;
       }
     }
-
+    
+    //-------------------------------------------------------------------------
+    //Get the Unity orientation that corresponds with the supplied WorkSpace direction
+    public static Quaternion GetRotation(Direction direction) {
+      switch (direction) {
+        case Direction.North: return Quaternion.Euler(0, -90, 0);
+        case Direction.East: return Quaternion.Euler(0, -180, 0);
+        case Direction.South: return Quaternion.Euler(0, 90, 0);
+        case Direction.West: return Quaternion.Euler(0, 0, 0);
+        default:
+          return Quaternion.identity;
+      }
+    }
+    
     //---------------------------------------------------------------------------
     public WorkSpaceType GetWorkSpaceType() {
       switch (usage) {

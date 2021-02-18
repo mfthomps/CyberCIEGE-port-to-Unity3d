@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2377024967062171707}
   - component: {fileID: 2377024967062171701}
   - component: {fileID: 2377024967062171700}
+  - component: {fileID: 4007213819833734741}
   m_Layer: 5
   m_Name: Background
   m_TagString: Untagged
@@ -75,6 +76,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4007213819833734741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2377024967062171706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0f6bf630cd71454fb52b3955aa1b1e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverCursor: {fileID: 2800000, guid: c067abe023352bc42a2cc533e7b00801, type: 3}
 --- !u!1 &2377024967491479899
 GameObject:
   m_ObjectHideFlags: 0
@@ -162,7 +176,7 @@ GameObject:
   - component: {fileID: 2377024967692857455}
   - component: {fileID: 1596157770050165855}
   m_Layer: 5
-  m_Name: ft-ui-Toggle
+  m_Name: ft-ui-Toggle 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

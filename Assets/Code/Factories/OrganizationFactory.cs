@@ -6,16 +6,23 @@ namespace Code.Factories {
   //Factory that creates Organization GameObjects
   public class OrganizationFactory : MonoBehaviour, iFactory {
     [SerializeField] private OrganizationScript prefab;
-    
+
+    private Transform _parent;
+
     //-------------------------------------------------------------------------
-    public void Create(string filename, Transform parent = null) {
+    private void Start() {
+      _parent = new GameObject("Organizations").transform;
+    }
+
+    //-------------------------------------------------------------------------
+    public void Create(string filename) {
       throw new NotImplementedException();
     }
 
     //-------------------------------------------------------------------------
     // Note, I think there can be only one Organization (?)
-    public void CreateAll(string path, Transform parent = null) {
-      OrganizationScript newOrg = Instantiate(prefab, parent);
+    public void CreateAll(string path) {
+      OrganizationScript newOrg = Instantiate(prefab, _parent);
       LoadOrganization(newOrg, path);
       newOrg.name = $"Organization - {newOrg.GetValue("Name")}";
     }

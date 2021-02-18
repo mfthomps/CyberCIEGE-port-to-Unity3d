@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 3249270980878181610}
   - component: {fileID: 3249270980878181613}
   - component: {fileID: 3249270980878181615}
-  - component: {fileID: 3249270980878181612}
   m_Layer: 0
   m_Name: Device
   m_TagString: Untagged
@@ -30,7 +29,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 251.40431, y: 179.6727, z: 92.83957}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
-  m_Children: []
+  m_Children:
+  - {fileID: 813157424361746224}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -67,6 +67,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab584866eae8f9b43983b9ead4949a8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _renderer: {fileID: 1268509028549072055}
   _organizationDict: {fileID: 11400000, guid: 084ceb66dd0805942b777834835ca759, type: 2}
   networkListVariable: {fileID: 11400000, guid: ab62fe5bddd1eff4fb1cc975bf0771d3,
     type: 2}
@@ -76,14 +77,46 @@ MonoBehaviour:
     hw: 
     cost: 0
     position: -1
-    network_list: []
---- !u!137 &3249270980878181612
+    os: 
+    vnpKeyType: 
+--- !u!1 &7890583084049625845
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 813157424361746224}
+  - component: {fileID: 1268509028549072055}
+  m_Layer: 0
+  m_Name: Mesh
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &813157424361746224
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7890583084049625845}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3249270980878181611}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!137 &1268509028549072055
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3249270980878181614}
+  m_GameObject: {fileID: 7890583084049625845}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
