@@ -12,6 +12,8 @@ namespace Code.User_Interface {
     [Tooltip("Toggle for selecting this item")]
     public Toggle toggle;
 
+    [SerializeField] private SwapAnimators animatorSwap;
+
     // ------------------------------------------------------------------------
     public override void SetItem(string item) {
       label.text = item;
