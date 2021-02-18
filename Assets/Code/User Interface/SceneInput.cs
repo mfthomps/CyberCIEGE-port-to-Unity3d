@@ -4,7 +4,7 @@ using Shared.ScriptableVariables;
 
 namespace Code.User_Interface {
   // Routes Unity input into various GameEvents so there is one place in charge of handling it all
-  public class SceneInput : MonoBehaviour, IPointerClickHandler, IDragHandler, IScrollHandler {
+  public class SceneInput : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IScrollHandler {
     [Header("Output Events")]
     [Tooltip("Fired when a left click happens")]
     public Vector2GameEvent sceneLeftClick;
@@ -32,6 +32,12 @@ namespace Code.User_Interface {
     }
 
     // ------------------------------------------------------------------------
+    public void OnBeginDrag(PointerEventData data) {
+      // Empty implementation just so the PointerEventPassThrough system works
+      // with this one
+    }
+
+    // ------------------------------------------------------------------------
     public void OnDrag(PointerEventData data) {
       switch (data.button) {
         case PointerEventData.InputButton.Left:
@@ -41,6 +47,12 @@ namespace Code.User_Interface {
           sceneRightDrag?.Raise(data.delta);
           break;
       }
+    }
+
+    // ------------------------------------------------------------------------
+    public void OnEndDrag(PointerEventData data) {
+      // Empty implementation just so the PointerEventPassThrough system works
+      // with this one
     }
 
     // ------------------------------------------------------------------------
