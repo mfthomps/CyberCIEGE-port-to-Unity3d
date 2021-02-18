@@ -32,10 +32,6 @@ namespace Code.User_Interface {
     // ------------------------------------------------------------------------
     public void SetSelected(bool isOn) {
       toggle.isOn = isOn;
-
-      if (animatorSwap) {
-        animatorSwap.IsUsingAlternateAnimator = toggle.isOn;
-      }
     }
   }
 }
