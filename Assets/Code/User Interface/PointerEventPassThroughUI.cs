@@ -29,6 +29,7 @@ namespace Code.User_Interface {
     public void OnPointerEnter(PointerEventData data) {
       // If something else had the pointer down event, grab it so we get the pointer up and click events
       if (data.pointerPress != null) {
+        currentPointerDownObject = data.pointerPress;
         data.pointerPress = gameObject;
       }
       onPointerEnter?.Invoke();
@@ -38,12 +39,7 @@ namespace Code.User_Interface {
     // ------------------------------------------------------------------------
     public void OnPointerExit(PointerEventData data) {
       onPointerExit?.Invoke();
-      if (currentPointerEnterObject != null) {
-        var pointerEnterHandler = currentPointerEnterObject.GetComponentInParent<IPointerExitHandler>();
-        if (pointerEnterHandler != null) {
-          pointerEnterHandler.OnPointerExit(data);
-        }
-      }
+      CallPointerExits(currentPointerEnterObject, data);
       if (_onPointerMove != null) {
         StopCoroutine(_onPointerMove);
         _onPointerMove = null;
@@ -69,8 +65,11 @@ namespace Code.User_Interface {
     public void OnPointerClick(PointerEventData data) {
       if (currentDragObject == null) {
         var currentClickObject = GetObjectAtPointerPosition<IPointerClickHandler>(data);
-        if (currentClickObject == currentPointerDownObject) {
+        if (IsChildOf(currentClickObject, currentPointerDownObject)) {
           HandlePointerEvent<IPointerClickHandler>(currentPointerDownObject, onPointerClick, (objectToTrigger) => objectToTrigger.OnPointerClick(data));
+        }
+        else if (currentPointerDownObject == null) {
+          onPointerClick?.Invoke();
         }
       }
     }
@@ -102,9 +101,7 @@ namespace Code.User_Interface {
     private IEnumerator OnPointerMove() {
       var currentPointerData = GetCurrentPointerData();
       var previousPointerEnterObject = GetObjectAtPointerPosition<IPointerEnterHandler>(currentPointerData);
-      if (previousPointerEnterObject != null) {
-        previousPointerEnterObject.GetComponentInParent<IPointerEnterHandler>().OnPointerEnter(currentPointerData);
-      }
+      CallPointerEnters(previousPointerEnterObject, currentPointerData);
 
       currentPointerEnterObject = null;
       while (true) {
@@ -115,20 +112,10 @@ namespace Code.User_Interface {
         // If we the mouse is over a different object, then change the previous pointer objects
         if (previousPointerEnterObject != currentPointerEnterObject) {
           // If we had a previous pointer enter object, make sure pointer exit gets handled appropriately
-          if (previousPointerEnterObject != null) {
-            var pointerExitHandler = previousPointerEnterObject.GetComponentInParent<IPointerExitHandler>();
-            if (pointerExitHandler != null) {
-              pointerExitHandler.OnPointerExit(currentPointerData);
-            }
-          }
+          CallPointerExits(previousPointerEnterObject, currentPointerData);
 
           // If we have an object the pointer is currently over, then handle the pointer enter event
-          if (currentPointerEnterObject != null) {
-            var pointerEnterHandler = currentPointerEnterObject.GetComponentInParent<IPointerEnterHandler>();
-            if (pointerEnterHandler != null) {
-              pointerEnterHandler.OnPointerEnter(currentPointerData);
-            }
-          }
+          CallPointerEnters(currentPointerEnterObject, currentPointerData);
 
           // Swap the last object we PointerEntered on
           previousPointerEnterObject = currentPointerEnterObject;
@@ -145,8 +132,8 @@ namespace Code.User_Interface {
 
       // Pass-through click event to all IPointerClickHandler components
       if (gameObject != null) {
-        var objectToTrigger = gameObject.GetComponentInParent<T>();
-        if (objectToTrigger != null) {
+        var objectsToTrigger = gameObject.GetComponentsInParent<T>();
+        foreach (var objectToTrigger in objectsToTrigger) {
           eventCallback(objectToTrigger);
         }
       }
@@ -186,6 +173,34 @@ namespace Code.User_Interface {
       var data = new PointerEventData(EventSystem.current);
       data.position = Input.mousePosition;
       return data;
+    }
+
+    // ------------------------------------------------------------------------
+    private void CallPointerEnters(GameObject gameObject, PointerEventData eventData) {
+      if (gameObject != null) {
+        var pointerEnterHandlers = gameObject.GetComponentsInParent<IPointerEnterHandler>();
+        foreach (var pointerEnterHandler in pointerEnterHandlers) {
+          pointerEnterHandler.OnPointerEnter(eventData);
+        }
+      }
+    }
+
+    // ------------------------------------------------------------------------
+    private void CallPointerExits(GameObject gameObject, PointerEventData eventData) {
+      if (gameObject != null) {
+        var pointerExitHandlers = gameObject.GetComponentsInParent<IPointerExitHandler>();
+        foreach (var pointerExitHandler in pointerExitHandlers) {
+          pointerExitHandler.OnPointerExit(eventData);
+        }
+      }
+    }
+
+    // ------------------------------------------------------------------------
+    private bool IsChildOf(GameObject gameObject1, GameObject gameObject2) {
+      if (gameObject1 != null && gameObject2 != null) {
+        return gameObject1.transform.IsChildOf(gameObject2.transform);
+      }
+      return false;
     }
   }
 }
