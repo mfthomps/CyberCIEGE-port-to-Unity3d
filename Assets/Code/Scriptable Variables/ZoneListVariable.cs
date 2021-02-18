@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using Code.World_Objects.Computer;
+using Code.World_Objects.Device;
+using Code.World_Objects.User;
 using Code.World_Objects.Zone;
 
 namespace Code.Scriptable_Variables {
@@ -14,6 +16,16 @@ namespace Code.Scriptable_Variables {
     //---------------------------------------------------------------------------
     public ZoneBehavior GetZone(ComputerBehavior computer) {
       return GetZone(computer.transform);
+    }
+
+    //---------------------------------------------------------------------------
+    public ZoneBehavior GetZone(DeviceBehavior device) {
+      return GetZone(device.transform);
+    }
+
+    //---------------------------------------------------------------------------
+    public ZoneBehavior GetZone(UserBehavior user) {
+      return GetZone(user.transform);
     }
 
     //---------------------------------------------------------------------------

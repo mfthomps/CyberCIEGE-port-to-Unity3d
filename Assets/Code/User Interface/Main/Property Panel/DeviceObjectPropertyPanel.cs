@@ -1,9 +1,13 @@
 ﻿using Code.World_Objects.Device;
 using UnityEngine;
 using TMPro;
+using Code.Scriptable_Variables;
 
 namespace Code.User_Interface.Main {
   public class DeviceObjectPropertyPanel : GenericObjectPropertyPanel<DeviceBehavior> {
+    [Header("Input Variables")]
+    [Tooltip("List of zones in scenario")]
+    public ZoneListVariable zones;
     [Header("UI Elements")]
     [Tooltip("Label for selected object's name")]
     public TMP_Text nameLabel;
@@ -13,6 +17,8 @@ namespace Code.User_Interface.Main {
     public TMP_Text hardwareLabel;
     [Tooltip("Label for selected device's VPN key type")]
     public TMP_Text vpnKeyTypeLabel;
+    [Tooltip("Label for selected computer's current zone")]
+    public TMP_Text zoneLabel;
     [Tooltip("List for selected device's connected networks")]
     public StringList networkList;
 
@@ -37,6 +43,7 @@ namespace Code.User_Interface.Main {
       SetStringProperty(osLabel, deviceDataObject.os);
       SetStringProperty(hardwareLabel, deviceDataObject.hw);
       SetStringProperty(vpnKeyTypeLabel, deviceDataObject.vnpKeyType);
+      SetStringProperty(zoneLabel, zones.GetZone(_displayedDevice)?.Data.ZoneName, "Unknown");
       SetStringList(networkList, deviceDataObject.network_list);
     }
   }

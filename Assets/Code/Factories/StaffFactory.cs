@@ -131,6 +131,11 @@ namespace Code.Factories {
               case "UserDescription":
                 data.description = subValue;
                 break;
+              case "Happiness":
+                if (!int.TryParse(subValue, out data.happiness)) {
+                  Debug.LogError($"StaffFactory parsing happiness {subValue}");
+                }
+                break;
               case "Productivity":
                 if (!int.TryParse(subValue, out data.productivity)) {
                   Debug.LogError($"StaffFactory parsing productivity {subValue}");

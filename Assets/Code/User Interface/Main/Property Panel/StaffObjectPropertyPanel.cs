@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using TMPro;
 using Code.World_Objects.Staff;
 
@@ -10,6 +9,10 @@ namespace Code.User_Interface.Main {
     public TMP_Text nameLabel;
     [Tooltip("Label for selected staff's availability")]
     public TMP_Text availabilityLabel;
+    [Tooltip("Label for selected staff's department")]
+    public TMP_Text departmentLabel;
+    [Tooltip("Range for selected user's happiness")]
+    public RangeProperty happinessRange;
     [Tooltip("Range for selected staff's productivity")]
     public RangeProperty productivityRange;
     [Tooltip("Label for selected staff's cost")]
@@ -38,6 +41,8 @@ namespace Code.User_Interface.Main {
 
       SetStringProperty(nameLabel, displayedDataObject.user_name);
       SetStringProperty(availabilityLabel, GetAvailabilityString(displayedDataObject.daysTillAvailable));
+      SetStringProperty(departmentLabel, GetDepartmentString(displayedDataObject.type));
+      SetRangeProperty(happinessRange, displayedDataObject.happiness);
       SetRangeProperty(productivityRange, displayedDataObject.productivity);
       SetStringProperty(costLabel, string.Format($"${displayedDataObject.cost} / hour"));
       SetStringList(groupList, displayedDataObject.groups);
@@ -53,6 +58,17 @@ namespace Code.User_Interface.Main {
         return "Now!";
       }
       return "Hired";
+    }
+
+    // ------------------------------------------------------------------------
+    private string GetDepartmentString(StaffType type) {
+      switch (type) {
+        case StaffType.Tech:
+          return "Tech";
+        case StaffType.Security:
+          return "Security";
+      }
+      return "Invalid";
     }
   }
 }
