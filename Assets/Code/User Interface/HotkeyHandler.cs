@@ -21,6 +21,7 @@ namespace Code.User_Interface {
         { KeyCode.Question, DumpConditions },
         { KeyCode.D, NextDevice },
         { KeyCode.C, NextComputer },
+        { KeyCode.Tab, NextViewPoint },
       };
     }
 
@@ -57,6 +58,11 @@ namespace Code.User_Interface {
     // ------------------------------------------------------------------------
     private void NextComputer() {
       moveCameraToNextObject?.Raise(WorldObjectType.Computer);
+    }
+    
+    // ------------------------------------------------------------------------
+    private void NextViewPoint() {
+      moveCameraToNextObject?.Raise(WorldObjectType.ViewPoint);
     }
   }
 }

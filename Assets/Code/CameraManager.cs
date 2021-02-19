@@ -1,4 +1,5 @@
 ﻿using System;
+using Cinemachine;
 using UnityEngine;
 using Code.Scriptable_Variables;
 using Code.World_Objects;
@@ -12,12 +13,14 @@ namespace Code.Camera {
     [SerializeField] private ComputerListVariable _computerList;
     [Tooltip("List of devices in the scenario")]
     [SerializeField] private DeviceListVariable _deviceList;
+    [Tooltip("List of ViewPoints in the scenario")]
+    [SerializeField] private ViewPointListVariable _viewPointList;
 
     [Header("Cameras")]
     [Tooltip("Transform the camera is targeting")]
     public Transform cameraTarget;
-    [Tooltip("Cinemachine virtual camera we are controlling")]
-    public CinemachineCameraOffset cameraOffset;
+    [Tooltip("Transform the camera is following (attached to)")]
+    public Transform cameraFollow;
 
     [Header("Customization")]
     [Tooltip("Scalar to apply to camera panning offset amounts")]
@@ -42,26 +45,31 @@ namespace Code.Camera {
 
     private float _minZoomInterval;
     private float _maxZoomInterval;
-    private float _currentZoomLevel;
-    private float _desiredZoomLevel;
+    [SerializeField] private float _currentZoomLevel;
+    [SerializeField] private float _desiredZoomLevel;
 
     // ------------------------------------------------------------------------
     void Awake() {
       _objectCircularLists.SetList(_userList.Value, WorldObjectType.User);
       _objectCircularLists.SetList(_computerList.Value, WorldObjectType.Computer);
       _objectCircularLists.SetList(_deviceList.Value, WorldObjectType.Device);
+      _objectCircularLists.SetList(_viewPointList.Value, WorldObjectType.ViewPoint);
 
       _minZoomInterval = Mathf.Log10(minZoomDistance) / Mathf.Log10(zoomExponentialGrowthRate);
       _maxZoomInterval = Mathf.Log10(maxZoomDistance) / Mathf.Log10(zoomExponentialGrowthRate);
       _desiredZoomLevel = -startingZoomDistance;
       _currentZoomLevel = Mathf.Log10(startingZoomDistance) / Mathf.Log10(zoomExponentialGrowthRate);
-      cameraOffset.m_Offset.z = _desiredZoomLevel;
     }
 
     // ------------------------------------------------------------------------
     void Update() {
-      if (cameraOffset.m_Offset.z != _desiredZoomLevel) {
-        cameraOffset.m_Offset.z = Mathf.Lerp(cameraOffset.m_Offset.z, _desiredZoomLevel, Time.deltaTime * zoomSpeed);
+      //The desired position the follow camera should be at. Based on the distance
+      //behind the target camera.
+      var desiredFollowPos = cameraTarget.position + (cameraTarget.forward * _desiredZoomLevel);
+
+      if (cameraFollow.position != desiredFollowPos) {
+        //smooth the camera zooming
+        cameraFollow.position = Vector3.Lerp(cameraFollow.position, desiredFollowPos, Time.deltaTime * zoomSpeed);
       }
     }
 
@@ -70,24 +78,45 @@ namespace Code.Camera {
       //tweak the pan amount based on the current zoom level. Closer = slower pan, further = faster
       float percZoom = (_currentZoomLevel - _minZoomInterval) / (_maxZoomInterval - _minZoomInterval);
       float zoomAdj = Math.Max(percZoom, 0.1f);
-      cameraTarget.Translate(new Vector3(-delta.x * panScalar, 0.0f, -delta.y * panScalar) * zoomAdj);
+
+      //move both the target camera and the follow camera by the same amount, based
+      //on the camera's perspective.
+      var right = UnityEngine.Camera.main.transform.right * -delta.x * panScalar * zoomAdj;
+      var fwd = UnityEngine.Camera.main.transform.forward * -delta.y * panScalar * zoomAdj;
+      var translation = right + fwd;
+      translation.y = 0; //panning shouldn't affect the camera's up/down
+      cameraTarget.Translate(translation, Space.World);
+      cameraFollow.Translate(translation, Space.World);
     }
 
     // ------------------------------------------------------------------------
     public void RotateCamera(Vector2 delta) {
-      cameraTarget.Rotate(0.0f, delta.x * rotateScalar, 0.0f);
+      cameraTarget.Rotate(0.0f, delta.x * rotateScalar, 0.0f, Space.World);
+      cameraFollow.transform.RotateAround(cameraTarget.transform.position, Vector3.up, delta.x * rotateScalar);
     }
 
     // ------------------------------------------------------------------------
     public void ZoomCamera(Vector2 delta) {
       ZoomCamera(-delta.y * zoomScalar);
     }
+    
+    // ------------------------------------------------------------------------
+    public void ZoomCamera(float offset) {
+      _currentZoomLevel = Mathf.Clamp(_currentZoomLevel + offset, _minZoomInterval, _maxZoomInterval);
+      _desiredZoomLevel = -Mathf.Clamp(Mathf.Pow(zoomExponentialGrowthRate, _currentZoomLevel), minZoomDistance, maxZoomDistance);
+    }
 
     // ------------------------------------------------------------------------
     public void MoveCameraToPreviousObject(WorldObjectType type) {
       var target =_objectCircularLists.GetPrev(type);
+
       if (target) {
-        MoveCameraToObject(target.transform);
+        if (target.Type() == WorldObjectType.ViewPoint) {
+          MoveCameraToViewPoint(target as ViewPoint.ViewPoint);
+        }
+        else {
+          MoveCameraTarget(target.transform);
+        }
       }
     }
     
@@ -95,35 +124,47 @@ namespace Code.Camera {
     public void MoveCameraToNextObject(WorldObjectType type) {
       var target =_objectCircularLists.GetNext(type);
       if (target) {
-        MoveCameraToObject(target.transform);
+        if (target.Type() == WorldObjectType.ViewPoint) {
+          MoveCameraToViewPoint(target as ViewPoint.ViewPoint);
+        }
+        else {
+          MoveCameraTarget(target.transform);
+        }
       }
     }
     
     // ------------------------------------------------------------------------
     public void OnScenarioStarted() {
-      //TODO Where should the camera start from?
+      //Move to the first ViewPoint, if there is one
+      var viewPoint = _objectCircularLists.GetNext(WorldObjectType.ViewPoint);
+      if (viewPoint) {
+        MoveCameraToViewPoint(viewPoint as ViewPoint.ViewPoint);
+      }
+      
       //This will auto slave the camera target to the first user. If none, try the first computer.
       var ub = _objectCircularLists.GetNext(WorldObjectType.User);
       if (ub != null) {
-        MoveCameraToObject(ub.transform);
+        MoveCameraTarget(ub.transform);
       }
       else {
         var computer = _objectCircularLists.GetNext(WorldObjectType.Computer);
         if (computer) {
-          MoveCameraToObject(computer.transform);
+          MoveCameraTarget(computer.transform);
         }
       }
     }
-
-    // ------------------------------------------------------------------------
-    private void MoveCameraToObject(Transform objectTransform) {
-      cameraTarget.position = objectTransform.position;
+    
+    //--------------------------------------------------------------------------
+    //Move and align the camera to the supplied ViewPoint
+    private void MoveCameraToViewPoint(ViewPoint.ViewPoint viewPoint) {
+      cameraTarget.transform.SetPositionAndRotation(viewPoint.To.position, viewPoint.To.rotation);
+      cameraFollow.transform.SetPositionAndRotation(viewPoint.From.position, viewPoint.From.rotation);
+      _desiredZoomLevel = -Vector3.Distance(viewPoint.From.position, viewPoint.To.position);
     }
-
+    
     // ------------------------------------------------------------------------
-    public void ZoomCamera(float offset) {
-      _currentZoomLevel = Mathf.Clamp(_currentZoomLevel + offset, _minZoomInterval, _maxZoomInterval);
-      _desiredZoomLevel = -Mathf.Clamp(Mathf.Pow(zoomExponentialGrowthRate, _currentZoomLevel), minZoomDistance, maxZoomDistance);
+    private void MoveCameraTarget(Transform objectTransform) {
+      cameraTarget.position = objectTransform.position;
     }
   }
 }
