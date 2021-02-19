@@ -1,5 +1,4 @@
 ﻿using System;
-using Cinemachine;
 using UnityEngine;
 using Code.Scriptable_Variables;
 using Code.World_Objects;
@@ -153,13 +152,15 @@ namespace Code.Camera {
         }
       }
     }
-    
+
     //--------------------------------------------------------------------------
-    //Move and align the camera to the supplied ViewPoint
+    //Move and align the camera to the supplied ViewPoint. Calculate the zoom settings
+    //for the next Player camera control.
     private void MoveCameraToViewPoint(ViewPoint.ViewPoint viewPoint) {
       cameraTarget.transform.SetPositionAndRotation(viewPoint.To.position, viewPoint.To.rotation);
       cameraFollow.transform.SetPositionAndRotation(viewPoint.From.position, viewPoint.From.rotation);
       _desiredZoomLevel = -Vector3.Distance(viewPoint.From.position, viewPoint.To.position);
+      _currentZoomLevel = Mathf.Log10(-_desiredZoomLevel) / Mathf.Log10(zoomExponentialGrowthRate);
     }
     
     // ------------------------------------------------------------------------
