@@ -21,6 +21,8 @@ namespace Code.World_Objects.User {
     public HashSet<string> groups = new HashSet<string>();
     public HashSet<string> assetGoals = new HashSet<string>();
     public BackgroundCheck.Level highestBackgroundCheck;
+    public int assetUsage;
+    public string assignedZone;
 
     //-------------------------------------------------------------------------
     public UserGender Gender {

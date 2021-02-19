@@ -1,4 +1,7 @@
-﻿using System.Xml.Linq;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Xml;
+using System.Xml.Linq;
 using UnityEngine;
 using Shared.ScriptableVariables;
 using Code.Game_Events;
@@ -16,6 +19,8 @@ namespace Code.World_Objects.Computer {
     public GameObjectVariable selectedObject;
     [Tooltip("Clearances in the current scenario")]
     public ClearanceListVariable clearances;
+    [Tooltip("Computers in the current scenario")]
+    public ComputerListVariable computers;
     [Tooltip("Users in the current scenario")]
     public UserListVariable users;
     [Header("Output Events")]
@@ -24,6 +29,25 @@ namespace Code.World_Objects.Computer {
 
     private static int REIMAGE_COST = 500;
     private static int REPLACE_DRIVE_COST = 1000;
+
+    //---------------------------------------------------------------------------
+    public void UpdateStatus(string message) {
+      StringReader xmlreader = new StringReader(message);
+      //xmlreader.Read(); // skip BOM ???
+
+      XmlDocument xml_doc = new XmlDocument();
+
+      xml_doc.Load(xmlreader);
+      XmlNodeList computerNodes = xml_doc.SelectNodes("//computer_status/computer");
+      foreach (XmlNode computerNode in computerNodes) {
+        var computerName = computerNode["name"].InnerText;
+        foreach (var computer in computers.Value) {
+          if (computer.Data.component_name == computerName) {
+            UpdateStatus(computer, computerNode);
+          }
+        }
+      }
+    }
 
     //--------------------------------------------------------------------------
     public void OnScrapComputer(ComputerBehavior computer) {
@@ -264,6 +288,33 @@ namespace Code.World_Objects.Computer {
       }
 
       return "group";
+    }
+
+    //---------------------------------------------------------------------------
+    private void UpdateStatus(ComputerBehavior computer, XmlNode computerNode) {
+      var utilizationStr = computerNode["utilization"].InnerText;
+      if (int.TryParse(utilizationStr, out int utilization)) {
+        computer.UpdateUtilization(utilization);
+      }
+
+      var availabilityStr = computerNode["availability"].InnerText;
+      if (int.TryParse(availabilityStr, out int availability)) {
+        computer.UpdateAvailability(availability);
+      }
+
+      computer.ClearAssetUsage();
+      var usedByNode = computerNode.SelectSingleNode("usedBy");
+      if (usedByNode != null) {
+        var username = usedByNode["name"].InnerText;
+        var goalNodes = usedByNode.SelectNodes("goal");
+        var usageNodes = usedByNode.SelectNodes("usage");
+        for (var index = 0; index < goalNodes.Count; ++index) {
+          var goal = goalNodes[index].InnerText;
+          if (int.TryParse(usageNodes[index].InnerText, out int usage)) {
+            computer.AddAssetUsage(username, goal, usage);
+          }
+        }
+      }
     }
 
     //--------------------------------------------------------------------------

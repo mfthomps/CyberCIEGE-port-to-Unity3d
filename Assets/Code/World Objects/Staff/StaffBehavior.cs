@@ -23,5 +23,22 @@ namespace Code.World_Objects.Staff {
       gameObject.SetActive(isHired);
       ValueChanged();
     }
+
+    //---------------------------------------------------------------------------
+    public void UpdateCurrentThought(string thought) {
+      Data.current_thought = thought;
+      ValueChanged();
+    }
+
+    //---------------------------------------------------------------------------
+    public void UpdateHappiness(int value) {
+      Data.happiness = value;
+      ValueChanged();
+    }
+    //---------------------------------------------------------------------------
+    public void UpdateProductivity(int value) {
+      Data.productivity = value;
+      ValueChanged();
+    }
   }
 }
