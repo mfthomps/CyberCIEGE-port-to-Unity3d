@@ -1,35 +1,30 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Serialization;
 
-public class SpeechBubble : MonoBehaviour
-{
-  
+public class SpeechBubble : MonoBehaviour {
   [SerializeField] private bool _active;
-  [SerializeField] private string _startingSpeechBubbleText;
+
+  [FormerlySerializedAs("_startingSpeechBubbleText")] 
+  [SerializeField] private string _speechBubbleText;
+
   [SerializeField] private GameObject _speechBubbleRoot;
 
   [SerializeField] private TMP_Text _speechBubbleTextComponent;
   [SerializeField] private Image _speechBubbleSprite;
-  private string _speechBubbleText;
 
   // -----------------------------------------------------------------
   // Set the Thought Bubble with initial conditions
-
-  private void Start () {
+  private void Start() {
     Active = _active;
-    SpeechBubbleText = _startingSpeechBubbleText;
+    SpeechBubbleText = _speechBubbleText;
   }
-
-
+  
   // -----------------------------------------------------------------
   // Use this to update the thought bubble text at runtime
   public string SpeechBubbleText {
-    get {
-      return _speechBubbleText;
-    }
+    get => _speechBubbleText;
     set {
       _speechBubbleText = value;
 
@@ -40,13 +35,10 @@ public class SpeechBubble : MonoBehaviour
   // -----------------------------------------------------------------
   // Use this to turn on/off thought bubble at runtime
   public bool Active {
-    get {
-      return _active;
-    }
+    get => _active;
     set {
       _active = value;
       _speechBubbleRoot.SetActive(_active);
-
     }
   }
 }

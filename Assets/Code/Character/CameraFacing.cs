@@ -1,22 +1,21 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class CameraFacing : MonoBehaviour
-{
-  private Camera mainCamera;
+namespace Code.Character {
+  public class CameraFacing : MonoBehaviour {
+    private UnityEngine.Camera _mainCamera;
 
-  [SerializeField] private Transform centerOfMass;
-  public float verticalOffset = 1f;
-  private void Start () {
-    mainCamera = Camera.main;
-  }
-  private void Update () {
+    [SerializeField] private Transform centerOfMass;
+    public float verticalOffset = 1f;
 
-    // look at the camera
-    this.transform.LookAt(mainCamera.transform);
-    // apply vertical offset
-    this.transform.localPosition = centerOfMass.localPosition + new Vector3(0f, verticalOffset, 0f);
+    private void Start() {
+      _mainCamera = UnityEngine.Camera.main;
+    }
 
+    private void Update() {
+      // look at the camera
+      this.transform.LookAt(_mainCamera.transform);
+      // apply vertical offset
+      this.transform.localPosition = centerOfMass.localPosition + new Vector3(0f, verticalOffset, 0f);
+    }
   }
 }
