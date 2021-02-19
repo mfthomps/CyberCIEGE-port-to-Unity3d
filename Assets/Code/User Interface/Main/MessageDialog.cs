@@ -1,9 +1,15 @@
 ﻿using System;
 using UnityEngine;
 using TMPro;
+using Shared.ScriptableVariables;
 
 namespace Code.User_Interface.Main {
   public class MessageDialog : MonoBehaviour {
+    [Header("Output Events")]
+    [Tooltip("Event to fire when dialog is up")]
+    public GameEvent dialogUp;
+    [Tooltip("Event to fire when dialog is closed")]
+    public StringGameEvent dialogClosed;
     [Header("UI Elements")]
     [Tooltip("Main Dialog UI")]
     public GameObject dialog;
@@ -19,8 +25,8 @@ namespace Code.User_Interface.Main {
 
     // --------------------------------------------------------------------------
     public void OnServerMessageReceived(string message) {
-      ShowMessage(new MessageRequest(message, () => IPCManagerScript.DialogClosed()));
-      IPCManagerScript.DialogUp();
+      ShowMessage(new MessageRequest(message, () => dialogClosed?.Raise(null)));
+      dialogUp?.Raise();
     }
 
     // --------------------------------------------------------------------------

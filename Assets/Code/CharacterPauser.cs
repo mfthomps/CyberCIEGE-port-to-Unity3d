@@ -23,21 +23,28 @@ namespace Code {
     
     private Vector3 _lastAgentSpeed;
     private NavMeshPath _lastAgentPath;
+    private bool _isDialogUp;
 
     //-------------------------------------------------------------------------
     private void OnEnable() {
-      _activeVariable.OnValueChanged += OnValueChanged;
-      OnValueChanged();
+      _activeVariable.OnValueChanged += ActivateAgent;
+      ActivateAgent();
     }
     
     //-------------------------------------------------------------------------
     private void OnDisable() {
-      _activeVariable.OnValueChanged -= OnValueChanged;
+      _activeVariable.OnValueChanged -= ActivateAgent;
     }
-    
+
     //-------------------------------------------------------------------------
-    private void OnValueChanged() {
-      var active = (_activeVariable.Value == _activeIfTrue) ? true : false;
+    public void DialogUp(bool dialogIsUp) {
+      _isDialogUp = dialogIsUp;
+      ActivateAgent();
+    }
+
+    //-------------------------------------------------------------------------
+    private void ActivateAgent() {
+      var active = ((_activeVariable.Value || _isDialogUp) == _activeIfTrue) ? true : false;
       foreach (GameObject o in _gameObjects) {
         o.SetActive(active);
       }
