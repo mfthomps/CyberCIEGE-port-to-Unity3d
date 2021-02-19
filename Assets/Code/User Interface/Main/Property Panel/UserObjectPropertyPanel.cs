@@ -20,6 +20,8 @@ namespace Code.User_Interface.Main {
     public RangeProperty trainingRange;
     [Tooltip("Label for selected user's highest background check level")]
     public TMP_Text backgroundCheckLabel;
+    [Tooltip("Label for selected user's assigned computer")]
+    public TMP_Text assignedComputerLabel;
     [Tooltip("Label for selected user's zone")]
     public TMP_Text zoneLabel;
     [Tooltip("Label for selected user's asset usage")]
@@ -53,8 +55,11 @@ namespace Code.User_Interface.Main {
       SetRangeProperty(productivityRange, displayedDataObject.productivity);
       SetRangeProperty(trainingRange, displayedDataObject.training);
       SetStringProperty(backgroundCheckLabel, BackgroundCheck.ToString(displayedDataObject.highestBackgroundCheck));
+      SetStringProperty(assignedComputerLabel, computers.Value.Find(computer => (computer.Data as ComputerDataObject).assignedUser == displayedDataObject.user_name)?.Data.component_name, "None Assigned");
+      SetStringProperty(zoneLabel, displayedDataObject.assignedZone, "None Assigned");
+      SetStringProperty(assetUsageLabel, displayedDataObject.assetUsage.ToString());
       SetStringList(assetFailureList, displayedDataObject.failed_goals);
-      SetStringList(localAccessList, computers.Value.FindAll(computer => (computer.Data as ComputerDataObject).assignedUser == displayedDataObject.user_name).ConvertAll(computer => computer.Data.component_name));
+      SetStringList(localAccessList, computers.Value.FindAll(computer => (computer.Data as ComputerDataObject).localAccounts.Contains(displayedDataObject.user_name)).ConvertAll(computer => computer.Data.component_name));
       SetStringProperty(thoughtsLabel, displayedDataObject.current_thought);
     }
   }
