@@ -9,8 +9,6 @@ namespace Code.User_Interface.Main {
     [Header("Input Variables")]
     [Tooltip("List of computers in the scenario")]
     public ComputerListVariable computers;
-    [Tooltip("List of zones in scenario")]
-    public ZoneListVariable zones;
     [Header("UI Elements")]
     [Tooltip("Label for selected user's name")]
     public TMP_Text nameLabel;
@@ -58,7 +56,8 @@ namespace Code.User_Interface.Main {
       SetRangeProperty(trainingRange, displayedDataObject.training);
       SetStringProperty(backgroundCheckLabel, BackgroundCheck.ToString(displayedDataObject.highestBackgroundCheck));
       SetStringProperty(assignedComputerLabel, computers.Value.Find(computer => (computer.Data as ComputerDataObject).assignedUser == displayedDataObject.user_name)?.Data.component_name, "None Assigned");
-      SetStringProperty(zoneLabel, zones.GetZone(_displayedUser)?.Data.ZoneName, "Unknown");
+      SetStringProperty(zoneLabel, displayedDataObject.assignedZone, "None Assigned");
+      SetStringProperty(assetUsageLabel, displayedDataObject.assetUsage.ToString());
       SetStringList(assetFailureList, displayedDataObject.failed_goals);
       SetStringList(localAccessList, computers.Value.FindAll(computer => (computer.Data as ComputerDataObject).localAccounts.Contains(displayedDataObject.user_name)).ConvertAll(computer => computer.Data.component_name));
       SetStringProperty(thoughtsLabel, displayedDataObject.current_thought);

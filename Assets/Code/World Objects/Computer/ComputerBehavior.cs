@@ -54,6 +54,39 @@ namespace Code.World_Objects.Computer {
     //----------------------------------------------------------------------------
     [SerializeField] private ComputerDataObject _data;
 
+    // ------------------------------------------------------------------------
+    public List<string> GetUsersUsing() {
+      return _data.GetUsersUsing();
+    }
+
+    // ------------------------------------------------------------------------
+    public List<ComputerDataObject.AssetUsage> GetAssetUsages(string username) {
+      return _data.GetAssetUsages(username);
+    }
+
+    // ------------------------------------------------------------------------
+    public void ClearAssetUsage() {
+      _data.ClearAssetUsage();
+    }
+
+    // ------------------------------------------------------------------------
+    public void AddAssetUsage(string username, string goalName, int usage) {
+      _data.AddAssetUsage(username, goalName, usage);
+      ValueChanged();
+    }
+
+    //----------------------------------------------------------------------------
+    public void UpdateUtilization(int utilization) {
+      _data.utilization = utilization;
+      ValueChanged();
+    }
+
+    //----------------------------------------------------------------------------
+    public void UpdateAvailability(int availability) {
+      _data.availability = availability;
+      ValueChanged();
+    }
+
     //----------------------------------------------------------------------------
     public bool IsServer() {
       return _data.isServer;

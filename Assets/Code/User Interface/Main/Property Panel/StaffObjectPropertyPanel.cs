@@ -21,6 +21,8 @@ namespace Code.User_Interface.Main {
     public StringList groupList;
     [Tooltip("Label for selected staff's description")]
     public TMP_Text descriptionLabel;
+    [Tooltip("Label for selected staff's thoughts")]
+    public TMP_Text thoughtsLabel;
 
     private StaffBehavior _displayedStaff;
 
@@ -47,6 +49,7 @@ namespace Code.User_Interface.Main {
       SetStringProperty(costLabel, string.Format($"${displayedDataObject.cost} / hour"));
       SetStringList(groupList, displayedDataObject.groups);
       SetStringProperty(descriptionLabel, displayedDataObject.description);
+      SetStringProperty(thoughtsLabel, displayedDataObject.current_thought);
     }
 
     // ------------------------------------------------------------------------

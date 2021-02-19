@@ -107,6 +107,7 @@ namespace Code.Factories {
                 if (!int.TryParse(subValue, out data.cost)) {
                   Debug.LogError($"StaffFactory parsing cost {subValue}");
                 }
+                data.cost /= 720; // The cost is per month and we want to show per hour
                 break;
               case "Skill":
                 if (!int.TryParse(subValue, out data.skill)) {
