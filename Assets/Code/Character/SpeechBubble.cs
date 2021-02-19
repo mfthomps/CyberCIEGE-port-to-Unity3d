@@ -7,37 +7,22 @@ using TMPro;
 public class SpeechBubble : MonoBehaviour
 {
   
-  [SerializeField] private bool _Active;
+  [SerializeField] private bool _active;
   [SerializeField] private string _startingSpeechBubbleText;
   [SerializeField] private GameObject _speechBubbleRoot;
 
   [SerializeField] private TMP_Text _speechBubbleTextComponent;
   [SerializeField] private Image _speechBubbleSprite;
   private string _speechBubbleText;
-  private bool _active;
 
   // -----------------------------------------------------------------
   // Set the Thought Bubble with initial conditions
 
   private void Start () {
-    Active = _Active;
+    Active = _active;
     SpeechBubbleText = _startingSpeechBubbleText;
   }
 
-
-  // -----------------------------------------------------------------
-  // TODO: this method removed for production
-  private void Update () {
-    // 
-    if (_startingSpeechBubbleText != SpeechBubbleText)
-    {
-      SpeechBubbleText = _startingSpeechBubbleText;
-    }
-
-    if (_Active != Active) {
-      Active = _Active;
-    }
-  }
 
   // -----------------------------------------------------------------
   // Use this to update the thought bubble text at runtime
