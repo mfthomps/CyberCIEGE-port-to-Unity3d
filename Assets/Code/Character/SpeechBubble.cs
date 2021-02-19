@@ -4,24 +4,24 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class ThoughtBubble : MonoBehaviour
+public class SpeechBubble : MonoBehaviour
 {
   
   [SerializeField] private bool _Active;
-  [SerializeField] private string _startingThoughtBubbleText;
-  [SerializeField] private GameObject _thoughtBubbleRoot;
+  [SerializeField] private string _startingSpeechBubbleText;
+  [SerializeField] private GameObject _speechBubbleRoot;
 
-  [SerializeField] private TMP_Text _thoughtBubbleTextComponent;
-  [SerializeField] private Image _thoughtBubbleSprite;
-  private string _thoughtBubbleText;
+  [SerializeField] private TMP_Text _speechBubbleTextComponent;
+  [SerializeField] private Image _speechBubbleSprite;
+  private string _speechBubbleText;
   private bool _active;
 
   // -----------------------------------------------------------------
-  // Set the Thgouth Bubble with initial conditions
+  // Set the Thought Bubble with initial conditions
 
   private void Start () {
     Active = _Active;
-    ThoughtBubbleText = _startingThoughtBubbleText;
+    SpeechBubbleText = _startingSpeechBubbleText;
   }
 
 
@@ -29,9 +29,9 @@ public class ThoughtBubble : MonoBehaviour
   // TODO: this method removed for production
   private void Update () {
     // 
-    if (_startingThoughtBubbleText != ThoughtBubbleText)
+    if (_startingSpeechBubbleText != SpeechBubbleText)
     {
-      ThoughtBubbleText = _startingThoughtBubbleText;
+      SpeechBubbleText = _startingSpeechBubbleText;
     }
 
     if (_Active != Active) {
@@ -41,14 +41,14 @@ public class ThoughtBubble : MonoBehaviour
 
   // -----------------------------------------------------------------
   // Use this to update the thought bubble text at runtime
-  public string ThoughtBubbleText {
+  public string SpeechBubbleText {
     get {
-      return _thoughtBubbleText;
+      return _speechBubbleText;
     }
     set {
-      _thoughtBubbleText = value;
+      _speechBubbleText = value;
 
-      _thoughtBubbleTextComponent.text = _thoughtBubbleText;
+      _speechBubbleTextComponent.text = _speechBubbleText;
     }
   }
 
@@ -60,7 +60,7 @@ public class ThoughtBubble : MonoBehaviour
     }
     set {
       _active = value;
-      _thoughtBubbleRoot.SetActive(_active);
+      _speechBubbleRoot.SetActive(_active);
 
     }
   }

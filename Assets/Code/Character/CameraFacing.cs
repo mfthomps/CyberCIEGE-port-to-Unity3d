@@ -12,11 +12,13 @@ public class CameraFacing : MonoBehaviour
     mainCamera = Camera.main;
   }
   private void Update () {
-    Vector3 vector = mainCamera.transform.eulerAngles;
-    // Vector3 vector = new Vector3(mainCamera.transform.position.x - this.transform.position.x, mainCamera.transform.position.y - this.transform.position.y, mainCamera.transform.position.z - this.transform.position.z);
-    // vector.Normalize();
-    this.transform.eulerAngles = vector;
-    this.transform.localPosition = centerOfMass.localPosition + new Vector3(0f,verticalOffset,0f);
+    // Vector3 vector = mainCamera.transform.eulerAngles;
+    // // Vector3 vector = new Vector3(mainCamera.transform.position.x - this.transform.position.x, mainCamera.transform.position.y - this.transform.position.y, mainCamera.transform.position.z - this.transform.position.z);
+    // // vector.Normalize();
+    // this.transform.eulerAngles = vector;
+
+    this.transform.LookAt(mainCamera.transform);
+    this.transform.localPosition = centerOfMass.localPosition + new Vector3(0f, verticalOffset, 0f);
 
   }
 }
