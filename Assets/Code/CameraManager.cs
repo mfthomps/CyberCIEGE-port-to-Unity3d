@@ -4,6 +4,7 @@ using Code.Scriptable_Variables;
 using Code.World_Objects;
 
 namespace Code.Camera {
+  //This uses two Transforms to position and orient the game camera.
   public class CameraManager : MonoBehaviour {
     [Header("Input Variables")]
     [Tooltip("List of users in the scenario")]
@@ -20,6 +21,8 @@ namespace Code.Camera {
     public Transform cameraTarget;
     [Tooltip("Transform the camera is following (attached to)")]
     public Transform cameraFollow;
+    [Tooltip("The Transform of the actual Camera (for calculating the screen dragging translations)")]
+    public Transform _cameraTransform;
 
     [Header("Customization")]
     [Tooltip("Scalar to apply to camera panning offset amounts")]
@@ -80,8 +83,8 @@ namespace Code.Camera {
 
       //move both the target camera and the follow camera by the same amount, based
       //on the camera's perspective.
-      var right = UnityEngine.Camera.main.transform.right * -delta.x * panScalar * zoomAdj;
-      var fwd = UnityEngine.Camera.main.transform.forward * -delta.y * panScalar * zoomAdj;
+      var right = _cameraTransform.right * -delta.x * panScalar * zoomAdj;
+      var fwd = _cameraTransform.forward * -delta.y * panScalar * zoomAdj;
       var translation = right + fwd;
       translation.y = 0; //panning shouldn't affect the camera's up/down
       cameraTarget.Translate(translation, Space.World);
