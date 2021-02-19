@@ -19,6 +19,7 @@ namespace Code.World_Objects.Staff {
     public int sw_skill;
     public int cost;
     public int salary;
+    public int happiness;
     public int productivity;
     public string description;
     public HashSet<string> groups = new HashSet<string>();

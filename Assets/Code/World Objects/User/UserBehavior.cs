@@ -68,9 +68,22 @@ namespace Code.World_Objects.User {
       Data.happiness = value;
       ValueChanged();
     }
+
     //---------------------------------------------------------------------------
     public void UpdateProductivity(int value) {
       Data.productivity = value;
+      ValueChanged();
+    }
+
+    //---------------------------------------------------------------------------
+    public void UpdateAssetUsage(int value) {
+      Data.assetUsage = value;
+      ValueChanged();
+    }
+
+    //---------------------------------------------------------------------------
+    public void UpdateAssignedZone(string zone) {
+      Data.assignedZone = zone;
       ValueChanged();
     }
 

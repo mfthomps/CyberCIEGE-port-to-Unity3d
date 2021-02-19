@@ -17,6 +17,10 @@ public class IPCManagerScript : MonoBehaviour {
   public StringGameEvent gameStatusChanged;
   [Tooltip("Event to fire when a component status changes")]
   public StringGameEvent componentStatusChanged;
+  [Tooltip("Event to fire when a computer status changes")]
+  public StringGameEvent computerStatusChanged;
+  [Tooltip("Event to fire when user message changes")]
+  public StringGameEvent userStatusChanged;
   [Tooltip("Event to fire when a zone status changes")]
   public StringGameEvent zoneStatusChanged;
   [Tooltip("Event to fire when current user message changes")]
@@ -27,8 +31,6 @@ public class IPCManagerScript : MonoBehaviour {
   public StringGameEvent phaseCompleted;
   [Tooltip("Event to fire when an objective is updated")]
   public StringGameEvent objectiveUpdated;
-  [Tooltip("Event to fire when user message changes")]
-  public StringGameEvent userStatusChanged;
   [Tooltip("Event to fire when the server wants to show a message to the user")]
   public StringGameEvent showMessage;
   [Tooltip("Event to fire when the server is requesting a yes/no answer")]
@@ -92,6 +94,12 @@ public class IPCManagerScript : MonoBehaviour {
         case "component_status":
           componentStatusChanged?.Raise(message);
           break;
+        case "computer_status":
+          computerStatusChanged?.Raise(message);
+          break;
+        case "user_status":
+          userStatusChanged?.Raise(message);
+          break;
         case "zone_status":
           zoneStatusChanged?.Raise(message);
           break;
@@ -103,9 +111,6 @@ public class IPCManagerScript : MonoBehaviour {
           break;
         case "load_device":
           _deviceFactory.Create(message + ".sdf");
-          break;
-        case "user_status":
-          userStatusChanged?.Raise(message);
           break;
         case "ticker":
           currentMessageChanged?.Raise(message);
