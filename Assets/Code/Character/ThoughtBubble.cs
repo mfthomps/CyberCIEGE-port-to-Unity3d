@@ -16,20 +16,31 @@ public class ThoughtBubble : MonoBehaviour
   private string _thoughtBubbleText;
   private bool _active;
 
+  // -----------------------------------------------------------------
+  // Set the Thgouth Bubble with initial conditions
+
   private void Start () {
     Active = _Active;
     ThoughtBubbleText = _startingThoughtBubbleText;
   }
+
+
+  // -----------------------------------------------------------------
+  // TODO: this method removed for production
   private void Update () {
+    // 
     if (_startingThoughtBubbleText != ThoughtBubbleText)
     {
       ThoughtBubbleText = _startingThoughtBubbleText;
     }
+
     if (_Active != Active) {
       Active = _Active;
     }
   }
 
+  // -----------------------------------------------------------------
+  // Use this to update the thought bubble text at runtime
   public string ThoughtBubbleText {
     get {
       return _thoughtBubbleText;
@@ -41,6 +52,8 @@ public class ThoughtBubble : MonoBehaviour
     }
   }
 
+  // -----------------------------------------------------------------
+  // Use this to turn on/off thought bubble at runtime
   public bool Active {
     get {
       return _active;
