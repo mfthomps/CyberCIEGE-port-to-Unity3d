@@ -43,8 +43,7 @@ namespace Code.Factories {
       var fullPath = Path.Combine(path, ViewpointsSDF);
       ccUtils.ParseSDFFile(fullPath, (key, value) => {
         if (key == "VIEWPOINT") {
-          Debug.Log("Found ViewPoint");
-          var viewPoint = Instantiate(_prefab, _parent);
+          ViewPoint.ViewPoint viewPoint = Instantiate(_prefab, _parent);
           var data = new ViewPointDataObject();
           viewPoint.Data = data;
           _list.Add(viewPoint);
@@ -66,8 +65,13 @@ namespace Code.Factories {
             }
           });
 
-          data.From = from;
-          data.To = to;
+          data.From = from / 3;
+          data.To = to / 3;
+          viewPoint.From.transform.position = data.From;
+          viewPoint.To.transform.position = data.To;
+          var direction = Quaternion.LookRotation(viewPoint.To.transform.position - viewPoint.From.transform.position);
+          viewPoint.From.transform.rotation = direction;
+          viewPoint.To.transform.rotation = direction;
         }
       });
     }
