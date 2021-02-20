@@ -5,10 +5,13 @@ using System.Xml.Linq;
 using UnityEngine;
 using Shared.ScriptableVariables;
 using Code.Scriptable_Variables;
+using Code.World_Objects.Staff;
 
 namespace Code.World_Objects.User {
   public class UserManager : MonoBehaviour {
     [Header("Input Variables")]
+    [Tooltip("List of staff in the current scenario")]
+    public StaffListVariable staffList;
     [Tooltip("List of users in the current scenario")]
     public UserListVariable users;
     [Tooltip("Currently selected object")]
@@ -28,6 +31,30 @@ namespace Code.World_Objects.User {
         foreach (var user in users.Value) {
           if (user.Data.user_name == username) {
             UpdateUserStatus(user, userNode);
+          }
+        }
+        // Staff get updates through the user_status message as well
+        foreach (var staff in staffList.Value) {
+          if (staff.Data.user_name == username) {
+            UpdateStaff(staff, userNode);
+          }
+        }
+      }
+    }
+
+    //---------------------------------------------------------------------------
+    public void TrainSelectedUser(int trainingAmount) {
+      if (selectedObject.Value != null) {
+        var user = selectedObject.Value.GetComponent<UserBehavior>();
+        if (user != null) {
+          if (user.AddTraining(trainingAmount)) {
+            XElement xml = new XElement("userEvent",
+              new XElement("train",
+                new XElement("name", user.Data.user_name),
+                new XElement("level", user.Data.training)),
+              new XElement("cost", trainingAmount * 250));
+
+            IPCManagerScript.SendRequest(xml.ToString());
           }
         }
       }
@@ -61,23 +88,27 @@ namespace Code.World_Objects.User {
       if (int.TryParse(productivityStr, out int productivity)) {
         user.UpdateProductivity(productivity);
       }
+
+      string assetUsageStr = userNode["assetUsage"].InnerText;
+      if (int.TryParse(assetUsageStr, out int assetUsage)) {
+        user.UpdateAssetUsage(assetUsage);
+      }
+
+      user.UpdateAssignedZone(userNode["assignedZone"].InnerText);
     }
 
     //---------------------------------------------------------------------------
-    public void TrainSelectedUser(int trainingAmount) {
-      if (selectedObject.Value != null) {
-        var user = selectedObject.Value.GetComponent<UserBehavior>();
-        if (user != null) {
-          if (user.AddTraining(trainingAmount)) {
-            XElement xml = new XElement("userEvent",
-              new XElement("train",
-                new XElement("name", user.Data.user_name),
-                new XElement("level", user.Data.training)),
-              new XElement("cost", trainingAmount * 250));
+    private void UpdateStaff(StaffBehavior staff, XmlNode userNode) {
+      staff.UpdateCurrentThought(userNode["thought"].InnerText);
 
-            IPCManagerScript.SendRequest(xml.ToString());
-          }
-        }
+      string happinessStr = userNode["happiness"].InnerText;
+      if (int.TryParse(happinessStr, out int happiness)) {
+        staff.UpdateHappiness(happiness);
+      }
+      
+      string productivityStr = userNode["productivity"].InnerText;
+      if (int.TryParse(productivityStr, out int productivity)) {
+        staff.UpdateProductivity(productivity);
       }
     }
   }

@@ -1,9 +1,13 @@
 ﻿using Code.World_Objects.Device;
 using UnityEngine;
 using TMPro;
+using Code.Scriptable_Variables;
 
 namespace Code.User_Interface.Main {
   public class DeviceObjectPropertyPanel : GenericObjectPropertyPanel<DeviceBehavior> {
+    [Header("Input Variables")]
+    [Tooltip("List of zones in scenario")]
+    public ZoneListVariable zones;
     [Header("UI Elements")]
     [Tooltip("Label for selected object's name")]
     public TMP_Text nameLabel;
@@ -13,6 +17,10 @@ namespace Code.User_Interface.Main {
     public TMP_Text hardwareLabel;
     [Tooltip("Label for selected device's VPN key type")]
     public TMP_Text vpnKeyTypeLabel;
+    [Tooltip("Label for selected device's current zone")]
+    public TMP_Text zoneLabel;
+    [Tooltip("Label for selected device's current domain")]
+    public TMP_Text domainLabel;
     [Tooltip("List for selected device's connected networks")]
     public StringList networkList;
 
@@ -32,11 +40,14 @@ namespace Code.User_Interface.Main {
     // ------------------------------------------------------------------------
     private void UpdateUI() {
       var deviceDataObject = _displayedDevice.Data as DeviceDataObject;
+      var assignedZone = zones.GetZone(_displayedDevice);
 
       SetStringProperty(nameLabel, deviceDataObject.component_name, deviceDataObject.hw);
       SetStringProperty(osLabel, deviceDataObject.os);
       SetStringProperty(hardwareLabel, deviceDataObject.hw);
       SetStringProperty(vpnKeyTypeLabel, deviceDataObject.vnpKeyType);
+      SetStringProperty(zoneLabel, assignedZone != null ? assignedZone.Data.ZoneName : "Unknown");
+      SetStringProperty(domainLabel, assignedZone != null ? assignedZone.Data.domain : "Unknown");
       SetStringList(networkList, deviceDataObject.network_list);
     }
   }
