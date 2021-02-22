@@ -112,26 +112,35 @@ namespace Code.Camera {
     public void MoveCameraToPreviousObject(WorldObjectType type) {
       var target =_objectCircularLists.GetPrev(type);
 
-      if (target) {
-        if (target.Type() == WorldObjectType.ViewPoint) {
-          MoveCameraToViewPoint(target as ViewPoint.ViewPoint);
+      if (!target) return;
+      
+      if (target.Type() == WorldObjectType.ViewPoint) {
+        ViewPoint.ViewPoint vp = (ViewPoint.ViewPoint)target;
+        //TODO This should really skip to the next valid ViewPoint and not just punt.
+        if (!vp.Data.SkipTab) {
+          MoveCameraToViewPoint(vp);
         }
-        else {
-          MoveCameraTarget(target.transform);
-        }
+      }
+      else {
+        MoveCameraTarget(target.transform);
       }
     }
     
     //--------------------------------------------------------------------------
     public void MoveCameraToNextObject(WorldObjectType type) {
       var target =_objectCircularLists.GetNext(type);
-      if (target) {
-        if (target.Type() == WorldObjectType.ViewPoint) {
-          MoveCameraToViewPoint(target as ViewPoint.ViewPoint);
+
+      if (!target) return;
+      
+      if (target.Type() == WorldObjectType.ViewPoint) {
+        ViewPoint.ViewPoint vp = (ViewPoint.ViewPoint)target;
+        //TODO This should really skip to the next valid ViewPoint and not just punt.
+        if (!vp.Data.SkipTab) {
+          MoveCameraToViewPoint(vp);
         }
-        else {
-          MoveCameraTarget(target.transform);
-        }
+      }
+      else {
+        MoveCameraTarget(target.transform);
       }
     }
     
