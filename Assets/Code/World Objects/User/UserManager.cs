@@ -94,7 +94,9 @@ namespace Code.World_Objects.User {
         user.UpdateAssetUsage(assetUsage);
       }
 
-      user.UpdateAssignedZone(userNode["assignedZone"].InnerText);
+      if (userNode["assignedZone"] != null) {
+        user.UpdateAssignedZone(userNode["assignedZone"].InnerText);
+      }
     }
 
     //---------------------------------------------------------------------------
