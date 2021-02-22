@@ -9,7 +9,7 @@ namespace Code.User_Interface.Main {
   public class ConfirmationDialog : MonoBehaviour {
     [Header("Output Events")]
     [Tooltip("Event to fire when dialog is up")]
-    public GameEvent dialogUp;
+    public BooleanGameEvent dialogUp;
     [Tooltip("Event to fire when dialog is closed")]
     public StringGameEvent dialogClosed;
     [Header("UI Elements")]
@@ -38,8 +38,11 @@ namespace Code.User_Interface.Main {
       var confirmationMessage = the_node["text"].InnerText;
       var acceptText = the_node["yes"].InnerText;
       var canceltext = the_node["no"].InnerText;
-      GetConfirmation(new ConfirmationRequest(confirmationMessage, acceptText, canceltext, (bool accepted) => dialogClosed?.Raise(accepted ? "yes" : "no")));
-      dialogUp?.Raise();
+      GetConfirmation(new ConfirmationRequest(confirmationMessage, acceptText, canceltext, (bool accepted) => {
+        IPCManagerScript.SendRequest($"dialogClosed:{(accepted ? "yes" : "no")}");
+        dialogClosed?.Raise(null);
+      }));
+      dialogUp?.Raise(false);
     }
 
     // --------------------------------------------------------------------------

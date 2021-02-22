@@ -7,7 +7,7 @@ namespace Code.User_Interface.Main {
   public class MessageDialog : MonoBehaviour {
     [Header("Output Events")]
     [Tooltip("Event to fire when dialog is up")]
-    public GameEvent dialogUp;
+    public BooleanGameEvent dialogUp;
     [Tooltip("Event to fire when dialog is closed")]
     public StringGameEvent dialogClosed;
     [Header("UI Elements")]
@@ -26,7 +26,7 @@ namespace Code.User_Interface.Main {
     // --------------------------------------------------------------------------
     public void OnServerMessageReceived(string message) {
       ShowMessage(new MessageRequest(message, () => dialogClosed?.Raise(null)));
-      dialogUp?.Raise();
+      dialogUp?.Raise(false);
     }
 
     // --------------------------------------------------------------------------

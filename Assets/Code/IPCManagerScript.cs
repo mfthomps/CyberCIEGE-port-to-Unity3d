@@ -174,8 +174,10 @@ public class IPCManagerScript : MonoBehaviour {
   }
 
   // --------------------------------------------------------------------------
-  public void DialogUp() {
-    SendRequest("dialog_up");
+  public void DialogUp(bool sendServerMessage) {
+    if (sendServerMessage) {
+      SendRequest("dialog_up");
+    }
   }
 
   // --------------------------------------------------------------------------
