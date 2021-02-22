@@ -23,20 +23,21 @@ namespace Code {
     
     private Vector3 _lastAgentSpeed;
     private NavMeshPath _lastAgentPath;
+    private bool _wasActive;
 
     //-------------------------------------------------------------------------
     private void OnEnable() {
-      _activeVariable.OnValueChanged += OnValueChanged;
-      OnValueChanged();
+      _activeVariable.OnValueChanged += ActivateAgent;
+      ActivateAgent();
     }
     
     //-------------------------------------------------------------------------
     private void OnDisable() {
-      _activeVariable.OnValueChanged -= OnValueChanged;
+      _activeVariable.OnValueChanged -= ActivateAgent;
     }
-    
+
     //-------------------------------------------------------------------------
-    private void OnValueChanged() {
+    private void ActivateAgent() {
       var active = (_activeVariable.Value == _activeIfTrue) ? true : false;
       foreach (GameObject o in _gameObjects) {
         o.SetActive(active);
@@ -47,13 +48,15 @@ namespace Code {
 
     //-------------------------------------------------------------------------
     private void ActivateAgent(NavMeshAgent agent, bool active) {
-      if (active) {
+      if (active && !_wasActive) {
+        _wasActive = true;
         _agent.velocity = _lastAgentSpeed;
         if (_lastAgentPath != null && _agent.isOnNavMesh) {
           _agent.SetPath(_lastAgentPath);
         }
       }
-      else {
+      else if (!active && _wasActive) {
+        _wasActive = false;
         _lastAgentSpeed = _agent.velocity;
         _agent.velocity = Vector3.zero;
         _lastAgentPath = _agent.path;

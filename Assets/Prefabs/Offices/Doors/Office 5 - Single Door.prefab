@@ -202,6 +202,7 @@ GameObject:
   - component: {fileID: 905812287805790029}
   - component: {fileID: 4906895833290777312}
   - component: {fileID: 2541205500503222154}
+  - component: {fileID: -7243751371357959845}
   m_Layer: 0
   m_Name: Office 5 - Single Door
   m_TagString: Untagged
@@ -269,3 +270,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 905812287805790029}
+  _enterAnimationParam: Open
+--- !u!114 &-7243751371357959845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 905812287805790031}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a54c58f7ee1442d885268ab6e81072d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pauseVariable: {fileID: 11400000, guid: 024b248a9f7647a46ab6704cd3f9b593, type: 2}
+  _animator: {fileID: 905812287805790029}
+  _freezeIfTrue: 1

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using Shared.ScriptableVariables;
 
 namespace Code.User_Interface.View {
   // A ViewType value to share across components, scenes, and prefabs
@@ -7,6 +8,12 @@ namespace Code.User_Interface.View {
   public class ViewTypeVariable : ScriptableObject {
     public delegate void ValueChangeHandler();
     public event ValueChangeHandler OnValueChanged;
+
+    [Header("Output Events")]
+    [Tooltip("Event to fire when dialog is up")]
+    public BooleanGameEvent dialogUp;
+    [Tooltip("Event to fire when dialog is closed")]
+    public StringGameEvent dialogClosed;
 
     private Stack<ViewType> _viewStack = new Stack<ViewType>();
 
@@ -18,14 +25,16 @@ namespace Code.User_Interface.View {
     //---------------------------------------------------------------------------
     public void SetView(ViewType view) {
       _viewStack.Clear();
-      IPCManagerScript.DialogClosed();
+      dialogClosed?.Raise(null);
       AddView(view);
     }
 
     //---------------------------------------------------------------------------
     public void AddView(ViewType view) {
       _viewStack.Push(view);
-      IPCManagerScript.DialogUp();
+      if (view != ViewType.Office) {
+        dialogUp?.Raise(true);
+      }
       IPCManagerScript.SendRequest($"on_screen:{(int)view}");
       OnValueChanged?.Invoke();
     }
@@ -34,7 +43,7 @@ namespace Code.User_Interface.View {
     public void Back() {
       _viewStack.Pop();
       EnsureNonEmptyStack();
-      IPCManagerScript.DialogClosed();
+      dialogClosed?.Raise(null);
       IPCManagerScript.SendRequest($"on_screen:{(int)TopView()}");
       OnValueChanged?.Invoke();
     }

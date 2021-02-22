@@ -52,12 +52,10 @@ namespace Code.User_Interface.Office {
           selectedObject.Value = hit.transform.gameObject;
         }
         else {
-          menus.clicked = "";
           selectedObject.Value = null;
         }
       }
       else {
-        menus.clicked = "";
         selectedObject.Value = null;
       }
     }
