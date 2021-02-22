@@ -32,7 +32,9 @@ namespace Code.User_Interface.View {
     //---------------------------------------------------------------------------
     public void AddView(ViewType view) {
       _viewStack.Push(view);
-      dialogUp?.Raise();
+      if (view != ViewType.Office) {
+        dialogUp?.Raise();
+      }
       IPCManagerScript.SendRequest($"on_screen:{(int)view}");
       OnValueChanged?.Invoke();
     }
