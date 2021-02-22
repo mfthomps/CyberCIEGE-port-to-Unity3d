@@ -11,7 +11,7 @@ namespace Code.User_Interface.View {
 
     [Header("Output Events")]
     [Tooltip("Event to fire when dialog is up")]
-    public GameEvent dialogUp;
+    public BooleanGameEvent dialogUp;
     [Tooltip("Event to fire when dialog is closed")]
     public StringGameEvent dialogClosed;
 
@@ -33,7 +33,7 @@ namespace Code.User_Interface.View {
     public void AddView(ViewType view) {
       _viewStack.Push(view);
       if (view != ViewType.Office) {
-        dialogUp?.Raise();
+        dialogUp?.Raise(true);
       }
       IPCManagerScript.SendRequest($"on_screen:{(int)view}");
       OnValueChanged?.Invoke();

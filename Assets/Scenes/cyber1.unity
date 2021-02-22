@@ -3647,10 +3647,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1535156840}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 991b72107ef95af46937ebdd06290da8, type: 3}
+  m_Script: {fileID: 11500000, guid: 7f663866ee9d6174199e2824bb53ec3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventToListenTo: {fileID: 11400000, guid: d6453a01e8ab5894b89a448de9ba963e, type: 2}
+  delay: 0
+  eventToListenTo: {fileID: 11400000, guid: 914fd8dbcfaa9c14ba5b0852858358d2, type: 2}
   response:
     m_PersistentCalls:
       m_Calls:
@@ -3665,7 +3666,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-  delay: 0
 --- !u!1 &1544024255
 GameObject:
   m_ObjectHideFlags: 0
@@ -3765,16 +3765,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1565543030}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 991b72107ef95af46937ebdd06290da8, type: 3}
+  m_Script: {fileID: 11500000, guid: 7f663866ee9d6174199e2824bb53ec3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventToListenTo: {fileID: 11400000, guid: d6453a01e8ab5894b89a448de9ba963e, type: 2}
+  delay: 0
+  eventToListenTo: {fileID: 11400000, guid: 914fd8dbcfaa9c14ba5b0852858358d2, type: 2}
   response:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 580543073}
         m_MethodName: DialogUp
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -3783,7 +3784,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  delay: 0
 --- !u!1 &1566592910
 GameObject:
   m_ObjectHideFlags: 0
@@ -17799,27 +17799,27 @@ PrefabInstance:
     - target: {fileID: 8761505514884222766, guid: 7e80ab29b1df4cf4682f44fd84d2d11d,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.00000048667016
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8761505514884222766, guid: 7e80ab29b1df4cf4682f44fd84d2d11d,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.00000001589663
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8761505514884222766, guid: 7e80ab29b1df4cf4682f44fd84d2d11d,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.0000000065845986
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 9189509109567228827, guid: 7e80ab29b1df4cf4682f44fd84d2d11d,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.00000001589663
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 9189509109567228827, guid: 7e80ab29b1df4cf4682f44fd84d2d11d,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.0000000065845986
+      value: -0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7e80ab29b1df4cf4682f44fd84d2d11d, type: 3}
