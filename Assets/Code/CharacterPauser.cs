@@ -23,7 +23,6 @@ namespace Code {
     
     private Vector3 _lastAgentSpeed;
     private NavMeshPath _lastAgentPath;
-    private bool _isDialogUp;
     private bool _wasActive;
 
     //-------------------------------------------------------------------------
@@ -38,14 +37,8 @@ namespace Code {
     }
 
     //-------------------------------------------------------------------------
-    public void DialogUp(bool dialogIsUp) {
-      _isDialogUp = dialogIsUp;
-      ActivateAgent();
-    }
-
-    //-------------------------------------------------------------------------
     private void ActivateAgent() {
-      var active = ((_activeVariable.Value || _isDialogUp) == _activeIfTrue) ? true : false;
+      var active = (_activeVariable.Value == _activeIfTrue) ? true : false;
       foreach (GameObject o in _gameObjects) {
         o.SetActive(active);
       }

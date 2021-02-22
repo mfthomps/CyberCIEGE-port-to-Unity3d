@@ -14,7 +14,6 @@ namespace Code {
     [SerializeField] private bool _freezeIfTrue = true;
     
     private float _originalSpeed = 1.0f;
-    private bool _isDialogUp;
 
     //-------------------------------------------------------------------------
     private void Awake() {
@@ -34,14 +33,8 @@ namespace Code {
     }
 
     //-------------------------------------------------------------------------
-    public void DialogUp(bool dialogIsUp) {
-      _isDialogUp = dialogIsUp;
-      UpdateAnimationSpeed();
-    }
-
-    //-------------------------------------------------------------------------
     private void UpdateAnimationSpeed() {
-      _animator.speed = ((_pauseVariable.Value || _isDialogUp) == _freezeIfTrue) ? 0 : _originalSpeed; 
+      _animator.speed = (_pauseVariable.Value == _freezeIfTrue) ? 0 : _originalSpeed; 
     }
   }
 }
