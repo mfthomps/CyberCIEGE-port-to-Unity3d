@@ -1,5 +1,20 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &6035393826076637232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7460507658487131081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a54c58f7ee1442d885268ab6e81072d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pauseVariable: {fileID: 11400000, guid: 024b248a9f7647a46ab6704cd3f9b593, type: 2}
+  _animator: {fileID: 1914169900160378279}
+  _freezeIfTrue: 1
 --- !u!1 &1825324007154726487
 GameObject:
   m_ObjectHideFlags: 0
@@ -2197,6 +2212,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 55df89cd9ac73604e9f28c6cfea99d01, type: 3}
+--- !u!1 &7460507658487131081 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8335737088624517002, guid: 55df89cd9ac73604e9f28c6cfea99d01,
+    type: 3}
+  m_PrefabInstance: {fileID: 1452253132937999427}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7837068866407936371 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8711558287091500336, guid: 55df89cd9ac73604e9f28c6cfea99d01,

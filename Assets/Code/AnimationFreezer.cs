@@ -18,22 +18,22 @@ namespace Code {
     //-------------------------------------------------------------------------
     private void Awake() {
       _originalSpeed = _animator.speed;
-      OnPauseChanged();
+      UpdateAnimationSpeed();
     }
 
     //-------------------------------------------------------------------------
     private void OnEnable() {
-      _pauseVariable.OnValueChanged += OnPauseChanged;
-      OnPauseChanged();
+      _pauseVariable.OnValueChanged += UpdateAnimationSpeed;
+      UpdateAnimationSpeed();
     }
     
     //-------------------------------------------------------------------------
     private void OnDisable() {
-      _pauseVariable.OnValueChanged -= OnPauseChanged;
+      _pauseVariable.OnValueChanged -= UpdateAnimationSpeed;
     }
-    
+
     //-------------------------------------------------------------------------
-    private void OnPauseChanged() {
+    private void UpdateAnimationSpeed() {
       _animator.speed = (_pauseVariable.Value == _freezeIfTrue) ? 0 : _originalSpeed; 
     }
   }

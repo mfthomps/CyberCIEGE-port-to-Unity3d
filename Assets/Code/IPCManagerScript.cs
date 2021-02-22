@@ -5,6 +5,7 @@ using UnityEngine;
 using Shared.ScriptableVariables;
 using Code.Factories;
 using Code.Scriptable_Variables;
+using Code.User_Interface.View;
 
 public class IPCManagerScript : MonoBehaviour {
   [SerializeField] private StringListVariable attackLogVariable;
@@ -74,7 +75,7 @@ public class IPCManagerScript : MonoBehaviour {
           _serverReady = true;
           _gameLoadBehavior.AfterServerReady();
           SendRequest("begin");
-          SendRequest("on_screen:" + menus.UI_SCREEN_OFFICE);
+          SendRequest("on_screen:" + ViewType.Office);
         }
 
         return;
@@ -173,6 +174,16 @@ public class IPCManagerScript : MonoBehaviour {
   }
 
   // --------------------------------------------------------------------------
+  public void DialogUp() {
+    SendRequest("dialog_up");
+  }
+
+  // --------------------------------------------------------------------------
+  public void DialogClosed(string message) {
+    SendRequest($"dialog_closed{(!string.IsNullOrEmpty(message) ? $":{message}" : "")}");
+  }
+
+  // --------------------------------------------------------------------------
   public static void SendRequest(string request) {
     if (_serverStream == null) {
       Debug.Log("SendRequest, no connection for to send " + request);
@@ -201,19 +212,6 @@ public class IPCManagerScript : MonoBehaviour {
     // send the string array
     //socket.Send(dataArray, reqLen,
     //			System.Net.Sockets.SocketFlags.None);
-  }
-
-  // --------------------------------------------------------------------------
-  public static void DialogUp() {
-    SendRequest("dialog_up");
-  }
-
-  // --------------------------------------------------------------------------
-  public static void DialogClosed(string message = null) {
-    if (message == null)
-      SendRequest("dialog_closed");
-    else
-      SendRequest("dialog_closed:" + message);
   }
 
   // --------------------------------------------------------------------------
