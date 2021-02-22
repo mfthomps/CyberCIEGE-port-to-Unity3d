@@ -24,8 +24,14 @@ namespace Code.User_Interface.Software {
       nameLabel.text = item.Data.name;
       
       if (costLabel != null) {
-        costLabel.text = $"{item.Data.cost:C0}";
+        if (item.Data.cost > 0) {
+          costLabel.text = $"{item.Data.cost:C0}";
+        }
+        else {
+          costLabel.text = "FREE";
+        }
       }
+
       SetInteractable(true);
     }
 

@@ -10,10 +10,6 @@ namespace Code.User_Interface.Asset {
     [SerializeField]
     private TMP_Text nameLabel;
 
-    [Tooltip("The label that should display the item's cost.")]
-    [SerializeField]
-    private TMP_Text assignButtonText;
-
     [Tooltip("The button that allows selecting this policy item.")]
     public Button selectionButton;
 
@@ -21,7 +17,6 @@ namespace Code.User_Interface.Asset {
     public override void SetItem(AssetBehavior item) {
       this.name = item.Data.AssetName;
       nameLabel.text = item.Data.AssetName;
-      assignButtonText.text = item.Data.assigned ? "REMOVE" : "ASSIGNED";
     }
   }
 }
