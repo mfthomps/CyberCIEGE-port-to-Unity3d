@@ -48,7 +48,9 @@ public class GameLoadBehavior : MonoBehaviour {
   [SerializeField] private WorkspaceFactory _workspaceFactory;
   [Tooltip("The factory to use for creating Zones")]
   [SerializeField] private ZoneFactory _zoneFactory;
-
+  [Tooltip("The factory to use for creating ViewPoints")]
+  [SerializeField] private ViewPointFactory _viewPointFactory;
+  
   private static string _ccInstallPath;
 
   private AssetBundle _loadedAssetBundle;
@@ -92,6 +94,8 @@ public class GameLoadBehavior : MonoBehaviour {
     _ssoftwareFactory.CreateAll(userAppPath.Value);
     _staffFactory.CreateAll(userAppPath.Value);
     _zoneFactory.CreateAll(userAppPath.Value);
+    _viewPointFactory.CreateAll(userAppPath.Value);
+
 
     // Let everyone know we are done initializing
     gameInitialized?.Raise();

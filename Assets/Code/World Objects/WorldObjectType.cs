@@ -9,6 +9,7 @@
     Staff,
     User,
     Workspace,
-    Zone
+    Zone,
+    ViewPoint
   }
 }
