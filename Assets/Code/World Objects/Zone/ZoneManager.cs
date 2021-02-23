@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Xml;
 using System.Xml.Linq;
 using UnityEngine;
@@ -30,7 +31,14 @@ namespace Code.World_Objects.Zone {
     public void UpdateZoneStatus(string message) {
       StringReader xmlreader = new StringReader(message);
       XmlDocument xml_doc = new XmlDocument();
-      xml_doc.Load(xmlreader);
+      try {
+        xml_doc.Load(xmlreader);
+      }
+      catch (XmlException  e) {
+        Debug.LogError($"Zone status xml contains an error: {message}. {e}");
+        return;
+      }
+      
       XmlNode the_node = xml_doc.SelectSingleNode("//zone_status");
       var zoneStatuses = the_node.SelectNodes("zone");
       foreach (XmlNode zoneStatus in zoneStatuses) {
