@@ -62,6 +62,7 @@ namespace Code.Factories {
               case "MagicHeight": float.TryParse(viewPointValue, out data.MagicHeight); break;
               case "ZoomLevel": float.TryParse(viewPointValue, out data.ZoomLevel); break;
               case "SkipTab": bool.TryParse(viewPointValue, out data.SkipTab); break;
+              case "Site": data.Site = viewPointValue; break;
             }
           });
 
