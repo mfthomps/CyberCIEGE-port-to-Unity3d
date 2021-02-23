@@ -312,6 +312,7 @@ GameObject:
   - component: {fileID: 2395829205637676656}
   - component: {fileID: 2395829205637676658}
   - component: {fileID: 8666602983546008286}
+  - component: {fileID: 7548699779272016522}
   - component: {fileID: 8455494267205717644}
   m_Layer: 5
   m_Name: Confirmation Dialog
@@ -362,6 +363,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogUp: {fileID: 11400000, guid: 914fd8dbcfaa9c14ba5b0852858358d2, type: 2}
   dialogClosed: {fileID: 11400000, guid: 2f3b9c869c2dc624cb55ec4fa77e24c3, type: 2}
+  restartScenario: {fileID: 11400000, guid: 193d703d3c578d24682c0fa1f05bc976, type: 2}
+  quit: {fileID: 11400000, guid: 9e3e06d5529219948ac19c5fd2a1ccd6, type: 2}
   dialog: {fileID: 2473038244506414924}
   _messageLabel: {fileID: 8425888832387602764}
   _acceptLabel: {fileID: 8006894943271422070}
@@ -385,6 +388,34 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2395829205637676658}
         m_MethodName: OnServerConfirmationReceived
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &7548699779272016522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2395829205637676668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ace966faabda0734887c2cb816d27c30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delay: 0
+  eventToListenTo: {fileID: 11400000, guid: 45127505741685840af0236957e4cc85, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2395829205637676658}
+        m_MethodName: OnScenarioDebrief
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -999,12 +1030,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 680345386362d664bb2735f526c637e2, type: 3}
---- !u!1 &8006894943691747777 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 564040623204313466, guid: 680345386362d664bb2735f526c637e2,
-    type: 3}
-  m_PrefabInstance: {fileID: 7551951025840953531}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &8006894943334827094 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 564040623376407789, guid: 680345386362d664bb2735f526c637e2,
@@ -1023,6 +1048,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &8006894943691747777 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 564040623204313466, guid: 680345386362d664bb2735f526c637e2,
+    type: 3}
+  m_PrefabInstance: {fileID: 7551951025840953531}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7741190675892657178
 PrefabInstance:
   m_ObjectHideFlags: 0
