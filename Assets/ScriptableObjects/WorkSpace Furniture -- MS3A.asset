@@ -18,17 +18,17 @@ MonoBehaviour:
     _workSpaceChairPrefab: {fileID: 3828221866648098590, guid: a1492afd2f7976d43a092dc448a6f8ae,
       type: 3}
     ChairOffset:
-      NorthRelativeOffset: {x: 0, y: 0, z: 1}
-      EastRelativeOffset: {x: 1, y: 0, z: 1}
-      SouthRelativeOffset: {x: 1, y: 0, z: 0}
-      WestRelativeOffset: {x: 0, y: 0, z: 0}
+      NorthRelativeOffset: {x: 0.5, y: 0, z: 0.5}
+      EastRelativeOffset: {x: 0.5, y: 0, z: 1.5}
+      SouthRelativeOffset: {x: 0.5, y: 0, z: 0.5}
+      WestRelativeOffset: {x: 0.5, y: 0, z: 0.5}
     _workSpaceWorkDeskPrefab: {fileID: 5799979730755587653, guid: 35b2c4fc0057adf4f8a0a7a90a9228bf,
       type: 3}
     DeskOffset:
-      NorthRelativeOffset: {x: 0, y: 0, z: 1}
-      EastRelativeOffset: {x: 1, y: 0, z: 1}
-      SouthRelativeOffset: {x: 1, y: 0, z: 0}
-      WestRelativeOffset: {x: 0, y: 0, z: 0}
+      NorthRelativeOffset: {x: 0.5, y: 0, z: 0.5}
+      EastRelativeOffset: {x: 0.5, y: 0, z: 1.5}
+      SouthRelativeOffset: {x: 0.5, y: 0, z: 0.5}
+      WestRelativeOffset: {x: 0.5, y: 0, z: 0.5}
     _random1List:
     - {fileID: 8251830521167055863, guid: ad5a02c8bd1857c45890c31604189640, type: 3}
     - {fileID: 491907102550278644, guid: 20fdfe73a48713d4c81b8b8eeef48e77, type: 3}
@@ -39,10 +39,10 @@ MonoBehaviour:
     - {fileID: 4157949545016325361, guid: f182b6d1acdbe1d42a51bb2f317ce0d0, type: 3}
     - {fileID: 4157949545016325361, guid: f182b6d1acdbe1d42a51bb2f317ce0d0, type: 3}
     Random1Offset:
-      NorthRelativeOffset: {x: -2, y: 0, z: 2}
-      EastRelativeOffset: {x: -1, y: 0, z: 2}
-      SouthRelativeOffset: {x: -1, y: 0, z: 1}
-      WestRelativeOffset: {x: -2, y: 0, z: 1}
+      NorthRelativeOffset: {x: 2.5, y: 0, z: 1.5}
+      EastRelativeOffset: {x: -1.5, y: 0, z: 2.5}
+      SouthRelativeOffset: {x: -1.5, y: 0, z: 1.5}
+      WestRelativeOffset: {x: -1.5, y: 0, z: 1.5}
     _random2List:
     - {fileID: 8251830521167055863, guid: ad5a02c8bd1857c45890c31604189640, type: 3}
     - {fileID: 491907102550278644, guid: 20fdfe73a48713d4c81b8b8eeef48e77, type: 3}
@@ -51,10 +51,10 @@ MonoBehaviour:
     - {fileID: 8251830521167055863, guid: ad5a02c8bd1857c45890c31604189640, type: 3}
     - {fileID: 491907102550278644, guid: 20fdfe73a48713d4c81b8b8eeef48e77, type: 3}
     Random2Offset:
-      NorthRelativeOffset: {x: 1, y: 0, z: -1}
-      EastRelativeOffset: {x: 2, y: 0, z: -1}
-      SouthRelativeOffset: {x: 2, y: 0, z: -2}
-      WestRelativeOffset: {x: 1, y: 0, z: -2}
+      NorthRelativeOffset: {x: 1.5, y: 0, z: -1.5}
+      EastRelativeOffset: {x: 1.5, y: 0, z: -0.5}
+      SouthRelativeOffset: {x: 1.5, y: 0, z: -1.5}
+      WestRelativeOffset: {x: 1.5, y: 0, z: -1.5}
     ComputerOffset:
       NorthRelativeOffset: {x: 0, y: 0.71, z: 2}
       EastRelativeOffset: {x: 1, y: 0.71, z: 2}
@@ -62,13 +62,13 @@ MonoBehaviour:
       WestRelativeOffset: {x: 0, y: 0.71, z: 1}
     _serverRoomLampPrefab: {fileID: 4157949545016325361, guid: f182b6d1acdbe1d42a51bb2f317ce0d0,
       type: 3}
-    _serverRoomLampOffset: {x: 0, y: 0, z: -2}
+    _serverRoomLampOffset: {x: 1.5, y: 0, z: -1.5}
     _serverRoomDeskPrefab: {fileID: 5316926284663047571, guid: a8f074aaf45e16e46a9e0e1f2f80a618,
       type: 3}
-    _serverRoomDeskOffset: {x: 0, y: 0, z: 0}
+    _serverRoomDeskOffset: {x: 1.5, y: 0, z: 0.5}
     _serverRoomServerRackPrefab: {fileID: 2366271415470597347, guid: 9bb01cb380f77df4cbaa662dac547aa8,
       type: 3}
-    _serverRoomRackOffset: {x: -2, y: 0, z: 1}
+    _serverRoomRackOffset: {x: -0.5, y: 0, z: 1.5}
     _invalidIndexRange:
       from: -1
       to: -1
