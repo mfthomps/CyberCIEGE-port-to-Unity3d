@@ -6,6 +6,7 @@ using Code.Clearance;
 using Code.Policies;
 using Code.Scriptable_Variables;
 using Code.World_Objects.User;
+using Shared.ScriptableVariables;
 
 namespace Code.World_Objects.Zone {
   public class ZoneBehavior : BaseWorldObject {
