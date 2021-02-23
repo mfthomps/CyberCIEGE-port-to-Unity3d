@@ -10,9 +10,6 @@ namespace Code.User_Interface.Asset {
     [SerializeField]
     private TMP_Text nameLabel;
 
-    [Tooltip("The button that allows selecting this policy item.")]
-    public Button selectionButton;
-
     //-------------------------------------------------------------------------
     public override void SetItem(AssetBehavior item) {
       this.name = item.Data.AssetName;
