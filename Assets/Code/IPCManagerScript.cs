@@ -5,6 +5,7 @@ using UnityEngine;
 using Shared.ScriptableVariables;
 using Code.Factories;
 using Code.Scriptable_Variables;
+using Code.User_Interface.View;
 
 public class IPCManagerScript : MonoBehaviour {
   [SerializeField] private StringListVariable attackLogVariable;
@@ -35,6 +36,8 @@ public class IPCManagerScript : MonoBehaviour {
   public StringGameEvent showMessage;
   [Tooltip("Event to fire when the server is requesting a yes/no answer")]
   public StringGameEvent requestConfirmation;
+  [Tooltip("Show the debrief dialog and end the scenario")]
+  public StringGameEvent showDebrief;
   [Tooltip("Quit scenario")]
   public GameEvent quit;
 
@@ -74,7 +77,7 @@ public class IPCManagerScript : MonoBehaviour {
           _serverReady = true;
           _gameLoadBehavior.AfterServerReady();
           SendRequest("begin");
-          SendRequest("on_screen:" + menus.UI_SCREEN_OFFICE);
+          SendRequest("on_screen:" + ViewType.Office);
         }
 
         return;
@@ -133,8 +136,9 @@ public class IPCManagerScript : MonoBehaviour {
         case "objective":
           objectiveUpdated?.Raise(message);
           break;
+        case "win":
         case "lose":
-          quit?.Raise();
+          showDebrief?.Raise(message);
           break;
         case "remove_computer":
           _computerFactory.Remove(itemName: message);
@@ -173,6 +177,18 @@ public class IPCManagerScript : MonoBehaviour {
   }
 
   // --------------------------------------------------------------------------
+  public void DialogUp(bool sendServerMessage) {
+    if (sendServerMessage) {
+      SendRequest("dialog_up");
+    }
+  }
+
+  // --------------------------------------------------------------------------
+  public void DialogClosed(string message) {
+    SendRequest($"dialog_closed{(!string.IsNullOrEmpty(message) ? $":{message}" : "")}");
+  }
+
+  // --------------------------------------------------------------------------
   public static void SendRequest(string request) {
     if (_serverStream == null) {
       Debug.Log("SendRequest, no connection for to send " + request);
@@ -201,19 +217,6 @@ public class IPCManagerScript : MonoBehaviour {
     // send the string array
     //socket.Send(dataArray, reqLen,
     //			System.Net.Sockets.SocketFlags.None);
-  }
-
-  // --------------------------------------------------------------------------
-  public static void DialogUp() {
-    SendRequest("dialog_up");
-  }
-
-  // --------------------------------------------------------------------------
-  public static void DialogClosed(string message = null) {
-    if (message == null)
-      SendRequest("dialog_closed");
-    else
-      SendRequest("dialog_closed:" + message);
   }
 
   // --------------------------------------------------------------------------

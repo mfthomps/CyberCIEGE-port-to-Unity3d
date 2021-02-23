@@ -3,6 +3,7 @@ using System.Xml;
 using System.Xml.Linq;
 using UnityEngine;
 using Shared.ScriptableVariables;
+using Code.Game_Events;
 using Code.Scriptable_Variables;
 
 namespace Code.World_Objects.Zone {
@@ -30,7 +31,14 @@ namespace Code.World_Objects.Zone {
     public void UpdateZoneStatus(string message) {
       StringReader xmlreader = new StringReader(message);
       XmlDocument xml_doc = new XmlDocument();
-      xml_doc.Load(xmlreader);
+      try {
+        xml_doc.Load(xmlreader);
+      }
+      catch (XmlException  e) {
+        Debug.LogError($"Zone status xml contains an error: {message}. {e}");
+        return;
+      }
+      
       XmlNode the_node = xml_doc.SelectSingleNode("//zone_status");
       var zoneStatuses = the_node.SelectNodes("zone");
       foreach (XmlNode zoneStatus in zoneStatuses) {
@@ -78,39 +86,42 @@ namespace Code.World_Objects.Zone {
     }
 
     // ------------------------------------------------------------------------
-    public void OnUserAccessAdded(string userName) {
-      SendServerEventMessage(ZONE_EVENT_ADD_ACCESS, ZONE_EVENT_TARGET_KEY_USER, userName);
+    public void OnUserAccessAdded(ZoneAccessChange changeData) {
+      SendServerEventMessage(changeData.zone, ZONE_EVENT_ADD_ACCESS, ZONE_EVENT_TARGET_KEY_USER, changeData.target);
     }
 
     // ------------------------------------------------------------------------
-    public void OnUserAccessRemoved(string userName) {
-      SendServerEventMessage(ZONE_EVENT_REMOVE_ACCESS, ZONE_EVENT_TARGET_KEY_USER, userName);
+    public void OnUserAccessRemoved(ZoneAccessChange changeData) {
+      SendServerEventMessage(changeData.zone, ZONE_EVENT_REMOVE_ACCESS, ZONE_EVENT_TARGET_KEY_USER, changeData.target);
     }
 
     // ------------------------------------------------------------------------
-    public void OnGroupAccessAdded(string groupName) {
-      SendServerEventMessage(ZONE_EVENT_ADD_ACCESS, ZONE_EVENT_TARGET_KEY_GROUP, groupName);
+    public void OnGroupAccessAdded(ZoneAccessChange changeData) {
+      SendServerEventMessage(changeData.zone, ZONE_EVENT_ADD_ACCESS, ZONE_EVENT_TARGET_KEY_GROUP, changeData.target);
     }
 
     // ------------------------------------------------------------------------
-    public void OnGroupAccessRemoved(string groupName) {
-      SendServerEventMessage(ZONE_EVENT_REMOVE_ACCESS, ZONE_EVENT_TARGET_KEY_GROUP, groupName);
+    public void OnGroupAccessRemoved(ZoneAccessChange changeData) {
+      SendServerEventMessage(changeData.zone, ZONE_EVENT_REMOVE_ACCESS, ZONE_EVENT_TARGET_KEY_GROUP, changeData.target);
     }
 
     // ------------------------------------------------------------------------
-    public void OnClearanceAccessAdded(string clearanceName) {
-      SendServerEventMessage(ZONE_EVENT_ADD_ACCESS, ZONE_EVENT_TARGET_KEY_CLEARANCE, clearanceName);
+    public void OnClearanceAccessAdded(ZoneAccessChange changeData) {
+      SendServerEventMessage(changeData.zone, ZONE_EVENT_ADD_ACCESS, ZONE_EVENT_TARGET_KEY_CLEARANCE, changeData.target);
     }
 
     // ------------------------------------------------------------------------
-    public void OnClearanceAccessRemoved(string clearanceName) {
-      SendServerEventMessage(ZONE_EVENT_REMOVE_ACCESS, ZONE_EVENT_TARGET_KEY_CLEARANCE, clearanceName);
+    public void OnClearanceAccessRemoved(ZoneAccessChange changeData) {
+      SendServerEventMessage(changeData.zone, ZONE_EVENT_REMOVE_ACCESS, ZONE_EVENT_TARGET_KEY_CLEARANCE, changeData.target);
     }
 
     // ------------------------------------------------------------------------
-    private void SendServerEventMessage(string eventName, string targetKey, string targetName) {
-      XElement xml = new XElement(eventName,
-        new XElement(targetKey, targetName)
+    private void SendServerEventMessage(ZoneBehavior zone, string eventName, string targetKey, string targetName) {
+      XElement xml = new XElement("zoneEvent",
+        new XElement("name", zone?.Data.ZoneName),
+        new XElement(eventName,
+          new XElement(targetKey, targetName)
+        )
       );
 
       IPCManagerScript.SendRequest(xml.ToString());

@@ -3,9 +3,19 @@ using System.IO;
 using System.Xml;
 using UnityEngine;
 using TMPro;
+using Shared.ScriptableVariables;
 
 namespace Code.User_Interface.Main {
   public class ConfirmationDialog : MonoBehaviour {
+    [Header("Output Events")]
+    [Tooltip("Event to fire when dialog is up")]
+    public BooleanGameEvent dialogUp;
+    [Tooltip("Event to fire when dialog is closed")]
+    public StringGameEvent dialogClosed;
+    [Tooltip("Restart scenario")]
+    public GameEvent restartScenario;
+    [Tooltip("Quit scenario")]
+    public GameEvent quit;
     [Header("UI Elements")]
     [Tooltip("Main Dialog UI")]
     public GameObject dialog;
@@ -32,8 +42,24 @@ namespace Code.User_Interface.Main {
       var confirmationMessage = the_node["text"].InnerText;
       var acceptText = the_node["yes"].InnerText;
       var canceltext = the_node["no"].InnerText;
-      GetConfirmation(new ConfirmationRequest(confirmationMessage, acceptText, canceltext, (bool accepted) => IPCManagerScript.DialogClosed(accepted ? "yes" : "no")));
-      IPCManagerScript.DialogUp();
+      GetConfirmation(new ConfirmationRequest(confirmationMessage, acceptText, canceltext, (bool accepted) => {
+        IPCManagerScript.SendRequest($"dialogClosed:{(accepted ? "yes" : "no")}");
+        dialogClosed?.Raise(null);
+      }));
+      dialogUp?.Raise(false);
+    }
+
+    // --------------------------------------------------------------------------
+    public void OnScenarioDebrief(string message) {
+      GetConfirmation(new ConfirmationRequest(message, "Restart", "Quit", (bool restart) => {
+        if (restart) {
+          restartScenario?.Raise();
+        }
+        else {
+          quit?.Raise();
+        }
+      }));
+      dialogUp?.Raise(false);
     }
 
     // --------------------------------------------------------------------------

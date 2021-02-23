@@ -33,7 +33,9 @@ namespace Code.MainMenu {
         foreach (var process in Process.GetProcessesByName("simsecNoUi")) {
           process.Kill();
         }
-        _gameProcess.Kill();
+        if (!_gameProcess.HasExited) {
+          _gameProcess.Kill();
+        }
         _gameProcess = null;
       }
     }
