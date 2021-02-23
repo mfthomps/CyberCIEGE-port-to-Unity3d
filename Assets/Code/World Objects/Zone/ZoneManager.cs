@@ -44,9 +44,11 @@ namespace Code.World_Objects.Zone {
       foreach (XmlNode zoneStatus in zoneStatuses) {
         var zoneName = zoneStatus["name"].InnerText;
         var security = int.Parse(zoneStatus["security"].InnerText);
+        bool hidden = IsZoneHidden(zoneStatus);
         foreach (var zone in zones.Value) {
           if (zone.Data.ZoneName == zoneName) {
             zone.SetSecurity(security);
+            zone.SetHidden(hidden);
           }
         }
       }
@@ -122,6 +124,13 @@ namespace Code.World_Objects.Zone {
       );
 
       IPCManagerScript.SendRequest(xml.ToString());
+    }
+    
+    // ------------------------------------------------------------------------
+    private static bool IsZoneHidden(XmlNode zoneStatus) {
+      string hiddenStr = zoneStatus["hide"]?.InnerText;
+      bool hidden = (!string.IsNullOrEmpty(hiddenStr) && hiddenStr == "yes");
+      return hidden;
     }
   }
 }

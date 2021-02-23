@@ -141,5 +141,11 @@ namespace Code.World_Objects.Zone {
       policyDisabled?.Raise(policy);
       ValueChanged();
     }
+
+    //----------------------------------------------------------------------------
+    public void SetHidden(bool hidden) {
+      Debug.Log($"Zone {_data.ZoneName} is hidden: {hidden}");
+      _data.hidden = hidden;
+    }
   }
 }

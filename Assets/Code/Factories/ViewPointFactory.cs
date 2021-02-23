@@ -73,6 +73,8 @@ namespace Code.Factories {
           var direction = Quaternion.LookRotation(viewPoint.To.transform.position - viewPoint.From.transform.position);
           viewPoint.From.transform.rotation = direction;
           viewPoint.To.transform.rotation = direction;
+
+          viewPoint.name = $"ViewPoint--{viewPoint.Data.Site}";
         }
       });
     }
