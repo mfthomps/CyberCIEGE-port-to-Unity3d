@@ -36,6 +36,8 @@ public class IPCManagerScript : MonoBehaviour {
   public StringGameEvent showMessage;
   [Tooltip("Event to fire when the server is requesting a yes/no answer")]
   public StringGameEvent requestConfirmation;
+  [Tooltip("Show the debrief dialog and end the scenario")]
+  public StringGameEvent showDebrief;
   [Tooltip("Quit scenario")]
   public GameEvent quit;
 
@@ -134,8 +136,9 @@ public class IPCManagerScript : MonoBehaviour {
         case "objective":
           objectiveUpdated?.Raise(message);
           break;
+        case "win":
         case "lose":
-          quit?.Raise();
+          showDebrief?.Raise(message);
           break;
         case "remove_computer":
           _computerFactory.Remove(itemName: message);
