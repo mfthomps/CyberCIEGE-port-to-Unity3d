@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using TMPro;
 
 namespace Code.HelpTip {
@@ -10,7 +11,7 @@ namespace Code.HelpTip {
     public TMP_Text label;
 
     private Animator animator;
-
+    private Coroutine clickListener;
 
     // --------------------------------------------------------------------------
     void Awake() {
@@ -27,15 +28,45 @@ namespace Code.HelpTip {
       else {
         uiRoot.SetActive(true);
       }
+      clickListener = StartCoroutine(CatchClick());
     }
 
     // --------------------------------------------------------------------------
-    public void HideTip() {
+    private IEnumerator CatchClick() {
+      while (true) {
+        // Wait until the left mouse button has been pressed
+        while (!Input.GetMouseButtonDown(0)) {
+          yield return null;
+        }
+
+        // Now wait for a left mouse button to be released and check to see if
+        // the user dragged at all in the interim
+        var dragged = false;
+        var downMousePosition = Input.mousePosition;
+        while (!Input.GetMouseButtonUp(0)) {
+          if (!dragged && (Input.mousePosition - downMousePosition).magnitude > 0.1f) {
+            dragged = true;
+          }
+          yield return null;
+        }
+
+        // If the user didn't drag, they clicked, so hide the help tip
+        if (!dragged) {
+          HideTip();
+        }
+      }
+    }
+
+    // --------------------------------------------------------------------------
+    private void HideTip() {
       if (animator) {
         animator.SetBool("Active", false);
       }
       else {
         uiRoot.SetActive(false);
+      }
+      if (clickListener != null) {
+        StopCoroutine(clickListener);
       }
     }
   }
