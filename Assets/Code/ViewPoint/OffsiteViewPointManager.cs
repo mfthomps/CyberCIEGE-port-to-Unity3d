@@ -39,9 +39,17 @@ namespace Code.ViewPoint {
    
       //For every ViewPoint that has a Site which matches an available Zone.
       _offsiteViewPointList.Clear();
+      
+      if (_viewPointList.Value.Count > 0) {
+        //always start with the very first ViewPoint? Not sure about this.
+        _offsiteViewPointList.Add(_viewPointList.Value[0]);
+      }
+      
       foreach (ViewPoint viewPoint in _viewPointList.Value) {
         if (availableZones.Exists(x => x.Data.ZoneName == viewPoint.Data.Site)) {
-          _offsiteViewPointList.Add(viewPoint);
+          if (!_offsiteViewPointList.Value.Contains(viewPoint)) {
+            _offsiteViewPointList.Add(viewPoint);
+          }
         }
       }
     }
