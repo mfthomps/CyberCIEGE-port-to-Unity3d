@@ -29,6 +29,8 @@ namespace Code.World_Objects.Zone {
     public PolicyGameEvent policyEnabled;
     [Tooltip("A policy was toggled off")]
     public PolicyGameEvent policyDisabled;
+    [Tooltip("The BooleanGameEvent to trigger when this Zone changes Hidden status")]
+    public BooleanGameEvent zoneHidden;
 
     [Tooltip("The data related to this Zone.")]
     [SerializeField] private ZoneDataObject _data;
@@ -144,8 +146,10 @@ namespace Code.World_Objects.Zone {
 
     //----------------------------------------------------------------------------
     public void SetHidden(bool hidden) {
-      Debug.Log($"Zone {_data.ZoneName} is hidden: {hidden}");
-      _data.hidden = hidden;
+      if (_data.hidden != hidden) {
+        _data.hidden = hidden;
+        zoneHidden?.Raise(hidden);        
+      }
     }
   }
 }
