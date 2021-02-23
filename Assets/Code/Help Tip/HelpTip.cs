@@ -65,7 +65,9 @@ namespace Code.HelpTip {
       else {
         uiRoot.SetActive(false);
       }
-      StopCoroutine(clickListener);
+      if (clickListener != null) {
+        StopCoroutine(clickListener);
+      }
     }
   }
 }
