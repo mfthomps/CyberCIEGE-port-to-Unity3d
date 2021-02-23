@@ -13,6 +13,5 @@ namespace Code.World_Objects.Asset {
     public string description;
     public string secrecy;
     public string integrity;
-    public bool assigned;
   }
 }
