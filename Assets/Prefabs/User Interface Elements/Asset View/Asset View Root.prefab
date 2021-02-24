@@ -2860,6 +2860,26 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &2989928519404051273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7623625463087717576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: -1
+  m_PreferredHeight: -1
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: 1
+  m_LayoutPriority: 1
 --- !u!1 &8265471840446352034
 GameObject:
   m_ObjectHideFlags: 0
@@ -3192,6 +3212,11 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6035450437290727226, guid: 9fa00cb9335a2a844b268310f681de11,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7042268557161548117, guid: 9fa00cb9335a2a844b268310f681de11,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -3214,15 +3239,21 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9fa00cb9335a2a844b268310f681de11, type: 3}
---- !u!224 &5694929477548990841 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 1019755155629424834, guid: 9fa00cb9335a2a844b268310f681de11,
-    type: 3}
-  m_PrefabInstance: {fileID: 4696851743451849147}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &8877810679578792343 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4186869911175933996, guid: 9fa00cb9335a2a844b268310f681de11,
+    type: 3}
+  m_PrefabInstance: {fileID: 4696851743451849147}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7623625463087717576 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2945951401985473907, guid: 9fa00cb9335a2a844b268310f681de11,
+    type: 3}
+  m_PrefabInstance: {fileID: 4696851743451849147}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &5694929477548990841 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 1019755155629424834, guid: 9fa00cb9335a2a844b268310f681de11,
     type: 3}
   m_PrefabInstance: {fileID: 4696851743451849147}
   m_PrefabAsset: {fileID: 0}
