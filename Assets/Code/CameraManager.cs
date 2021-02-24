@@ -128,21 +128,18 @@ namespace Code.Camera {
       //Move to the first ViewPoint, if there is one
       var viewPoint = _objectCircularLists.GetNext(WorldObjectType.ViewPoint);
       if (viewPoint) {
-        Debug.Log($"Moving starting camera to: {viewPoint.name}");
         MoveCameraToViewPoint(viewPoint as ViewPoint.ViewPoint);
       }
       // If we don't have a starting viewpoint, then try moving to a user
       else {
         var ub = _objectCircularLists.GetNext(WorldObjectType.User);
         if (ub != null) {
-          Debug.Log($"Moving starting camera to: {ub.name}");
           MoveCameraTarget(ub.transform);
         }
         // If we don't have a user to move to, then try to find a computer
         else {
           var computer = _objectCircularLists.GetNext(WorldObjectType.Computer);
           if (computer) {
-            Debug.Log($"Moving starting camera to: {computer.name}");
             MoveCameraTarget(computer.transform);
           }
         }
@@ -162,10 +159,8 @@ namespace Code.Camera {
       
       XmlNode mainNode = xml_doc.SelectSingleNode("//cameraToUser");
       var username = mainNode["name"].InnerText;
-      Debug.Log($"Trying to move camera to: {username}");
       foreach (var user in _userList.Value) {
         if (user.Data.user_name == username) {
-          Debug.Log($"Moving camera to: {username}");
           MoveCameraTarget(user.transform);
         }
       }
