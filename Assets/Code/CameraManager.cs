@@ -17,6 +17,8 @@ namespace Code.Camera {
     [SerializeField] private DeviceListVariable _deviceList;
     [Tooltip("List of ViewPoints in the scenario")]
     [SerializeField] private ViewPointListVariable _viewPointList;
+    [Tooltip("List of ViewPoints that represent the different buildings available.")]
+    [SerializeField] private ViewPointListVariable _buildingList;
 
     [Header("Cameras")]
     [Tooltip("Transform the camera is targeting")]
@@ -58,6 +60,7 @@ namespace Code.Camera {
       _objectCircularLists.SetList(_computerList.Value, WorldObjectType.Computer);
       _objectCircularLists.SetList(_deviceList.Value, WorldObjectType.Device);
       _objectCircularLists.SetList(_viewPointList.Value, WorldObjectType.ViewPoint);
+      _objectCircularLists.SetList(_buildingList.Value, WorldObjectType.Building);
 
       _minZoomInterval = Mathf.Log10(minZoomDistance) / Mathf.Log10(zoomExponentialGrowthRate);
       _maxZoomInterval = Mathf.Log10(maxZoomDistance) / Mathf.Log10(zoomExponentialGrowthRate);
@@ -112,29 +115,12 @@ namespace Code.Camera {
 
     // ------------------------------------------------------------------------
     public void MoveCameraToPreviousObject(WorldObjectType type) {
-      var target =_objectCircularLists.GetPrev(type);
-
-      if (target) {
-        if (target.Type() == WorldObjectType.ViewPoint) {
-          MoveCameraToViewPoint(target as ViewPoint.ViewPoint);
-        }
-        else {
-          MoveCameraTarget(target.transform);
-        }
-      }
+      MoveCamera(type, _objectCircularLists.GetPrev(type));
     }
     
     //--------------------------------------------------------------------------
     public void MoveCameraToNextObject(WorldObjectType type) {
-      var target =_objectCircularLists.GetNext(type);
-      if (target) {
-        if (target.Type() == WorldObjectType.ViewPoint) {
-          MoveCameraToViewPoint(target as ViewPoint.ViewPoint);
-        }
-        else {
-          MoveCameraTarget(target.transform);
-        }
-      }
+      MoveCamera(type, _objectCircularLists.GetNext(type));
     }
 
     // ------------------------------------------------------------------------
@@ -182,6 +168,38 @@ namespace Code.Camera {
           Debug.Log($"Moving camera to: {username}");
           MoveCameraTarget(user.transform);
         }
+      }
+    }
+    
+    //--------------------------------------------------------------------------
+    private void MoveCamera(WorldObjectType type, BaseWorldObject target) {
+      if (!target) return;
+
+      switch (type) {
+        case WorldObjectType.Asset:
+        case WorldObjectType.Computer:
+        case WorldObjectType.Device:
+        case WorldObjectType.Staff:
+        case WorldObjectType.User:
+          MoveCameraTarget(target.transform);
+          break;
+        case WorldObjectType.ViewPoint: {
+          ViewPoint.ViewPoint vp = (ViewPoint.ViewPoint) target;
+          if (!vp.Data.SkipTab) {
+            MoveCameraToViewPoint(vp);
+          }
+        }
+          break;
+        case WorldObjectType.Building: {
+          ViewPoint.ViewPoint vp = (ViewPoint.ViewPoint) target;
+          MoveCameraToViewPoint(vp);
+        }
+          break;
+        case WorldObjectType.Workspace:
+        case WorldObjectType.Component:
+        case WorldObjectType.Zone:
+        default:
+          throw new ArgumentOutOfRangeException(nameof(type), type, null);
       }
     }
 

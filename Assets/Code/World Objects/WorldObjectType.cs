@@ -10,6 +10,7 @@
     User,
     Workspace,
     Zone,
-    ViewPoint
+    ViewPoint,
+    Building, //<really just a specialized version of ViewPoints
   }
 }

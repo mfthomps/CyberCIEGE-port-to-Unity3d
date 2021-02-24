@@ -10,5 +10,6 @@ namespace Code.ViewPoint {
     public float ZoomLevel;
     public float MagicHeight = 0;
     public bool SkipTab = false;
+    public string Site;
   }
 }
