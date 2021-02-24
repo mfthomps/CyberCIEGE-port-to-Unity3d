@@ -41,4 +41,10 @@ public class SpeechBubble : MonoBehaviour {
       _speechBubbleRoot.SetActive(_active);
     }
   }
+
+  // -----------------------------------------------------------------
+  public void SetSpeechText(string text) {
+    SpeechBubbleText = text;
+    Active = !string.IsNullOrEmpty(text);
+  }
 }

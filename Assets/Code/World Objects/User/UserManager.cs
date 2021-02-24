@@ -25,18 +25,18 @@ namespace Code.World_Objects.User {
       XmlDocument xml_doc = new XmlDocument();
 
       xml_doc.Load(xmlreader);
-      XmlNodeList userNodes = xml_doc.SelectNodes("//user_status/user");
-      foreach (XmlNode userNode in userNodes) {
-        var username = userNode["name"].InnerText;
+      XmlNodeList updateNodes = xml_doc.SelectNodes("//user_status/user");
+      foreach (XmlNode updateNode in updateNodes) {
+        var username = updateNode["name"].InnerText;
         foreach (var user in users.Value) {
           if (user.Data.user_name == username) {
-            UpdateUserStatus(user, userNode);
+            UpdateUserStatus(user, updateNode);
           }
         }
         // Staff get updates through the user_status message as well
         foreach (var staff in staffList.Value) {
           if (staff.Data.user_name == username) {
-            UpdateStaff(staff, userNode);
+            UpdateStaff(staff, updateNode);
           }
         }
       }
@@ -61,11 +61,11 @@ namespace Code.World_Objects.User {
     }
 
     //---------------------------------------------------------------------------
-    private void UpdateUserStatus(UserBehavior user, XmlNode userNode) {
-      user.UpdateCurrentThought(userNode["thought"].InnerText);
+    private void UpdateUserStatus(UserBehavior user, XmlNode updateNode) {
+      user.UpdateCurrentThought(updateNode["thought"].InnerText);
 
       var failedGoals = new HashSet<string>();
-      XmlNodeList goal_nodes = userNode.SelectNodes("//goal");
+      XmlNodeList goal_nodes = updateNode.SelectNodes("//goal");
       foreach (XmlNode goal in goal_nodes) {
         string status = goal["status"].InnerText;
         if (status == "fail") {
@@ -74,44 +74,48 @@ namespace Code.World_Objects.User {
       }
       user.UpdateFailedGoals(failedGoals);
 
-      string tmp = userNode["training"].InnerText;
+      string tmp = updateNode["training"].InnerText;
       if (int.TryParse(tmp, out int training)) {
         user.UpdateTraining(training);
       }
 
-      string happinessStr = userNode["happiness"].InnerText;
+      string happinessStr = updateNode["happiness"].InnerText;
       if (int.TryParse(happinessStr, out int happiness)) {
         user.UpdateHappiness(happiness);
       }
       
-      string productivityStr = userNode["productivity"].InnerText;
+      string productivityStr = updateNode["productivity"].InnerText;
       if (int.TryParse(productivityStr, out int productivity)) {
         user.UpdateProductivity(productivity);
       }
 
-      string assetUsageStr = userNode["assetUsage"].InnerText;
+      string assetUsageStr = updateNode["assetUsage"].InnerText;
       if (int.TryParse(assetUsageStr, out int assetUsage)) {
         user.UpdateAssetUsage(assetUsage);
       }
 
-      if (userNode["assignedZone"] != null) {
-        user.UpdateAssignedZone(userNode["assignedZone"].InnerText);
+      if (updateNode["assignedZone"] != null) {
+        user.UpdateAssignedZone(updateNode["assignedZone"].InnerText);
       }
+
+      user.UpdateSpeechText(updateNode["speakText"].InnerText);
     }
 
     //---------------------------------------------------------------------------
-    private void UpdateStaff(StaffBehavior staff, XmlNode userNode) {
-      staff.UpdateCurrentThought(userNode["thought"].InnerText);
+    private void UpdateStaff(StaffBehavior staff, XmlNode updateNode) {
+      staff.UpdateCurrentThought(updateNode["thought"].InnerText);
 
-      string happinessStr = userNode["happiness"].InnerText;
+      string happinessStr = updateNode["happiness"].InnerText;
       if (int.TryParse(happinessStr, out int happiness)) {
         staff.UpdateHappiness(happiness);
       }
       
-      string productivityStr = userNode["productivity"].InnerText;
+      string productivityStr = updateNode["productivity"].InnerText;
       if (int.TryParse(productivityStr, out int productivity)) {
         staff.UpdateProductivity(productivity);
       }
+
+      staff.UpdateSpeechText(updateNode["speakText"].InnerText);
     }
   }
 }
