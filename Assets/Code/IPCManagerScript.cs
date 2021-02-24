@@ -38,6 +38,8 @@ public class IPCManagerScript : MonoBehaviour {
   public StringGameEvent requestConfirmation;
   [Tooltip("Show the debrief dialog and end the scenario")]
   public StringGameEvent showDebrief;
+  [Tooltip("Event to fire when the server wants to move the camera to a user")]
+  public StringGameEvent moveCameraToUser;
   [Tooltip("Quit scenario")]
   public GameEvent quit;
 
@@ -142,6 +144,9 @@ public class IPCManagerScript : MonoBehaviour {
           break;
         case "remove_computer":
           _computerFactory.Remove(itemName: message);
+          break;
+        case "cameraToUser":
+          moveCameraToUser?.Raise(message);
           break;
         default:
           Debug.Log("nothing to do for " + command + " " + message);
