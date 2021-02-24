@@ -5,11 +5,16 @@ using Code.Scriptable_Variables;
 
 namespace Code.World_Objects.User {
   public class UserBehavior : Navigator {
+    [Header("Input Variables")]
     [Tooltip("The list of all the currently loaded access control groups")]
     [SerializeField] private AccessControlGroupListVariable _accessControlGroups;
     [Tooltip("The list of all the currently loaded clearances")]
     [SerializeField] private ClearanceListVariable _clearances;
     
+    [Header("UI Elements")]
+    [SerializeField] private SpeechBubble _speechBubble;
+
+    [Header("Data")]
     [SerializeField] private UserDataObject _data;
 
     //---------------------------------------------------------------------------
@@ -55,6 +60,11 @@ namespace Code.World_Objects.User {
     public void UpdateCurrentThought(string thought) {
       Data.current_thought = thought;
       ValueChanged();
+    }
+
+    //---------------------------------------------------------------------------
+    public void UpdateSpeechText(string speechText) {
+      _speechBubble.SetSpeechText(speechText);
     }
 
     //---------------------------------------------------------------------------
