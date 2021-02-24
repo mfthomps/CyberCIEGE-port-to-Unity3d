@@ -46,7 +46,7 @@ namespace Code.Factories {
           ViewPoint.ViewPoint viewPoint = Instantiate(_prefab, _parent);
           var data = new ViewPointDataObject();
           viewPoint.Data = data;
-          _list.Add(viewPoint);
+          
           
           Vector3 from = new Vector3();
           Vector3 to = new Vector3();
@@ -73,6 +73,10 @@ namespace Code.Factories {
           var direction = Quaternion.LookRotation(viewPoint.To.transform.position - viewPoint.From.transform.position);
           viewPoint.From.transform.rotation = direction;
           viewPoint.To.transform.rotation = direction;
+
+          viewPoint.name = $"ViewPoint--{viewPoint.Data.Site}";
+          
+          _list.Add(viewPoint);
         }
       });
     }

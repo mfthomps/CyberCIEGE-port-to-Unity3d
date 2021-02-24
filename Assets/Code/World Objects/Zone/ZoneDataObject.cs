@@ -21,6 +21,7 @@ namespace Code.World_Objects.Zone {
     public string domain;
     public string description;
     public int security;
+    public bool hidden;
 
     // ------------------------------------------------------------------------
     public Rect GetRect() {

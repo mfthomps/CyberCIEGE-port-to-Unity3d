@@ -4,6 +4,10 @@ using UnityEngine;
 namespace Code.World_Objects.Staff {
   //Represents a single Staff member
   public class StaffBehavior : Navigator {
+    [Header("UI Elements")]
+    [SerializeField] private SpeechBubble _speechBubble;
+
+    [Header("Data")]
     [SerializeField] private StaffDataObject _data;
 
     // ------------------------------------------------------------------------
@@ -31,10 +35,16 @@ namespace Code.World_Objects.Staff {
     }
 
     //---------------------------------------------------------------------------
+    public void UpdateSpeechText(string speechText) {
+      _speechBubble.SetSpeechText(speechText);
+    }
+
+    //---------------------------------------------------------------------------
     public void UpdateHappiness(int value) {
       Data.happiness = value;
       ValueChanged();
     }
+
     //---------------------------------------------------------------------------
     public void UpdateProductivity(int value) {
       Data.productivity = value;
