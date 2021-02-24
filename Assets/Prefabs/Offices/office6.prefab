@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1700886936657892914}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.43499756, y: 0, z: 0.1800003}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8928054051989757105}
@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7066204368696859751}
-  - component: {fileID: 1326657354416297928}
+  - component: {fileID: 2607875503166474856}
   m_Layer: 0
   m_Name: office6
   m_TagString: Untagged
@@ -70,7 +70,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1326657354416297928
+--- !u!114 &2607875503166474856
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -96,9 +96,9 @@ MonoBehaviour:
   m_OverrideTileSize: 0
   m_TileSize: 256
   m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.1
+  m_VoxelSize: 0.083333336
   m_BuildHeightMesh: 0
-  m_NavMeshData: {fileID: 23800000, guid: 80041c2130a6af348989e3418acb92a1, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: ebef0c1b5b251b945b5c8e89991c0fff, type: 2}
 --- !u!1001 &1280900825111006195
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -114,7 +114,7 @@ PrefabInstance:
     - target: {fileID: 1717473524616744264, guid: 7d9fac6007fb9c740a558f3d67d1281f,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 49.443
+      value: 49.878
       objectReference: {fileID: 0}
     - target: {fileID: 1717473524616744264, guid: 7d9fac6007fb9c740a558f3d67d1281f,
         type: 3}
@@ -124,7 +124,7 @@ PrefabInstance:
     - target: {fileID: 1717473524616744264, guid: 7d9fac6007fb9c740a558f3d67d1281f,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 53.146
+      value: 53.326
       objectReference: {fileID: 0}
     - target: {fileID: 1717473524616744264, guid: 7d9fac6007fb9c740a558f3d67d1281f,
         type: 3}
@@ -166,6 +166,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Office 6 - Single Door (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 4090386257408175518, guid: 7d9fac6007fb9c740a558f3d67d1281f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7d9fac6007fb9c740a558f3d67d1281f, type: 3}
 --- !u!4 &437726100090799803 stripped
@@ -189,7 +194,7 @@ PrefabInstance:
     - target: {fileID: 1564264475384662873, guid: 01c1fc436c5c1fa43a3ebc574ddb6d37,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 44.505
+      value: 44.94
       objectReference: {fileID: 0}
     - target: {fileID: 1564264475384662873, guid: 01c1fc436c5c1fa43a3ebc574ddb6d37,
         type: 3}
@@ -199,7 +204,7 @@ PrefabInstance:
     - target: {fileID: 1564264475384662873, guid: 01c1fc436c5c1fa43a3ebc574ddb6d37,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 37.72
+      value: 37.9
       objectReference: {fileID: 0}
     - target: {fileID: 1564264475384662873, guid: 01c1fc436c5c1fa43a3ebc574ddb6d37,
         type: 3}
@@ -241,6 +246,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Office 6 -Double Doors
       objectReference: {fileID: 0}
+    - target: {fileID: 9072479025032028099, guid: 01c1fc436c5c1fa43a3ebc574ddb6d37,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 01c1fc436c5c1fa43a3ebc574ddb6d37, type: 3}
 --- !u!4 &3188173089970899148 stripped
@@ -264,7 +274,7 @@ PrefabInstance:
     - target: {fileID: 1717473524616744264, guid: 7d9fac6007fb9c740a558f3d67d1281f,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 37.045
+      value: 37.479996
       objectReference: {fileID: 0}
     - target: {fileID: 1717473524616744264, guid: 7d9fac6007fb9c740a558f3d67d1281f,
         type: 3}
@@ -274,7 +284,7 @@ PrefabInstance:
     - target: {fileID: 1717473524616744264, guid: 7d9fac6007fb9c740a558f3d67d1281f,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 43.691
+      value: 43.871002
       objectReference: {fileID: 0}
     - target: {fileID: 1717473524616744264, guid: 7d9fac6007fb9c740a558f3d67d1281f,
         type: 3}
@@ -316,6 +326,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Office 6 - Single Door (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 4090386257408175518, guid: 7d9fac6007fb9c740a558f3d67d1281f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7d9fac6007fb9c740a558f3d67d1281f, type: 3}
 --- !u!4 &6513350571768229239 stripped
@@ -339,22 +354,22 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 703eb301156e0ca4aaa423c228e66f0d,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.0824
+      value: 1.086
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 703eb301156e0ca4aaa423c228e66f0d,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.0824
+      value: 1.086
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 703eb301156e0ca4aaa423c228e66f0d,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.0824
+      value: 1.086
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 703eb301156e0ca4aaa423c228e66f0d,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 44.5
+      value: 44.934998
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 703eb301156e0ca4aaa423c228e66f0d,
         type: 3}
@@ -364,7 +379,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 703eb301156e0ca4aaa423c228e66f0d,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 40.75
+      value: 40.93
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 703eb301156e0ca4aaa423c228e66f0d,
         type: 3}
@@ -474,7 +489,7 @@ PrefabInstance:
     - target: {fileID: 1564264475384662873, guid: 01c1fc436c5c1fa43a3ebc574ddb6d37,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 34.537
+      value: 34.971996
       objectReference: {fileID: 0}
     - target: {fileID: 1564264475384662873, guid: 01c1fc436c5c1fa43a3ebc574ddb6d37,
         type: 3}
@@ -484,7 +499,7 @@ PrefabInstance:
     - target: {fileID: 1564264475384662873, guid: 01c1fc436c5c1fa43a3ebc574ddb6d37,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 40.752
+      value: 40.932
       objectReference: {fileID: 0}
     - target: {fileID: 1564264475384662873, guid: 01c1fc436c5c1fa43a3ebc574ddb6d37,
         type: 3}
@@ -526,6 +541,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Office 6 -Double Doors (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 9072479025032028099, guid: 01c1fc436c5c1fa43a3ebc574ddb6d37,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 01c1fc436c5c1fa43a3ebc574ddb6d37, type: 3}
 --- !u!4 &5621691983350581026 stripped
@@ -549,7 +569,7 @@ PrefabInstance:
     - target: {fileID: 1717473524616744264, guid: 7d9fac6007fb9c740a558f3d67d1281f,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 37.052
+      value: 37.486996
       objectReference: {fileID: 0}
     - target: {fileID: 1717473524616744264, guid: 7d9fac6007fb9c740a558f3d67d1281f,
         type: 3}
@@ -559,7 +579,7 @@ PrefabInstance:
     - target: {fileID: 1717473524616744264, guid: 7d9fac6007fb9c740a558f3d67d1281f,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 37.75
+      value: 37.93
       objectReference: {fileID: 0}
     - target: {fileID: 1717473524616744264, guid: 7d9fac6007fb9c740a558f3d67d1281f,
         type: 3}
@@ -601,6 +621,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Office 6 - Single Door
       objectReference: {fileID: 0}
+    - target: {fileID: 4090386257408175518, guid: 7d9fac6007fb9c740a558f3d67d1281f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7d9fac6007fb9c740a558f3d67d1281f, type: 3}
 --- !u!4 &9015135279719267061 stripped
@@ -624,7 +649,7 @@ PrefabInstance:
     - target: {fileID: 1564264475384662873, guid: 01c1fc436c5c1fa43a3ebc574ddb6d37,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 49.407
+      value: 49.842
       objectReference: {fileID: 0}
     - target: {fileID: 1564264475384662873, guid: 01c1fc436c5c1fa43a3ebc574ddb6d37,
         type: 3}
@@ -634,7 +659,7 @@ PrefabInstance:
     - target: {fileID: 1564264475384662873, guid: 01c1fc436c5c1fa43a3ebc574ddb6d37,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 40.752
+      value: 40.932
       objectReference: {fileID: 0}
     - target: {fileID: 1564264475384662873, guid: 01c1fc436c5c1fa43a3ebc574ddb6d37,
         type: 3}
@@ -675,6 +700,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Office 6 -Double Doors (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9072479025032028099, guid: 01c1fc436c5c1fa43a3ebc574ddb6d37,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 01c1fc436c5c1fa43a3ebc574ddb6d37, type: 3}
