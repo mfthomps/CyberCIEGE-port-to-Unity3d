@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Code.User_Interface.Main {
+namespace Code.User_Interface.Dialog {
   public class MessageRequest {
     public string message;
     public Action callback;

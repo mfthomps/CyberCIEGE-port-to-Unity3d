@@ -3,7 +3,7 @@ using UnityEngine;
 using TMPro;
 using Shared.ScriptableVariables;
 
-namespace Code.User_Interface.Main {
+namespace Code.User_Interface.Dialog {
   public class MessageDialog : MonoBehaviour {
     [Header("Output Events")]
     [Tooltip("Event to fire when dialog is up")]

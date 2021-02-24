@@ -36,6 +36,8 @@ public class IPCManagerScript : MonoBehaviour {
   public StringGameEvent showMessage;
   [Tooltip("Event to fire when the server is requesting a yes/no answer")]
   public StringGameEvent requestConfirmation;
+  [Tooltip("Event to fire when the server is requesting to show the multiple choice dialog")]
+  public StringGameEvent showMultipleChoice;
   [Tooltip("Show the debrief dialog and end the scenario")]
   public StringGameEvent showDebrief;
   [Tooltip("Event to fire when the server wants to move the camera to a user")]
@@ -128,6 +130,9 @@ public class IPCManagerScript : MonoBehaviour {
           break;
         case "yes_no":
           requestConfirmation?.Raise(message);
+          break;
+        case "multiple_choice":
+          showMultipleChoice?.Raise(message);
           break;
         case "tool_tip":
           helpTipMessageChanged?.Raise(message);
