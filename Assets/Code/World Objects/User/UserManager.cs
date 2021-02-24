@@ -5,6 +5,7 @@ using System.Xml.Linq;
 using UnityEngine;
 using Shared.ScriptableVariables;
 using Code.Scriptable_Variables;
+using Code.World_Objects.Character;
 using Code.World_Objects.Staff;
 
 namespace Code.World_Objects.User {
@@ -62,7 +63,7 @@ namespace Code.World_Objects.User {
 
     //---------------------------------------------------------------------------
     private void UpdateUserStatus(UserBehavior user, XmlNode updateNode) {
-      user.UpdateCurrentThought(updateNode["thought"].InnerText);
+      UpdateCharacterStatus(user, updateNode);
 
       var failedGoals = new HashSet<string>();
       XmlNodeList goal_nodes = updateNode.SelectNodes("//goal");
@@ -79,16 +80,6 @@ namespace Code.World_Objects.User {
         user.UpdateTraining(training);
       }
 
-      string happinessStr = updateNode["happiness"].InnerText;
-      if (int.TryParse(happinessStr, out int happiness)) {
-        user.UpdateHappiness(happiness);
-      }
-      
-      string productivityStr = updateNode["productivity"].InnerText;
-      if (int.TryParse(productivityStr, out int productivity)) {
-        user.UpdateProductivity(productivity);
-      }
-
       string assetUsageStr = updateNode["assetUsage"].InnerText;
       if (int.TryParse(assetUsageStr, out int assetUsage)) {
         user.UpdateAssetUsage(assetUsage);
@@ -97,25 +88,34 @@ namespace Code.World_Objects.User {
       if (updateNode["assignedZone"] != null) {
         user.UpdateAssignedZone(updateNode["assignedZone"].InnerText);
       }
-
-      user.UpdateSpeechText(updateNode["speakText"].InnerText);
     }
 
     //---------------------------------------------------------------------------
     private void UpdateStaff(StaffBehavior staff, XmlNode updateNode) {
-      staff.UpdateCurrentThought(updateNode["thought"].InnerText);
+      UpdateCharacterStatus(staff, updateNode);
 
+      var computer = updateNode["visitingComputer"].InnerText;
+      var visiting = updateNode["visiting"].InnerText;
+      var stay = updateNode["stay"].InnerText;
+      
+      Debug.Log($"{staff.Data.user_name} visitingComputer: {computer} visiting: {visiting} stay:{stay}");
+    }
+    
+    //---------------------------------------------------------------------------
+    private static void UpdateCharacterStatus(BaseCharacter character, XmlNode updateNode) {
+      character.UpdateCurrentThought(updateNode["thought"].InnerText);
+      
       string happinessStr = updateNode["happiness"].InnerText;
       if (int.TryParse(happinessStr, out int happiness)) {
-        staff.UpdateHappiness(happiness);
-      }
-      
-      string productivityStr = updateNode["productivity"].InnerText;
-      if (int.TryParse(productivityStr, out int productivity)) {
-        staff.UpdateProductivity(productivity);
+        character.UpdateHappiness(happiness);
       }
 
-      staff.UpdateSpeechText(updateNode["speakText"].InnerText);
+      string productivityStr = updateNode["productivity"].InnerText;
+      if (int.TryParse(productivityStr, out int productivity)) {
+        character.UpdateProductivity(productivity);
+      }
+      
+      character.UpdateSpeechText(updateNode["speakText"].InnerText);
     }
   }
 }
