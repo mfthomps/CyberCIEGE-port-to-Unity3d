@@ -2,6 +2,7 @@
 using System.IO;
 using System.Xml;
 using UnityEngine;
+using Shared.ScriptableVariables;
 using Code.Scriptable_Variables;
 using Code.World_Objects;
 
@@ -19,6 +20,10 @@ namespace Code.Camera {
     [SerializeField] private ViewPointListVariable _viewPointList;
     [Tooltip("List of ViewPoints that represent the different buildings available.")]
     [SerializeField] private ViewPointListVariable _buildingList;
+
+    [Header("Output Variables")]
+    [Tooltip("Name of the current building the camera is located in.")]
+    [SerializeField] private StringVariable _currentBuilding;
 
     [Header("Cameras")]
     [Tooltip("Transform the camera is targeting")]
@@ -206,6 +211,7 @@ namespace Code.Camera {
       cameraFollow.transform.SetPositionAndRotation(viewPoint.From.position, viewPoint.From.rotation);
       _desiredZoomLevel = -Vector3.Distance(viewPoint.From.position, viewPoint.To.position);
       _currentZoomLevel = Mathf.Log10(-_desiredZoomLevel) / Mathf.Log10(zoomExponentialGrowthRate);
+      _currentBuilding.Value = viewPoint.Data.Site;
     }
     
     // ------------------------------------------------------------------------
