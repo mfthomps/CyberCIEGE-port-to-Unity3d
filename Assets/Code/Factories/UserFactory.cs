@@ -58,8 +58,8 @@ namespace Code.Factories {
             continue;
           }
           
-          GameObject newItem = Instantiate(prefab, _parent);
-          UserBehavior newUser = newItem.GetComponent<UserBehavior>();
+          GameObject go = Instantiate(prefab, _parent);
+          UserBehavior newUser = go.GetComponent<UserBehavior>();
           
           int pos = data.position;
           if (pos < 0) {
@@ -78,11 +78,12 @@ namespace Code.Factories {
 
             ccUtils.GridTo3dPos(ws.x, ws.y, out float xf, out float zf);
             Vector3 v = new Vector3(xf, 0, zf);
-            newItem.transform.position = v;
+            go.transform.position = v;
+            go.transform.rotation = WorkSpace.GetRotation(ws.GetDirection());
           }
           
-          newItem.gameObject.SetActive(true);
-          newItem.gameObject.name = $"User--{data.user_name}";
+          go.gameObject.SetActive(true);
+          go.gameObject.name = $"User--{data.user_name}";
           newUser.Data = data;
           newUser.UpdateHighestBackgroundCheck();
           _userListVariable.Add(newUser);
