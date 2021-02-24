@@ -30,6 +30,8 @@ namespace Code.User_Interface.Dialog {
 
     // --------------------------------------------------------------------------
     public void OnServerMultipleChoiceReceived(string serverMessage) {
+      _choiceIndices.Clear();
+
       StringReader xmlreader = new StringReader(serverMessage);
       XmlDocument xml_doc = new XmlDocument();
       xml_doc.Load(xmlreader);
@@ -45,6 +47,9 @@ namespace Code.User_Interface.Dialog {
       // Setup the UI
       _messageLabel.text = message;
       _choiceList.SetItems(choices);
+      if (choices.Count > 0) {
+        OnChoiceSelected(choices[0]);
+      }
 
       dialogUp?.Raise(false);
       ToggleDialog(true);
