@@ -5,6 +5,7 @@ using Code.Game_Events;
 using Code.Scriptable_Variables;
 using Code.World_Objects.Device;
 using Code.World_Objects.Network;
+using Code.World_Objects.Zone;
 
 namespace Code.User_Interface.Network {
   public class NetworkView : MonoBehaviour {
@@ -14,33 +15,29 @@ namespace Code.User_Interface.Network {
     [Tooltip("Toggles the network connection for the currently selected component")]
     public NetworkBehaviorGameEvent toggleNetworkConnection;
     [Header("Input Variables")]
-    [Tooltip("List of computers to select")]
-    public ComputerListVariable computerListVariable;
-    [Tooltip("List of devices to select")]
-    public DeviceListVariable deviceListVariable;
+    [Tooltip("List of zones in scenario")]
+    public ZoneListVariable zones;
     [Tooltip("List of networks to connect to")]
     public NetworkListVariable networkListVariable;
     [Header("UI Elements")]
-    [Tooltip("Temporary list of all networkable devices (REMOVE ONCE NETWORK GRAPH IS IMPLEMENTED)")]
-    public ComponentList networkableList;
+    [Tooltip("List of all buildings that can have components in them")]
+    public NetworkBuildingList networkBuildingList;
     [Tooltip("List of all networks to connect to")]
     public NetworkList networkList;
 
     // ------------------------------------------------------------------------
     void OnEnable() {
       selectedObject.OnValueChanged += UpdateSelection;
-      computerListVariable.OnValueChanged += UpdateNetworkableList;
-      deviceListVariable.OnValueChanged += UpdateNetworkableList;
+      zones.OnValueChanged += UpdateNetworkBuildings;
       networkListVariable.OnValueChanged += UpdateNetworkList;
-      UpdateNetworkableList();
+      UpdateNetworkBuildings();
       UpdateNetworkList();
     }
 
     // ------------------------------------------------------------------------
     void OnDisable() {
       selectedObject.OnValueChanged -= UpdateSelection;
-      computerListVariable.OnValueChanged -= UpdateNetworkableList;
-      deviceListVariable.OnValueChanged -= UpdateNetworkableList;
+      zones.OnValueChanged -= UpdateNetworkBuildings;
       networkListVariable.OnValueChanged -= UpdateNetworkList;
     }
 
@@ -56,15 +53,24 @@ namespace Code.User_Interface.Network {
     }
 
     // ------------------------------------------------------------------------
-    private void UpdateNetworkableList() {
-      var networkables = GetNetworkables();
-      networkableList.SetItems(networkables);
-      UpdateListSelection(networkables);
+    private void UpdateNetworkBuildings() {
+      // Group the zones together by their site
+      var zoneSiteMap = new Dictionary<string, List<ZoneBehavior>>();
+      foreach (var zone in zones.Value) {
+        if (!zoneSiteMap.ContainsKey(zone.Data.domain)) {
+          zoneSiteMap.Add(zone.Data.domain, new List<ZoneBehavior>());
+        }
+        zoneSiteMap[zone.Data.domain].Add(zone);
+      }
+
+      networkBuildingList.ClearItems();
+      foreach (var site in zoneSiteMap) {
+        networkBuildingList.AddItem(new NetworkBuilding(site.Key, site.Value));
+      }
     }
 
     // ------------------------------------------------------------------------
     private void UpdateSelection() {
-      UpdateListSelection(GetNetworkables());
       UpdateNetworkConnections();
     }
 
@@ -72,28 +78,6 @@ namespace Code.User_Interface.Network {
     private void UpdateNetworkList() {
       networkList.SetItems(networkListVariable.Value);
       UpdateNetworkConnections();
-    }
-
-    // ------------------------------------------------------------------------
-    private List<ComponentBehavior> GetNetworkables() {
-      var networkables = new List<ComponentBehavior>();
-      foreach (var computer in computerListVariable.Value) {
-        networkables.Add(computer);
-      }
-      foreach (var device in deviceListVariable.Value) {
-        networkables.Add(device);
-      }
-      return networkables;
-    }
-
-    // ------------------------------------------------------------------------
-    private void UpdateListSelection(List<ComponentBehavior> networkables) {
-      // Set the selected state for each of the items
-      foreach (var networkable in networkables) {
-        if (networkable != null) {
-          networkableList.SetSelected(networkable, networkable.gameObject == selectedObject.Value);
-        }
-      }
     }
 
     // ------------------------------------------------------------------------
