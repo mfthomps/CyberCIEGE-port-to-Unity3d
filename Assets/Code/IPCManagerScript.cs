@@ -79,7 +79,7 @@ public class IPCManagerScript : MonoBehaviour {
           _serverReady = true;
           _gameLoadBehavior.AfterServerReady();
           SendRequest("begin");
-          SendRequest("on_screen:" + ViewType.Office);
+          SendRequest($"on_screen:{(int)ViewType.Office}");
         }
 
         return;

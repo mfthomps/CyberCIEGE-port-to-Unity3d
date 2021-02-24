@@ -6,6 +6,7 @@ using Code.Clearance;
 using Code.Policies;
 using Code.Scriptable_Variables;
 using Code.World_Objects.User;
+using Shared.ScriptableVariables;
 
 namespace Code.World_Objects.Zone {
   public class ZoneBehavior : BaseWorldObject {
@@ -28,6 +29,8 @@ namespace Code.World_Objects.Zone {
     public PolicyGameEvent policyEnabled;
     [Tooltip("A policy was toggled off")]
     public PolicyGameEvent policyDisabled;
+    [Tooltip("The BooleanGameEvent to trigger when this Zone changes Hidden status")]
+    public BooleanGameEvent zoneHidden;
 
     [Tooltip("The data related to this Zone.")]
     [SerializeField] private ZoneDataObject _data;
@@ -139,6 +142,14 @@ namespace Code.World_Objects.Zone {
       _data.enabledPolicies.Remove(policy.GetName());
       policyDisabled?.Raise(policy);
       ValueChanged();
+    }
+
+    //----------------------------------------------------------------------------
+    public void SetHidden(bool hidden) {
+      if (_data.hidden != hidden) {
+        _data.hidden = hidden;
+        zoneHidden?.Raise(hidden);        
+      }
     }
   }
 }
