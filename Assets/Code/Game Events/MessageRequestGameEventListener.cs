@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 using Shared.ScriptableVariables;
-using Code.User_Interface.Main;
+using Code.User_Interface.Dialog;
 
 namespace Code.Game_Events {
   public class MessageRequestGameEventListener : GameEventListener<MessageRequest> {

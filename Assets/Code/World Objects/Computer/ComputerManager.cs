@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Xml;
 using System.Xml.Linq;
 using UnityEngine;
@@ -8,7 +7,7 @@ using Code.Game_Events;
 using Code.Scriptable_Variables;
 using Code.Software;
 using Code.User_Interface.Components;
-using Code.User_Interface.Main;
+using Code.User_Interface.Dialog;
 using Code.World_Objects.Asset;
 
 namespace Code.World_Objects.Computer {
