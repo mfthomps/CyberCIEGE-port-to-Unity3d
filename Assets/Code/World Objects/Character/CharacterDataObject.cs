@@ -10,5 +10,6 @@ namespace Code.World_Objects.Character {
     public int productivity;
     public string description;
     public string current_thought = "";
+    public string user_name = "";
   }
 }

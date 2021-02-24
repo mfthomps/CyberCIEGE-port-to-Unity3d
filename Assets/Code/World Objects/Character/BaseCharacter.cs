@@ -9,7 +9,7 @@ namespace Code.World_Objects.Character {
     [SerializeField] protected SpeechBubble _speechBubble;
 
     //---------------------------------------------------------------------------
-    protected abstract CharacterDataObject GetData();
+    public abstract CharacterDataObject GetData();
     
     //---------------------------------------------------------------------------
     public void UpdateSpeechText(string speechText) {

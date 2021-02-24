@@ -9,8 +9,7 @@ namespace Code.World_Objects.Staff {
   public class StaffDataObject : CharacterDataObject {
     public delegate void ValueChangeHandler();
     public event ValueChangeHandler OnValueChanged;
-
-    public string user_name;
+    
     public int position = -1;
     public StaffType type;
     public int skill;

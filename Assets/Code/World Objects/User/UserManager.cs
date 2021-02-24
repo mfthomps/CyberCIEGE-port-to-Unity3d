@@ -91,14 +91,8 @@ namespace Code.World_Objects.User {
     }
 
     //---------------------------------------------------------------------------
-    private void UpdateStaff(StaffBehavior staff, XmlNode updateNode) {
+    private static void UpdateStaff(StaffBehavior staff, XmlNode updateNode) {
       UpdateCharacterStatus(staff, updateNode);
-
-      var computer = updateNode["visitingComputer"].InnerText;
-      var visiting = updateNode["visiting"].InnerText;
-      var stay = updateNode["stay"].InnerText;
-      
-      Debug.Log($"{staff.Data.user_name} visitingComputer: {computer} visiting: {visiting} stay:{stay}");
     }
     
     //---------------------------------------------------------------------------
@@ -116,6 +110,12 @@ namespace Code.World_Objects.User {
       }
       
       character.UpdateSpeechText(updateNode["speakText"].InnerText);
+      
+      var computer = updateNode["visitingComputer"].InnerText;
+      var visiting = updateNode["visiting"].InnerText;
+      var stay = updateNode["stay"].InnerText;
+      
+      Debug.Log($"{character.GetData().user_name} visitingComputer: {computer} visiting: {visiting} stay:{stay}");
     }
   }
 }

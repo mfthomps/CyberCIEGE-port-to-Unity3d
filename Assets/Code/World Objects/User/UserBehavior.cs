@@ -26,7 +26,7 @@ namespace Code.World_Objects.User {
     }
     
     //---------------------------------------------------------------------------
-    protected override CharacterDataObject GetData() {
+    public override CharacterDataObject GetData() {
       return _data;
     }
     

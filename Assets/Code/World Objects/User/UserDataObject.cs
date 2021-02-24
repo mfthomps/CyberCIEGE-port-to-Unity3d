@@ -7,7 +7,6 @@ namespace Code.World_Objects.User {
   [Serializable]
   //Data related to a single User instance
   public class UserDataObject : CharacterDataObject {
-    public string user_name = "";
     public string gender = "";
     public int position = -1;
     public string department = "";
