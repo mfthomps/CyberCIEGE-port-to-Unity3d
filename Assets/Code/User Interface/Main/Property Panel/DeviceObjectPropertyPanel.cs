@@ -40,13 +40,13 @@ namespace Code.User_Interface.Main {
     // ------------------------------------------------------------------------
     private void UpdateUI() {
       var deviceDataObject = _displayedDevice.Data as DeviceDataObject;
-      var assignedZone = zones.GetZone(_displayedDevice);
+      var assignedZone = zones.Value.Find(zone => zone.Data.ZoneName == deviceDataObject.zone);
 
       SetStringProperty(nameLabel, deviceDataObject.component_name, deviceDataObject.hw);
       SetStringProperty(osLabel, deviceDataObject.os);
       SetStringProperty(hardwareLabel, deviceDataObject.hw);
       SetStringProperty(vpnKeyTypeLabel, deviceDataObject.vnpKeyType);
-      SetStringProperty(zoneLabel, assignedZone != null ? assignedZone.Data.ZoneName : "Unknown");
+      SetStringProperty(zoneLabel, deviceDataObject.zone);
       SetStringProperty(domainLabel, assignedZone != null ? assignedZone.Data.domain : "Unknown");
       SetStringList(networkList, deviceDataObject.network_list);
     }

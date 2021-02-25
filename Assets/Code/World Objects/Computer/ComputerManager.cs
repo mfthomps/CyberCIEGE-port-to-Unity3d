@@ -31,6 +31,7 @@ namespace Code.World_Objects.Computer {
 
     //---------------------------------------------------------------------------
     public void UpdateStatus(string message) {
+      Debug.Log($"Computer Status Update:\n{message}");
       StringReader xmlreader = new StringReader(message);
       //xmlreader.Read(); // skip BOM ???
 
@@ -291,6 +292,8 @@ namespace Code.World_Objects.Computer {
 
     //---------------------------------------------------------------------------
     private void UpdateStatus(ComputerBehavior computer, XmlNode computerNode) {
+      computer.Data.zone = computerNode["zone"].InnerText;
+
       var utilizationStr = computerNode["utilization"].InnerText;
       if (int.TryParse(utilizationStr, out int utilization)) {
         computer.UpdateUtilization(utilization);

@@ -27,7 +27,7 @@ namespace Code.User_Interface.Network {
 
     // ------------------------------------------------------------------------
     void OnEnable() {
-      selectedObject.OnValueChanged += UpdateSelection;
+      selectedObject.OnValueChanged += UpdateNetworkList;
       zones.OnValueChanged += UpdateNetworkBuildings;
       networkListVariable.OnValueChanged += UpdateNetworkList;
       UpdateNetworkBuildings();
@@ -36,7 +36,7 @@ namespace Code.User_Interface.Network {
 
     // ------------------------------------------------------------------------
     void OnDisable() {
-      selectedObject.OnValueChanged -= UpdateSelection;
+      selectedObject.OnValueChanged -= UpdateNetworkList;
       zones.OnValueChanged -= UpdateNetworkBuildings;
       networkListVariable.OnValueChanged -= UpdateNetworkList;
     }
@@ -49,7 +49,7 @@ namespace Code.User_Interface.Network {
     // ------------------------------------------------------------------------
     public void NetworkItemClicked(NetworkBehavior network) {
       toggleNetworkConnection?.Raise(network);
-      UpdateSelection();
+      UpdateNetworkConnections();
     }
 
     // ------------------------------------------------------------------------
@@ -70,39 +70,66 @@ namespace Code.User_Interface.Network {
     }
 
     // ------------------------------------------------------------------------
-    private void UpdateSelection() {
-      UpdateNetworkConnections();
-    }
-
-    // ------------------------------------------------------------------------
     private void UpdateNetworkList() {
-      networkList.SetItems(networkListVariable.Value);
+      networkList.SetItems(GetAvailableNetworks());
       UpdateNetworkConnections();
     }
 
     // ------------------------------------------------------------------------
     private void UpdateNetworkConnections() {
       foreach (var network in networkListVariable.Value) {
-        if (network != null) {
+        if (network != null && networkList.listItems.ContainsKey(network)) {
           bool networkSelected = false, networkChangeable = false;
-          if (selectedObject.Value != null) {
-            var selectedComponent = selectedObject.Value?.GetComponent<ComponentBehavior>();
-            networkSelected = selectedComponent != null && selectedComponent.Data.IsConnectedToNetwork(network.Data.name);
-            if (selectedComponent != null) {
-              // Internet networks can only be connected to by devices, not computers
-              if (network.Data.isInternet) {
-                networkChangeable = selectedComponent is DeviceBehavior;
-              }
-              // Otherwise, any ComponentBehavior can connect to it
-              else {
-                networkChangeable = true;
-              }
+          var selectedComponent = GetSelectedComponent();
+          if (selectedComponent != null) {
+            networkSelected = selectedComponent.Data.IsConnectedToNetwork(network.Data.name);
+            // Internet networks can only be connected to by devices, not computers
+            if (network.Data.isInternet) {
+              networkChangeable = selectedComponent is DeviceBehavior;
             }
+            // Otherwise, any ComponentBehavior can connect to it
+            else {
+              networkChangeable = true;
+            }
+            networkList.SetSelected(network, networkSelected);
+            networkList.SetInteractable(network, !selectedComponent.Data.isStatic && networkChangeable);
           }
-          networkList.SetSelected(network, networkSelected);
-          networkList.SetInteractable(network, networkChangeable);
         }
       }
+    }
+
+    // ------------------------------------------------------------------------
+    private List<NetworkBehavior> GetAvailableNetworks() {
+      var availableNetworks = new List<NetworkBehavior>();
+
+      var currentZone = GetSelectedZone();
+      if (currentZone != null) {
+        foreach (var network in networkListVariable.Value) {
+          // The zone of the currently selected component specifically excludes certain networks
+          if (!currentZone.Data.excludedNetworks.Contains(network.Data.name)) {
+            availableNetworks.Add(network);
+          }
+        }
+      }
+
+      return availableNetworks;
+    }
+
+    // ------------------------------------------------------------------------
+    private ZoneBehavior GetSelectedZone() {
+      var selectedComponent = GetSelectedComponent();
+      if (selectedComponent != null) {
+        return zones.Value.Find(zone => selectedComponent.Data.zone == zone.Data.ZoneName);
+      }
+      return null;
+    }
+
+    // ------------------------------------------------------------------------
+    private ComponentBehavior GetSelectedComponent() {
+      if (selectedObject.Value != null) {
+        return selectedObject.Value.GetComponent<ComponentBehavior>();
+      }
+      return null;
     }
   }
 }

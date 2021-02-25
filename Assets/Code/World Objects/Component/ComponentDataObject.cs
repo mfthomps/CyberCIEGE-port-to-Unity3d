@@ -9,6 +9,8 @@ namespace Code {
     public string component_name;
     public string description;
     public string hw;
+    public bool isStatic;
+    public string zone;
     public int cost;
     public int position = -1;
     public HashSet<string> network_list = new HashSet<string>();
