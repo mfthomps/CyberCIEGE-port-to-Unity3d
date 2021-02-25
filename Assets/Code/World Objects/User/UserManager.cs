@@ -96,6 +96,7 @@ namespace Code.World_Objects.User {
     }
     
     //---------------------------------------------------------------------------
+    //Status fields common to both Users and Staff
     private static void UpdateCharacterStatus(BaseCharacter character, XmlNode updateNode) {
       character.UpdateCurrentThought(updateNode["thought"].InnerText);
       
@@ -119,7 +120,7 @@ namespace Code.World_Objects.User {
       bool stay = stayStr == "1" ? true : false;
       character.UpdateStayAtVisitingObject(stay);
       
-      Debug.Log($"{character.GetData().user_name} visitingComputer: {computer} visiting: {visiting} stay:{stay}");
+      // Debug.Log($"{character.GetCharacterData().user_name} visitingComputer: {computer} visiting: {visiting} stay:{stay}");
     }
   }
 }

@@ -3,6 +3,8 @@ using Code.World_Objects.Character;
 using UnityEngine;
 
 namespace Code.World_Objects.User.AI.States {
+  //A state the just sets the Character's navigate target equal to the
+  //GameObject corresponding to it's "visiting" field.
   public class VisitObjectState : FsmState {
     [SerializeField] private BaseCharacter _character;
     [SerializeField] private UserListVariable _users;
@@ -10,7 +12,7 @@ namespace Code.World_Objects.User.AI.States {
 
     //--------------------------------------------------------------------------
     public override void OnStateEnter() {
-      var targetStr = _character.GetData().Visiting;
+      var targetStr = _character.GetCharacterData().Visiting;
       if (string.IsNullOrEmpty(targetStr)) return;
 
       //Get which GameObject this is

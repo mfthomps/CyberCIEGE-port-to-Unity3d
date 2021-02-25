@@ -20,7 +20,7 @@ namespace Code.World_Objects.Staff {
     }
     
     //---------------------------------------------------------------------------
-    public override CharacterDataObject GetData() {
+    public override CharacterDataObject GetCharacterData() {
       return _data;
     }
     

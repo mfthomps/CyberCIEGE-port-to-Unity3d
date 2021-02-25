@@ -9,7 +9,7 @@ namespace Code.World_Objects.Character {
     [SerializeField] protected SpeechBubble _speechBubble;
 
     //---------------------------------------------------------------------------
-    public abstract CharacterDataObject GetData();
+    public abstract CharacterDataObject GetCharacterData();
     
     //---------------------------------------------------------------------------
     public void UpdateSpeechText(string speechText) {
@@ -18,31 +18,31 @@ namespace Code.World_Objects.Character {
     
     //---------------------------------------------------------------------------
     public void UpdateHappiness(int value) {
-      GetData().happiness = value;
+      GetCharacterData().happiness = value;
       ValueChanged();
     }
     
     //---------------------------------------------------------------------------
     public void UpdateProductivity(int value) {
-      GetData().productivity = value;
+      GetCharacterData().productivity = value;
       ValueChanged();
     }
     
     //---------------------------------------------------------------------------
     public void UpdateCurrentThought(string thought) {
-      GetData().current_thought = thought;
+      GetCharacterData().current_thought = thought;
       ValueChanged();
     }
 
     //---------------------------------------------------------------------------
     public void UpdateVisitingObject(string visiting) {
-      GetData().Visiting = visiting;
+      GetCharacterData().Visiting = visiting;
       ValueChanged();
     }
 
     //---------------------------------------------------------------------------
     public void UpdateStayAtVisitingObject(bool stay) {
-      GetData().Stay = stay;
+      GetCharacterData().Stay = stay;
       ValueChanged();
     }
   }
