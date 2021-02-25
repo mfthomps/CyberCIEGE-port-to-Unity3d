@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using Code.Game_Events;
 using Code.World_Objects.Character;
-using Shared.ScriptableVariables;
 using UnityEngine;
 
 namespace Code.World_Objects.User.AI.States {
@@ -13,8 +13,8 @@ namespace Code.World_Objects.User.AI.States {
     [SerializeField] private BaseCharacter _user;
     [Tooltip("The number of seconds to wait before randomly choosing a different animation")]
     [SerializeField] private float _calcAnimationDelaySeconds = 5;
-
-    [SerializeField] private GameEvent _startedWorkingEvent;
+    [Tooltip("The CharacterGameEvent to fire when the character has started 'working'")]
+    [SerializeField] private CharacterGameEvent _startedWorkingEvent; 
     
     private double _lastAnimCheck = 0;
 
@@ -25,8 +25,8 @@ namespace Code.World_Objects.User.AI.States {
       }
       _lastAnimCheck = 0;
 
-      if (_startedWorkingEvent != null) {
-        _startedWorkingEvent.Raise();
+      if (_startedWorkingEvent) {
+        _startedWorkingEvent.Raise(_user);
       }
     }
 

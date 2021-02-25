@@ -1,5 +1,4 @@
-﻿using System.Xml.Linq;
-using Code.World_Objects.Character;
+﻿using Code.World_Objects.Character;
 using UnityEngine;
 
 namespace Code.World_Objects.Staff {
@@ -30,13 +29,6 @@ namespace Code.World_Objects.Staff {
       Data.SetHired(isHired);
       gameObject.SetActive(isHired);
       ValueChanged();
-    }
-
-    // ------------------------------------------------------------------------
-    //Call this when the Staff have reached their visiting location
-    public void OnStartedVisit() {
-      XElement xml = new XElement("visitDone", "");
-      IPCManagerScript.SendRequest(xml.ToString());
     }
   }
 }
