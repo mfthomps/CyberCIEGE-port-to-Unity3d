@@ -1,27 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using Code.World_Objects.Character;
 using UnityEngine;
 
 namespace Code.World_Objects.Staff {
   //Data relating to one StaffBehavior instance
   [Serializable]
-  public class StaffDataObject {
+  public class StaffDataObject : CharacterDataObject {
     public delegate void ValueChangeHandler();
     public event ValueChangeHandler OnValueChanged;
-
-    public string user_name;
+    
     public int position = -1;
     public StaffType type;
-    public string current_thought = "";
     public int skill;
     public int hw_skill;
     public int hi_skill;
     public int sw_skill;
     public int cost;
     public int salary;
-    public int happiness;
-    public int productivity;
-    public string description;
     public HashSet<string> groups = new HashSet<string>();
     
     [Tooltip("The number of days until this staff is available to hire." +
