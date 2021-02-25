@@ -104,7 +104,7 @@ MonoBehaviour:
   m_HorizontalScrollbarVisibility: 2
   m_VerticalScrollbarVisibility: 2
   m_HorizontalScrollbarSpacing: -3
-  m_VerticalScrollbarSpacing: -3
+  m_VerticalScrollbarSpacing: 2
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -120,6 +120,7 @@ GameObject:
   - component: {fileID: 7797891633539133944}
   - component: {fileID: 8978094911029320934}
   - component: {fileID: 592100855977141158}
+  - component: {fileID: 5725068066815284702}
   m_Layer: 5
   m_Name: ui-Horizontal-Scrollbar
   m_TagString: Untagged
@@ -222,6 +223,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &5725068066815284702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2122946789534737088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0f6bf630cd71454fb52b3955aa1b1e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverCursor: {fileID: 2800000, guid: c067abe023352bc42a2cc533e7b00801, type: 3}
 --- !u!1 &2158140238543882495
 GameObject:
   m_ObjectHideFlags: 0
@@ -548,6 +562,7 @@ GameObject:
   - component: {fileID: 4534507176898343611}
   - component: {fileID: 8512381912093146226}
   - component: {fileID: 9044948159533665436}
+  - component: {fileID: 7162934249570216615}
   m_Layer: 5
   m_Name: ft-ui-Vertical-Scrollbar
   m_TagString: Untagged
@@ -651,6 +666,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &9044948159533665436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6275642032310850392}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0f6bf630cd71454fb52b3955aa1b1e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverCursor: {fileID: 2800000, guid: c067abe023352bc42a2cc533e7b00801, type: 3}
+--- !u!114 &7162934249570216615
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
