@@ -33,5 +33,17 @@ namespace Code.World_Objects.Character {
       GetData().current_thought = thought;
       ValueChanged();
     }
+
+    //---------------------------------------------------------------------------
+    public void UpdateVisitingObject(string visiting) {
+      GetData().Visiting = visiting;
+      ValueChanged();
+    }
+
+    //---------------------------------------------------------------------------
+    public void UpdateStayAtVisitingObject(bool stay) {
+      GetData().Stay = stay;
+      ValueChanged();
+    }
   }
 }

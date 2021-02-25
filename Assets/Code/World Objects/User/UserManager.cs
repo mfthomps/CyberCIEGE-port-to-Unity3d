@@ -113,7 +113,11 @@ namespace Code.World_Objects.User {
       
       var computer = updateNode["visitingComputer"].InnerText;
       var visiting = updateNode["visiting"].InnerText;
-      var stay = updateNode["stay"].InnerText;
+      character.UpdateVisitingObject(visiting);
+
+      var stayStr = updateNode["stay"].InnerText;
+      bool stay = stayStr == "1" ? true : false;
+      character.UpdateStayAtVisitingObject(stay);
       
       Debug.Log($"{character.GetData().user_name} visitingComputer: {computer} visiting: {visiting} stay:{stay}");
     }
