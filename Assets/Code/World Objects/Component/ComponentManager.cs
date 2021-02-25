@@ -2,7 +2,7 @@
 using System.Xml;
 using UnityEngine;
 using Code.Game_Events;
-using Code.User_Interface.Main;
+using Code.User_Interface.Dialog;
 
 namespace Code.World_Objects.Component {
   public class ComponentManager : MonoBehaviour {

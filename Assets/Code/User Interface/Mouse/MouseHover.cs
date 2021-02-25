@@ -8,7 +8,7 @@ public class MouseHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 {
   [SerializeField] private Texture2D hoverCursor;
   private CursorMode cursorMode = CursorMode.Auto;
-  private Vector2 hotSpot = Vector2.zero;
+  static public Vector2 hotSpot = Vector2.zero;
 
   // [Tooltip("The Selectable Element used to determine the type of cursor displayed on highlight. Optional")]
   private Selectable selectable;
@@ -28,12 +28,14 @@ public class MouseHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
       }
     }
 
+    hotSpot = new Vector2(19f, 2f);
+
   }
   
   //----------------------------------------------------------
   public void OnPointerEnter(PointerEventData pointerEventData)
   {
-    if (!selectable || (selectable && selectable.interactable)) {      
+    if (!selectable || (selectable && selectable.interactable)) {  
       Cursor.SetCursor(hoverCursor, hotSpot, cursorMode);
     }
   }

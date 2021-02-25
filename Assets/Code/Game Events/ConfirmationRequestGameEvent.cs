@@ -1,6 +1,6 @@
 ﻿using Shared.ScriptableVariables;
 using UnityEngine;
-using Code.User_Interface.Main;
+using Code.User_Interface.Dialog;
 
 namespace Code.Game_Events {
   // GameEvents with a ConfirmationRequest payload
