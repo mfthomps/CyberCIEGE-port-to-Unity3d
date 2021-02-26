@@ -10,8 +10,8 @@ namespace Code.Scriptable_Variables {
   public class GenderToGameObject {
     public UserGender _gender;
     public GameObject _prefab;
+    public bool _isTaken;
   }
-
   //A ScriptableVariable that contains a list of User Genders to GameObjects.
   //Used for creating new Users with the correct avatar mesh.
   [CreateAssetMenu(menuName = "Scriptable Objects/Variables/CC/Avatar Mapping")]
@@ -21,7 +21,9 @@ namespace Code.Scriptable_Variables {
 
     //Get the first prefab that matches the supplied Gender. Null if one is not defined.
     public GameObject GetPrefab(UserGender gender) {
-      var mapping = _prefabs.Find(x => x._gender == gender);
+      var mapping = _prefabs.Find(x => x._gender == gender && x._isTaken == false);
+      int idx = _prefabs.FindIndex(x => x._prefab.name == mapping._prefab.name);
+      _prefabs[idx]._isTaken = true;
       return mapping?._prefab;
     }
   }
