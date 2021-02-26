@@ -112,15 +112,26 @@ namespace Code.World_Objects.User {
       
       character.UpdateSpeechText(updateNode["speakText"].InnerText);
       
-      var computer = updateNode["visitingComputer"].InnerText;
-      var visiting = updateNode["visiting"].InnerText;
-      character.UpdateVisitingObject(visiting);
+      character.UpdateVisitingObject(GetVisitingObject(updateNode));
 
       var stayStr = updateNode["stay"].InnerText;
       bool stay = stayStr == "1" ? true : false;
       character.UpdateStayAtVisitingObject(stay);
-      
-      // Debug.Log($"{character.GetCharacterData().user_name} visitingComputer: {computer} visiting: {visiting} stay:{stay}");
+    }
+
+    //--------------------------------------------------------------------------
+    private static string GetVisitingObject(XmlNode updateNode) {
+      var computer = updateNode["visitingComputer"].InnerText;
+      var visiting = updateNode["visiting"].InnerText;
+      string visitingObject = "";
+      if (!string.IsNullOrEmpty(computer)) {
+        visitingObject = computer;
+      }
+      else if (!string.IsNullOrEmpty(visiting)) {
+        visitingObject = visiting;
+      }
+
+      return visitingObject;
     }
   }
 }
