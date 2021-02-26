@@ -77,6 +77,10 @@ namespace Code.User_Interface.Network {
 
     // ------------------------------------------------------------------------
     private void UpdateNetworkConnections() {
+      foreach (var building in networkBuildingList.listItems.Values) {
+        building.UpdateNetworkConnections();
+      }
+
       foreach (var network in networkListVariable.Value) {
         if (network != null && networkList.listItems.ContainsKey(network)) {
           bool networkSelected = false, networkChangeable = false;

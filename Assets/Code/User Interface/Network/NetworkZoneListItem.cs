@@ -1,50 +1,44 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
-// using Vectrosity;
 using Shared.SEUI;
-using Code.Scriptable_Variables;
 using Code.World_Objects.Zone;
 
 namespace Code.User_Interface.Network {
   public class NetworkZoneListItem : DynamicListItem<ZoneBehavior> {
-    [Header("Input Variables")]
-    [Tooltip("List of computers in the scenario")]
-    public ComputerListVariable computers;
-    [Tooltip("List of devices in the scenario")]
-    public DeviceListVariable devices;
-    [Tooltip("List of zones in the scenario")]
-    public ZoneListVariable zones;
     [Header("UI Elements")]
     [Tooltip("Label for the zone this item represents")]
     public TMP_Text zoneLabel;
-    [Tooltip("Temporary list of all networkable devices (REMOVE ONCE NETWORK GRAPH IS IMPLEMENTED)")]
+    [Tooltip("List of all networkable devices")]
     public ComponentList networkableList;
+    [Tooltip("Vertical layout group for this list item's content")]
+    public VerticalLayoutGroup contentVerticalLayoutGroup;
+    [Tooltip("Grid layout group for the networkable's list")]
+    public GridLayoutGroup gridLayout;
 
     // ------------------------------------------------------------------------
     public override void SetItem(ZoneBehavior item) {
       zoneLabel.text = $"Zone: {item.Data.ZoneName}";
+      this.name = zoneLabel.text;
+    }
 
-      networkableList.ClearItems();
-      // Add all the computers that are in this zone
-      foreach (var computer in computers.Value) {
-        if (computer.Data.zone == item.Data.ZoneName) {
-          networkableList.AddItem(computer);
-        }
-      }
-      // Add all the devices that are in this zone
-      foreach (var device in devices.Value) {
-        if (device.Data.zone == item.Data.ZoneName) {
-          networkableList.AddItem(device);
-        }
-      }
+    // ------------------------------------------------------------------------
+    public void SetNetworkables(List<ComponentBehavior> networkables, float componentSize, float componentSpacing) {
+      networkableList.SetItems(networkables);
 
-      // If we don't have any devices, then hide ourselves
+      // If we don't have any networkables, then hide ourselves
       gameObject.SetActive(networkableList.listItems.Count > 0);
 
-      // Try drawing a line
-      var rect = (transform as RectTransform).rect;
-      Vector2 transformPosition = transform.position;
-      // var line = VectorLine.SetLine(Color.white, transformPosition + Vector2.zero, transformPosition + new Vector2(rect.width, rect.height));
+      // Set the spacing for our various layouts
+      contentVerticalLayoutGroup.spacing = componentSpacing;
+      gridLayout.cellSize = Vector2.one * componentSize;
+      gridLayout.spacing = Vector2.one * componentSpacing;
+    }
+
+    // ------------------------------------------------------------------------
+    public ComponentListItem GetComponentUI(ComponentBehavior component) {
+      return networkableList.listItems[component];
     }
   }
 }

@@ -12,7 +12,6 @@ namespace Code.World_Objects.Device {
 
     //---------------------------------------------------------------------------
     public void UpdateStatus(string message) {
-      Debug.Log($"Device Status Update:\n{message}");
       StringReader xmlreader = new StringReader(message);
       //xmlreader.Read(); // skip BOM ???
 

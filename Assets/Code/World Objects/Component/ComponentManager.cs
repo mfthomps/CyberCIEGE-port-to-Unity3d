@@ -12,7 +12,6 @@ namespace Code.World_Objects.Component {
 
     // --------------------------------------------------------------------------
     public void UpdateComponentStatus(string message) {
-      Debug.Log($"Component Status Update:\n{message}");
       StringReader xmlreader = new StringReader(message);
       XmlDocument xml_doc = new XmlDocument();
       xml_doc.Load(xmlreader);

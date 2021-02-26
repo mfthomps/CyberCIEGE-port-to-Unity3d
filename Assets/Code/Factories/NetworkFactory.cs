@@ -16,10 +16,11 @@ namespace Code.Factories {
     [Tooltip("The variable containing the list of all the Networks currently in the scenario.")]
     [SerializeField] private NetworkListVariable networkListVariable;
 
+    public readonly static string ORGANIZATION_INTERNET_NETWORK_NAME = "InternetName";
+
     private static Queue<Color> _networkColors = new Queue<Color>(new List<Color> { Color.red, Color.green, Color.blue, Color.yellow, Color.cyan, Color.magenta} );
     private readonly string NETWORKS = "networks.sdf";
     private readonly string ORGANIZATION_HAS_INTERNET = "Internet";
-    private readonly string ORGANIZATION_INTERNET_NETWORK_NAME = "InternetName";
     private Transform _parent;
 
     //-------------------------------------------------------------------------
