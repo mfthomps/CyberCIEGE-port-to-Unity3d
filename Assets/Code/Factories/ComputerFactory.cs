@@ -52,18 +52,23 @@ namespace Code.Factories {
     }
 
     //-------------------------------------------------------------------------
-    public void Create(string filename) {
-      ComputerBehavior item = Instantiate(_prefab, _parent);
-      item.Data = LoadOneComputer(Path.Combine(userAppPath.Value, COMPUTERS, filename), item);
-      UpdateGameObject(item);
+    public void OnServerAddComputer(string computerName) {
+      Create($"{computerName}.sdf");
 
       // Select our newly created computer
-      selectedObject.Value = item.gameObject;
+      selectedObject.Value = computerListVariable.Value[computerListVariable.Value.Count - 1].gameObject;
     }
 
     //-------------------------------------------------------------------------
     public void CreateAll(string path) {
       LoadAllComputers(path);
+    }
+
+    //-------------------------------------------------------------------------
+    public void Create(string filename) {
+      var item = Instantiate(_prefab, _parent);
+      item.Data = LoadOneComputer(Path.Combine(userAppPath.Value, COMPUTERS, filename), item);
+      UpdateGameObject(item);
     }
 
     //-------------------------------------------------------------------------
@@ -99,12 +104,7 @@ namespace Code.Factories {
       string cdir = Path.Combine(path, COMPUTERS);
       string[] clist = Directory.GetFiles(cdir);
       foreach (string computer_file in clist) {
-        ComputerBehavior newComputer = Instantiate(_prefab, _parent);
-        
-        newComputer.gameObject.SetActive(true);
-        newComputer.Data = LoadOneComputer(computer_file, newComputer);
-
-        UpdateGameObject(newComputer);
+        Create(computer_file);
       }
     }
 

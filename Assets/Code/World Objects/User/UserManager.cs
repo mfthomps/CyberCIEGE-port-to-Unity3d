@@ -113,8 +113,13 @@ namespace Code.World_Objects.User {
       if (int.TryParse(productivityStr, out int productivity)) {
         character.UpdateProductivity(productivity);
       }
-      
-      character.UpdateSpeechText(updateNode["speakText"].InnerText);
+
+      if (bool.Parse(updateNode["speaking"].InnerText)) {
+        character.UpdateSpeechText(updateNode["speakText"].InnerText);
+      }
+      else {
+        character.UpdateSpeechText(null);
+      }
 
       string visitingString = GetVisitingString(updateNode);
       

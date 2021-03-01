@@ -44,18 +44,26 @@ namespace Code.User_Interface.Office {
     // --------------------------------------------------------------------------
     private void TryToSelectObject(Vector2 screenPosition) {
       Ray ray = UnityEngine.Camera.main.ScreenPointToRay(screenPosition);
-      RaycastHit hit;
-
-      if (Physics.Raycast(ray, out hit, 100)) {
-        //Debug.Log("raycast on " + hit.transform.gameObject.name);
-        if (HasSelectableComponent(hit.transform.gameObject)) {
-          selectedObject.Value = hit.transform.gameObject;
+      var hits = Physics.RaycastAll(ray, 100);
+      var clickHandled = false;
+      foreach (var hit in hits) {
+        // Debug.Log("raycast on " + hit.collider.gameObject.name);
+        if (hit.collider.gameObject.GetComponent<SpeechBubble>() != null) {
+          var speechBubble = hit.collider.gameObject.GetComponent<SpeechBubble>();
+          if (speechBubble.Active) {
+            speechBubble.OnClick();
+            clickHandled = true;
+            break;
+          }
         }
-        else {
-          selectedObject.Value = null;
+        else if (HasSelectableComponent(hit.collider.gameObject)) {
+          selectedObject.Value = hit.transform.gameObject;
+          clickHandled = true;
+          break;
         }
       }
-      else {
+      
+      if (!clickHandled) {
         selectedObject.Value = null;
       }
     }

@@ -202,6 +202,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4860653577645778368, guid: bd50e63a072436a47bf6b74ef00a36e3,
+        type: 3}
+      propertyPath: centerOfMass
+      value: 
+      objectReference: {fileID: 448464820}
+    - target: {fileID: 4860653577645778368, guid: bd50e63a072436a47bf6b74ef00a36e3,
+        type: 3}
+      propertyPath: verticalOffset
+      value: 1.5
+      objectReference: {fileID: 0}
     - target: {fileID: 6193128038481586736, guid: bd50e63a072436a47bf6b74ef00a36e3,
         type: 3}
       propertyPath: m_Name
@@ -210,7 +220,7 @@ PrefabInstance:
     - target: {fileID: 6193128038481586736, guid: bd50e63a072436a47bf6b74ef00a36e3,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6193128038481586743, guid: bd50e63a072436a47bf6b74ef00a36e3,
         type: 3}
@@ -265,6 +275,26 @@ PrefabInstance:
     - target: {fileID: 6193128038481586743, guid: bd50e63a072436a47bf6b74ef00a36e3,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6492733458680287521, guid: bd50e63a072436a47bf6b74ef00a36e3,
+        type: 3}
+      propertyPath: m_IgnoreReversedGraphics
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6885077626207160088, guid: bd50e63a072436a47bf6b74ef00a36e3,
+        type: 3}
+      propertyPath: _Active
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6885077626207160088, guid: bd50e63a072436a47bf6b74ef00a36e3,
+        type: 3}
+      propertyPath: _speechBubbleText
+      value: Hello World!
+      objectReference: {fileID: 0}
+    - target: {fileID: 6885077626207160088, guid: bd50e63a072436a47bf6b74ef00a36e3,
+        type: 3}
+      propertyPath: _timeUntilInactive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -491,6 +521,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: db83b5441a8e5064eabda7b27037a1f5, type: 3}
+--- !u!4 &448464820 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1503883855766237039, guid: bd50e63a072436a47bf6b74ef00a36e3,
+    type: 3}
+  m_PrefabInstance: {fileID: 159482992}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &487979126
 GameObject:
   m_ObjectHideFlags: 0
