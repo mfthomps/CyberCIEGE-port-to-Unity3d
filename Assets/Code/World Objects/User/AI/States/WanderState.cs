@@ -17,13 +17,11 @@ namespace Code.World_Objects.User.AI.States {
     [Header("Debug")]
     [SerializeField] private List<GameObject> _objectsOfInterest;
 
-    //--------------------------------------------------------------------------
-    private void Awake() {
-      _objectsOfInterest = new List<GameObject>(GameObject.FindGameObjectsWithTag(objectOfInterestTag));
-    }
     
     //--------------------------------------------------------------------------
     public override void OnStateEnter() {
+      _objectsOfInterest = new List<GameObject>(GameObject.FindGameObjectsWithTag(objectOfInterestTag));
+
       ValidatePaths();
       
       GameObject destinationObject = GetRandomDestination();
