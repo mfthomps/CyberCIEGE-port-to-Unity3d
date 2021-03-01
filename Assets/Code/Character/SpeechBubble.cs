@@ -6,7 +6,8 @@ using UnityEngine.Serialization;
 
 
 public class SpeechBubble : MonoBehaviour {
-  [SerializeField] private bool _active;
+  [SerializeField] private bool _Active;
+  private bool _active;
 
   [Tooltip("Starting text")]
   [FormerlySerializedAs("_startingSpeechBubbleText")] 
@@ -29,8 +30,18 @@ public class SpeechBubble : MonoBehaviour {
   // -----------------------------------------------------------------
   // Set the Thought Bubble with initial conditions
   private void Start() {
-    Active = _active;
+    Active = _Active;
+    // Active = _active;
     SpeechBubbleText = _speechBubbleText;
+
+  }
+
+  // -----------------------------------------------------------------
+  // Set the Thought Bubble with initial conditions
+  private void Update () {
+    if (_Active != Active) {
+      Active = _Active;
+    }
   }
 
   
@@ -76,6 +87,15 @@ public class SpeechBubble : MonoBehaviour {
     yield return new WaitForSeconds(_timeUntilInactive);
 
     Active = false;
+    //TODO: Remove
+    _Active = false;
   } 
+
+  // -----------------------------------------------------------------
+  // On click
+
+  public void OnClick () {
+    Debug.Log("Clicked");
+  }
 
 }
