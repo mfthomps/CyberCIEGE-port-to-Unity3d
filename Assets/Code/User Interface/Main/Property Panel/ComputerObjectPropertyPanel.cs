@@ -53,14 +53,13 @@ namespace Code.User_Interface.Main {
     // ------------------------------------------------------------------------
     private void UpdateUI() {
       var computerDataObject = _displayedComputer.Data as ComputerDataObject;
-      var assignedZone = zones.GetZone(_displayedComputer);
 
       SetStringProperty(nameLabel, computerDataObject.component_name, computerDataObject.hw_name);
       connectedLight.isOn = computerDataObject.network_list.Count > 0;
       SetStringProperty(assignedUserLabel, computerDataObject.assignedUser, "No One");
       SetStringProperty(osLabel, computerDataObject.os);
       SetStringProperty(hardwareLabel, computerDataObject.hw, computerDataObject.hw_name);
-      SetStringProperty(zoneLabel, assignedZone != null ? assignedZone.Data.ZoneName : "Unknown");
+      SetStringProperty(zoneLabel, computerDataObject.zone);
       SetStringProperty(domainLabel, computerDataObject.domain);
       computerUsage.SetComputer(_displayedComputer);
       SetStringProperty(utilizationLabel, $"{computerDataObject.utilization}");
