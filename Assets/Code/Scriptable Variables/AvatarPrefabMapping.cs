@@ -23,8 +23,27 @@ namespace Code.Scriptable_Variables {
     public GameObject GetPrefab(UserGender gender) {
       var mapping = _prefabs.Find(x => x._gender == gender && x._isTaken == false);
       int idx = _prefabs.FindIndex(x => x._prefab.name == mapping._prefab.name);
+      if (_prefabs[idx]._isTaken == true) {  // ran out of prefabs?
+        this.Reset(gender);
+      }
       _prefabs[idx]._isTaken = true;
       return mapping?._prefab;
+    }
+
+    // Required in case number of characters in scenario exceeds number of available
+    // avatars/prefabs (all elements in list are taken). In that case we re-start from element 0.
+    private void Reset(UserGender _gender) {
+      foreach(GenderToGameObject _prefab in _prefabs) {
+        if (_prefab._gender == _gender) {
+          _prefab._isTaken = false;
+        }
+      }
+    }
+
+    public void Reset() {
+      foreach (GenderToGameObject _prefab in _prefabs) {
+        _prefab._isTaken = false;
+      }
     }
   }
 }
