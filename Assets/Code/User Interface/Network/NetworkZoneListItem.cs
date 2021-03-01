@@ -37,6 +37,13 @@ namespace Code.User_Interface.Network {
     }
 
     // ------------------------------------------------------------------------
+    public void UpdateSelectedComponent(ComponentBehavior selectedComponent) {
+      foreach (var listItem in networkableList.listItems) {
+        listItem.Value.SetSelected(listItem.Key == selectedComponent);
+      }
+    }
+
+    // ------------------------------------------------------------------------
     public ComponentListItem GetComponentUI(ComponentBehavior component) {
       return networkableList.listItems[component];
     }
