@@ -138,6 +138,7 @@ namespace Code.World_Objects.User {
     }
 
     //--------------------------------------------------------------------------
+    //The staff can be visit another user or a computer, but not both at the same time.
     private static string GetVisitingString(XmlNode updateNode) {
       var computer = updateNode["visitingComputer"].InnerText;
       var visiting = updateNode["visiting"].InnerText;
@@ -153,6 +154,8 @@ namespace Code.World_Objects.User {
     }
     
     //--------------------------------------------------------------------------
+    //Get the GameObject representing the User or the Computer that has the supplied 
+    //string as a name.
     private GameObject GetTarget(string targetStr) {
       var user = users.Value.Find(x => x.Data.user_name == targetStr);
       if (user) {
