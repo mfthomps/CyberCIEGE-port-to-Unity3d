@@ -4,14 +4,19 @@ using NaughtyAttributes;
 using Shared.ScriptableVariables;
 using Code.Hardware;
 using Code.Scriptable_Variables;
+using Code.User_Interface.View;
+using Code.World_Objects.Computer;
 using Code.World_Objects.Staff;
 using Code.World_Objects.User;
+using Code.World_Objects.Zone;
 
 namespace Code.User_Interface.Office {
   public class SceneSelector : MonoBehaviour {
     [Header("Output Variables")]
     [Tooltip("Currently selected object in game to show properties for")]
     public GameObjectVariable selectedObject;
+    [Tooltip("The current view type we have selected")]
+    public ViewTypeVariable currentViewType;
     [Header("Input Variables")]
     [Tooltip("Variable containing all hardware (computers, servers, routers, etc) information for game")]
     public HardwareCatalogVariable hardwareCatalog;
@@ -34,6 +39,11 @@ namespace Code.User_Interface.Office {
       else {
         TryToPlaceHardware(screenPosition);
       }
+    }
+
+    // ------------------------------------------------------------------------
+    public void SceneDoubleClick(Vector2 screenPosition) {
+      TryToOpenView(screenPosition);
     }
 
     // --------------------------------------------------------------------------
@@ -122,6 +132,47 @@ namespace Code.User_Interface.Office {
 
       IPCManagerScript.SendRequest(xml.ToString());
       _hardwareToBuy = null;
+    }
+
+    // --------------------------------------------------------------------------
+    private void TryToOpenView(Vector2 screenPosition) {
+      Ray ray = UnityEngine.Camera.main.ScreenPointToRay(screenPosition);
+      var hits = Physics.RaycastAll(ray, 100);
+      var newViewType = ViewType.Invalid;
+      GameObject doubleClickedObject = null;
+      foreach (var hit in hits) {
+        newViewType = GetSelectedObjectViewType(hit.collider.gameObject);
+        if (newViewType != ViewType.Invalid) {
+          doubleClickedObject = hit.collider.gameObject;
+          break;
+        }
+      }
+      
+      if (newViewType != ViewType.Invalid) {
+        // Zones aren't selectable by single clicking on them, but we do want
+        // to select the zone we are about to go to the ZoneView for
+        if (newViewType == ViewType.Zone) {
+          selectedObject.Value = doubleClickedObject;
+        }
+        currentViewType.SetView(newViewType);
+      }
+    }
+
+    // --------------------------------------------------------------------------
+    private ViewType GetSelectedObjectViewType(GameObject gameObject) {
+      if (gameObject.GetComponent<ComputerBehavior>() != null) {
+        return ViewType.Component;
+      }
+      else if (gameObject.GetComponent<UserBehavior>() != null) {
+        return ViewType.User;
+      }
+      else if (gameObject.GetComponent<StaffBehavior>() != null) {
+        return ViewType.ITStaff;
+      }
+      else if (gameObject.GetComponent<ZoneBehavior>() != null) {
+        return ViewType.Zone;
+      }
+      return ViewType.Invalid;
     }
   }
 }
