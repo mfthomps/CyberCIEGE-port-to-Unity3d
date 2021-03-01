@@ -137,6 +137,9 @@ namespace Code.Factories {
               case "PermittedUsers":
                 data.permittedUsers.Add(subValue);
                 break;
+              case "ExcludeNetwork":
+                data.excludedNetworks.Add(subValue);
+                break;
               case "Secrecy":
                 data.secrecy = subValue;
                 break;

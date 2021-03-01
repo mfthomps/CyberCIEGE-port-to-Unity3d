@@ -20,6 +20,8 @@ public class IPCManagerScript : MonoBehaviour {
   public StringGameEvent componentStatusChanged;
   [Tooltip("Event to fire when a computer status changes")]
   public StringGameEvent computerStatusChanged;
+  [Tooltip("Event to fire when a device status changes")]
+  public StringGameEvent deviceStatusChanged;
   [Tooltip("Event to fire when user message changes")]
   public StringGameEvent userStatusChanged;
   [Tooltip("Event to fire when a zone status changes")]
@@ -103,6 +105,9 @@ public class IPCManagerScript : MonoBehaviour {
           break;
         case "computer_status":
           computerStatusChanged?.Raise(message);
+          break;
+        case "device_status":
+          deviceStatusChanged?.Raise(message);
           break;
         case "user_status":
           userStatusChanged?.Raise(message);
