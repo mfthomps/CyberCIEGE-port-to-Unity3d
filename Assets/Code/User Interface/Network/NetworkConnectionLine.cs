@@ -11,7 +11,7 @@ namespace Code.User_Interface.Network {
     public Canvas canvas;
     [Header("Customization")]
     [Tooltip("Line width")]
-    public float lineWidth = 2.0f;
+    public float lineWidth = 4.0f;
 
     private VectorLine _line;
 

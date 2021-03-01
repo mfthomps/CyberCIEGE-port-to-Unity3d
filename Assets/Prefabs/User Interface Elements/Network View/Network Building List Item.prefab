@@ -66,16 +66,16 @@ MonoBehaviour:
       m_Calls: []
   m_text: Internet
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8081b0b25053d8442b13499661a18fb3, type: 2}
-  m_sharedMaterial: {fileID: -5647849925685937556, guid: 8081b0b25053d8442b13499661a18fb3,
+  m_fontAsset: {fileID: 11400000, guid: 2227c1320e6d4794dac6676273ec48a2, type: 2}
+  m_sharedMaterial: {fileID: 7442854273411277774, guid: 2227c1320e6d4794dac6676273ec48a2,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -326,7 +326,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &5351113441457430368
 MonoBehaviour:
@@ -390,6 +390,7 @@ GameObject:
   - component: {fileID: 6645351965945691927}
   - component: {fileID: 5962998395391352916}
   - component: {fileID: 3774580392237661219}
+  - component: {fileID: 7766757385667612546}
   m_Layer: 5
   m_Name: Internet Connection
   m_TagString: Untagged
@@ -462,6 +463,14 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!222 &7766757385667612546
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5007178508978346702}
+  m_CullTransparentMesh: 0
 --- !u!1 &6613421911371384928
 GameObject:
   m_ObjectHideFlags: 0
@@ -528,7 +537,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: cc1fb708c91442a41b29504a147a6b97, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 44331ddc5e6c1c04eb34277184ace11d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -551,10 +560,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 5
-    m_Right: 5
-    m_Top: 5
-    m_Bottom: 5
+    m_Left: 2
+    m_Right: 2
+    m_Top: 8
+    m_Bottom: 2
   m_ChildAlignment: 4
   m_Spacing: 0
   m_ChildForceExpandWidth: 0
