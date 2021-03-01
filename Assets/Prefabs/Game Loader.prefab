@@ -247,6 +247,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6549311439821271465}
   - component: {fileID: 6549311439821271446}
+  - component: {fileID: 6075558164383710506}
   m_Layer: 0
   m_Name: Device Factory
   m_TagString: Untagged
@@ -287,6 +288,34 @@ MonoBehaviour:
     type: 2}
   deviceListVariable: {fileID: 11400000, guid: 325065c17ecc5144faa9016c6f5e5ede, type: 2}
   selectedObject: {fileID: 11400000, guid: 357d0fa733a03e24f82c4b882d71dea0, type: 2}
+--- !u!114 &6075558164383710506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6549311439821271464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ace966faabda0734887c2cb816d27c30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delay: 0
+  eventToListenTo: {fileID: 11400000, guid: 52ce02536d14d57438cc0bbe69be307b, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6549311439821271446}
+        m_MethodName: OnServerAddComputer
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6549311439845486866
 GameObject:
   m_ObjectHideFlags: 0
@@ -563,7 +592,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10fb115356b64402bbe6d0fec75ac01e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _officePropertyName: MainOfficeVersion
   _officePropertyNames:
   - MainOfficeVersion
   - OffsiteOfficeVersion
@@ -628,6 +656,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6549311441405852170}
   - component: {fileID: 6549311441405852171}
+  - component: {fileID: 585154027961672953}
+  - component: {fileID: 261686132522266111}
   m_Layer: 0
   m_Name: Computer Factory
   m_TagString: Untagged
@@ -685,6 +715,62 @@ MonoBehaviour:
   computerListVariable: {fileID: 11400000, guid: 8380099111649e944adcc17e9f804d36,
     type: 2}
   selectedObject: {fileID: 11400000, guid: 357d0fa733a03e24f82c4b882d71dea0, type: 2}
+--- !u!114 &585154027961672953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6549311441405852173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ace966faabda0734887c2cb816d27c30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delay: 0
+  eventToListenTo: {fileID: 11400000, guid: 2d9e815afc8197241adb20df78b36964, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6549311441405852171}
+        m_MethodName: OnServerAddComputer
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &261686132522266111
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6549311441405852173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ace966faabda0734887c2cb816d27c30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delay: 0
+  eventToListenTo: {fileID: 11400000, guid: e5fd48574932bf641aa3aa1cfb8645af, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6549311441405852171}
+        m_MethodName: Remove
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6549311441437792860
 GameObject:
   m_ObjectHideFlags: 0
