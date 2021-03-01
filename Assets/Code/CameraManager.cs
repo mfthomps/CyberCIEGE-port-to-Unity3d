@@ -5,6 +5,7 @@ using UnityEngine;
 using Shared.ScriptableVariables;
 using Code.Scriptable_Variables;
 using Code.World_Objects;
+using Code.User_Interface.View;
 
 namespace Code.Camera {
   //This uses two Transforms to position and orient the game camera.
@@ -24,6 +25,8 @@ namespace Code.Camera {
     [Header("Output Variables")]
     [Tooltip("Name of the current building the camera is located in.")]
     [SerializeField] private StringVariable _currentBuilding;
+    [Tooltip("The current view type we have selected")]
+    public ViewTypeVariable currentViewType;
     [Tooltip("Currently selected object in game to show properties for")]
     [SerializeField] private GameObjectVariable _selectedObject;
 
@@ -176,7 +179,16 @@ namespace Code.Camera {
         }
       }
     }
-    
+
+    // ------------------------------------------------------------------------
+    public void MoveCameraToSelected() {
+      if (_selectedObject.Value != null && _selectedObject.Value.activeSelf) {
+        // Make sure the office view is visible
+        currentViewType.SetView(ViewType.Office);
+        MoveCameraTarget(_selectedObject.Value.transform);
+      }
+    }
+
     //--------------------------------------------------------------------------
     private void MoveCamera(WorldObjectType type, BaseWorldObject target) {
       if (!target) return;
