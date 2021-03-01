@@ -26,8 +26,7 @@ namespace Code.Scriptable_Variables {
         this.Reset(gender);
         mapping = _prefabs.Find(x => x._gender == gender && x._isTaken == false);
       }
-      int idx = _prefabs.FindIndex(x => x._prefab.name == mapping._prefab.name);
-      _prefabs[idx]._isTaken = true;
+      mapping._isTaken = true;
       return mapping?._prefab;
     }
 
