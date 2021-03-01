@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
 
 namespace Code.World_Objects.User.AI.States {
@@ -32,10 +31,15 @@ namespace Code.World_Objects.User.AI.States {
       _animator.SetBool(_walkingAnimParam, false);
     }
 
+    //--------------------------------------------------------------------------
     private void Update() {
+      //while running, check if the current navigation target has changed, based on the 
+      //last set NavMeshAgent's destination. If so, give the NavMeshAgent the new position.
+      const float fudge = 1.5f;
+      
       if (_user.CurrentNavTarget && _agent.isOnNavMesh ) {
         var dist = Vector3.Distance(_user.CurrentNavTarget.transform.position, _agent.destination);
-        if (dist > 1.5) {
+        if (dist > fudge) {
           if (_agent.SetDestination(_user.CurrentNavTarget.transform.position)) {
             _animator.SetBool(_walkingAnimParam, true);
             Debug.Log($"Pathing [{_agent.name}] -> [{_user.CurrentNavTarget}]");
@@ -45,10 +49,6 @@ namespace Code.World_Objects.User.AI.States {
           }
         }
       }
-      else {
-        //Debug.LogError($"Can't set destination for [{_user.name}]. Current nav target is [{_user.CurrentNavTarget}]");
-      }
-
     }
   }
 }
