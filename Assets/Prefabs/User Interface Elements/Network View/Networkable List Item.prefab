@@ -69,7 +69,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: e6ca74331c8c8284c8539db88156dd5f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 483ce7a87b367344aa5ff5a398442df5, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -117,14 +117,25 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 7030972642244006036}
   toggleTransition: 1
   graphic: {fileID: 8332189514876844492}
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7352396213457836769}
+        m_MethodName: SetInteractable
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 0
 --- !u!1 &1504151726114017878
 GameObject:
@@ -389,6 +400,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 7352396213457836769}
+        m_MethodName: SetSelected
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2713591417723211091
 GameObject:
   m_ObjectHideFlags: 0
@@ -464,6 +486,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectionToggle: {fileID: 4300678267673832924}
   labelUI: {fileID: 2429593646357663452}
+  clickButton: {fileID: 4934452655874404538}
 --- !u!114 &247178890379288664
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -632,7 +655,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4692817372570288921}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -644,7 +667,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: f92b39b5bc9024d44a4dd5d9b61c8e0f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e6ca74331c8c8284c8539db88156dd5f, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
