@@ -33,6 +33,14 @@ namespace Code.Factories {
         case "HW":
           data.hw = value;
           break;
+        case "Static":
+          if (!bool.TryParse(value, out bool isStatic)) {
+            Debug.Log($"Error: LoadComponent static {value}");
+          }
+          // For some reason this field is showing up multiple times in some computers, so
+          // if it's ever static, then it stays static
+          data.isStatic = data.isStatic || isStatic;
+          break;
         case "Network":
           string networkName = null;
           var accessors = new List<DACAccess>();
