@@ -25,11 +25,13 @@ namespace Code.Factories {
     //-------------------------------------------------------------------------
     private void Start() {
       _parent = new GameObject("Users").transform;
+      _mapping.Reset();
     }
 
     //-------------------------------------------------------------------------
     void OnDestroy() {
       _userListVariable.Clear();
+      _mapping.Reset();
     }
 
     //-------------------------------------------------------------------------
