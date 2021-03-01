@@ -24,6 +24,8 @@ namespace Code.Camera {
     [Header("Output Variables")]
     [Tooltip("Name of the current building the camera is located in.")]
     [SerializeField] private StringVariable _currentBuilding;
+    [Tooltip("Currently selected object in game to show properties for")]
+    [SerializeField] private GameObjectVariable _selectedObject;
 
     [Header("Cameras")]
     [Tooltip("Transform the camera is targeting")]
@@ -120,12 +122,16 @@ namespace Code.Camera {
 
     // ------------------------------------------------------------------------
     public void MoveCameraToPreviousObject(WorldObjectType type) {
-      MoveCamera(type, _objectCircularLists.GetPrev(type));
+      var newTarget = _objectCircularLists.GetPrev(type);
+      MoveCamera(type, newTarget);
+      _selectedObject.Value = newTarget.gameObject;
     }
     
     //--------------------------------------------------------------------------
     public void MoveCameraToNextObject(WorldObjectType type) {
-      MoveCamera(type, _objectCircularLists.GetNext(type));
+      var newTarget = _objectCircularLists.GetNext(type);
+      MoveCamera(type, newTarget);
+      _selectedObject.Value = newTarget.gameObject;
     }
 
     // ------------------------------------------------------------------------
