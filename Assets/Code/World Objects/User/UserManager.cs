@@ -109,9 +109,14 @@ namespace Code.World_Objects.User {
       if (int.TryParse(productivityStr, out int productivity)) {
         character.UpdateProductivity(productivity);
       }
-      
-      character.UpdateSpeechText(updateNode["speakText"].InnerText);
-      
+
+      if (bool.Parse(updateNode["speaking"].InnerText)) {
+        character.UpdateSpeechText(updateNode["speakText"].InnerText);
+      }
+      else {
+        character.UpdateSpeechText(null);
+      }
+
       var computer = updateNode["visitingComputer"].InnerText;
       var visiting = updateNode["visiting"].InnerText;
       character.UpdateVisitingObject(visiting);
