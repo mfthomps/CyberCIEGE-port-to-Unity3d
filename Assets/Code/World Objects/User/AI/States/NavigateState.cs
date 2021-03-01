@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.AI;
 
 namespace Code.World_Objects.User.AI.States {
@@ -14,24 +15,40 @@ namespace Code.World_Objects.User.AI.States {
       if (!_agent.enabled) {
         _agent.enabled = true;
       }
-      
+
       if (_user.CurrentNavTarget && _agent.isOnNavMesh) {
         if (_agent.SetDestination(_user.CurrentNavTarget.transform.position)) {
           _animator.SetBool(_walkingAnimParam, true);
+          Debug.Log($"Pathing [{_agent.name}] -> [{_user.CurrentNavTarget}]");
         }
         else {
-          Debug.LogError($"Can't path to {_user.CurrentNavTarget.transform.position}");
-        }        
-      }
-      else {
-        Debug.LogError($"Can't set destination for {_user.name}");
-
+          Debug.LogError($"Can't path [{_user.name}] to [{_user.CurrentNavTarget.transform.position}]");
+        }
       }
     }
     
     //--------------------------------------------------------------------------
     public override void OnStateLeave() {
       _animator.SetBool(_walkingAnimParam, false);
+    }
+
+    private void Update() {
+      if (_user.CurrentNavTarget && _agent.isOnNavMesh ) {
+        var dist = Vector3.Distance(_user.CurrentNavTarget.transform.position, _agent.destination);
+        if (dist > 1.5) {
+          if (_agent.SetDestination(_user.CurrentNavTarget.transform.position)) {
+            _animator.SetBool(_walkingAnimParam, true);
+            Debug.Log($"Pathing [{_agent.name}] -> [{_user.CurrentNavTarget}]");
+          }
+          else {
+            Debug.LogError($"Can't path [{_user.name}] to [{_user.CurrentNavTarget.transform.position}]");
+          }
+        }
+      }
+      else {
+        //Debug.LogError($"Can't set destination for [{_user.name}]. Current nav target is [{_user.CurrentNavTarget}]");
+      }
+
     }
   }
 }

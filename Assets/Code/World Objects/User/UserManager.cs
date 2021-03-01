@@ -15,6 +15,10 @@ namespace Code.World_Objects.User {
     public StaffListVariable staffList;
     [Tooltip("List of users in the current scenario")]
     public UserListVariable users;
+
+    [Tooltip("The list of computers available in the current scenario")]
+    public ComputerListVariable computers;
+    
     [Tooltip("Currently selected object")]
     public GameObjectVariable selectedObject;
 
@@ -91,13 +95,13 @@ namespace Code.World_Objects.User {
     }
 
     //---------------------------------------------------------------------------
-    private static void UpdateStaff(StaffBehavior staff, XmlNode updateNode) {
+    private void UpdateStaff(StaffBehavior staff, XmlNode updateNode) {
       UpdateCharacterStatus(staff, updateNode);
     }
     
     //---------------------------------------------------------------------------
     //Status fields common to both Users and Staff
-    private static void UpdateCharacterStatus(BaseCharacter character, XmlNode updateNode) {
+    private void UpdateCharacterStatus(BaseCharacter character, XmlNode updateNode) {
       character.UpdateCurrentThought(updateNode["thought"].InnerText);
       
       string happinessStr = updateNode["happiness"].InnerText;
@@ -111,8 +115,17 @@ namespace Code.World_Objects.User {
       }
       
       character.UpdateSpeechText(updateNode["speakText"].InnerText);
+
+      string visitingString = GetVisitingString(updateNode);
       
-      character.UpdateVisitingObject(GetVisitingObject(updateNode));
+      if (visitingString != character.GetCharacterData().Visiting) {
+        character.SetVisiting(visitingString);
+        var targetObject = GetTarget(visitingString);
+        if (character.CurrentNavTarget != targetObject) {
+          character.CurrentNavTarget = targetObject;
+          Debug.Log($"Set [{character.GetCharacterData().user_name}] nav target to [{targetObject.name}]");
+        }
+      }
 
       var stayStr = updateNode["stay"].InnerText;
       bool stay = stayStr == "1" ? true : false;
@@ -120,18 +133,33 @@ namespace Code.World_Objects.User {
     }
 
     //--------------------------------------------------------------------------
-    private static string GetVisitingObject(XmlNode updateNode) {
+    private static string GetVisitingString(XmlNode updateNode) {
       var computer = updateNode["visitingComputer"].InnerText;
       var visiting = updateNode["visiting"].InnerText;
-      string visitingObject = "";
+      string visitingTarget = "";
       if (!string.IsNullOrEmpty(computer)) {
-        visitingObject = computer;
+        visitingTarget = computer;
       }
       else if (!string.IsNullOrEmpty(visiting)) {
-        visitingObject = visiting;
+        visitingTarget = visiting;
       }
 
-      return visitingObject;
+      return visitingTarget;
+    }
+    
+    //--------------------------------------------------------------------------
+    private GameObject GetTarget(string targetStr) {
+      var user = users.Value.Find(x => x.Data.user_name == targetStr);
+      if (user) {
+        return user.gameObject;
+      }
+
+      var computer = computers.Value.Find(x => x.Data.component_name == targetStr);
+      if (computer) {
+        return computer.gameObject;
+      }
+
+      return null;
     }
   }
 }

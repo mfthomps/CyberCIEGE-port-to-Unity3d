@@ -35,7 +35,7 @@ namespace Code.World_Objects.Character {
     }
 
     //---------------------------------------------------------------------------
-    public void UpdateVisitingObject(string visiting) {
+    public void SetVisiting(string visiting) {
       if (GetCharacterData().Visiting != visiting) {
         GetCharacterData().Visiting = visiting;
         ValueChanged();
