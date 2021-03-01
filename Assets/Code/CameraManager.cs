@@ -182,9 +182,11 @@ namespace Code.Camera {
 
     // ------------------------------------------------------------------------
     public void MoveCameraToSelected() {
-      // Make sure the office view is visible
-      currentViewType.SetView(ViewType.Office);
-      MoveCameraTarget(_selectedObject.Value.transform);
+      if (_selectedObject.Value != null && _selectedObject.Value.activeSelf) {
+        // Make sure the office view is visible
+        currentViewType.SetView(ViewType.Office);
+        MoveCameraTarget(_selectedObject.Value.transform);
+      }
     }
 
     //--------------------------------------------------------------------------
