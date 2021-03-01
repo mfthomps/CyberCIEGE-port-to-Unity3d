@@ -22,10 +22,11 @@ namespace Code.Scriptable_Variables {
     //Get the first prefab that matches the supplied Gender. Null if one is not defined.
     public GameObject GetPrefab(UserGender gender) {
       var mapping = _prefabs.Find(x => x._gender == gender && x._isTaken == false);
-      int idx = _prefabs.FindIndex(x => x._prefab.name == mapping._prefab.name);
-      if (_prefabs[idx]._isTaken == true) {  // ran out of prefabs?
+      if (mapping == null && _prefabs.Exists(x => x._gender == gender)) {  // ran out of prefabs?
         this.Reset(gender);
+        mapping = _prefabs.Find(x => x._gender == gender && x._isTaken == false);
       }
+      int idx = _prefabs.FindIndex(x => x._prefab.name == mapping._prefab.name);
       _prefabs[idx]._isTaken = true;
       return mapping?._prefab;
     }
