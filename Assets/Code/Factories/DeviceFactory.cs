@@ -39,13 +39,11 @@ namespace Code.Factories {
     }
 
     //-------------------------------------------------------------------------
-    public void Create(string filename) {
-      DeviceBehavior item = Instantiate(_prefab, _parent);
-      item.Data = LoadOneDevice(Path.Combine(userAppPath.Value, DEVICES, filename), item);
-      UpdateGameObject(item);
+    public void OnServerAddComputer(string deviceName) {
+      Create($"{deviceName}.sdf");
 
-      // Select our newly created computer
-      selectedObject.Value = item.gameObject;
+      // Select our newly created device
+      selectedObject.Value = deviceListVariable.Value[deviceListVariable.Value.Count - 1].gameObject;
     }
 
     //-------------------------------------------------------------------------
@@ -54,17 +52,23 @@ namespace Code.Factories {
     }
 
     //-------------------------------------------------------------------------
+    public void Create(string filename) {
+      var item = Instantiate(_prefab, _parent);
+      item.Data = LoadOneDevice(Path.Combine(userAppPath.Value, DEVICES, filename), item);
+      UpdateGameObject(item);
+    }
+
+    //-------------------------------------------------------------------------
     private void LoadDevices(string path, Transform parent = null) {
       deviceListVariable.Clear();
       
       string cdir = Path.Combine(path, DEVICES);
       string[] clist = Directory.GetFiles(cdir);
-      
       foreach (string device_file in clist) {
         Create(device_file);
       }
     }
-    
+
     //-------------------------------------------------------------------------
     private DeviceDataObject LoadOneDevice(string device_file, DeviceBehavior newDevice) {
       var data = new DeviceDataObject();
