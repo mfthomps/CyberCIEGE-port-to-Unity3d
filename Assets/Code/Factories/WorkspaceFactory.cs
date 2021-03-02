@@ -97,9 +97,10 @@ namespace Code.Factories {
             }
 
             WorkSpace ws = new WorkSpace(x, y, dir, usage);
-            _workSpaceListVariable.Add(ws);
-            var workSpace = Instantiate(_prefab, _parent);
+            WorkSpaceScript workSpace = Instantiate(_prefab, _parent);
             workSpace.Data = ws;
+            _workSpaceListVariable.Add(workSpace);
+            
             SetupGameObject(workSpace, wsData, _workSpaceListVariable.Value.Count-1);
           } while (line != "end" && line != null);
         }
@@ -159,10 +160,11 @@ namespace Code.Factories {
     //Instantiate the office furniture for the supplied WorkSpace
     private void PopulateWorkspace(WorkSpaceScript workSpace, WorkSpaceData supplementalData, int index) {
       var mainOffice = _officeList.GetMainOffice();
-      WorkSpaceFurnitureConfiguration workSpaceFurniture = mainOffice.GetWorkSpaceFurniture(workSpace.Data.GetWorkSpaceType());
-      if (workSpaceFurniture) {
-        WorkSpaceFurnitureConfiguration config = Instantiate(workSpaceFurniture, workSpace.transform, false);
+      WorkSpaceFurnitureConfiguration prefab = mainOffice.GetWorkSpaceFurniturePrefab(workSpace.Data.GetWorkSpaceType());
+      if (prefab) {
+        WorkSpaceFurnitureConfiguration config = Instantiate(prefab, workSpace.transform, false);
         config.SetupFurniture(supplementalData.Random1, supplementalData.Random2, index);
+        workSpace.FurnitureConfiguration = config;
       }
     }
   }

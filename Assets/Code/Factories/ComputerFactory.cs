@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using Shared.ScriptableVariables;
@@ -13,7 +12,6 @@ namespace Code.Factories {
   //Factory that creates Computers
   public class ComputerFactory : ComponentFactory, iFactory {
     [SerializeField] private ComputerBehavior _prefab;
-    [SerializeField] private StringStringVariable _organizationDictionary;
 
     [Header("Input Variables")]
     [Tooltip("Path to the user's AppData folder")]
@@ -28,11 +26,7 @@ namespace Code.Factories {
     public List<PolicyListVariable> policies = new List<PolicyListVariable>();
     [Tooltip("The variable that contains the currently in-game selected World Object")]
     [SerializeField] private GameObjectVariable _currentlySelectedWorldObject;
-    [Tooltip("The ScriptableVariable that should contain the list of OfficeBuildings instantiated" +
-             " for the currently loaded scenario.")]
-    [SerializeField] private OfficeListVariable _officeList;
 
-    
     [Header("Output Variables")]
     [Tooltip("The variable containing the list of all the Computers currently in the scenario.")]
     [SerializeField] private ComputerListVariable computerListVariable;
@@ -94,8 +88,8 @@ namespace Code.Factories {
       }
 
       //update the WorkSpace
-      WorkSpace ws = _workSpaceListVariable.GetWorkSpace(computer.Data.position);
-      ws?.RemoveComputer(computer);
+      WorkSpaceScript ws = _workSpaceListVariable.GetWorkSpaceScript(computer.Data.position);
+      ws?.Data.RemoveComputer(computer);
       Destroy(computer.gameObject);
     }
 
@@ -179,7 +173,7 @@ namespace Code.Factories {
     
     //-------------------------------------------------------------------------
     //Public, for unit testing
-    public void UpdateGameObject(ComputerBehavior newComputer) {
+    private void UpdateGameObject(ComputerBehavior newComputer) {
       //This is the part that will hopefully load the correct assets from dict
       var hardwareAsset = hardwareCatalog.Value.GetHardwareAsset(newComputer.Data.hw);
       if (hardwareAsset != null) {
@@ -196,11 +190,10 @@ namespace Code.Factories {
         Debug.Log("LoadOneComputer got invalid pos for " + newComputer.Data.component_name);
       }
 
-      WorkSpace ws = _workSpaceListVariable.GetWorkSpace(pos);
-      int slot = ws.AddComputer(newComputer);
+      WorkSpaceScript ws = _workSpaceListVariable.GetWorkSpaceScript(pos);
+      int slot = ws.Data.AddComputer(newComputer);
       
-      SetComputerPositionRotation(newComputer, ws);
-
+      SetComputerPositionRotation(newComputer, ws, slot);
       newComputer.gameObject.name = $"Computer - {newComputer.Data.component_name}";
 
       //add it to the computer list.
@@ -210,17 +203,13 @@ namespace Code.Factories {
     //-------------------------------------------------------------------------
     //setup the position and rotation of the computer based on the WorkSpace direction
     //and office-specific offsets
-    private void SetComputerPositionRotation(Component newComputer, WorkSpace ws) {
-      ccUtils.GridTo3dPos(ws.x, ws.y, out float xf, out float zf);
-      newComputer.transform.position = new Vector3(xf, 0f, zf);
-      newComputer.transform.rotation = WorkSpace.GetRotation(ws.GetDirection());
-
-      var mainOffice = _officeList.GetMainOffice();
-      WorkSpaceFurnitureConfiguration workSpaceFurniture = mainOffice.GetWorkSpaceFurniture(ws.GetWorkSpaceType());
-      
-      if (workSpaceFurniture) {
-        var offset = workSpaceFurniture.ComputerOffset.GetOffset(ws.GetDirection());
-        newComputer.transform.Translate(offset);
+    private void SetComputerPositionRotation(Component newComputer, WorkSpaceScript ws, int workSpaceComponentSlot) {
+      var computerPositionReference = ws.FurnitureConfiguration.GetComponentTransform(workSpaceComponentSlot);
+      if (computerPositionReference) {
+        newComputer.transform.SetPositionAndRotation(computerPositionReference.position, computerPositionReference.rotation);
+      }
+      else {
+        Debug.Log($"Can't find a place in WorkSpace [{ws.name}] to position computer [{newComputer.name}]");
       }
     }
 

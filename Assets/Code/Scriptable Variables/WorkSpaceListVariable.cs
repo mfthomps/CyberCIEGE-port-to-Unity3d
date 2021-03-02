@@ -2,9 +2,9 @@
 using UnityEngine;
 
 namespace Code.Scriptable_Variables {
-  //A ScriptableVariable that contains a list of WorkSpace data objects
+  //A ScriptableVariable that contains a list of WorkSpaceScript objects
   [CreateAssetMenu(menuName = "Scriptable Objects/Variables/CC/WorkSpace List")]
-  public class WorkSpaceListVariable : ListVariable<WorkSpace> {
+  public class WorkSpaceListVariable : ListVariable<WorkSpaceScript> {
     [ContextMenu("Reset To Default Value")]
     public void ContextMenuReset() {
       Reset();
@@ -19,13 +19,13 @@ namespace Code.Scriptable_Variables {
       float distance = 9999999.9f;
 
       for (int i = 0; i < Value.Count; i++) {
-        float temp = (gridPosition.x - Value[i].x) * (gridPosition.x - Value[i].x)
-                     + (gridPosition.y - Value[i].y) * (gridPosition.y - Value[i].y);
+        float temp = (gridPosition.x - Value[i].Data.x) * (gridPosition.x - Value[i].Data.x)
+                     + (gridPosition.y - Value[i].Data.y) * (gridPosition.y - Value[i].Data.y);
         if (temp < distance) {
           index = i;
           distance = temp;
-          xout = Value[i].x;
-          yout = Value[i].y;
+          xout = Value[i].Data.x;
+          yout = Value[i].Data.y;
         }
       }
 
@@ -38,6 +38,15 @@ namespace Code.Scriptable_Variables {
     
     //-----------------------------------------------------------------------------
     public WorkSpace GetWorkSpace(int pos) {
+      if (pos >= Value.Count || pos < 0) {
+        Debug.Log("Workspace request out of range " + pos);
+        return null;
+      }
+      return Value[pos].Data;
+    }
+
+    //-----------------------------------------------------------------------------
+    public WorkSpaceScript GetWorkSpaceScript(int pos) {
       if (pos >= Value.Count || pos < 0) {
         Debug.Log("Workspace request out of range " + pos);
         return null;

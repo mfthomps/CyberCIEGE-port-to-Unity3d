@@ -24,7 +24,7 @@ namespace Code.World_Objects.Office {
 
     //--------------------------------------------------------------------------
     // Get the furniture set prefab for this office building based on the type of WorkSpace.
-    public WorkSpaceFurnitureConfiguration GetWorkSpaceFurniture(WorkSpace.WorkSpaceType workSpaceType) {
+    public WorkSpaceFurnitureConfiguration GetWorkSpaceFurniturePrefab(WorkSpace.WorkSpaceType workSpaceType) {
       switch (workSpaceType) {
         case WorkSpace.WorkSpaceType.Regular:
           return _furniture.RegularOfficeFurniture;
