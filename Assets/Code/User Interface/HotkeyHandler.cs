@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Shared.ScriptableVariables;
 using Code.Game_Events;
 using Code.World_Objects;
 
@@ -10,6 +11,8 @@ namespace Code.User_Interface {
     [Header("Output Events")]
     [Tooltip("Move camera to next object of given type")]
     public WorldObjectTypeGameEvent moveCameraToNextObject;
+    [Tooltip("Event fired with the ID of the hardware the player wants to buy")]
+    public StringGameEvent onBuyHardware;
 
     private Dictionary<KeyCode, Action> _hotkeyActionMap;
 
@@ -22,6 +25,7 @@ namespace Code.User_Interface {
         { KeyCode.D, NextDevice },
         { KeyCode.C, NextComputer },
         { KeyCode.Tab, NextViewPoint },
+        { KeyCode.Escape, CancelBuy }
       };
     }
 
@@ -63,6 +67,11 @@ namespace Code.User_Interface {
     // ------------------------------------------------------------------------
     private void NextViewPoint() {
       moveCameraToNextObject?.Raise(WorldObjectType.ViewPoint);
+    }
+
+    // ------------------------------------------------------------------------
+    private void CancelBuy() {
+      onBuyHardware?.Raise(null);
     }
   }
 }

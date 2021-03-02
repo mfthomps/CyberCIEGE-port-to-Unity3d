@@ -12,6 +12,7 @@ public class MouseHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
   // [Tooltip("The Selectable Element used to determine the type of cursor displayed on highlight. Optional")]
   private Selectable selectable;
+  private bool _active = false;
 
   //----------------------------------------------------------
   // Get the first instance of a selectable (Toggle, Button) in the hierarchy
@@ -33,17 +34,33 @@ public class MouseHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
   }
   
   //----------------------------------------------------------
-  public void OnPointerEnter(PointerEventData pointerEventData)
-  {
+  void OnDisable() {
+    if (_active) {
+      ToggleCursor(false);
+    }
+  }
+
+  //----------------------------------------------------------
+  public void OnPointerEnter(PointerEventData pointerEventData) {
     if (!selectable || (selectable && selectable.interactable)) {  
-      Cursor.SetCursor(hoverCursor, hotSpot, cursorMode);
+      ToggleCursor(true);
     }
   }
 
   //----------------------------------------------------------
   //Detect when Cursor leaves the ui element
-  public void OnPointerExit(PointerEventData pointerEventData)
-  {
-    Cursor.SetCursor(null, Vector2.zero, cursorMode);
+  public void OnPointerExit(PointerEventData pointerEventData) {
+    ToggleCursor(false);
+  }
+
+  //----------------------------------------------------------
+  private void ToggleCursor(bool active) {
+    _active = active;
+    if (active) {
+      Cursor.SetCursor(hoverCursor, hotSpot, cursorMode);
+    }
+    else {
+      Cursor.SetCursor(null, Vector2.zero, cursorMode);
+    }
   }
 }
