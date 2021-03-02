@@ -18,7 +18,15 @@ namespace Code.Factories {
 
     public readonly static string ORGANIZATION_INTERNET_NETWORK_NAME = "InternetName";
 
-    private static Queue<Color> _networkColors = new Queue<Color>(new List<Color> { Color.red, Color.green, Color.blue, Color.yellow, Color.cyan, Color.magenta} );
+    private static Queue<Color> _networkColors = new Queue<Color>(new List<Color> { 
+      new Color(1f, 0f, 0f, 1f), 
+      new Color(0.01960784f, 0.8509804f, 0.02352941f, 1f), 
+      new Color(0.1607843f, 0.509804f, 0.9686275f, 1f), 
+      new Color(0.9607843f, 0.8156863f, 0.09411765f, 1f), 
+      new Color(0f, 0.9098039f, 0.9333333f, 1f), 
+      new Color(0.8784314f, 0.2117647f, 0.9921569f, 1f),
+      new Color(0.9529412f, 0.3058824f, 0.03137255f, 1f)
+    } );
     private readonly string NETWORKS = "networks.sdf";
     private readonly string ORGANIZATION_HAS_INTERNET = "Internet";
     private Transform _parent;
