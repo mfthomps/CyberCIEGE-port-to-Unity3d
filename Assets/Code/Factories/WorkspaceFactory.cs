@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Code.Scriptable_Variables;
+using Code.World_Objects.Office;
 using Code.World_Objects.Workspace;
 using UnityEngine;
 
@@ -11,13 +12,13 @@ namespace Code.Factories {
   public class WorkspaceFactory : MonoBehaviour, iFactory {
     [SerializeField] private WorkSpaceScript _prefab;
 
-    [Tooltip("A List of WorkSpaceFurnitureVariables. One for every office type.")]
-    [SerializeField] private List<WorkSpaceFurnitureVariable> _workSpaceFurnitureVariables;
-
     [Header("Input Variables")]
     [SerializeField] private StringStringVariable _organizationDictionary;
     [Tooltip("The variable to contain the list of WorkSpaces in the current scenario")]
     [SerializeField] private WorkSpaceListVariable _workSpaceListVariable;
+    [Tooltip("The ScriptableVariable that should contain the list of OfficeBuildings instantiated" +
+             " for the currently loaded scenario.")]
+    [SerializeField] private OfficeListVariable _officeList;
 
     private Transform _parent;
 
@@ -157,85 +158,12 @@ namespace Code.Factories {
     //-------------------------------------------------------------------------
     //Instantiate the office furniture for the supplied WorkSpace
     private void PopulateWorkspace(WorkSpaceScript workSpace, WorkSpaceData supplementalData, int index) {
-      //get the magic string of office type in order to find the grouping of
-      //furniture to populate the WorkSpaces with
-      string officeName = _organizationDictionary["MainOfficeVersion"];
-      WorkSpaceFurnitureVariable furnitureVar = _workSpaceFurnitureVariables.Find(
-        x => x.Value._associatedOfficeMagicString == officeName);
-      
-      WorkSpaceFurniture furniture = furnitureVar ? furnitureVar.Value : null;
-      
-      if (furniture == null) {
-        Debug.LogError($"No WorkSpaceFurniture found for office '{officeName}'");
-        return; 
+      var mainOffice = _officeList.GetMainOffice();
+      WorkSpaceFurnitureConfiguration workSpaceFurniture = mainOffice.GetWorkSpaceFurniture(workSpace.Data.GetWorkSpaceType());
+      if (workSpaceFurniture) {
+        WorkSpaceFurnitureConfiguration config = Instantiate(workSpaceFurniture, workSpace.transform, false);
+        config.SetupFurniture(supplementalData.Random1, supplementalData.Random2, index);
       }
-      
-      if (workSpace.Data.GetWorkSpaceType() == WorkSpace.WorkSpaceType.Regular) {
-        PopulateRegularWorkspace(workSpace, supplementalData, index, furniture);
-      }
-      else if (workSpace.Data.GetWorkSpaceType() == WorkSpace.WorkSpaceType.Server) {
-        PopulateServerRoom(workSpace, furniture);
-      }
-    }
-
-    //-------------------------------------------------------------------------
-    //instantiate and position the stuff that goes in a regular WorkSpace
-    private static void PopulateRegularWorkspace(WorkSpaceScript workSpace, WorkSpaceData supplementalData, int workSpaceIndex, WorkSpaceFurniture furniture) {
-      //regular WorkSpaces get a chair and a desk
-      GameObject chairPrefab = furniture.GetWorkSpaceChair(workSpaceIndex);
-      Direction direction = workSpace.Data.GetDirection();
-      
-      if (chairPrefab) {
-        var item = Instantiate(chairPrefab, workSpace.transform);
-        item.transform.Translate(furniture.ChairOffset.GetOffset(direction), Space.Self);
-      }
-
-      GameObject deskPrefab = furniture.GetWorkSpaceDesk(workSpaceIndex);
-      if (deskPrefab) {
-        var item = Instantiate(deskPrefab, workSpace.transform);
-        item.transform.Translate(furniture.DeskOffset.GetOffset(direction), Space.Self);
-      }
-
-      //add in the random office stuff using the random lists of objects 
-      //and the scenario-define random number (random number range?)
-      var firstItemPrefab = furniture.GetRandomItem1(supplementalData.Random1, workSpaceIndex);
-      if (firstItemPrefab) {
-        var item = Instantiate(firstItemPrefab, workSpace.transform);
-        item.gameObject.name = $"R1 - {item.gameObject.name}";
-        item.transform.Translate(furniture.Random1Offset.GetOffset(direction), Space.Self);
-      }
-      
-      var secondItemPrefab = furniture.GetRandomItem2(supplementalData.Random2, workSpaceIndex);
-      if (secondItemPrefab) {
-        var item = Instantiate(secondItemPrefab, workSpace.transform);
-        item.gameObject.name = $"R2 - {item.gameObject.name}";
-        item.transform.Translate(furniture.Random2Offset.GetOffset(direction), Space.Self);
-        //the item needs to be rotated 90 degrees, relative to the parent
-        item.transform.Rotate(0, 90, 0, Space.Self);
-      }
-    }
-
-    //--------------------------------------------------------------------------
-    //instantiate and position the stuff that goes in a server room WorkSpace
-    private static void PopulateServerRoom(WorkSpaceScript workSpace, WorkSpaceFurniture furniture) {
-      //create table
-      if (furniture._serverRoomDeskPrefab) {
-        var table = Instantiate(furniture._serverRoomDeskPrefab, workSpace.transform);
-        table.transform.Translate(furniture._serverRoomDeskOffset, Space.Self);
-      }
-
-      //create server rack
-      if (furniture._serverRoomServerRackPrefab) {
-        var rack = Instantiate(furniture._serverRoomServerRackPrefab, workSpace.transform);
-        rack.transform.Translate(furniture._serverRoomRackOffset, Space.Self);
-      }
-
-      //Add in the lamp
-      if (furniture._serverRoomLampPrefab) {
-        var lamp = Instantiate(furniture._serverRoomLampPrefab, workSpace.transform);
-        lamp.transform.Translate(furniture._serverRoomLampOffset, Space.Self);
-      }
-      
     }
   }
 }
