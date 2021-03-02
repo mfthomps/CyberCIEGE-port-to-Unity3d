@@ -28,10 +28,8 @@ namespace Code.World_Objects.Office {
       switch (workSpaceType) {
         case WorkSpace.WorkSpaceType.Regular:
           return _furniture.RegularOfficeFurniture;
-          break;
         case WorkSpace.WorkSpaceType.Server:
           return _furniture.ServerRoomOfficeFurniture;
-          break;
         case WorkSpace.WorkSpaceType.Inactive:
           break;
         default:
