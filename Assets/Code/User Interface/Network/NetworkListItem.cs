@@ -13,7 +13,6 @@ namespace Code.User_Interface.Network {
     [Tooltip("The button that controls clicking on this network to toggle its connection state")]
     public Button clickButton;
 
-    [SerializeField] private Toggle toggle;
 
     //-------------------------------------------------------------------------
     public override void SetItem(NetworkBehavior item) {
@@ -22,12 +21,25 @@ namespace Code.User_Interface.Network {
     }
 
     //-------------------------------------------------------------------------
+    public override void SetSelected(bool isSelected)
+    {
+      base.SetSelected(isSelected);
+
+      SwapAnimators animatorSwap = GetComponent<SwapAnimators>();
+      if (animatorSwap) {
+        animatorSwap.IsUsingAlternateAnimator = isSelected;
+        Debug.Log("Network List Item: " + this.gameObject.name.ToString() + ": " + isSelected.ToString());
+      }
+    }
+
+    //-------------------------------------------------------------------------
     public void SetInteractable(bool isInteractable) {
+
       if (clickButton != null ) {
         clickButton.interactable = isInteractable;
       }
-      if (toggle) {
-        toggle.interactable = isInteractable;
+      if (selectionToggle != null) {
+        selectionToggle.interactable = isInteractable;
       }
     }
   }
