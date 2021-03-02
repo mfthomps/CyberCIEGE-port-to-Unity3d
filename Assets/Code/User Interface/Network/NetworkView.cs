@@ -49,7 +49,7 @@ namespace Code.User_Interface.Network {
     // ------------------------------------------------------------------------
     public void NetworkItemClicked(NetworkBehavior network) {
       toggleNetworkConnection?.Raise(network);
-      UpdateNetworkConnections();
+      UpdateSelection();
     }
 
     // ------------------------------------------------------------------------
