@@ -31,7 +31,7 @@ namespace Code.User_Interface.Network {
       gameObject.SetActive(networkableList.listItems.Count > 0);
 
       // Set the spacing for our various layouts
-      contentVerticalLayoutGroup.spacing = componentSpacing;
+      contentVerticalLayoutGroup.padding.bottom = (int) componentSpacing;
       gridLayout.cellSize = Vector2.one * componentSize;
       gridLayout.spacing = Vector2.one * componentSpacing;
     }
