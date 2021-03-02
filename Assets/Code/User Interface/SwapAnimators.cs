@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor.Animations;
+using UnityEngine.Animations;
 
 public class SwapAnimators : MonoBehaviour
 {
@@ -14,10 +14,10 @@ public class SwapAnimators : MonoBehaviour
     [SerializeField] private Animator animator;
 
     // the default animator
-    [SerializeField] private AnimatorController defaultAnimatorController;
+    [SerializeField] private RuntimeAnimatorController defaultAnimatorController;
 
     // the alternate animator
-    [SerializeField] private AnimatorController alternateAnimatorController;
+    [SerializeField] private RuntimeAnimatorController alternateAnimatorController;
 
     // private variables for public property
     private bool isUsingDefaultAnimator;
