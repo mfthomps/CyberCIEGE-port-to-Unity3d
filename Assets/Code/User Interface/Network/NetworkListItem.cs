@@ -13,6 +13,8 @@ namespace Code.User_Interface.Network {
     [Tooltip("The button that controls clicking on this network to toggle its connection state")]
     public Button clickButton;
 
+    [SerializeField] private Toggle toggle;
+
     //-------------------------------------------------------------------------
     public override void SetItem(NetworkBehavior item) {
       label.text = item.Data.name;
@@ -23,6 +25,9 @@ namespace Code.User_Interface.Network {
     public void SetInteractable(bool isInteractable) {
       if (clickButton != null ) {
         clickButton.interactable = isInteractable;
+      }
+      if (toggle) {
+        toggle.interactable = isInteractable;
       }
     }
   }
