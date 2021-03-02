@@ -14,8 +14,6 @@ namespace Code.Factories {
   public class ComputerFactory : ComponentFactory, iFactory {
     [SerializeField] private ComputerBehavior _prefab;
     [SerializeField] private StringStringVariable _organizationDictionary;
-    [Tooltip("A List of WorkSpaceFurnitureVariables. One for every office type.")]
-    [SerializeField] private List<WorkSpaceFurnitureVariable> _workSpaceFurnitureVariables;
 
     [Header("Input Variables")]
     [Tooltip("Path to the user's AppData folder")]
@@ -30,7 +28,11 @@ namespace Code.Factories {
     public List<PolicyListVariable> policies = new List<PolicyListVariable>();
     [Tooltip("The variable that contains the currently in-game selected World Object")]
     [SerializeField] private GameObjectVariable _currentlySelectedWorldObject;
+    [Tooltip("The ScriptableVariable that should contain the list of OfficeBuildings instantiated" +
+             " for the currently loaded scenario.")]
+    [SerializeField] private OfficeListVariable _officeList;
 
+    
     [Header("Output Variables")]
     [Tooltip("The variable containing the list of all the Computers currently in the scenario.")]
     [SerializeField] private ComputerListVariable computerListVariable;
@@ -213,12 +215,11 @@ namespace Code.Factories {
       newComputer.transform.position = new Vector3(xf, 0f, zf);
       newComputer.transform.rotation = WorkSpace.GetRotation(ws.GetDirection());
 
-      string officeName = _organizationDictionary["MainOfficeVersion"];
-      WorkSpaceFurnitureVariable furnitureVar = _workSpaceFurnitureVariables.Find(
-        x => x.Value._associatedOfficeMagicString == officeName);
-      WorkSpaceFurniture furniture = furnitureVar ? furnitureVar.Value : null;
-      if (furniture != null) {
-        var offset = furniture.ComputerOffset.GetOffset(ws.GetDirection());
+      var mainOffice = _officeList.GetMainOffice();
+      WorkSpaceFurnitureConfiguration workSpaceFurniture = mainOffice.GetWorkSpaceFurniture(ws.GetWorkSpaceType());
+      
+      if (workSpaceFurniture) {
+        var offset = workSpaceFurniture.ComputerOffset.GetOffset(ws.GetDirection());
         newComputer.transform.Translate(offset);
       }
     }

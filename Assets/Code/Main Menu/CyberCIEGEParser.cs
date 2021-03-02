@@ -146,6 +146,9 @@ namespace Code.MainMenu {
     // ------------------------------------------------------------------------
     public static string GetScenarioStatus(string ccInstallPath, string campaign, string scenario) {
       var logDirectory = GetLogDirectory(ccInstallPath, campaign);
+      if (!Directory.Exists(logDirectory)) {
+        Directory.CreateDirectory(logDirectory);
+      }
       var logFiles = Directory.GetFiles(logDirectory, $"{Path.GetFileNameWithoutExtension(scenario)}-*.log");
       var scenarioStatus = SCENARIO_STATUS_NOT_STARTED;
       var phasesReached = new Stack<string>();

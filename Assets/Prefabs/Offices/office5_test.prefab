@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1305773617912704237}
   - component: {fileID: 7997584973545718580}
+  - component: {fileID: 906709878818754393}
   m_Layer: 0
   m_Name: office5_test
   m_TagString: Untagged
@@ -69,6 +70,30 @@ MonoBehaviour:
   m_VoxelSize: 0.083333336
   m_BuildHeightMesh: 0
   m_NavMeshData: {fileID: 23800000, guid: 7f4db9c1415e2b7449adb21fdacdf407, type: 2}
+--- !u!114 &906709878818754393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1825324007154726487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 087314c6f02640c28fdeeca56775bb28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _buildingType: 0
+  _furniture:
+    _regularOfficeFurniture: {fileID: 9088657647326242537, guid: 975d3f2ae07b5b041924bf79dfc0634c,
+      type: 3}
+    _serverRoomOfficeFurniture: {fileID: 5141072897276710809, guid: 140d7f54b1e1c5544bb16c9bb7da2b79,
+      type: 3}
+    _associatedOfficeMagicString: 
+    ComputerOffset:
+      NorthRelativeOffset: {x: 0.5, y: 0.71, z: 1.5}
+      EastRelativeOffset: {x: 0.5, y: 0.71, z: 1.5}
+      SouthRelativeOffset: {x: 0.5, y: 0.71, z: 1.5}
+      WestRelativeOffset: {x: 0.5, y: 0.71, z: 1.5}
 --- !u!1 &2091266523227784836
 GameObject:
   m_ObjectHideFlags: 0

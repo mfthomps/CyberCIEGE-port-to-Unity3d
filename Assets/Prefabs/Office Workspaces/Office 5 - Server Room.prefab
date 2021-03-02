@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8718757912360456849}
+  - component: {fileID: 5141072897276710809}
   m_Layer: 0
   m_Name: Office 5 - Server Room
   m_TagString: Untagged
@@ -33,6 +34,29 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5141072897276710809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 534097031620214950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2c5b23a74da44578cc00d61cc56c8db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Random1Root: {fileID: 0}
+  Random2Root: {fileID: 0}
+  Desk: {fileID: 8452661432612294204}
+  _invalidIndexRange:
+    from: -1
+    to: -1
+  ComputerOffset:
+    NorthRelativeOffset: {x: 0.5, y: 0.71, z: 1.5}
+    EastRelativeOffset: {x: 0.5, y: 0.71, z: 1.5}
+    SouthRelativeOffset: {x: 0.5, y: 0.71, z: 2.5}
+    WestRelativeOffset: {x: 0.5, y: 0.71, z: 1.5}
 --- !u!1001 &4349192077455879342
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -177,6 +201,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a8f074aaf45e16e46a9e0e1f2f80a618, type: 3}
+--- !u!1 &8452661432612294204 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5316926284663047571, guid: a8f074aaf45e16e46a9e0e1f2f80a618,
+    type: 3}
+  m_PrefabInstance: {fileID: 4360723043166145455}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &9081001109810599046 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4792486298230660905, guid: a8f074aaf45e16e46a9e0e1f2f80a618,

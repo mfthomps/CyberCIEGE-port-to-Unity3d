@@ -4,10 +4,12 @@ using Shared.ScriptableVariables;
 
 namespace Code.User_Interface {
   // Routes Unity input into various GameEvents so there is one place in charge of handling it all
-  public class SceneInput : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IScrollHandler {
+  public class SceneInput : MonoBehaviour, IPointerClickHandler, IDragHandler, IScrollHandler {
     [Header("Output Events")]
     [Tooltip("Fired when a left click happens")]
     public Vector2GameEvent sceneLeftClick;
+    [Tooltip("Fired when a left double click happens")]
+    public Vector2GameEvent sceneLeftDoubleClick;
     [Tooltip("Fired when a right click happens")]
     public Vector2GameEvent sceneRightClick;
     [Tooltip("Fired when a left click drag happens")]
@@ -22,19 +24,18 @@ namespace Code.User_Interface {
       if (!data.dragging) {
         switch (data.button) {
           case PointerEventData.InputButton.Left:
-            sceneLeftClick?.Raise(data.pressPosition);
+            if (data.clickCount == 1) {
+              sceneLeftClick?.Raise(data.pressPosition);
+            }
+            else if (data.clickCount > 1) {
+              sceneLeftDoubleClick?.Raise(data.pressPosition);
+            }
             break;
           case PointerEventData.InputButton.Right:
             sceneRightClick?.Raise(data.pressPosition);
             break;
         }
       }
-    }
-
-    // ------------------------------------------------------------------------
-    public void OnBeginDrag(PointerEventData data) {
-      // Empty implementation just so the PointerEventPassThrough system works
-      // with this one
     }
 
     // ------------------------------------------------------------------------
@@ -47,12 +48,6 @@ namespace Code.User_Interface {
           sceneRightDrag?.Raise(data.delta);
           break;
       }
-    }
-
-    // ------------------------------------------------------------------------
-    public void OnEndDrag(PointerEventData data) {
-      // Empty implementation just so the PointerEventPassThrough system works
-      // with this one
     }
 
     // ------------------------------------------------------------------------

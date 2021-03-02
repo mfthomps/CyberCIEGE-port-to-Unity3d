@@ -674,6 +674,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 942221576866594866, guid: 9cbf8a4e365b8384a87f4b4bb83e1fc5, type: 3}
   contentArea: {fileID: 999984989276775061}
+  itemDoubleClicked: {fileID: 11400000, guid: 73398ac646e90034899c5c171696d187, type: 2}
   onItemClicked:
     m_PersistentCalls:
       m_Calls:
@@ -1312,6 +1313,16 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7931823620008053164, guid: d5fabcaac90ca584fb168680c456e499,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7931823620008053164, guid: d5fabcaac90ca584fb168680c456e499,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d5fabcaac90ca584fb168680c456e499, type: 3}
 --- !u!224 &6839325609532613113 stripped
@@ -1644,7 +1655,7 @@ PrefabInstance:
     - target: {fileID: 7031985257705313510, guid: 366e05cedb1176e428c15afbc647e52a,
         type: 3}
       propertyPath: m_fontSize
-      value: 44.9
+      value: 32.65
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 366e05cedb1176e428c15afbc647e52a, type: 3}

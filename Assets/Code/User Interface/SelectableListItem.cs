@@ -12,6 +12,7 @@ namespace Code.User_Interface {
     //called when this item has been clicked
     public delegate void OnClickedDelegate();
     public OnClickedDelegate onClicked;
+    public OnClickedDelegate onDoubleClicked;
 
     //-------------------------------------------------------------------------
     public virtual void SetSelected(bool isSelected) {
@@ -33,6 +34,11 @@ namespace Code.User_Interface {
     //on a button or toggle.
     public void Click() {
       onClicked?.Invoke();
+    }
+
+    //-------------------------------------------------------------------------
+    public void DoubleClick() {
+      onDoubleClicked?.Invoke();
     }
 
     //-------------------------------------------------------------------------
