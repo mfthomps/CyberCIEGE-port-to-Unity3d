@@ -5,6 +5,9 @@ namespace Code.World_Objects.Workspace {
     [SerializeField] private WorkSpace _data;
 
     // ------------------------------------------------------------------------
+    public WorkSpaceFurnitureConfiguration FurnitureConfiguration { get; set; }
+
+    // ------------------------------------------------------------------------
     public override WorldObjectType Type() {
       return WorldObjectType.Workspace;
     }
