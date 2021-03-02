@@ -1,4 +1,5 @@
 ﻿using System.Xml.Linq;
+using Code.World_Objects.Character;
 using UnityEngine;
 using Shared.ScriptableVariables;
 
@@ -19,6 +20,17 @@ namespace Code.World_Objects.Staff {
           FireStaff(selectedStaff);
         }
       }
+    }
+
+    // ------------------------------------------------------------------------
+    //Call this when the Staff have reached their visiting location
+    public void OnStartedVisiting(BaseCharacter staff) {
+      XElement xml = new XElement("userEvent",
+        new XElement("visitDone",
+          new XElement("name", staff.GetCharacterData().user_name)
+        )
+      );
+      IPCManagerScript.SendRequest(xml.ToString());
     }
 
     // ------------------------------------------------------------------------

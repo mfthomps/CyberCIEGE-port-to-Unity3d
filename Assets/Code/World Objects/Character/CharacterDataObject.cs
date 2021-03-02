@@ -4,7 +4,7 @@ namespace Code.World_Objects.Character {
   //Contains the shared fields of all Characters
   [Serializable]
   public class CharacterDataObject {
-    public string Visiting;
+    public string Visiting = "";
     public bool Stay;
     public int happiness;
     public int productivity;
