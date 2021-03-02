@@ -59,6 +59,11 @@ namespace Code.User_Interface.Network {
     }
 
     // ------------------------------------------------------------------------
+    public void UpdateSelectedComponent(ComponentBehavior selectedComponent) {
+      networkZoneList.UpdateSelectedComponent(selectedComponent);
+    }
+
+    // ------------------------------------------------------------------------
     public void UpdateNetworkConnections() {
       // Clear out any previous network lines
       foreach (var line in _networkLines) {

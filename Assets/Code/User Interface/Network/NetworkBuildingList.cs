@@ -15,5 +15,11 @@ namespace Code.User_Interface.Network {
   }
 
   public class NetworkBuildingList : DynamicList<NetworkBuildingListItem, NetworkBuilding> {
+    // ------------------------------------------------------------------------
+    public void UpdateSelectedComponent(ComponentBehavior selectedComponent) {
+      foreach (var listItem in listItems) {
+        listItem.Value.UpdateSelectedComponent(selectedComponent);
+      }
+    }
   }
 }
