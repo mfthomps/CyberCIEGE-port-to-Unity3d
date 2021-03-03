@@ -8,5 +8,10 @@ namespace Code.Clearance {
       get => _data;
       set => _data = value;
     }
+
+    // ------------------------------------------------------------------------
+    public void SetBackgroundCheckLevel(BackgroundCheck.Level level) {
+      _data.backgroundCheckLevel = level;
+    }
   }
 }
