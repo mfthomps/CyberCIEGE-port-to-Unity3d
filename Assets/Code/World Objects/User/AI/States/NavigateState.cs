@@ -57,7 +57,7 @@ namespace Code.World_Objects.User.AI.States {
       if (dist > _distanceTolerance) {
         if (_agent.SetDestination(_user.CurrentNavTarget.transform.position)) {
           _animator.SetBool(_walkingAnimParam, true);
-          Debug.Log($"Pathing [{_agent.name}] -> [{_user.CurrentNavTarget}]");
+          Debug.Log($"Pathing [{_agent.name}] -> [{_user.CurrentNavTarget.name}]");
         }
         else {
           Debug.LogError($"Can't path [{_user.name}] to [{_user.CurrentNavTarget.transform.position}]");

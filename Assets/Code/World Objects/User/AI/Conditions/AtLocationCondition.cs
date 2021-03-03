@@ -16,7 +16,6 @@ namespace Code.World_Objects.User.AI.Conditions {
       }
       
       if (Vector3.Distance(transform.position, _user.CurrentNavTarget.transform.position) < tolerance) {
-        _user.CurrentNavTarget = null;
         return true;
       }
       else {
