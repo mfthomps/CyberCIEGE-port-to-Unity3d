@@ -35,6 +35,9 @@ namespace Code.World_Objects.User.AI.States {
       if (!string.IsNullOrEmpty(_workAnimationParam)) {
         _animator.SetBool(_workAnimationParam, false);
       }
+      if (!string.IsNullOrEmpty(_angryAnimationParam)) {
+        _animator.SetBool(_angryAnimationParam, false);
+      }
       _lastAnimCheck = 0;
     }
     
