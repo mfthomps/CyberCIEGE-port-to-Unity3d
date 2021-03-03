@@ -3,6 +3,7 @@ using TMPro;
 using Code.Clearance;
 using Code.Game_Events;
 using Code.Scriptable_Variables;
+using Code.User_Interface.Background_Check;
 
 namespace Code.User_Interface.Clearance {
   public class ClearanceView : MonoBehaviour {

@@ -1,8 +1,8 @@
 ﻿using System;
 using UnityEngine.Events;
 
-namespace Code.User_Interface.Clearance {
-  // Represents the list of Clearances in a given scenario
+namespace Code.User_Interface.Background_Check {
+  // Represents the list of Background Checks in a given scenario
   public class BackgroundCheckList : SelectableList<BackgroundCheckListItem, BackgroundCheck.Level> {
     [System.Serializable]
     public class ItemClickedEvent : UnityEvent<BackgroundCheck.Level> {}

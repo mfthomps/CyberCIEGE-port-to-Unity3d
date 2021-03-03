@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using TMPro;
 
-namespace Code.User_Interface.Clearance {
-  //Represents one selectable Clearance item in the BackgroundCheck List UI screen
+namespace Code.User_Interface.Background_Check {
+  //Represents one selectable BackgroundCheck item in the BackgroundCheck List UI screen
   public class BackgroundCheckListItem : SelectableListItem<BackgroundCheck.Level> {
     [Tooltip("The element that should display the item's label string.")]
     [SerializeField] private TMP_Text nameLabel;
