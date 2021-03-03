@@ -149,14 +149,11 @@ MonoBehaviour:
   Random2Root: {fileID: 2334792888261766964}
   ComponentRoot: {fileID: 4601164839142874655}
   Desk: {fileID: 4614727172447646569}
+  _sittables:
+  - {fileID: 6765107075569701207}
   _invalidIndexRange:
     from: -1
     to: -1
-  ComputerOffset:
-    NorthRelativeOffset: {x: 0.5, y: 0.71, z: 1.5}
-    EastRelativeOffset: {x: 0.5, y: 0.71, z: 1.5}
-    SouthRelativeOffset: {x: 0.5, y: 0.71, z: 1.5}
-    WestRelativeOffset: {x: 0.5, y: 0.71, z: 1.5}
 --- !u!1 &6877148891888786663
 GameObject:
   m_ObjectHideFlags: 0
@@ -1251,6 +1248,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 6875194768378128660}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6765107075569701207 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 183491164242786371, guid: a1492afd2f7976d43a092dc448a6f8ae,
+    type: 3}
+  m_PrefabInstance: {fileID: 6875194768378128660}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f397aed431554a90b4704176f954efba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7723039591986767743
 PrefabInstance:
   m_ObjectHideFlags: 0
