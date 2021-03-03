@@ -10,11 +10,11 @@ i.e., where you installed CyberCIEGE.  A good example scenario for UI developmen
 campaign's "Introduction" scenario.  Select that and play.
 
 ## Building an Executable
-1. Create a target directory (e.g., `CyberCIEGE-port-to-Unity3d_executable`)
+1. Create a target directory somewhere outside of the source code directory (e.g., name it `CyberCIEGE-port-to-Unity3d_executable`)
 2. In the Unity Editor go to File -> Build Settings
-3. Choose for _Platform_ _PC, Mac & Linux Standalone_
+3. Choose _PC, Mac & Linux Standalone_ for _Platform_
 4. Select Windows for the _Target Platform_, and x86_64 for the _Architecture_
 5. Set _Compression Method_ to Default, and leave any box unchecked
-6. Click _build_ - this generate the executable and supporting files
-7. Copy the directories `AssetBundles` and `HardwareTypes` into directory `CyberCIEGE-port-to-Unity3d_Data` in the target directory
-8. This completes the build. Double-clicking on `CyberCIEGE-port-to-Unity3d.exe` should launch the application.
+6. Click _build_ and select the target directory - this initiates the build process
+7. Copy the directories `AssetBundles` and `HardwareTypes` from `CyberCIEGE-port-to-Unity3d\Assets` into directory `CyberCIEGE-port-to-Unity3d_executable\CyberCIEGE-port-to-Unity3d_Data` in the target directory
+8. Double-clicking `CyberCIEGE-port-to-Unity3d.exe` in the target directory should launch the application.
