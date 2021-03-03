@@ -33,6 +33,67 @@ Transform:
   m_Father: {fileID: 6714807061932616042}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5963308462753322181
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6494683776594873299}
+  m_Layer: 0
+  m_Name: Component 1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6494683776594873299
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5963308462753322181}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.5, y: 0.771, z: 1.229}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5837223644702660314}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6403074492904565666
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5837223644702660314}
+  m_Layer: 0
+  m_Name: --- Component Positions
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5837223644702660314
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6403074492904565666}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 6494683776594873299}
+  m_Father: {fileID: 6714807061932616042}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7644083873231913904
 GameObject:
   m_ObjectHideFlags: 0
@@ -64,6 +125,7 @@ Transform:
   - {fileID: 5052780765235144601}
   - {fileID: 2520610619455033244}
   - {fileID: 4816005967839502953}
+  - {fileID: 5837223644702660314}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -81,15 +143,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Random1Root: {fileID: 4816005967839502953}
   Random2Root: {fileID: 0}
+  ComponentRoot: {fileID: 5837223644702660314}
   Desk: {fileID: 5572296313635355939}
   _invalidIndexRange:
     from: 0
     to: 5
-  ComputerOffset:
-    NorthRelativeOffset: {x: 0, y: 0.771, z: 2}
-    EastRelativeOffset: {x: 1, y: 0.771, z: 2}
-    SouthRelativeOffset: {x: 0.8, y: 0.771, z: 0.76}
-    WestRelativeOffset: {x: 0, y: 0.771, z: 1}
 --- !u!1001 &2058216692142621240
 PrefabInstance:
   m_ObjectHideFlags: 0
