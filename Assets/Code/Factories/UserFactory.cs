@@ -69,19 +69,27 @@ namespace Code.Factories {
             continue;
           }
           
-          WorkSpace ws = _workSpaceListVariable.GetWorkSpace(pos);
+          WorkSpaceScript ws = _workSpaceListVariable.GetWorkSpaceScript(pos);
           if (ws == null) {
             Debug.Log("UserBehavior got null workspace for pos" + pos);
           }
           else {
-            if (!ws.AddUser(data.user_name)) {
+            if (!ws.Data.AddUser(data.user_name)) {
               Debug.Log("UserBehavior AddUser, could not user, already populated " + data.user_name);
             }
 
-            ccUtils.GridTo3dPos(ws.x, ws.y, out float xf, out float zf);
-            Vector3 v = new Vector3(xf, 0, zf);
-            go.transform.position = v;
-            go.transform.rotation = WorkSpace.GetRotation(ws.GetDirection());
+            //Assuming this new person has a chair and can start working right away.
+            //Otherwise, just position in their assigned WorkSpace
+            var sitHere = ws.FurnitureConfiguration.GetFirstAvailableSittableObject();
+            if (sitHere) {
+              go.transform.SetPositionAndRotation(sitHere.transform.position, sitHere.transform.rotation);
+            }
+            else {
+              ccUtils.GridTo3dPos(ws.Data.x, ws.Data.y, out float xf, out float zf);
+              Vector3 v = new Vector3(xf, 0, zf);
+              go.transform.position = v;
+              go.transform.rotation = WorkSpace.GetRotation(ws.Data.GetDirection());              
+            }
           }
           
           go.gameObject.SetActive(true);
