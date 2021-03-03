@@ -31,9 +31,10 @@ namespace Code.World_Objects.User.AI.States {
         _startedWorkingEvent.Raise(_user);
       }
 
-      //disable the NavMeshAgent's ability to auto-rotate so we can manually control
+      //disable the NavMeshAgent's ability to position itself so we can manually control
       //it. Used to rotate the agent to line up with their current target.
       _agent.updateRotation = false;
+      _agent.updatePosition = false;
     }
 
     //-------------------------------------------------------------------------
@@ -46,15 +47,20 @@ namespace Code.World_Objects.User.AI.States {
       }
       _lastAnimCheck = 0;
       
-      //Re-enabe the ability for the NavMeshAgent to control the rotation
+      //Re-enabe the ability for the NavMeshAgent to control the agent
       _agent.updateRotation = true;
+      _agent.updatePosition = true;
     }
     
     //-------------------------------------------------------------------------
     private void Update() {
       //Rotate the character to align with their current nav target. Used to smoothly
       //align the character with their chair.
-      _user.transform.rotation = Quaternion.RotateTowards(_user.transform.rotation, _user.CurrentNavTarget.transform.rotation, Time.deltaTime * 90);
+      Transform userTransform = _user.transform;
+      Transform targetTransform = _user.CurrentNavTarget.transform;
+      userTransform.rotation = Quaternion.RotateTowards(userTransform.rotation, targetTransform.rotation, Time.deltaTime * 90);
+      userTransform.position = Vector3.MoveTowards(userTransform.position, targetTransform.position, Time.deltaTime);
+      
       _lastAnimCheck += Time.deltaTime;
       if (_lastAnimCheck >= _calcAnimationDelaySeconds) {
         SetAnimation();
