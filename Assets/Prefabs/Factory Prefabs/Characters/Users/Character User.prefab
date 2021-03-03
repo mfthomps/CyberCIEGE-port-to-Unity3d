@@ -237,20 +237,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca6e88d6943ea1e41b4d8e728e2ac1a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _currentNavTarget: {fileID: 0}
+  _speechBubble: {fileID: 7897333186257626279}
   _accessControlGroups: {fileID: 11400000, guid: a31557e3d9753f442b1d34d7ac994b6f,
     type: 2}
   _clearances: {fileID: 11400000, guid: 91580ed8c1b252e438258dbb2d1252b0, type: 2}
-  _speechBubble: {fileID: 7897333186257626279}
   _data:
+    Visiting: 
+    Stay: 0
+    happiness: 0
+    productivity: 0
+    description: 
+    current_thought: 
     user_name: 
     gender: 
     position: -1
     department: 
-    current_thought: 
     training: 0
-    happiness: 0
-    productivity: 0
-    description: 
     secrecyClearance: 
     integrityClearance: 
     highestBackgroundCheck: 0
@@ -389,7 +392,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _user: {fileID: 3054295626027766966}
-  tolerance: 1.5
+  tolerance: 1.25
 --- !u!1 &5783227341561151844
 GameObject:
   m_ObjectHideFlags: 0
@@ -483,6 +486,7 @@ MonoBehaviour:
   _angryAnimationParam: Angry
   _user: {fileID: 3054295626027766966}
   _calcAnimationDelaySeconds: 5
+  _startedWorkingEvent: {fileID: 0}
 --- !u!1 &6485464145626497703
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,6 +5,7 @@ using System.Xml;
 using UnityEngine;
 using Shared.ScriptableVariables;
 using Code.Scriptable_Variables;
+using Code.User_Interface.View;
 using Code.World_Objects;
 using Code.World_Objects.Character;
 
@@ -34,6 +35,10 @@ namespace Code.Camera {
     [SerializeField] private BooleanGameEvent _pauseGame;
     [Tooltip("Name of the current building the camera is located in.")]
     [SerializeField] private StringVariable _currentBuilding;
+    [Tooltip("The current view type we have selected")]
+    public ViewTypeVariable currentViewType;
+    [Tooltip("Currently selected object in game to show properties for")]
+    [SerializeField] private GameObjectVariable _selectedObject;
 
     [Header("Cameras")]
     [Tooltip("Transform the camera is targeting")]
@@ -151,14 +156,18 @@ namespace Code.Camera {
     public void MoveCameraToPreviousObject(WorldObjectType type) {
       PauseIfFollowing();
 
-      MoveCamera(type, _objectCircularLists.GetPrev(type));
+      var newTarget = _objectCircularLists.GetPrev(type);
+      MoveCamera(type, newTarget);
+      _selectedObject.Value = newTarget.gameObject;
     }
     
     //--------------------------------------------------------------------------
     public void MoveCameraToNextObject(WorldObjectType type) {
       PauseIfFollowing();
 
-      MoveCamera(type, _objectCircularLists.GetNext(type));
+      var newTarget = _objectCircularLists.GetNext(type);
+      MoveCamera(type, newTarget);
+      _selectedObject.Value = newTarget.gameObject;
     }
 
     // ------------------------------------------------------------------------
@@ -208,7 +217,16 @@ namespace Code.Camera {
         }
       }
     }
-    
+
+    // ------------------------------------------------------------------------
+    public void MoveCameraToSelected() {
+      if (_selectedObject.Value != null && _selectedObject.Value.activeSelf) {
+        // Make sure the office view is visible
+        currentViewType.SetView(ViewType.Office);
+        MoveCameraTarget(_selectedObject.Value.transform);
+      }
+    }
+
     //--------------------------------------------------------------------------
     private void MoveCamera(WorldObjectType type, BaseWorldObject target) {
       if (!target) return;

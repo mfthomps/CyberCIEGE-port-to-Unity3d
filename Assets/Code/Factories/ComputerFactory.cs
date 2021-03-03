@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using Shared.ScriptableVariables;
@@ -13,9 +12,6 @@ namespace Code.Factories {
   //Factory that creates Computers
   public class ComputerFactory : ComponentFactory, iFactory {
     [SerializeField] private ComputerBehavior _prefab;
-    [SerializeField] private StringStringVariable _organizationDictionary;
-    [Tooltip("A List of WorkSpaceFurnitureVariables. One for every office type.")]
-    [SerializeField] private List<WorkSpaceFurnitureVariable> _workSpaceFurnitureVariables;
 
     [Header("Input Variables")]
     [Tooltip("Path to the user's AppData folder")]
@@ -52,18 +48,23 @@ namespace Code.Factories {
     }
 
     //-------------------------------------------------------------------------
-    public void Create(string filename) {
-      ComputerBehavior item = Instantiate(_prefab, _parent);
-      item.Data = LoadOneComputer(Path.Combine(userAppPath.Value, COMPUTERS, filename), item);
-      UpdateGameObject(item);
+    public void OnServerAddComputer(string computerName) {
+      Create($"{computerName}.sdf");
 
       // Select our newly created computer
-      selectedObject.Value = item.gameObject;
+      selectedObject.Value = computerListVariable.Value[computerListVariable.Value.Count - 1].gameObject;
     }
 
     //-------------------------------------------------------------------------
     public void CreateAll(string path) {
       LoadAllComputers(path);
+    }
+
+    //-------------------------------------------------------------------------
+    public void Create(string filename) {
+      var item = Instantiate(_prefab, _parent);
+      item.Data = LoadOneComputer(Path.Combine(userAppPath.Value, COMPUTERS, filename), item);
+      UpdateGameObject(item);
     }
 
     //-------------------------------------------------------------------------
@@ -87,8 +88,8 @@ namespace Code.Factories {
       }
 
       //update the WorkSpace
-      WorkSpace ws = _workSpaceListVariable.GetWorkSpace(computer.Data.position);
-      ws?.RemoveComputer(computer);
+      WorkSpaceScript ws = _workSpaceListVariable.GetWorkSpaceScript(computer.Data.position);
+      ws?.Data.RemoveComputer(computer);
       Destroy(computer.gameObject);
     }
 
@@ -99,12 +100,7 @@ namespace Code.Factories {
       string cdir = Path.Combine(path, COMPUTERS);
       string[] clist = Directory.GetFiles(cdir);
       foreach (string computer_file in clist) {
-        ComputerBehavior newComputer = Instantiate(_prefab, _parent);
-        
-        newComputer.gameObject.SetActive(true);
-        newComputer.Data = LoadOneComputer(computer_file, newComputer);
-
-        UpdateGameObject(newComputer);
+        Create(computer_file);
       }
     }
 
@@ -177,7 +173,7 @@ namespace Code.Factories {
     
     //-------------------------------------------------------------------------
     //Public, for unit testing
-    public void UpdateGameObject(ComputerBehavior newComputer) {
+    private void UpdateGameObject(ComputerBehavior newComputer) {
       //This is the part that will hopefully load the correct assets from dict
       var hardwareAsset = hardwareCatalog.Value.GetHardwareAsset(newComputer.Data.hw);
       if (hardwareAsset != null) {
@@ -194,11 +190,10 @@ namespace Code.Factories {
         Debug.Log("LoadOneComputer got invalid pos for " + newComputer.Data.component_name);
       }
 
-      WorkSpace ws = _workSpaceListVariable.GetWorkSpace(pos);
-      int slot = ws.AddComputer(newComputer);
+      WorkSpaceScript ws = _workSpaceListVariable.GetWorkSpaceScript(pos);
+      int slot = ws.Data.AddComputer(newComputer);
       
-      SetComputerPositionRotation(newComputer, ws);
-
+      SetComputerPositionRotation(newComputer, ws, slot);
       newComputer.gameObject.name = $"Computer - {newComputer.Data.component_name}";
 
       //add it to the computer list.
@@ -208,18 +203,13 @@ namespace Code.Factories {
     //-------------------------------------------------------------------------
     //setup the position and rotation of the computer based on the WorkSpace direction
     //and office-specific offsets
-    private void SetComputerPositionRotation(Component newComputer, WorkSpace ws) {
-      ccUtils.GridTo3dPos(ws.x, ws.y, out float xf, out float zf);
-      newComputer.transform.position = new Vector3(xf, 0f, zf);
-      newComputer.transform.rotation = WorkSpace.GetRotation(ws.GetDirection());
-
-      string officeName = _organizationDictionary["MainOfficeVersion"];
-      WorkSpaceFurnitureVariable furnitureVar = _workSpaceFurnitureVariables.Find(
-        x => x.Value._associatedOfficeMagicString == officeName);
-      WorkSpaceFurniture furniture = furnitureVar ? furnitureVar.Value : null;
-      if (furniture != null) {
-        var offset = furniture.ComputerOffset.GetOffset(ws.GetDirection());
-        newComputer.transform.Translate(offset);
+    private void SetComputerPositionRotation(Component newComputer, WorkSpaceScript ws, int workSpaceComponentSlot) {
+      var computerPositionReference = ws.FurnitureConfiguration.GetComponentTransform(workSpaceComponentSlot);
+      if (computerPositionReference) {
+        newComputer.transform.SetPositionAndRotation(computerPositionReference.position, computerPositionReference.rotation);
+      }
+      else {
+        Debug.Log($"Can't find a place in WorkSpace [{ws.name}] to position computer [{newComputer.name}]");
       }
     }
 

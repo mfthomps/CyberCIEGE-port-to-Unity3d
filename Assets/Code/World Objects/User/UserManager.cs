@@ -15,6 +15,10 @@ namespace Code.World_Objects.User {
     public StaffListVariable staffList;
     [Tooltip("List of users in the current scenario")]
     public UserListVariable users;
+
+    [Tooltip("The list of computers available in the current scenario")]
+    public ComputerListVariable computers;
+    
     [Tooltip("Currently selected object")]
     public GameObjectVariable selectedObject;
 
@@ -91,13 +95,13 @@ namespace Code.World_Objects.User {
     }
 
     //---------------------------------------------------------------------------
-    private static void UpdateStaff(StaffBehavior staff, XmlNode updateNode) {
+    private void UpdateStaff(StaffBehavior staff, XmlNode updateNode) {
       UpdateCharacterStatus(staff, updateNode);
     }
     
     //---------------------------------------------------------------------------
     //Status fields common to both Users and Staff
-    private static void UpdateCharacterStatus(BaseCharacter character, XmlNode updateNode) {
+    private void UpdateCharacterStatus(BaseCharacter character, XmlNode updateNode) {
       character.UpdateCurrentThought(updateNode["thought"].InnerText);
       
       string happinessStr = updateNode["happiness"].InnerText;
@@ -109,18 +113,61 @@ namespace Code.World_Objects.User {
       if (int.TryParse(productivityStr, out int productivity)) {
         character.UpdateProductivity(productivity);
       }
+
+      if (bool.Parse(updateNode["speaking"].InnerText)) {
+        character.UpdateSpeechText(updateNode["speakText"].InnerText);
+      }
+      else {
+        character.UpdateSpeechText(null);
+      }
+
+      string visitingString = GetVisitingString(updateNode);
       
-      character.UpdateSpeechText(updateNode["speakText"].InnerText);
-      
-      var computer = updateNode["visitingComputer"].InnerText;
-      var visiting = updateNode["visiting"].InnerText;
-      character.UpdateVisitingObject(visiting);
+      if (visitingString != character.GetCharacterData().Visiting) {
+        character.SetVisiting(visitingString);
+        var targetObject = GetTarget(visitingString);
+        if (character.CurrentNavTarget != targetObject) {
+          character.CurrentNavTarget = targetObject;
+          Debug.Log($"Set [{character.GetCharacterData().user_name}] nav target to [{targetObject.name}]");
+        }
+      }
 
       var stayStr = updateNode["stay"].InnerText;
       bool stay = stayStr == "1" ? true : false;
       character.UpdateStayAtVisitingObject(stay);
-      
-      // Debug.Log($"{character.GetCharacterData().user_name} visitingComputer: {computer} visiting: {visiting} stay:{stay}");
+    }
+
+    //--------------------------------------------------------------------------
+    //The staff can be visit another user or a computer, but not both at the same time.
+    private static string GetVisitingString(XmlNode updateNode) {
+      var computer = updateNode["visitingComputer"].InnerText;
+      var visiting = updateNode["visiting"].InnerText;
+      string visitingTarget = "";
+      if (!string.IsNullOrEmpty(computer)) {
+        visitingTarget = computer;
+      }
+      else if (!string.IsNullOrEmpty(visiting)) {
+        visitingTarget = visiting;
+      }
+
+      return visitingTarget;
+    }
+    
+    //--------------------------------------------------------------------------
+    //Get the GameObject representing the User or the Computer that has the supplied 
+    //string as a name.
+    private GameObject GetTarget(string targetStr) {
+      var user = users.Value.Find(x => x.Data.user_name == targetStr);
+      if (user) {
+        return user.gameObject;
+      }
+
+      var computer = computers.Value.Find(x => x.Data.component_name == targetStr);
+      if (computer) {
+        return computer.gameObject;
+      }
+
+      return null;
     }
   }
 }

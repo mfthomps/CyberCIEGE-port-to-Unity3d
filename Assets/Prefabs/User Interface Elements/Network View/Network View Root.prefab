@@ -24,7 +24,7 @@ MonoBehaviour:
   m_Spacing: {x: 10, y: 10}
   m_Constraint: 0
   m_ConstraintCount: 2
---- !u!114 &6864746931683789802
+--- !u!114 &1522389527172943270
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -33,21 +33,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 5606675683169088050}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
+  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 40
-    m_Right: 40
-    m_Top: 40
-    m_Bottom: 40
+    m_Left: 5
+    m_Right: 25
+    m_Top: 5
+    m_Bottom: 5
   m_ChildAlignment: 0
-  m_StartCorner: 0
-  m_StartAxis: 1
-  m_CellSize: {x: 250, y: 250}
-  m_Spacing: {x: 0, y: 0}
-  m_Constraint: 2
-  m_ConstraintCount: 2
+  m_Spacing: 40
+  m_ChildForceExpandWidth: 0
+  m_ChildForceExpandHeight: 0
+  m_ChildControlWidth: 1
+  m_ChildControlHeight: 1
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
 --- !u!1 &8721875137060598650
 GameObject:
   m_ObjectHideFlags: 0
@@ -58,6 +59,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8721875137060598651}
   - component: {fileID: 8721875137060598644}
+  - component: {fileID: 1450128972258804843}
   m_Layer: 5
   m_Name: Network View Root
   m_TagString: Untagged
@@ -101,13 +103,39 @@ MonoBehaviour:
   selectedObject: {fileID: 11400000, guid: 357d0fa733a03e24f82c4b882d71dea0, type: 2}
   toggleNetworkConnection: {fileID: 11400000, guid: 871b5003b6cdb2144bb9da0ab61a7780,
     type: 2}
-  computerListVariable: {fileID: 11400000, guid: 8380099111649e944adcc17e9f804d36,
-    type: 2}
-  deviceListVariable: {fileID: 11400000, guid: 325065c17ecc5144faa9016c6f5e5ede, type: 2}
+  zones: {fileID: 11400000, guid: 7b9705be4efa88f4f83f6bcaf84ee5bd, type: 2}
   networkListVariable: {fileID: 11400000, guid: ab62fe5bddd1eff4fb1cc975bf0771d3,
     type: 2}
-  networkableList: {fileID: 8721875138451709310}
+  networkBuildingList: {fileID: 7131497437099763066}
   networkList: {fileID: 8721875138822751241}
+--- !u!114 &1450128972258804843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8721875137060598650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1aa606fb360b6843bd9f6fa959d2368, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delay: 0
+  eventToListenTo: {fileID: 11400000, guid: ca0141107dbfb3345ad5a0b3322ecb0e, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8721875137060598644}
+        m_MethodName: NetworkableItemClicked
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8721875137477909534
 GameObject:
   m_ObjectHideFlags: 0
@@ -141,8 +169,8 @@ RectTransform:
   m_Father: {fileID: 8721875138236100117}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.1, y: 0.2}
-  m_AnchorMax: {x: 0.9, y: 0.8}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -255,7 +283,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8721875138451709309}
-  - component: {fileID: 8721875138451709310}
+  - component: {fileID: 7131497437099763066}
   - component: {fileID: 5783488554161184160}
   m_Layer: 5
   m_Name: Networkable List
@@ -285,7 +313,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &8721875138451709310
+--- !u!114 &7131497437099763066
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -294,25 +322,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 8721875138451709308}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6364cce518b345678dee228527d487e3, type: 3}
+  m_Script: {fileID: 11500000, guid: 17e80377bc4b59747aee1cf4a762ea8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 7352396213457836769, guid: 10ca79dd28b06324dac0ac5579ba8818, type: 3}
+  prefab: {fileID: 1135720169441871866, guid: f61b627cba51b3f4ea96a665ffd1bd79, type: 3}
   contentArea: {fileID: 4553008914898602049}
-  onItemClicked:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8721875137060598644}
-        m_MethodName: NetworkableItemClicked
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &5783488554161184160
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -545,7 +559,7 @@ PrefabInstance:
     - target: {fileID: 7031985257705313510, guid: a030066e5259cb74b8d98dd560d99687,
         type: 3}
       propertyPath: m_fontSize
-      value: 21.95
+      value: 43.35
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a030066e5259cb74b8d98dd560d99687, type: 3}
@@ -680,7 +694,7 @@ PrefabInstance:
     - target: {fileID: 7031985257705313510, guid: a030066e5259cb74b8d98dd560d99687,
         type: 3}
       propertyPath: m_fontSize
-      value: 21.95
+      value: 43.35
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a030066e5259cb74b8d98dd560d99687, type: 3}
@@ -721,6 +735,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ft-ui-Vertical-ScrollView
+      objectReference: {fileID: 0}
+    - target: {fileID: 1385181666457528979, guid: d5fabcaac90ca584fb168680c456e499,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0.26666668
+      objectReference: {fileID: 0}
+    - target: {fileID: 1385181666457528979, guid: d5fabcaac90ca584fb168680c456e499,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.26666668
+      objectReference: {fileID: 0}
+    - target: {fileID: 1385181666457528979, guid: d5fabcaac90ca584fb168680c456e499,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.26666668
+      objectReference: {fileID: 0}
+    - target: {fileID: 1385181666457528979, guid: d5fabcaac90ca584fb168680c456e499,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1526536849853983324, guid: d5fabcaac90ca584fb168680c456e499,
         type: 3}
@@ -844,12 +878,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5054686151813359920, guid: d5fabcaac90ca584fb168680c456e499,
         type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5054686151813359920, guid: d5fabcaac90ca584fb168680c456e499,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5054686151813359920, guid: d5fabcaac90ca584fb168680c456e499,
+        type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5054686151813359920, guid: d5fabcaac90ca584fb168680c456e499,
         type: 3}
       propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5054686151813359920, guid: d5fabcaac90ca584fb168680c456e499,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5495007307517742230, guid: d5fabcaac90ca584fb168680c456e499,
@@ -897,6 +946,11 @@ PrefabInstance:
       propertyPath: m_Horizontal
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7403418319695037756, guid: d5fabcaac90ca584fb168680c456e499,
+        type: 3}
+      propertyPath: m_HorizontalScrollbarSpacing
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7931823620008053164, guid: d5fabcaac90ca584fb168680c456e499,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -907,10 +961,25 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7931823620008053164, guid: d5fabcaac90ca584fb168680c456e499,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8129350957802725501, guid: d5fabcaac90ca584fb168680c456e499,
+        type: 3}
+      propertyPath: m_VerticalFit
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8129350957802725501, guid: d5fabcaac90ca584fb168680c456e499,
         type: 3}
       propertyPath: m_HorizontalFit
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8978094911029320934, guid: d5fabcaac90ca584fb168680c456e499,
+        type: 3}
+      propertyPath: m_Size
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5495007307517742230, guid: d5fabcaac90ca584fb168680c456e499, type: 3}
@@ -1150,6 +1219,11 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8978094911029320934, guid: d5fabcaac90ca584fb168680c456e499,
+        type: 3}
+      propertyPath: m_Size
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5495007307517742230, guid: d5fabcaac90ca584fb168680c456e499, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: d5fabcaac90ca584fb168680c456e499, type: 3}
@@ -1296,7 +1370,7 @@ PrefabInstance:
     - target: {fileID: 7031985257705313510, guid: 366e05cedb1176e428c15afbc647e52a,
         type: 3}
       propertyPath: m_fontSize
-      value: 44.55
+      value: 46.05
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 366e05cedb1176e428c15afbc647e52a, type: 3}

@@ -69,7 +69,7 @@ namespace Code.User_Interface.Main {
       var computersInZone = new HashSet<ComputerBehavior>();
 
       foreach (var computer in computers.Value) {
-        if (zones.GetZone(computer) == zone) {
+        if (computer.Data.zone == zone.Data.ZoneName) {
           computersInZone.Add(computer);
         }
       }

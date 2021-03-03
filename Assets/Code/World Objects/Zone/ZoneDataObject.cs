@@ -16,6 +16,7 @@ namespace Code.World_Objects.Zone {
 
     public HashSet<string> enabledPolicies = new HashSet<string>();
     public HashSet<string> permittedUsers = new HashSet<string>();
+    public HashSet<string> excludedNetworks = new HashSet<string>();
     public string secrecy;
     public string integrity;
     public string domain;

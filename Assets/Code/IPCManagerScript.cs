@@ -10,8 +10,6 @@ using Code.User_Interface.View;
 public class IPCManagerScript : MonoBehaviour {
   [SerializeField] private StringListVariable attackLogVariable;
   [SerializeField] private GameLoadBehavior _gameLoadBehavior;
-  [SerializeField] private DeviceFactory _deviceFactory;
-  [SerializeField] private ComputerFactory _computerFactory;
 
   [Header("Output Events")]
   [Tooltip("Event to fire when game status changes")]
@@ -20,12 +18,20 @@ public class IPCManagerScript : MonoBehaviour {
   public StringGameEvent componentStatusChanged;
   [Tooltip("Event to fire when a computer status changes")]
   public StringGameEvent computerStatusChanged;
+  [Tooltip("Event to fire when a device status changes")]
+  public StringGameEvent deviceStatusChanged;
   [Tooltip("Event to fire when user message changes")]
   public StringGameEvent userStatusChanged;
   [Tooltip("Event to fire when a zone status changes")]
   public StringGameEvent zoneStatusChanged;
   [Tooltip("Event to fire when current user message changes")]
   public StringGameEvent currentMessageChanged;
+  [Tooltip("Event to fire when server says a computer has been added")]
+  public StringGameEvent addComputer;
+  [Tooltip("Event to fire when server says a computer has been removed")]
+  public StringGameEvent removeComputer;
+  [Tooltip("Event to fire when server says a device has been added")]
+  public StringGameEvent addDevice;
   [Tooltip("Event to fire when help tip message changes")]
   public StringGameEvent helpTipMessageChanged;
   [Tooltip("Event to fire when a phase is completed")]
@@ -104,6 +110,9 @@ public class IPCManagerScript : MonoBehaviour {
         case "computer_status":
           computerStatusChanged?.Raise(message);
           break;
+        case "device_status":
+          deviceStatusChanged?.Raise(message);
+          break;
         case "user_status":
           userStatusChanged?.Raise(message);
           break;
@@ -114,10 +123,10 @@ public class IPCManagerScript : MonoBehaviour {
           attackLogVariable.Add(message);
           break;
         case "load_computer":
-          _computerFactory.Create(message + ".sdf");
+          addComputer?.Raise(message);
           break;
         case "load_device":
-          _deviceFactory.Create(message + ".sdf");
+          addDevice?.Raise(message);
           break;
         case "ticker":
           currentMessageChanged?.Raise(message);
@@ -148,7 +157,7 @@ public class IPCManagerScript : MonoBehaviour {
           showDebrief?.Raise(message);
           break;
         case "remove_computer":
-          _computerFactory.Remove(itemName: message);
+          removeComputer?.Raise(message);
           break;
         case "cameraToUser":
           moveCameraToUser?.Raise(message);
