@@ -89,6 +89,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _user: {fileID: 0}
   objectOfInterestTag: Object of Interest
+  _objectsOfInterest: []
 --- !u!1 &1697343023365457893
 GameObject:
   m_ObjectHideFlags: 0
@@ -225,6 +226,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ac53caf3e674ba69fbcb7692aa7a882, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _distanceTolerance: 1.25
   _agent: {fileID: 0}
   _animator: {fileID: 0}
   _user: {fileID: 0}
@@ -320,6 +322,7 @@ MonoBehaviour:
   _workAnimationParam: 
   _angryAnimationParam: 
   _user: {fileID: 0}
+  _agent: {fileID: 0}
   _calcAnimationDelaySeconds: 5
   _startedWorkingEvent: {fileID: 11400000, guid: 153570822755c0a47872c48cf8b1701a,
     type: 2}
