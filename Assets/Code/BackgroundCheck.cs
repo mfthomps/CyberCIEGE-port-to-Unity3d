@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 namespace Code {
   public class BackgroundCheck {
@@ -25,6 +26,24 @@ namespace Code {
     // ------------------------------------------------------------------------
     public static string ToString(Level backgroundCheckLevel) {
       return Enum.GetName(typeof(Level), backgroundCheckLevel);
+    }
+
+    // ------------------------------------------------------------------------
+    public static int GetCost(Level backgroundCheckLevel) {
+      switch (backgroundCheckLevel) {
+        case Level.Low:
+          return 1000;
+        case Level.Medium:
+          return 20000;
+        case Level.High:
+          return 60000;
+      }
+      return 0;
+    }
+
+    // ------------------------------------------------------------------------
+    public static int GetCostDifference(Level oldLevel, Level newLevel) {
+      return Mathf.Max(0, GetCost(newLevel) - GetCost(oldLevel));
     }
 
     // ------------------------------------------------------------------------

@@ -25,6 +25,8 @@
     SLNet,
     MLNet,
     AttackLog,
-    CyberChark
+    CyberChark,
+    Clearance,
+    Group
   }
 }

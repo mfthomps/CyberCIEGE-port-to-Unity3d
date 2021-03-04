@@ -50,6 +50,9 @@ namespace Code.Factories {
                 case "Name":
                   data.name = subValue;
                   break;
+                case "Description":
+                  data.description = subValue;
+                  break;
                 case "InitialBackGroundCheck":
                   data.backgroundCheckLevel = BackgroundCheck.FromString(subValue);
                   break;

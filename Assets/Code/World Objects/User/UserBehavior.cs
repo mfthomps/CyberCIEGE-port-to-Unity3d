@@ -99,7 +99,5 @@ namespace Code.World_Objects.User {
 
       ValueChanged();
     }
-
-
   }
 }
