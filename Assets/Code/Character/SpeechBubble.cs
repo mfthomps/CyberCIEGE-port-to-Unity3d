@@ -24,6 +24,8 @@ public class SpeechBubble : MonoBehaviour {
   [Tooltip("Speech will disappear after this many seconds. If zero, speech bubble will remain until manually deactivated.")]
   public float _timeUntilInactive = 4f;
 
+  private Coroutine _speechBubbleTimer;
+
   // -----------------------------------------------------------------
   // Set the Thought Bubble with initial conditions
   private void Start() {
@@ -56,15 +58,20 @@ public class SpeechBubble : MonoBehaviour {
         _speechBubbleRoot.SetActive(_active);
       }
 
+      if (_speechBubbleTimer != null) {
+        StopCoroutine(_speechBubbleTimer);
+      }
+
       if (_active && _timeUntilInactive > 0) {
-        StartCoroutine(SpeechBubbleTimer());
+        _speechBubbleTimer = StartCoroutine(SpeechBubbleTimer());
       }
     }
   }
 
   // -----------------------------------------------------------------
-  public void SetSpeechText(string text) {
+  public void SetSpeechText(string text, int duration) {
     SpeechBubbleText = text;
+    _timeUntilInactive = duration;
     Active = !string.IsNullOrEmpty(text);
   }
 
