@@ -12,8 +12,8 @@ namespace Code.World_Objects.Character {
     public abstract CharacterDataObject GetCharacterData();
     
     //---------------------------------------------------------------------------
-    public void UpdateSpeechText(string speechText) {
-      _speechBubble.SetSpeechText(speechText);
+    public void UpdateSpeechText(string speechText, int duration) {
+      _speechBubble.SetSpeechText(speechText, duration);
     }
     
     //---------------------------------------------------------------------------
