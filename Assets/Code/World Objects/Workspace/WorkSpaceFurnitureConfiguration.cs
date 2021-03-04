@@ -35,7 +35,7 @@ namespace Code.World_Objects.Workspace {
     //-------------------------------------------------------------------------
     //Get the Transform representing the n-th Component child Transform
     public Transform GetComponentTransform(int childIndex) {
-      if (childIndex < ComponentRoot.childCount) {
+      if (childIndex >= 0 && childIndex < ComponentRoot.childCount) {
         return ComponentRoot.GetChild(childIndex);
       }
       return null;

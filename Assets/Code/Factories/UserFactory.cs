@@ -80,7 +80,7 @@ namespace Code.Factories {
 
             //Assuming this new person has a chair and can start working right away.
             //Otherwise, just position in their assigned WorkSpace
-            var sitHere = ws.FurnitureConfiguration.GetFirstAvailableSittableObject();
+            var sitHere = ws.FurnitureConfiguration?.GetFirstAvailableSittableObject();
             if (sitHere) {
               go.transform.SetPositionAndRotation(sitHere.transform.position, sitHere.transform.rotation);
             }

@@ -192,8 +192,14 @@ namespace Code.Factories {
 
       WorkSpaceScript ws = _workSpaceListVariable.GetWorkSpaceScript(pos);
       int slot = ws.Data.AddComputer(newComputer);
+      if (slot < 0) {
+        Debug.LogError($"Couldn't add computer {newComputer.Data.component_name} to WorkSpace {ws.name}. There is" +
+                       $" no room for it.");
+      }
+      else {
+        SetComputerPositionRotation(newComputer, ws, slot);
+      }
       
-      SetComputerPositionRotation(newComputer, ws, slot);
       newComputer.gameObject.name = $"Computer - {newComputer.Data.component_name}";
 
       //add it to the computer list.
@@ -209,7 +215,7 @@ namespace Code.Factories {
         newComputer.transform.SetPositionAndRotation(computerPositionReference.position, computerPositionReference.rotation);
       }
       else {
-        Debug.Log($"Can't find a place in WorkSpace [{ws.name}] to position computer [{newComputer.name}]");
+        Debug.Log($"Can't find a place in WorkSpace [{ws.name}] to position computer [{newComputer.name}] using slot [{workSpaceComponentSlot}]");
       }
     }
 
