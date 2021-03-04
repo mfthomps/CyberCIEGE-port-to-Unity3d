@@ -7,7 +7,12 @@ namespace Code.AccessControlGroup {
     [Tooltip("The users in the current scenario.")]
     [SerializeField] private UserListVariable users;
 
-    public AccessControlGroupDataObject Data { get; set; }
+    [SerializeField] private AccessControlGroupDataObject _data;
+
+    public AccessControlGroupDataObject Data {
+      get => _data;
+      set => _data = value;
+    }
 
     // ------------------------------------------------------------------------
     public void SetBackgroundCheckLevel(BackgroundCheck.Level level) {
