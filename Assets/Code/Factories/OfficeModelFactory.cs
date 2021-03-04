@@ -60,6 +60,9 @@ namespace Code.Factories {
         go.transform.Translate(0, 0, offset, Space.World);
 
         OfficeBuilding building = go.GetComponent<OfficeBuilding>();
+        //the first in the list is considered the main office, he rest
+        //are offsites.
+        building.BuildingType = listIndex == 0 ? OfficeBuildingType.MainOffice : OfficeBuildingType.OffsiteOffice;
         _officeList.Add(building);
       }
       else {
