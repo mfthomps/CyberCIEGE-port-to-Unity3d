@@ -102,11 +102,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _gameObjects.Array.data[0]
       value: 
-      objectReference: {fileID: 7265584594209703553}
+      objectReference: {fileID: 0}
     - target: {fileID: 7504734982505081046, guid: e4c93280d634d934b875bc0ca4d3f803,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8888158029914552864, guid: e4c93280d634d934b875bc0ca4d3f803,
         type: 3}
@@ -145,7 +145,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 383cde90e48707b45882233be0fa7da4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1001 &8312139462582993252
+--- !u!1001 &5403016835849426330
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -154,43 +154,48 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 832664532258709745, guid: 7f57e9b907aec664ba06ed47730273b2,
         type: 3}
+      propertyPath: _agent
+      value: 
+      objectReference: {fileID: 3298330901836921166}
+    - target: {fileID: 832664532258709745, guid: 7f57e9b907aec664ba06ed47730273b2,
+        type: 3}
       propertyPath: _character
+      value: 
+      objectReference: {fileID: 2443224043585237454}
+    - target: {fileID: 832664532258709745, guid: 7f57e9b907aec664ba06ed47730273b2,
+        type: 3}
+      propertyPath: _navigator
       value: 
       objectReference: {fileID: 2443224043585237454}
     - target: {fileID: 1697343023365457893, guid: 7f57e9b907aec664ba06ed47730273b2,
         type: 3}
       propertyPath: m_Name
-      value: AI Logic
+      value: Staff AI Logic
       objectReference: {fileID: 0}
     - target: {fileID: 5723287810952163051, guid: 7f57e9b907aec664ba06ed47730273b2,
         type: 3}
       propertyPath: _character
       value: 
       objectReference: {fileID: 2443224043585237454}
-    - target: {fileID: 6587023409538561206, guid: 7f57e9b907aec664ba06ed47730273b2,
-        type: 3}
-      propertyPath: _user
-      value: 
-      objectReference: {fileID: 2443224043585237454}
     - target: {fileID: 6612755629764916290, guid: 7f57e9b907aec664ba06ed47730273b2,
-        type: 3}
-      propertyPath: _user
-      value: 
-      objectReference: {fileID: 2443224043585237454}
-    - target: {fileID: 7167066364206702310, guid: 7f57e9b907aec664ba06ed47730273b2,
-        type: 3}
-      propertyPath: _user
-      value: 
-      objectReference: {fileID: 2443224043585237454}
-    - target: {fileID: 7167066364206702310, guid: 7f57e9b907aec664ba06ed47730273b2,
         type: 3}
       propertyPath: _agent
       value: 
       objectReference: {fileID: 3298330901836921166}
+    - target: {fileID: 6612755629764916290, guid: 7f57e9b907aec664ba06ed47730273b2,
+        type: 3}
+      propertyPath: _navigator
+      value: 
+      objectReference: {fileID: 2443224043585237454}
+    - target: {fileID: 7066181300458463538, guid: 7f57e9b907aec664ba06ed47730273b2,
+        type: 3}
+      propertyPath: _user
+      value: 
+      objectReference: {fileID: 2443224043585237454}
     - target: {fileID: 7896141356061167288, guid: 7f57e9b907aec664ba06ed47730273b2,
         type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7896141356061167288, guid: 7f57e9b907aec664ba06ed47730273b2,
         type: 3}
@@ -242,16 +247,5 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8379425140129680034, guid: 7f57e9b907aec664ba06ed47730273b2,
-        type: 3}
-      propertyPath: _user
-      value: 
-      objectReference: {fileID: 2443224043585237454}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7f57e9b907aec664ba06ed47730273b2, type: 3}
---- !u!1 &7265584594209703553 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1697343023365457893, guid: 7f57e9b907aec664ba06ed47730273b2,
-    type: 3}
-  m_PrefabInstance: {fileID: 8312139462582993252}
-  m_PrefabAsset: {fileID: 0}

@@ -2,7 +2,6 @@
 using Code.Scriptable_Variables;
 using Code.World_Objects.Character;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 
 namespace Code.World_Objects.User.AI.States {
   //A state the just sets the Character's navigate target equal to the
