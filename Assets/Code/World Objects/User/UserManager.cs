@@ -115,10 +115,11 @@ namespace Code.World_Objects.User {
       }
 
       if (bool.Parse(updateNode["speaking"].InnerText)) {
-        character.UpdateSpeechText(updateNode["speakText"].InnerText);
+        var duration = int.Parse(updateNode["duration"].InnerText);
+        character.UpdateSpeechText(updateNode["speakText"].InnerText, duration);
       }
       else {
-        character.UpdateSpeechText(null);
+        character.UpdateSpeechText(null, 0);
       }
 
       string visitingString = GetVisitingString(updateNode);

@@ -1,20 +1,25 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using Shared.SEUI;
 using TMPro;
+using ftUI;
 
 namespace Code.User_Interface.Components {
   public class ComponentSettingTypeListItem : DynamicListItem<ComponentSettingType> {
     [Header("UI Elements")]
     [Tooltip("Label for the ComponentSettingType")]
     public TMP_Text label;
+    [Tooltip("Tooltip for the ComponentSettingType")]
+    public ftTooltip tooltip;
     [Tooltip("Toggle to select given ComponentSettingType")]
     public Toggle toggle;
 
     // ------------------------------------------------------------------------
     public override void SetItem(ComponentSettingType item) {
-      label.text = GetLabel(item);
+      var labelText = GetLabel(item);
+      name = labelText;
+      label.text = labelText;
+      tooltip.TooltipText = labelText;
     }
 
     // ------------------------------------------------------------------------

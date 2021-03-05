@@ -13,6 +13,9 @@ namespace Code.Factories {
     [Header("Output Variables")]
     [Tooltip("The variable containing the list of all the ViewPoints currently in the scenario.")]
     [SerializeField] private ViewPointListVariable _list;
+
+    [Tooltip("The variable to contains the ViewPoint options, defined in the viewpoints.sdf file")]
+    [SerializeField] private ViewPointOptions _viewPointOptions;
     
     private const string ViewpointsSDF = "viewpoints.sdf";
     private Transform _parent;
@@ -42,7 +45,10 @@ namespace Code.Factories {
     private void LoadViewPoints(string path) {
       var fullPath = Path.Combine(path, ViewpointsSDF);
       ccUtils.ParseSDFFile(fullPath, (key, value) => {
-        if (key == "VIEWPOINT") {
+        if (key == "OPTIONS") {
+          ParseOptions(value);
+        }
+        else if (key == "VIEWPOINT") {
           ViewPoint.ViewPoint viewPoint = Instantiate(_prefab, _parent);
           var data = new ViewPointDataObject();
           viewPoint.Data = data;
@@ -77,6 +83,19 @@ namespace Code.Factories {
           viewPoint.name = $"ViewPoint--{viewPoint.Data.Site}";
           
           _list.Add(viewPoint);
+        }
+      });
+    }
+
+    //-------------------------------------------------------------------------
+    private void ParseOptions(string value) {
+      if (!_viewPointOptions) {
+        return;
+      }
+      
+      ccUtils.ParseSDFFileSubElement(value, (viewPointKey, viewPointValue) => {
+        switch (viewPointKey) {
+          case "ForceCamera": bool.TryParse(viewPointValue, out _viewPointOptions.ForceCamera); break;
         }
       });
     }

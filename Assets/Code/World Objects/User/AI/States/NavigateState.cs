@@ -12,11 +12,25 @@ namespace Code.World_Objects.User.AI.States {
     [SerializeField] private Animator _animator;
     [SerializeField] private Navigator _user;
     [SerializeField] private string _walkingAnimParam = "Walking";
+    
+    //used to manipulate the NavMeshAgent obstacle priority to prevent multiple
+    //agents having the same priority and colliding while navigating.
+    private int _initialPriority = -1;
+    private static int _priorityInc = 0;
 
     //--------------------------------------------------------------------------
     public override void OnStateEnter() {
       if (!_agent.enabled) {
         _agent.enabled = true;
+      }
+
+      if (_initialPriority < 0) {
+        _initialPriority = _agent.avoidancePriority;
+        _priorityInc++;
+        if (_priorityInc > 99) {
+          _priorityInc = 0;
+        }
+        _agent.avoidancePriority = _initialPriority + _priorityInc;
       }
 
       MaybeUpdateAgentDestination();
@@ -57,7 +71,7 @@ namespace Code.World_Objects.User.AI.States {
       if (dist > _distanceTolerance) {
         if (_agent.SetDestination(_user.CurrentNavTarget.transform.position)) {
           _animator.SetBool(_walkingAnimParam, true);
-          Debug.Log($"Pathing [{_agent.name}] -> [{_user.CurrentNavTarget}]");
+          Debug.Log($"Pathing [{_agent.name}] -> [{_user.CurrentNavTarget.name}]");
         }
         else {
           Debug.LogError($"Can't path [{_user.name}] to [{_user.CurrentNavTarget.transform.position}]");

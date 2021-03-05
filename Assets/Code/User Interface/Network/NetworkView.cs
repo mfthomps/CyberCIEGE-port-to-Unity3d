@@ -27,16 +27,16 @@ namespace Code.User_Interface.Network {
 
     // ------------------------------------------------------------------------
     void OnEnable() {
-      selectedObject.OnValueChanged += UpdateNetworkList;
+      selectedObject.OnValueChanged += UpdateSelection;
       zones.OnValueChanged += UpdateNetworkBuildings;
       networkListVariable.OnValueChanged += UpdateNetworkList;
       UpdateNetworkBuildings();
-      UpdateNetworkList();
+      UpdateSelection();
     }
 
     // ------------------------------------------------------------------------
     void OnDisable() {
-      selectedObject.OnValueChanged -= UpdateNetworkList;
+      selectedObject.OnValueChanged -= UpdateSelection;
       zones.OnValueChanged -= UpdateNetworkBuildings;
       networkListVariable.OnValueChanged -= UpdateNetworkList;
     }
@@ -49,7 +49,7 @@ namespace Code.User_Interface.Network {
     // ------------------------------------------------------------------------
     public void NetworkItemClicked(NetworkBehavior network) {
       toggleNetworkConnection?.Raise(network);
-      UpdateNetworkConnections();
+      UpdateSelection();
     }
 
     // ------------------------------------------------------------------------
@@ -67,6 +67,12 @@ namespace Code.User_Interface.Network {
       foreach (var site in zoneSiteMap) {
         networkBuildingList.AddItem(new NetworkBuilding(site.Key, site.Value));
       }
+    }
+
+    // ------------------------------------------------------------------------
+    private void UpdateSelection() {
+      UpdateNetworkList();
+      networkBuildingList.UpdateSelectedComponent(GetSelectedComponent());
     }
 
     // ------------------------------------------------------------------------

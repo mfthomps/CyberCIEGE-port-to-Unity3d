@@ -2,6 +2,7 @@
 using Code.Game_Events;
 using Code.World_Objects.Character;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace Code.World_Objects.User.AI.States {
   
@@ -11,6 +12,7 @@ namespace Code.World_Objects.User.AI.States {
     [SerializeField] private string _workAnimationParam = "Working";
     [SerializeField] private string _angryAnimationParam = "Angry";
     [SerializeField] private BaseCharacter _user;
+    [SerializeField] private NavMeshAgent _agent;
     [Tooltip("The number of seconds to wait before randomly choosing a different animation")]
     [SerializeField] private float _calcAnimationDelaySeconds = 5;
     [Tooltip("The CharacterGameEvent to fire when the character has started 'working'")]
@@ -28,6 +30,11 @@ namespace Code.World_Objects.User.AI.States {
       if (_startedWorkingEvent) {
         _startedWorkingEvent.Raise(_user);
       }
+
+      //disable the NavMeshAgent's ability to position itself so we can manually control
+      //it. Used to rotate the agent to line up with their current target.
+      _agent.updateRotation = false;
+      _agent.updatePosition = false;
     }
 
     //-------------------------------------------------------------------------
@@ -35,11 +42,25 @@ namespace Code.World_Objects.User.AI.States {
       if (!string.IsNullOrEmpty(_workAnimationParam)) {
         _animator.SetBool(_workAnimationParam, false);
       }
+      if (!string.IsNullOrEmpty(_angryAnimationParam)) {
+        _animator.SetBool(_angryAnimationParam, false);
+      }
       _lastAnimCheck = 0;
+      
+      //Re-enabe the ability for the NavMeshAgent to control the agent
+      _agent.updateRotation = true;
+      _agent.updatePosition = true;
     }
     
     //-------------------------------------------------------------------------
     private void Update() {
+      //Rotate the character to align with their current nav target. Used to smoothly
+      //align the character with their chair.
+      Transform userTransform = _user.transform;
+      Transform targetTransform = _user.CurrentNavTarget.transform;
+      userTransform.rotation = Quaternion.RotateTowards(userTransform.rotation, targetTransform.rotation, Time.deltaTime * 90);
+      userTransform.position = Vector3.MoveTowards(userTransform.position, targetTransform.position, Time.deltaTime);
+      
       _lastAnimCheck += Time.deltaTime;
       if (_lastAnimCheck >= _calcAnimationDelaySeconds) {
         SetAnimation();

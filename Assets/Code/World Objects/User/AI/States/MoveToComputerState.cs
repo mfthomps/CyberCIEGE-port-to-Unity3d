@@ -8,12 +8,21 @@ namespace Code.World_Objects.User.AI.States {
   public class MoveToComputerState : FsmState {
     [SerializeField] private UserBehavior _user;
     [SerializeField] private ComputerListVariable _computerListVariable;
+    [SerializeField] private WorkSpaceListVariable _workSpaceListVariable;
     
     //--------------------------------------------------------------------------
     public override void OnStateEnter() {
-      var assignedComputer = _computerListVariable.Value.Find(x => (x.Data as ComputerDataObject).assignedUser == _user.Data.user_name);
+      ComputerBehavior assignedComputer = _computerListVariable.Value.Find(x => (x.Data as ComputerDataObject).assignedUser == _user.Data.user_name);
       if (assignedComputer) {
-        _user.CurrentNavTarget = assignedComputer.gameObject;
+        //find which WorkSpace this computer is assigned to.
+        var ws = _workSpaceListVariable.Value[assignedComputer.Data.position];
+
+        //From the configuration, find an empty "sittable" object.
+        var sitObject = ws.FurnitureConfiguration.GetFirstAvailableSittableObject();
+        //Navigate there.
+        if (sitObject) {
+          _user.CurrentNavTarget = sitObject.gameObject;
+        }
       }
     }
   }

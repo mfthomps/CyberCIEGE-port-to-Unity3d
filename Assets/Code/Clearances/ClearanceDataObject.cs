@@ -12,6 +12,7 @@ namespace Code.Clearance {
     }
 
     public string name;
+    public string description;
     public ClearanceType type;
     public BackgroundCheck.Level backgroundCheckLevel;
     public int level;
