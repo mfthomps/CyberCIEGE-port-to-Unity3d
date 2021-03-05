@@ -19,17 +19,15 @@ namespace Code.Hardware {
     // - scenarioHardwareCatalogDirectory: Directory to load scenario specific hardware catalog from
     public HardwareCatalog(HardwareCatalogVariable hardwareScriptableObject, string scenarioHardwareCatalogDirectory) {
       // Gather all of the hardware assets we have to choose from
-      foreach (var hardwareDefinitionInformation in hardwareScriptableObject.listOfAllHardware) {
-        var hardwareAssets = HardwareParser.GetHardwareAssets(hardwareDefinitionInformation);
+      //foreach (var hardwareDefinitionInformation in hardwareScriptableObject.listOfAllHardware) {
+        //var hardwareAssets = HardwareParser.GetHardwareAssets(hardwareDefinitionInformation);
 
         // needs to be specific for the hardware type (server, workstation, etc)
-        foreach (var hardwareAsset in hardwareAssets) {
-          if (!_hardwareAssetMap.ContainsKey(hardwareAsset.Key)) {
-            _hardwareAssetMap.Add(hardwareAsset.Key, hardwareAsset.Value);
-            _hardwareTypeMap.Add(hardwareAsset.Key, hardwareDefinitionInformation.hardwareType);
-          }
-        }
+      foreach (var hardwareAsset in hardwareScriptableObject.listOfAllHardware) {
+        _hardwareAssetMap.Add(hardwareAsset.name, hardwareAsset.hardwareAsset);
+        _hardwareTypeMap.Add(hardwareAsset.name, hardwareAsset.hardwareType);
       }
+      //}
 
       // Get the list of hardware available for this scenario and add it to our maps
       var scenarioSpecificHardware = HardwareParser.GetScenarioSpecificHardware(scenarioHardwareCatalogDirectory);

@@ -19,22 +19,20 @@ namespace Code.Hardware {
     }
   }
 
-//#if UNITY_EDITOR
-//  //-----------------------------------------------------------------------------
-//  [UnityEditor.CustomEditor(typeof(HardwareCatalogVariable))]
-//  [UnityEditor.CanEditMultipleObjects]
-//  public class HardwareCatalogScriptableVariableEditor : HardwareCatalogVariable.BaseScriptableVariableEditor {
-//  }
-//#endif
+  //#if UNITY_EDITOR
+  //  //-----------------------------------------------------------------------------
+  //  [UnityEditor.CustomEditor(typeof(HardwareCatalogVariable))]
+  //  [UnityEditor.CanEditMultipleObjects]
+  //  public class HardwareCatalogScriptableVariableEditor : HardwareCatalogVariable.BaseScriptableVariableEditor {
+  //  }
+  //#endif
 
   [Serializable]
-  public class HardwareTypeProperties {
-    public HardwareType hardwareType;
+  public class HardwareTypeProperties : HardwareAsset {
     public string name;
     public string description;
-    public Mesh mesh;
-    public Material material;
-    public Sprite image;
+    public HardwareAsset hardwareAsset;
+    public HardwareType hardwareType;
   }
 
 }

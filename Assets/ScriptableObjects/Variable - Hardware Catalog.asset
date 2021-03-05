@@ -14,21 +14,174 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   description: 
   listOfAllHardware:
-  - hardwareType: 1
-    name: Blato Desktop Select
-    description: Packed with applications, memory and disk
-    mesh: {fileID: 4300000, guid: c478fe762c831467697c11afc5c36ff7, type: 3}
+  - mesh: {fileID: -7063294535369063720, guid: 22046359394d9384896dd041faab0294, type: 3}
+    material: {fileID: 6232323724559127796, guid: 22046359394d9384896dd041faab0294,
+      type: 3}
+    icon: {fileID: 21300000, guid: 7b9112bdd097a1e43afd128ddcace9f7, type: 3}
+    name: Blato Server
+    description: Full featured server
+    hardwareType: 2
+  - mesh: {fileID: 4300000, guid: ff31ed9e1fafa4b7c963b5edbc96d2e4, type: 3}
+    material: {fileID: 2100000, guid: 8309457bc30d14e41932ff52d297e354, type: 2}
+    icon: {fileID: 21300000, guid: 18725a9276942a54f8941a73cda2b4b2, type: 3}
+    name: Targo Server
+    description: Moderate feature set
+    hardwareType: 2
+  - mesh: {fileID: 4300000, guid: ff31ed9e1fafa4b7c963b5edbc96d2e4, type: 3}
+    material: {fileID: 2100000, guid: 8309457bc30d14e41932ff52d297e354, type: 2}
+    icon: {fileID: 21300000, guid: 18725a9276942a54f8941a73cda2b4b2, type: 3}
+    name: Targo Worksaver
+    description: Full suite of productivity software, adequate memory and disk.
+    hardwareType: 1
+  - mesh: {fileID: -392992913426510621, guid: 2469cab5a24479741abd7182676adae6, type: 3}
+    material: {fileID: -7827583549095003622, guid: 2469cab5a24479741abd7182676adae6,
+      type: 3}
+    icon: {fileID: 21300000, guid: d509c30ad4e79f94ca36c4b3e8e3d2d9, type: 3}
+    name: Green Shade Server
+    description: Moderate feature set
+    hardwareType: 2
+  - mesh: {fileID: 2014025274445172542, guid: 33dde993fd188594a9f357703ff50a4d, type: 3}
+    material: {fileID: -2240317103601464987, guid: 33dde993fd188594a9f357703ff50a4d,
+      type: 3}
+    icon: {fileID: 21300000, guid: ff6291f69ab3dff4eb44b4889bb947c8, type: 3}
+    name: Twist Off Server
+    description: Moderate feature set
+    hardwareType: 2
+  - mesh: {fileID: 4300000, guid: c478fe762c831467697c11afc5c36ff7, type: 3}
     material: {fileID: 2100000, guid: f32f709d240cbd14fa924c54ea1bc00f, type: 2}
-    image: {fileID: 21300000, guid: 8ae8b406cb6ea594ab535a91d7ce2c47, type: 3}
-  - hardwareType: 0
-    name: 
-    description: 
-    mesh: {fileID: 0}
-    material: {fileID: 0}
-    image: {fileID: 0}
-  - hardwareType: 0
-    name: 
-    description: 
-    mesh: {fileID: 0}
-    material: {fileID: 0}
-    image: {fileID: 0}
+    icon: {fileID: 21300000, guid: 8ae8b406cb6ea594ab535a91d7ce2c47, type: 3}
+    name: Blato Desktop Select
+    description: Packed with applications, memory and disk.
+    hardwareType: 1
+  - mesh: {fileID: 4300000, guid: ff31ed9e1fafa4b7c963b5edbc96d2e4, type: 3}
+    material: {fileID: 2100000, guid: 8309457bc30d14e41932ff52d297e354, type: 2}
+    icon: {fileID: 21300000, guid: 18725a9276942a54f8941a73cda2b4b2, type: 3}
+    name: Trusted Targo Worksaver
+    description: Similar to the Targo Worksaver, but includes the Trusted Populos
+      OS.
+    hardwareType: 1
+  - mesh: {fileID: -5020250782303714858, guid: 37a9cc59dcde94b4e84477083d41c703, type: 3}
+    material: {fileID: -8968449676319492114, guid: 37a9cc59dcde94b4e84477083d41c703,
+      type: 3}
+    icon: {fileID: 21300000, guid: bb1ec36abd1dddd4eb71a0425091d938, type: 3}
+    name: Lunitos AFOS
+    description: Sleek colorful desktop machine with adequate memory and disk.
+    hardwareType: 1
+  - mesh: {fileID: 6307107852473248091, guid: 65e276bed1a1d534f8bf5b0c2434deef, type: 3}
+    material: {fileID: 744954378063524281, guid: 65e276bed1a1d534f8bf5b0c2434deef,
+      type: 3}
+    icon: {fileID: 21300000, guid: 4e263e1d96b253e4a8bfc16ace6fdd00, type: 3}
+    name: The Thin Man
+    description: A thin client intended to work with either Gossamer products or
+      Populos Terminal Servers
+    hardwareType: 0
+  - mesh: {fileID: -3400024285888869641, guid: defa81eb64ec0d8449c20f2ad12204a9, type: 3}
+    material: {fileID: -6946800492508951281, guid: defa81eb64ec0d8449c20f2ad12204a9,
+      type: 3}
+    icon: {fileID: 21300000, guid: 312e4548c9956d64894b856d2b4143bb, type: 3}
+    name: Green Net Client
+    description: A thin client intended to work with Gossamer products.  Intended
+      use is to connect to multiple networks of different sensitivity levels.
+    hardwareType: 1
+  - mesh: {fileID: 4300000, guid: 1f9bfb55e76bf4901b82ceba7664482e, type: 3}
+    material: {fileID: 6134249244791901332, guid: 1f9bfb55e76bf4901b82ceba7664482e,
+      type: 3}
+    icon: {fileID: 21300000, guid: 1eacc3e669901d34f84ddc6de2bc8fba, type: 3}
+    name: Bit Flipper
+    description: High performance router
+    hardwareType: 3
+  - mesh: {fileID: 6328839042012721313, guid: 05e1b5804fcff134797df96d1cecad6a, type: 3}
+    material: {fileID: 7640848825124196543, guid: a413e0e9c80d46a43908a4df71643a6c,
+      type: 3}
+    icon: {fileID: 21300000, guid: ecf875e936e407b4dbbe6b385a8ff173, type: 3}
+    name: Bit Flipper VPN
+    description: VPN Gateway Another Bit Flipper product
+    hardwareType: 3
+  - mesh: {fileID: 6328839042012721313, guid: 05e1b5804fcff134797df96d1cecad6a, type: 3}
+    material: {fileID: 7502657313522640553, guid: 05e1b5804fcff134797df96d1cecad6a,
+      type: 3}
+    icon: {fileID: 21300000, guid: ecf875e936e407b4dbbe6b385a8ff173, type: 3}
+    name: Bent Line VPN
+    description: VPN Gateway Evaluated to EAL4+
+    hardwareType: 3
+  - mesh: {fileID: 6328839042012721313, guid: 05e1b5804fcff134797df96d1cecad6a, type: 3}
+    material: {fileID: 7640848825124196543, guid: a413e0e9c80d46a43908a4df71643a6c,
+      type: 3}
+    icon: {fileID: 21300000, guid: ecf875e936e407b4dbbe6b385a8ff173, type: 3}
+    name: Green Shade VPN
+    description: VPN Gateway On a Green Shade Core
+    hardwareType: 3
+  - mesh: {fileID: 2331634099466296499, guid: 230430d7746b6c3449899b0b15652949, type: 3}
+    material: {fileID: -7685776045107751840, guid: 230430d7746b6c3449899b0b15652949,
+      type: 3}
+    icon: {fileID: 21300000, guid: a75398949e6281844b43e36bdcad0765, type: 3}
+    name: Crack This!
+    description: Best selling VPN gateway
+    hardwareType: 3
+  - mesh: {fileID: 4221307726089482408, guid: 3578100124d821546bcc35aa733a5a5c, type: 3}
+    material: {fileID: 4251394606614421038, guid: 1549f3d31cd58354b9e9317887f99afa,
+      type: 3}
+    icon: {fileID: 21300000, guid: 08d50efd64c76f84fa74883abdb9b0a6, type: 3}
+    name: Bit Flipper Switch
+    description: High performance lan switch
+    hardwareType: 3
+  - mesh: {fileID: -3743447799591531410, guid: f6a5c9c46ef3d20498b0619c1e0691a3, type: 3}
+    material: {fileID: 6696155227370334980, guid: f6a5c9c46ef3d20498b0619c1e0691a3,
+      type: 3}
+    icon: {fileID: 21300000, guid: 48f925d2f0c7aac49bf173be9c3d130d, type: 3}
+    name: Five Inches of Asbestos
+    description: Best selling firewall
+    hardwareType: 3
+  - mesh: {fileID: 5396420208616836603, guid: a413e0e9c80d46a43908a4df71643a6c, type: 3}
+    material: {fileID: 2100000, guid: 85124503ce003b94289ab5fd42ed7261, type: 2}
+    icon: {fileID: 21300000, guid: 08d50efd64c76f84fa74883abdb9b0a6, type: 3}
+    name: Bit Flipper Border
+    description: Full Featured firewall from the people who brought you Bit Flipper
+      routers
+    hardwareType: 3
+  - mesh: {fileID: 8616279083104638729, guid: fe12a3032bb8c9d4f8cd511c0255c05b, type: 3}
+    material: {fileID: 784277886200280857, guid: fe12a3032bb8c9d4f8cd511c0255c05b,
+      type: 3}
+    icon: {fileID: 21300000, guid: 994fafcd44f269e4398a34a2df3d3879, type: 3}
+    name: Paint It Black
+    description: Handles most wide area network protocols.  Requires manual keying
+      of each unit.  Government grade encryption algorithms
+    hardwareType: 3
+  - mesh: {fileID: -2932017984122620208, guid: 0eef29c070bf82f4cb25446e5a207cf5, type: 3}
+    material: {fileID: 5911441704138586271, guid: 0eef29c070bf82f4cb25446e5a207cf5,
+      type: 3}
+    icon: {fileID: 21300000, guid: 3520c631d830ae1418f088882d2eef9b, type: 3}
+    name: Enigma2000
+    description: Handles most wide area network protocols.  Requires manual keying
+      of each unit.  Government grade encryption algorithms
+    hardwareType: 3
+  - mesh: {fileID: -359373429619783941, guid: e85e9487a63068044aa00af21dcb817b, type: 3}
+    material: {fileID: -1350608293526077307, guid: e85e9487a63068044aa00af21dcb817b,
+      type: 3}
+    icon: {fileID: 21300000, guid: 2cbd7a240aecaa446bdf12163c1f3bbb, type: 3}
+    name: NightShade
+    description: Handles most wide area network protocols.  Requires manual keying
+      of each unit.  Government grade encryption algorithms
+    hardwareType: 3
+  - mesh: {fileID: 4221307726089482408, guid: 3578100124d821546bcc35aa733a5a5c, type: 3}
+    material: {fileID: 4251394606614421038, guid: 1549f3d31cd58354b9e9317887f99afa,
+      type: 3}
+    icon: {fileID: 21300000, guid: 1eacc3e669901d34f84ddc6de2bc8fba, type: 3}
+    name: PostDrip
+    description: Best selling IDS appliance.
+    hardwareType: 3
+  - mesh: {fileID: 4221307726089482408, guid: 3578100124d821546bcc35aa733a5a5c, type: 3}
+    material: {fileID: 4251394606614421038, guid: 1549f3d31cd58354b9e9317887f99afa,
+      type: 3}
+    icon: {fileID: 21300000, guid: 1eacc3e669901d34f84ddc6de2bc8fba, type: 3}
+    name: Muave Slush
+    description: Once was the best selling IDS appliance.
+    hardwareType: 3
+  - mesh: {fileID: 4221307726089482408, guid: 3578100124d821546bcc35aa733a5a5c, type: 3}
+    material: {fileID: 4251394606614421038, guid: 1549f3d31cd58354b9e9317887f99afa,
+      type: 3}
+    icon: {fileID: 21300000, guid: 1eacc3e669901d34f84ddc6de2bc8fba, type: 3}
+    name: Detect & Correct
+    description: Upstart product designed to automatically react to detected intrusions
+      by altering routing tables.
+    hardwareType: 3

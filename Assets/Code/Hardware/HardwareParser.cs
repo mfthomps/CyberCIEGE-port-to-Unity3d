@@ -17,17 +17,18 @@ namespace Code.Hardware {
     private static string HARDWARE_END = ":end";
 
     // ------------------------------------------------------------------------
-    public static Dictionary<string, HardwareAsset> GetHardwareAssets(HardwareTypeProperties hardwareTypeProperties) {
+    //public static Dictionary<string, HardwareAsset> GetHardwareAssets(HardwareTypeProperties hardwareTypeProperties) {
+    //public static Dictionary<string, HardwareAsset> GetHardwareAssets(HardwareAsset hardwareAsset) {
 
-      var hardwareMap = new Dictionary<string, HardwareAsset>();
-      var hardwareAsset = new HardwareAsset();
-      hardwareAsset.mesh = hardwareTypeProperties.mesh;
-      hardwareAsset.material = hardwareTypeProperties.material;
-      hardwareAsset.icon = hardwareTypeProperties.image;
-      hardwareMap.Add(hardwareTypeProperties.name, hardwareAsset);
+    //  var hardwareMap = new Dictionary<string, HardwareAsset>();
+    //  //var hardwareAsset = new HardwareAsset();
+    //  //hardwareAsset.mesh = hardwareTypeProperties.
+    //  //hardwareAsset.material = hardwareTypeProperties.material;
+    //  hardwareAsset.icon = hardwareTypeProperties.image;
+    //  hardwareMap.Add(hardwareTypeProperties.name, hardwareAsset);
 
-      return hardwareMap;
-    }
+    //  return hardwareMap;
+    //}
 
     // ------------------------------------------------------------------------
     public static List<Hardware> GetScenarioSpecificHardware(string scenarioHardwareCatalogDirectory) {
