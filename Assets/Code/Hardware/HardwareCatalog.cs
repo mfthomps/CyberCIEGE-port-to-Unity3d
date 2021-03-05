@@ -17,17 +17,12 @@ namespace Code.Hardware {
     // - assetBundle: The asset bundle containing the art assets for our hardware
     // - hardwareDefinitionInformations: List of hardware types and filepaths to where the hardware of that type is defined
     // - scenarioHardwareCatalogDirectory: Directory to load scenario specific hardware catalog from
-    public HardwareCatalog(HardwareCatalogVariable hardwareScriptableObject, string scenarioHardwareCatalogDirectory) {
-      // Gather all of the hardware assets we have to choose from
-      //foreach (var hardwareDefinitionInformation in hardwareScriptableObject.listOfAllHardware) {
-        //var hardwareAssets = HardwareParser.GetHardwareAssets(hardwareDefinitionInformation);
-
-        // needs to be specific for the hardware type (server, workstation, etc)
-      foreach (var hardwareAsset in hardwareScriptableObject.listOfAllHardware) {
+    public HardwareCatalog(HardwareCatalogVariable hardwareCatalog, string scenarioHardwareCatalogDirectory) {
+      // Gather all of the hardware assets we have to choose from.
+      foreach (var hardwareAsset in hardwareCatalog.listOfAllHardware) {
         _hardwareAssetMap.Add(hardwareAsset.name, hardwareAsset.hardwareAsset);
         _hardwareTypeMap.Add(hardwareAsset.name, hardwareAsset.hardwareType);
       }
-      //}
 
       // Get the list of hardware available for this scenario and add it to our maps
       var scenarioSpecificHardware = HardwareParser.GetScenarioSpecificHardware(scenarioHardwareCatalogDirectory);
