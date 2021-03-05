@@ -1,28 +1,38 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using UnityEngine;
 using Shared.ScriptableVariables;
 using Code.Scriptable_Variables;
-using Code.World_Objects;
 using Code.User_Interface.View;
+using Code.World_Objects;
+using Code.World_Objects.Character;
 
 namespace Code.Camera {
   //This uses two Transforms to position and orient the game camera.
   public class CameraManager : MonoBehaviour {
     [Header("Input Variables")]
-    [Tooltip("List of users in the scenario")]
-    [SerializeField] private UserListVariable _userList;
     [Tooltip("List of computers in the scenario")]
     [SerializeField] private ComputerListVariable _computerList;
     [Tooltip("List of devices in the scenario")]
     [SerializeField] private DeviceListVariable _deviceList;
+    [Tooltip("List of staff in the scenario")]
+    [SerializeField] private StaffListVariable _staffList;
+    [Tooltip("List of users in the scenario")]
+    [SerializeField] private UserListVariable _userList;
     [Tooltip("List of ViewPoints in the scenario")]
     [SerializeField] private ViewPointListVariable _viewPointList;
     [Tooltip("List of ViewPoints that represent the different buildings available.")]
     [SerializeField] private ViewPointListVariable _buildingList;
+    [Tooltip("The variable that contains the ViewPoint options, defined in the viewpoints.sdf file")]
+    [SerializeField] private ViewPointOptions _viewPointOptions;
+    [Tooltip("Whether the game is currently paused or not")]
+    [SerializeField] private BooleanVariable _gamePaused;
 
-    [Header("Output Variables")]
+    [Header("Output Events/Variables")]
+    [Tooltip("Whether we want to pause the game or not")]
+    [SerializeField] private BooleanGameEvent _pauseGame;
     [Tooltip("Name of the current building the camera is located in.")]
     [SerializeField] private StringVariable _currentBuilding;
     [Tooltip("The current view type we have selected")]
@@ -63,6 +73,8 @@ namespace Code.Camera {
     private float _maxZoomInterval;
     [SerializeField] private float _currentZoomLevel;
     [SerializeField] private float _desiredZoomLevel;
+    private Transform _cameraFollowTarget;
+    private bool _waitingForServerPause;
 
     // ------------------------------------------------------------------------
     void Awake() {
@@ -88,10 +100,23 @@ namespace Code.Camera {
         //smooth the camera zooming
         cameraFollow.position = Vector3.Lerp(cameraFollow.position, desiredFollowPos, Time.deltaTime * zoomSpeed);
       }
+
+      // If the game is running and we have a camera follow target, then follow that target
+      if (_cameraFollowTarget != null && !_waitingForServerPause && !_gamePaused.Value) {
+        MoveCameraTarget(_cameraFollowTarget);
+      }
+
+      // Since it takes a bit to get the server response that the game is paused,
+      // if we paused the game we want to stop following our target in that interim
+      if (_waitingForServerPause && _gamePaused.Value) {
+        _waitingForServerPause = false;
+      }
     }
 
     // ------------------------------------------------------------------------
     public void PanCamera(Vector2 delta) {
+      PauseIfFollowing();
+
       //tweak the pan amount based on the current zoom level. Closer = slower pan, further = faster
       float percZoom = (_currentZoomLevel - _minZoomInterval) / (_maxZoomInterval - _minZoomInterval);
       float zoomAdj = Math.Max(percZoom, 0.1f);
@@ -108,6 +133,8 @@ namespace Code.Camera {
 
     // ------------------------------------------------------------------------
     public void RotateCamera(Vector2 delta) {
+      PauseIfFollowing();
+
       cameraTarget.Rotate(0.0f, delta.x * rotateScalar, 0.0f, Space.World);
       cameraFollow.transform.RotateAround(cameraTarget.transform.position, Vector3.up, delta.x * rotateScalar);
     }
@@ -119,12 +146,16 @@ namespace Code.Camera {
     
     // ------------------------------------------------------------------------
     public void ZoomCamera(float offset) {
+      PauseIfFollowing();
+
       _currentZoomLevel = Mathf.Clamp(_currentZoomLevel + offset, _minZoomInterval, _maxZoomInterval);
       _desiredZoomLevel = -Mathf.Clamp(Mathf.Pow(zoomExponentialGrowthRate, _currentZoomLevel), minZoomDistance, maxZoomDistance);
     }
 
     // ------------------------------------------------------------------------
     public void MoveCameraToPreviousObject(WorldObjectType type) {
+      PauseIfFollowing();
+
       var newTarget = _objectCircularLists.GetPrev(type);
       MoveCamera(type, newTarget);
       _selectedObject.Value = newTarget.gameObject;
@@ -132,6 +163,8 @@ namespace Code.Camera {
     
     //--------------------------------------------------------------------------
     public void MoveCameraToNextObject(WorldObjectType type) {
+      PauseIfFollowing();
+
       var newTarget = _objectCircularLists.GetNext(type);
       MoveCamera(type, newTarget);
       _selectedObject.Value = newTarget.gameObject;
@@ -173,9 +206,14 @@ namespace Code.Camera {
       
       XmlNode mainNode = xml_doc.SelectSingleNode("//cameraToUser");
       var username = mainNode["name"].InnerText;
-      foreach (var user in _userList.Value) {
-        if (user.Data.user_name == username) {
-          MoveCameraTarget(user.transform);
+      var characters = new List<BaseCharacter>(_userList.Value);
+      characters.AddRange(_staffList.Value);
+      foreach (var character in characters) {
+        if (character.GetCharacterData().user_name == username) {
+          MoveCameraTarget(character.transform);
+          if (_viewPointOptions.ForceCamera) {
+            _cameraFollowTarget = character.transform;
+          }
         }
       }
     }
@@ -235,6 +273,15 @@ namespace Code.Camera {
     // ------------------------------------------------------------------------
     private void MoveCameraTarget(Transform objectTransform) {
       cameraTarget.position = objectTransform.position;
+    }
+
+    // ------------------------------------------------------------------------
+    private void PauseIfFollowing() {
+      // If we're following a target and the game isn't paused, pause it
+      if (_cameraFollowTarget != null && !_gamePaused.Value) {
+        _pauseGame?.Raise(true);
+        _waitingForServerPause = true;
+      }
     }
   }
 }

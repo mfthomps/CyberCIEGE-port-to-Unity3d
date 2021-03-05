@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Code.AccessControlGroup;
+using UnityEngine;
 
 namespace Code {
   //Data related to a single Component instance
@@ -12,6 +13,7 @@ namespace Code {
     public bool isStatic;
     public string zone;
     public int cost;
+    [Tooltip("The WorkSpace index number")]
     public int position = -1;
     public HashSet<string> network_list = new HashSet<string>();
     public Dictionary<string, List<DACAccess>> networkDACAccessors = new Dictionary<string, List<DACAccess>>();

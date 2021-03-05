@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using ftUI;
 using Code.Hardware;
 
 namespace Code.User_Interface.Buy {
@@ -13,11 +14,16 @@ namespace Code.User_Interface.Buy {
     public Toggle toggle;
     [Tooltip("Label for what header type this represents")]
     public TMP_Text label;
+    [Tooltip("Tooltip for the ComponentSettingType")]
+    public ftTooltip tooltip;
     [SerializeField] private SwapAnimators animatorSwap;
 
     // ------------------------------------------------------------------------
     public void SetHardwareType(HardwareType hardwareType, ToggleGroup toggleGroup) {
-      label.text = GetHardwareTypeLabel(hardwareType);
+      var labelText = GetHardwareTypeLabel(hardwareType);
+      name = labelText;
+      label.text = labelText.ToUpper();
+      tooltip.TooltipText = labelText;
       toggle.group = toggleGroup;
     }
 
@@ -36,15 +42,15 @@ namespace Code.User_Interface.Buy {
     private string GetHardwareTypeLabel(HardwareType hardwareType) {
       switch (hardwareType) {
         case HardwareType.Office:
-          return "OFFICE";
+          return "Office";
         case HardwareType.Workstations:
-          return "WORKSTATIONS";
+          return "Workstations";
         case HardwareType.Servers:
-          return "SERVERS";
+          return "Servers";
         case HardwareType.NetworkDevices:
-          return "NETWORK DEVICES";
+          return "Network Devices";
         case HardwareType.IDDevice:
-          return "ID DEVICES";
+          return "ID Devices";
       }
       return null;
     }

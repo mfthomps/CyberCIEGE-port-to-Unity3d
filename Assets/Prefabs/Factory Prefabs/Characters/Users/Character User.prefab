@@ -90,6 +90,8 @@ MonoBehaviour:
   _user: {fileID: 3054295626027766966}
   _computerListVariable: {fileID: 11400000, guid: 8380099111649e944adcc17e9f804d36,
     type: 2}
+  _workSpaceListVariable: {fileID: 11400000, guid: d58ae4d2fe18c644789dbe0b0007d8d3,
+    type: 2}
 --- !u!1 &791630134788469278
 GameObject:
   m_ObjectHideFlags: 0
@@ -438,6 +440,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _user: {fileID: 3054295626027766966}
   objectOfInterestTag: Object of Interest
+  _objectsOfInterest: []
 --- !u!1 &6255502896471109586
 GameObject:
   m_ObjectHideFlags: 0
@@ -485,6 +488,7 @@ MonoBehaviour:
   _workAnimationParam: Working
   _angryAnimationParam: Angry
   _user: {fileID: 3054295626027766966}
+  _agent: {fileID: 857099803622098845}
   _calcAnimationDelaySeconds: 5
   _startedWorkingEvent: {fileID: 0}
 --- !u!1 &6485464145626497703
@@ -564,6 +568,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ac53caf3e674ba69fbcb7692aa7a882, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _distanceTolerance: 1.25
   _agent: {fileID: 857099803622098845}
   _animator: {fileID: 0}
   _user: {fileID: 3054295626027766966}

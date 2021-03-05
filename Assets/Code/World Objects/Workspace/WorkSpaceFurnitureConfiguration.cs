@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using NaughtyAttributes;
+using UnityEngine;
 
 namespace Code.World_Objects.Workspace {
   
@@ -13,7 +15,11 @@ namespace Code.World_Objects.Workspace {
              "used to position computers and devices")]
     [SerializeField] private Transform ComponentRoot;
     [Tooltip("The GameObject to use as the WorkSpace Desk")]
-    [SerializeField] public GameObject Desk;
+    [SerializeField] private GameObject Desk;
+
+    [Tooltip("References to all objects that characters can sit on in this WorkSpace.")]
+    [ReorderableList]
+    [SerializeField] private List<SittableObject> _sittables = new List<SittableObject>();
 
     [Header("Misc")]
     [Tooltip("The WorkSpace index values that should *not* provide workspace desks (inclusive)")]
@@ -29,10 +35,17 @@ namespace Code.World_Objects.Workspace {
     //-------------------------------------------------------------------------
     //Get the Transform representing the n-th Component child Transform
     public Transform GetComponentTransform(int childIndex) {
-      if (childIndex < ComponentRoot.childCount) {
+      if (childIndex >= 0 && childIndex < ComponentRoot.childCount) {
         return ComponentRoot.GetChild(childIndex);
       }
       return null;
+    }
+
+    //-------------------------------------------------------------------------
+    //Get the first available sittable object. Currently just getting the first one 
+    //in the list, but could be extended to check if it's empty, etc.
+    public SittableObject GetFirstAvailableSittableObject() {
+      return _sittables.Count > 0 ? _sittables[0] : null;
     }
 
     //-------------------------------------------------------------------------
