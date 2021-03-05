@@ -8,16 +8,26 @@ namespace Code.World_Objects.User.AI.States {
              "Used to decide if a new destination should be set.")]
     [SerializeField] private float _distanceTolerance = 1.25f;
 
-    [SerializeField] private NavMeshAgent _agent;
-    [SerializeField] private Animator _animator;
-    [SerializeField] private Navigator _user;
+    [SerializeField] protected NavMeshAgent _agent;
+    [SerializeField] protected Animator _animator;
+    [SerializeField] protected Navigator _navigator;
     [SerializeField] private string _walkingAnimParam = "Walking";
+    
+    [Tooltip("How much distance tolerance when comparing locations")]
+    [SerializeField] private float tolerance = 1f;
     
     //used to manipulate the NavMeshAgent obstacle priority to prevent multiple
     //agents having the same priority and colliding while navigating.
     private int _initialPriority = -1;
     private static int _priorityInc = 0;
-
+    
+    //-------------------------------------------------------------------------
+    private void Awake() {
+      if (!_agent) {
+        _agent = GetComponentInParent<NavMeshAgent>();
+      }
+    }
+    
     //--------------------------------------------------------------------------
     public override void OnStateEnter() {
       if (!_agent.enabled) {
@@ -38,15 +48,15 @@ namespace Code.World_Objects.User.AI.States {
 
     //--------------------------------------------------------------------------
     public override void OnStateLeave() {
-      _animator.SetBool(_walkingAnimParam, false);
+      StopWalking();
     }
 
     //--------------------------------------------------------------------------
-    private void Update() {
+    protected virtual void Update() {
       //while running, check if the current navigation target has changed, based on the 
       //last set NavMeshAgent's destination. If so, give the NavMeshAgent the new position.
 
-      if (_user.CurrentNavTarget && _agent.isOnNavMesh) {
+      if (_navigator.CurrentNavTarget && _agent.isOnNavMesh) {
         if (_agent.pathPending) {
           return;
         }
@@ -63,20 +73,40 @@ namespace Code.World_Objects.User.AI.States {
     private void MaybeUpdateAgentDestination() {
       //Check if the agent's current destination is "different" than the navigation target.
       //This could happen if the navigation target changes.
-      if (!_user.CurrentNavTarget) {
+      if (!_navigator.CurrentNavTarget) {
         return;
       }
 
-      var dist = Vector3.Distance(_user.CurrentNavTarget.transform.position, _agent.destination);
+      var dist = Vector3.Distance(_navigator.CurrentNavTarget.transform.position, _agent.destination);
       if (dist > _distanceTolerance) {
-        if (_agent.SetDestination(_user.CurrentNavTarget.transform.position)) {
-          _animator.SetBool(_walkingAnimParam, true);
-          Debug.Log($"Pathing [{_agent.name}] -> [{_user.CurrentNavTarget.name}]");
+        if (_agent.SetDestination(_navigator.CurrentNavTarget.transform.position)) {
+          StartWalking();
+          Debug.Log($"Pathing [{_agent.name}] -> [{_navigator.CurrentNavTarget.name}]");
         }
         else {
-          Debug.LogError($"Can't path [{_user.name}] to [{_user.CurrentNavTarget.transform.position}]");
+          Debug.LogError($"Can't path [{_navigator.name}] to [{_navigator.CurrentNavTarget.transform.position}]");
         }
       }
+    }
+    
+    //-------------------------------------------------------------------------
+    protected void StartWalking() {
+      _animator.SetBool(_walkingAnimParam, true);
+    }
+    
+    //--------------------------------------------------------------------------
+    protected void StopWalking() {
+      _animator.SetBool(_walkingAnimParam, false);
+    }
+
+    //-------------------------------------------------------------------------
+    protected bool IsAtDestination() {
+      if (Vector3.Distance(transform.position, _navigator.CurrentNavTarget.transform.position) < tolerance) {
+        return true;
+      }
+      else {
+        return false;
+      }  
     }
   }
 }
