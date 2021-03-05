@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3327119671014908449}
   - component: {fileID: 3327119671014908454}
   - component: {fileID: 2506683362367344638}
+  - component: {fileID: 1834918323769006252}
   m_Layer: 5
   m_Name: Selection Button
   m_TagString: Untagged
@@ -115,6 +116,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1834918323769006252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3327119671014908453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0f6bf630cd71454fb52b3955aa1b1e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverCursor: {fileID: 2800000, guid: c067abe023352bc42a2cc533e7b00801, type: 3}
 --- !u!1 &3327119671528302942
 GameObject:
   m_ObjectHideFlags: 0
@@ -126,7 +140,6 @@ GameObject:
   - component: {fileID: 3327119671528302937}
   - component: {fileID: 3327119671528302939}
   - component: {fileID: 8038322597340065845}
-  - component: {fileID: 180930907679229083}
   m_Layer: 5
   m_Name: Group List Item
   m_TagString: Untagged
@@ -189,19 +202,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectionToggle: {fileID: 3327119672643783861}
   labelUI: {fileID: 3327119672017929347}
---- !u!114 &180930907679229083
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3327119671528302942}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b0f6bf630cd71454fb52b3955aa1b1e8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hoverCursor: {fileID: 2800000, guid: c067abe023352bc42a2cc533e7b00801, type: 3}
 --- !u!1 &3327119672017929344
 GameObject:
   m_ObjectHideFlags: 0
