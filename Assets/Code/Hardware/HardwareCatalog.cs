@@ -7,6 +7,7 @@ namespace Code.Hardware {
   // Data structure for all known hardware information in game
   public class HardwareCatalog {
     // Note: catalog.sdf is dynamically created by the headless process and contains only HW that will be used in the scenario, so we need to load meshes and materials for *all* objects in the catalog.
+    
     private Dictionary<string, HardwareAsset> _hardwareAssetMap = new Dictionary<string, HardwareAsset>();
     private Dictionary<string, HardwareType> _hardwareTypeMap = new Dictionary<string, HardwareType>();
     private Dictionary<HardwareType, List<Hardware>> _scenarioHardwareMap = new Dictionary<HardwareType, List<Hardware>>();
@@ -16,14 +17,16 @@ namespace Code.Hardware {
     // - assetBundle: The asset bundle containing the art assets for our hardware
     // - hardwareDefinitionInformations: List of hardware types and filepaths to where the hardware of that type is defined
     // - scenarioHardwareCatalogDirectory: Directory to load scenario specific hardware catalog from
-    public HardwareCatalog(AssetBundle assetBundle, List<Tuple<HardwareType, string>> hardwareDefinitionInformations, string scenarioHardwareCatalogDirectory) {
+    public HardwareCatalog(HardwareCatalogVariable hardwareScriptableObject, string scenarioHardwareCatalogDirectory) {
       // Gather all of the hardware assets we have to choose from
-      foreach (var hardwareDefinitionInformation in hardwareDefinitionInformations) {
-        var hardwareAssets = HardwareParser.GetHardwareAssetsFromFile(hardwareDefinitionInformation.Item2, assetBundle);
+      foreach (var hardwareDefinitionInformation in hardwareScriptableObject.listOfAllHardware) {
+        var hardwareAssets = HardwareParser.GetHardwareAssets(hardwareDefinitionInformation);
+
+        // needs to be specific for the hardware type (server, workstation, etc)
         foreach (var hardwareAsset in hardwareAssets) {
           if (!_hardwareAssetMap.ContainsKey(hardwareAsset.Key)) {
             _hardwareAssetMap.Add(hardwareAsset.Key, hardwareAsset.Value);
-            _hardwareTypeMap.Add(hardwareAsset.Key, hardwareDefinitionInformation.Item1);
+            _hardwareTypeMap.Add(hardwareAsset.Key, hardwareDefinitionInformation.hardwareType);
           }
         }
       }

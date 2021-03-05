@@ -17,25 +17,14 @@ namespace Code.Hardware {
     private static string HARDWARE_END = ":end";
 
     // ------------------------------------------------------------------------
-    public static Dictionary<string, HardwareAsset> GetHardwareAssetsFromFile(string filename, AssetBundle assetBundle) {
-      var hardwareMap = new Dictionary<string, HardwareAsset>();
+    public static Dictionary<string, HardwareAsset> GetHardwareAssets(HardwareTypeProperties hardwareTypeProperties) {
 
-      var hardwareList = GetHardwareList(filename);
-      foreach (var hardwareString in hardwareList) {
-        // Hardware is only valid if we have assets for it
-        if (hardwareString.Contains(",")) {
-          var hardwareStringArray = hardwareString.Split(',');
-          var hardwareName = hardwareStringArray[0];
-          if (!hardwareMap.ContainsKey(hardwareName)) {
-            var assetName = hardwareStringArray[1];
-            var hardwareAsset = new HardwareAsset();
-            hardwareAsset.mesh = assetBundle.LoadAsset<Mesh>(assetName);
-            hardwareAsset.material = assetBundle.LoadAsset<Material>(assetName);
-            hardwareAsset.icon = assetBundle.LoadAsset<Sprite>(assetName);
-            hardwareMap.Add(hardwareName, hardwareAsset);
-          }
-        }
-      }
+      var hardwareMap = new Dictionary<string, HardwareAsset>();
+      var hardwareAsset = new HardwareAsset();
+      hardwareAsset.mesh = hardwareTypeProperties.mesh;
+      hardwareAsset.material = hardwareTypeProperties.material;
+      hardwareAsset.icon = hardwareTypeProperties.image;
+      hardwareMap.Add(hardwareTypeProperties.name, hardwareAsset);
 
       return hardwareMap;
     }

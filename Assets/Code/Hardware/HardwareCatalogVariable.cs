@@ -1,10 +1,17 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using NaughtyAttributes;
+using UnityEngine;
 using Shared.ScriptableVariables;
 
 namespace Code.Hardware {
   // A HardwareCatalog value to share across components, scenes, and prefabs
   [CreateAssetMenu(menuName = "Scriptable Objects/Variables/CC/Hardware Catalog")]
   public class HardwareCatalogVariable : ScriptableVariable<HardwareCatalog> {
+
+    [ReorderableList]
+    public List<HardwareTypeProperties> listOfAllHardware = new List<HardwareTypeProperties>();
+
     //---------------------------------------------------------------------------
     [ContextMenu("Reset To Default Value")]
     public void ContextMenuReset() {
@@ -12,11 +19,22 @@ namespace Code.Hardware {
     }
   }
 
-#if UNITY_EDITOR
-//-----------------------------------------------------------------------------
-  [UnityEditor.CustomEditor(typeof(HardwareCatalogVariable))]
-  [UnityEditor.CanEditMultipleObjects]
-  public class HardwareCatalogScriptableVariableEditor : HardwareCatalogVariable.BaseScriptableVariableEditor {
+//#if UNITY_EDITOR
+//  //-----------------------------------------------------------------------------
+//  [UnityEditor.CustomEditor(typeof(HardwareCatalogVariable))]
+//  [UnityEditor.CanEditMultipleObjects]
+//  public class HardwareCatalogScriptableVariableEditor : HardwareCatalogVariable.BaseScriptableVariableEditor {
+//  }
+//#endif
+
+  [Serializable]
+  public class HardwareTypeProperties {
+    public HardwareType hardwareType;
+    public string name;
+    public string description;
+    public Mesh mesh;
+    public Material material;
+    public Sprite image;
   }
-#endif
+
 }
