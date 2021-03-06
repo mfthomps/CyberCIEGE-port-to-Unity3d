@@ -12,6 +12,16 @@ namespace Code.Hardware {
     [ReorderableList]
     public List<HardwareTypeProperties> listOfAllHardware = new List<HardwareTypeProperties>();
 
+    public void GetHardwareAsset() {
+      HardwareAsset hardwareAsset = new HardwareAsset();
+      foreach (var element in listOfAllHardware) {
+        hardwareAsset.mesh = element.mesh;
+        hardwareAsset.material = element.material;
+        hardwareAsset.icon = element.icon;
+        element.hardwareAsset = hardwareAsset;
+      }
+    }
+
     //---------------------------------------------------------------------------
     [ContextMenu("Reset To Default Value")]
     public void ContextMenuReset() {

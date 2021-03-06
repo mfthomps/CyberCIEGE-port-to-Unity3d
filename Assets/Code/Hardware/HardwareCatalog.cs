@@ -19,6 +19,7 @@ namespace Code.Hardware {
     // - scenarioHardwareCatalogDirectory: Directory to load scenario specific hardware catalog from
     public HardwareCatalog(HardwareCatalogVariable hardwareCatalog, string scenarioHardwareCatalogDirectory) {
       // Gather all of the hardware assets we have to choose from.
+      hardwareCatalog.GetHardwareAsset();
       foreach (var hardwareAsset in hardwareCatalog.listOfAllHardware) {
         _hardwareAssetMap.Add(hardwareAsset.name, hardwareAsset.hardwareAsset);
         _hardwareTypeMap.Add(hardwareAsset.name, hardwareAsset.hardwareType);
