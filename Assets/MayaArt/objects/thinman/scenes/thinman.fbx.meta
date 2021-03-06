@@ -3,7 +3,17 @@ guid: 65e276bed1a1d534f8bf5b0c2434deef
 ModelImporter:
   serializedVersion: 19301
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: lambert1.016
+    second: {fileID: 2100000, guid: 732ee7259140e0241ac31365c445af61, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: thinman_mat.001
+    second: {fileID: 2100000, guid: 2105ce6f4e8e2854c98310a852e8f7ec, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0
@@ -81,7 +91,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 0.01
+    globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
@@ -93,5 +103,5 @@ ModelImporter:
   avatarSetup: 0
   additionalBone: 0
   userData: 
-  assetBundleName: 
+  assetBundleName: objects
   assetBundleVariant: 
