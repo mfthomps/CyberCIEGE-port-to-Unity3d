@@ -1,14 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Shared.ScriptableVariables;
 using Code.Factories;
 using Code.Hardware;
+using Code.Scriptable_Variables;
 
 public class GameLoadBehavior : MonoBehaviour {
   public static GameObject main_floor;
+  [Header("Input")]
+  public HardwareTypeVariable _hardwareTypes;
 
   [Header("Output Events/Variables")]
   [Tooltip("Path to the CyberCIEGE Install folder")]
@@ -50,7 +52,7 @@ public class GameLoadBehavior : MonoBehaviour {
   [SerializeField] private ZoneFactory _zoneFactory;
   [Tooltip("The factory to use for creating ViewPoints")]
   [SerializeField] private ViewPointFactory _viewPointFactory;
-  
+
   private static string _ccInstallPath;
 
   private AssetBundle _loadedAssetBundle;
@@ -103,13 +105,7 @@ public class GameLoadBehavior : MonoBehaviour {
 
   // --------------------------------------------------------------------------
   private void InitializeHardwareCatalog(string userAppPath) {
-    _loadedAssetBundle = AssetBundle.LoadFromFile(Path.Combine(Application.dataPath, "AssetBundles", "objects"));
-    var hardwareTypePath = Path.Combine(Application.dataPath, "HardwareTypes");
-    var hardwareDefinitions = new List<Tuple<HardwareType, string>>{
-      new Tuple<HardwareType, string>(HardwareType.Servers, Path.Combine(hardwareTypePath, "servers.txt")),
-      new Tuple<HardwareType, string>(HardwareType.Workstations, Path.Combine(hardwareTypePath, "workstations.txt")),
-      new Tuple<HardwareType, string>(HardwareType.NetworkDevices, Path.Combine(hardwareTypePath, "devices.txt")),
-    };
-    hardwareCatalog.Value = new HardwareCatalog(_loadedAssetBundle, hardwareDefinitions, userAppPath);
+    hardwareCatalog.Value = new HardwareCatalog(_hardwareTypes.Value, userAppPath);
   }
+
 }

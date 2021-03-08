@@ -16,5 +16,4 @@ campaign's "Introduction" scenario.  Select that and play.
 4. Select Windows for the _Target Platform_, and x86_64 for the _Architecture_
 5. Set _Compression Method_ to Default, and leave any box unchecked
 6. Click _build_ and select the target directory - this initiates the build process
-7. Copy the directories `AssetBundles` and `HardwareTypes` from `CyberCIEGE-port-to-Unity3d\Assets` into directory `CyberCIEGE-port-to-Unity3d_executable\CyberCIEGE-port-to-Unity3d_Data` in the target directory
-8. Double-clicking `CyberCIEGE-port-to-Unity3d.exe` in the target directory should launch the application.
+7. Double-clicking `CyberCIEGE-port-to-Unity3d.exe` in the target directory should launch the application.

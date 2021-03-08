@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using UnityEngine;
 
 namespace Code.Hardware {
   // Data structure for all known hardware information in game
   public class HardwareCatalog {
     // Note: catalog.sdf is dynamically created by the headless process and contains only HW that will be used in the scenario, so we need to load meshes and materials for *all* objects in the catalog.
+    
     private Dictionary<string, HardwareAsset> _hardwareAssetMap = new Dictionary<string, HardwareAsset>();
     private Dictionary<string, HardwareType> _hardwareTypeMap = new Dictionary<string, HardwareType>();
     private Dictionary<HardwareType, List<Hardware>> _scenarioHardwareMap = new Dictionary<HardwareType, List<Hardware>>();
@@ -16,16 +15,11 @@ namespace Code.Hardware {
     // - assetBundle: The asset bundle containing the art assets for our hardware
     // - hardwareDefinitionInformations: List of hardware types and filepaths to where the hardware of that type is defined
     // - scenarioHardwareCatalogDirectory: Directory to load scenario specific hardware catalog from
-    public HardwareCatalog(AssetBundle assetBundle, List<Tuple<HardwareType, string>> hardwareDefinitionInformations, string scenarioHardwareCatalogDirectory) {
-      // Gather all of the hardware assets we have to choose from
-      foreach (var hardwareDefinitionInformation in hardwareDefinitionInformations) {
-        var hardwareAssets = HardwareParser.GetHardwareAssetsFromFile(hardwareDefinitionInformation.Item2, assetBundle);
-        foreach (var hardwareAsset in hardwareAssets) {
-          if (!_hardwareAssetMap.ContainsKey(hardwareAsset.Key)) {
-            _hardwareAssetMap.Add(hardwareAsset.Key, hardwareAsset.Value);
-            _hardwareTypeMap.Add(hardwareAsset.Key, hardwareDefinitionInformation.Item1);
-          }
-        }
+    public HardwareCatalog(IEnumerable<HardwareTypeProperties> hardwareTypes, string scenarioHardwareCatalogDirectory) {
+      // Gather all of the hardware assets we have to choose from.
+      foreach (var hardwareAsset in hardwareTypes) {
+        _hardwareAssetMap.Add(hardwareAsset.name, hardwareAsset.hardwareAsset);
+        _hardwareTypeMap.Add(hardwareAsset.name, hardwareAsset.hardwareType);
       }
 
       // Get the list of hardware available for this scenario and add it to our maps
@@ -46,7 +40,7 @@ namespace Code.Hardware {
     // ------------------------------------------------------------------------
     public HardwareAsset GetHardwareAsset(string hardwareID) {
       if (_hardwareAssetMap.ContainsKey(hardwareID)) {
-        return _hardwareAssetMap[hardwareID];
+        return _hardwareAssetMap[hardwareID];  // TODO: can we obtain a value with a string? think we need to .Find(...
       }
       return null;
     }
