@@ -19,7 +19,6 @@ namespace Code.Hardware {
     // - scenarioHardwareCatalogDirectory: Directory to load scenario specific hardware catalog from
     public HardwareCatalog(HardwareCatalogVariable hardwareCatalog, string scenarioHardwareCatalogDirectory) {
       // Gather all of the hardware assets we have to choose from.
-      hardwareCatalog.GetHardwareAsset();
       foreach (var hardwareAsset in hardwareCatalog.listOfAllHardware) {
         _hardwareAssetMap.Add(hardwareAsset.name, hardwareAsset.hardwareAsset);
         _hardwareTypeMap.Add(hardwareAsset.name, hardwareAsset.hardwareType);
@@ -43,7 +42,7 @@ namespace Code.Hardware {
     // ------------------------------------------------------------------------
     public HardwareAsset GetHardwareAsset(string hardwareID) {
       if (_hardwareAssetMap.ContainsKey(hardwareID)) {
-        return _hardwareAssetMap[hardwareID];
+        return _hardwareAssetMap[hardwareID];  // TODO: can we obtain a value with a string? think we need to .Find(...
       }
       return null;
     }
