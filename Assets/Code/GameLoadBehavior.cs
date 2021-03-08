@@ -1,14 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Shared.ScriptableVariables;
 using Code.Factories;
 using Code.Hardware;
+using Code.Scriptable_Variables;
 
 public class GameLoadBehavior : MonoBehaviour {
   public static GameObject main_floor;
+  [Header("Input")]
+  public HardwareTypeVariable _hardwareTypes;
 
   [Header("Output Events/Variables")]
   [Tooltip("Path to the CyberCIEGE Install folder")]
@@ -103,7 +105,7 @@ public class GameLoadBehavior : MonoBehaviour {
 
   // --------------------------------------------------------------------------
   private void InitializeHardwareCatalog(string userAppPath) {
-    hardwareCatalog.Value = new HardwareCatalog(hardwareCatalog, userAppPath);
+    hardwareCatalog.Value = new HardwareCatalog(_hardwareTypes.Value, userAppPath);
   }
 
 }

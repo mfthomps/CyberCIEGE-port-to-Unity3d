@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using UnityEngine;
 
 namespace Code.Hardware {
   // Data structure for all known hardware information in game
@@ -17,9 +15,9 @@ namespace Code.Hardware {
     // - assetBundle: The asset bundle containing the art assets for our hardware
     // - hardwareDefinitionInformations: List of hardware types and filepaths to where the hardware of that type is defined
     // - scenarioHardwareCatalogDirectory: Directory to load scenario specific hardware catalog from
-    public HardwareCatalog(HardwareCatalogVariable hardwareCatalog, string scenarioHardwareCatalogDirectory) {
+    public HardwareCatalog(IEnumerable<HardwareTypeProperties> hardwareTypes, string scenarioHardwareCatalogDirectory) {
       // Gather all of the hardware assets we have to choose from.
-      foreach (var hardwareAsset in hardwareCatalog.listOfAllHardware) {
+      foreach (var hardwareAsset in hardwareTypes) {
         _hardwareAssetMap.Add(hardwareAsset.name, hardwareAsset.hardwareAsset);
         _hardwareTypeMap.Add(hardwareAsset.name, hardwareAsset.hardwareType);
       }
