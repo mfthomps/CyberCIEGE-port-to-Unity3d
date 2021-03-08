@@ -12,6 +12,7 @@ namespace Code.Hardware {
     [ReorderableList]
     public List<HardwareTypeProperties> listOfAllHardware = new List<HardwareTypeProperties>();
 
+
     //---------------------------------------------------------------------------
     [ContextMenu("Reset To Default Value")]
     public void ContextMenuReset() {
@@ -19,16 +20,16 @@ namespace Code.Hardware {
     }
   }
 
-  //#if UNITY_EDITOR
-  //  //-----------------------------------------------------------------------------
-  //  [UnityEditor.CustomEditor(typeof(HardwareCatalogVariable))]
-  //  [UnityEditor.CanEditMultipleObjects]
-  //  public class HardwareCatalogScriptableVariableEditor : HardwareCatalogVariable.BaseScriptableVariableEditor {
-  //  }
-  //#endif
+#if UNITY_EDITOR
+  //-----------------------------------------------------------------------------
+  [UnityEditor.CustomEditor(typeof(HardwareCatalogVariable))]
+  [UnityEditor.CanEditMultipleObjects]
+  public class HardwareCatalogScriptableVariableEditor : HardwareCatalogVariable.BaseScriptableVariableEditor {
+  }
+#endif
 
   [Serializable]
-  public class HardwareTypeProperties : HardwareAsset {
+  public class HardwareTypeProperties {
     public string name;
     public string description;
     public HardwareAsset hardwareAsset;
