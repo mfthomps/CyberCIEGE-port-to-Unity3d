@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Code.World_Objects.User.AI.States {
   
@@ -6,7 +7,14 @@ namespace Code.World_Objects.User.AI.States {
   public class IdleState : FsmState{
     [SerializeField] private Animator _animator;
     [SerializeField] private string _idleAnimParam = "Idle";
-  
+
+    //-------------------------------------------------------------------------
+    private void Awake() {
+      if (!_animator) {
+        _animator = GetComponentInParent<Animator>();
+      }
+    }
+
     //-------------------------------------------------------------------------
     public override void OnStateEnter() {
       if (!string.IsNullOrEmpty(_idleAnimParam)) {

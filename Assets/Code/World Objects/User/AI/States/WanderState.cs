@@ -7,9 +7,8 @@ using Random = UnityEngine.Random;
 namespace Code.World_Objects.User.AI.States {
   // A Fsm State that randomly selects a GameObject in the scene that has 
   // the supplied Tag and sets the User's navigation target to it.
-  public class WanderState : FsmState {
-    [SerializeField] private Navigator _user;
-
+  public class WanderState : NavigateState {
+    
     [Tooltip("The Tag of the GameObjects in the scene to randomly navigate to")]
     [Tag]
     public string objectOfInterestTag;
@@ -20,12 +19,14 @@ namespace Code.World_Objects.User.AI.States {
     
     //--------------------------------------------------------------------------
     public override void OnStateEnter() {
+      base.OnStateEnter();
+      
       _objectsOfInterest = new List<GameObject>(GameObject.FindGameObjectsWithTag(objectOfInterestTag));
 
       ValidatePaths();
       
       GameObject destinationObject = GetRandomDestination();
-      _user.CurrentNavTarget = destinationObject;
+      _navigator.CurrentNavTarget = destinationObject;
     }
 
     //--------------------------------------------------------------------------
@@ -38,7 +39,7 @@ namespace Code.World_Objects.User.AI.States {
     //For all the objects of interest, remove the ones we can't path to.
     private void ValidatePaths() {
       for (int i = _objectsOfInterest.Count - 1; i >= 0; i--) {
-        if (!CheckPath(_user.transform.position, _objectsOfInterest[i].transform.position)) {
+        if (!CheckPath(_navigator.transform.position, _objectsOfInterest[i].transform.position)) {
           _objectsOfInterest.RemoveAt(i);
         }
       }

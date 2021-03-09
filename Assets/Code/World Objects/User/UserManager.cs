@@ -126,11 +126,6 @@ namespace Code.World_Objects.User {
       
       if (visitingString != character.GetCharacterData().Visiting) {
         character.SetVisiting(visitingString);
-        var targetObject = GetTarget(visitingString);
-        if (character.CurrentNavTarget != targetObject) {
-          character.CurrentNavTarget = targetObject;
-          Debug.Log($"Set [{character.GetCharacterData().user_name}] nav target to [{targetObject.name}]");
-        }
       }
 
       var stayStr = updateNode["stay"].InnerText;
@@ -154,21 +149,5 @@ namespace Code.World_Objects.User {
       return visitingTarget;
     }
     
-    //--------------------------------------------------------------------------
-    //Get the GameObject representing the User or the Computer that has the supplied 
-    //string as a name.
-    private GameObject GetTarget(string targetStr) {
-      var user = users.Value.Find(x => x.Data.user_name == targetStr);
-      if (user) {
-        return user.gameObject;
-      }
-
-      var computer = computers.Value.Find(x => x.Data.component_name == targetStr);
-      if (computer) {
-        return computer.gameObject;
-      }
-
-      return null;
-    }
   }
 }
